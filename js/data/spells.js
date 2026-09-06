@@ -1,4 +1,4 @@
-// Catálogo simplificado de habilidades (Spells) de Albion Online (sin descripciones)
+// Catálogo de habilidades (Spells) de Albion Online con IDs de iconos verificados
 
 export function getAlbionSpellIconUrl(spellId) {
   if (!spellId) return "";
@@ -6,7 +6,6 @@ export function getAlbionSpellIconUrl(spellId) {
 }
 
 export const SPELLS_DATABASE = {
-  // ARMAS
   weapons: {
     sword: {
       q: [
@@ -22,7 +21,7 @@ export const SPELLS_DATABASE = {
         { id: "PARRYINGSTRIKE", name: "Golpe de Parada (W5)", icon: "PARRYINGSTRIKE" }
       ],
       e: {
-        MAIN_1H_SWORD: { id: "MIGHTYBLOW", name: "Golpe Poderoso", icon: "MIGHTYBLOW" },
+        MAIN_SWORD: { id: "MIGHTYBLOW", name: "Golpe Poderoso", icon: "MIGHTYBLOW" },
         "2H_CLAYMORE": { id: "CHARGE", name: "Embestida", icon: "CHARGE" },
         "2H_DUALSWORD": { id: "SPINNINGBLADES", name: "Hojas Giratorias", icon: "SPINNINGBLADES" },
         MAIN_SCIMITAR_MORGANA: { id: "MORGANA_SLASH", name: "Furia Clarent", icon: "MORGANA_SLASH" },
@@ -65,16 +64,15 @@ export const SPELLS_DATABASE = {
 
     mace: {
       q: [
-        { id: "DEFENSIVE_SLAM", name: "Golpe Defensivo (Q1)", icon: "DEFENSIVE_SLAM" },
-        { id: "THREATENING_STRIKE", name: "Golpe Amenazante (Q2)", icon: "THREATENING_STRIKE" }
+        { id: "DEFENSIVESLAM", name: "Golpe Defensivo (Q1)", icon: "DEFENSIVESLAM" },
+        { id: "THREATENINGSTRIKE", name: "Golpe Amenazante (Q2)", icon: "THREATENINGSTRIKE" }
       ],
       w: [
-        { id: "SNARE_CHARGE", name: "Carga Inmovilizadora (W1)", icon: "SNARE_CHARGE" },
-        { id: "SILENCE_ROAR", name: "Rugido de Silencio (W2)", icon: "SILENCE_ROAR" },
-        { id: "GUARD_PULL", name: "Atracción Defensiva (W3)", icon: "GUARD_PULL" }
+        { id: "SNARECHARGE", name: "Carga Inmovilizadora (W1)", icon: "SNARECHARGE" },
+        { id: "SILENCEROAR", name: "Rugido de Silencio (W2)", icon: "SILENCEROAR" }
       ],
       e: {
-        MAIN_MACE: { id: "DEEP_LEAP", name: "Salto de Impacto", icon: "DEEP_LEAP" },
+        MAIN_MACE: { id: "DEEPLEAP", name: "Salto de Impacto", icon: "DEEPLEAP" },
         "2H_HEAVY_MACE": { id: "BATTLE_DISRUPT", name: "Disrupción Silenciosa", icon: "BATTLE_DISRUPT" },
         "2H_MACE_MORGANA": { id: "CAMLANN_VORTEX", name: "Vórtice de Camlann", icon: "CAMLANN_VORTEX" },
         "2H_DUALMACE_AVALON": { id: "OATH_SHIELD", name: "Defensa Sagrada", icon: "OATH_SHIELD" }
@@ -87,16 +85,17 @@ export const SPELLS_DATABASE = {
 
     hammer: {
       q: [
-        { id: "HAMMER_SLAM", name: "Martillazo Devastador (Q1)", icon: "DEFENSIVE_SLAM" },
-        { id: "HAMMER_SMASH", name: "Aplastamiento (Q2)", icon: "THREATENING_STRIKE" }
+        { id: "DEFENSIVESLAM", name: "Martillazo Devastador (Q1)", icon: "DEFENSIVESLAM" },
+        { id: "THREATENINGSTRIKE", name: "Aplastamiento (Q2)", icon: "THREATENINGSTRIKE" }
       ],
       w: [
-        { id: "HAMMER_GEYSER", name: "Géiser de Tierra (W1)", icon: "SNARE_CHARGE" },
-        { id: "HAMMER_SLOW", name: "Ralentización Pesada (W2)", icon: "HAMSTRING" }
+        { id: "SNARECHARGE", name: "Géiser de Tierra (W1)", icon: "SNARECHARGE" },
+        { id: "HAMSTRING", name: "Ralentización Pesada (W2)", icon: "HAMSTRING" }
       ],
       e: {
-        MAIN_HAMMER: { id: "HAMMER_STUN", name: "Golpe Aturdidor", icon: "DEEP_LEAP" },
+        MAIN_HAMMER: { id: "DEEPLEAP", name: "Golpe Aturdidor", icon: "DEEPLEAP" },
         "2H_HAMMER": { id: "GREAT_SLAM", name: "Embestida de Titán", icon: "CHARGE" },
+        "2H_POLEHAMMER": { id: "POLE_SLAM", name: "Golpe de Maza", icon: "MIGHTYBLOW" },
         "2H_HAMMER_AVALON": { id: "HAND_JUSTICE", name: "Mano de la Justicia", icon: "MAJESTIC_STRIKE" }
       },
       passive: [
@@ -106,19 +105,21 @@ export const SPELLS_DATABASE = {
 
     crossbow: {
       q: [
-        { id: "AUTO_FIRE", name: "Fuego Automático (Q1)", icon: "AUTO_FIRE" },
-        { id: "EXPLOSIVE_BOLT", name: "Perno Explosivo (Q2)", icon: "EXPLOSIVE_BOLT" }
+        { id: "AUTOFIRE", name: "Fuego Automático (Q1)", icon: "AUTOFIRE" },
+        { id: "EXPLOSIVEBOLT", name: "Perno Explosivo (Q2)", icon: "EXPLOSIVEBOLT" }
       ],
       w: [
         { id: "CALTROPS", name: "Abrojos (W1)", icon: "CALTROPS" },
-        { id: "KNOCKBACK_SHOT", name: "Disparo de Retroceso (W2)", icon: "KNOCKBACK_SHOT" },
-        { id: "SILENCE_SHOT", name: "Perno Silenciador (W3)", icon: "INTERRUPT" }
+        { id: "KNOCKBACKSHOT", name: "Disparo de Retroceso (W2)", icon: "KNOCKBACKSHOT" },
+        { id: "INTERRUPT", name: "Perno Silenciador (W3)", icon: "INTERRUPT" }
       ],
       e: {
-        MAIN_1H_CROSSBOW: { id: "EXPLOSIVE_MINE", name: "Disparo Bomba", icon: "EXPLOSIVE_BOLT" },
-        "2H_CROSSBOW": { id: "SNIPER_SHOT", name: "Tiro de Francotirador", icon: "CHARGE" },
-        "2H_DUALCROSSBOW_HELL": { id: "BOLT_BARRAGE", name: "Lluvia de Pernos", icon: "AUTO_FIRE" },
-        "2H_CROSSBOW_AVALON": { id: "ENERGY_BEAM", name: "Rayo de Energía", icon: "MAJESTIC_STRIKE" }
+        MAIN_1HCROSSBOW: { id: "EXPLOSIVEBOLT", name: "Disparo Bomba", icon: "EXPLOSIVEBOLT" },
+        "2H_CROSSBOW": { id: "CHARGE", name: "Tiro de Francotirador", icon: "CHARGE" },
+        "2H_CROSSBOWLARGE": { id: "SWEEPING_BOLT", name: "Disparo de Asedio", icon: "AUTOFIRE" },
+        "2H_DUALCROSSBOW_HELL": { id: "AUTOFIRE", name: "Lluvia de Pernos", icon: "AUTOFIRE" },
+        "2H_REPEATINGCROSSBOW_UNDEAD": { id: "WEEPING_BOLT", name: "Mina de Llanto", icon: "EXPLOSIVEBOLT" },
+        "2H_CROSSBOW_CANNON_AVALON": { id: "MAJESTIC_STRIKE", name: "Rayo de Energía", icon: "MAJESTIC_STRIKE" }
       },
       passive: [
         { id: "PASSIVE_WELL_PREPARED", name: "Bien Preparado", icon: "PASSIVE_WELL_PREPARED" }
@@ -127,17 +128,18 @@ export const SPELLS_DATABASE = {
 
     bow: {
       q: [
-        { id: "POISON_ARROW", name: "Flecha Envenenada (Q1)", icon: "POISON_ARROW" },
-        { id: "DEADLY_SHOT", name: "Disparo Certero (Q2)", icon: "DEADLY_SHOT" }
+        { id: "POISONARROW", name: "Flecha Envenenada (Q1)", icon: "POISONARROW" },
+        { id: "DEADLYSHOT", name: "Disparo Certero (Q2)", icon: "DEADLYSHOT" }
       ],
       w: [
-        { id: "FROST_ARROW", name: "Flecha Helada (W1)", icon: "FROST_ARROW" },
-        { id: "SPEED_SHOT", name: "Disparo Veloz (W2)", icon: "ADRENALINEBOOST" },
+        { id: "FROSTARROW", name: "Flecha Helada (W1)", icon: "FROSTARROW" },
+        { id: "SPEEDSHOT", name: "Disparo Veloz (W2)", icon: "SPEEDSHOT" },
         { id: "RAY_OF_LIGHT", name: "Rayo de Luz (W3)", icon: "RAY_OF_LIGHT" }
       ],
       e: {
-        "2H_BOW": { id: "ENCHANTED_QUIVER", name: "Carcaj Encantado", icon: "ENCHANTED_QUIVER" },
-        "2H_WARBOW": { id: "MAGIC_ARROW", name: "Flecha Mágica", icon: "MAGIC_ARROW" },
+        "2H_BOW": { id: "ENCHANTEDQUIVER", name: "Carcaj Encantado", icon: "ENCHANTEDQUIVER" },
+        "2H_WARBOW": { id: "MAGICARROW", name: "Flecha Mágica", icon: "MAGICARROW" },
+        "2H_LONGBOW": { id: "RAIN_OF_ARROWS", name: "Lluvia de Flechas", icon: "AUTOFIRE" },
         "2H_BOW_KEEPER": { id: "BADON_STORM", name: "Tormenta de Badon", icon: "BADON_STORM" }
       },
       passive: [
@@ -147,326 +149,351 @@ export const SPELLS_DATABASE = {
 
     spear: {
       q: [
-        { id: "SPEAR_LUNGE", name: "Estocada Espiritual (Q1)", icon: "HEROICSTRIKE" },
-        { id: "SPEAR_IMPALE", name: "Empalar (Q2)", icon: "RENDINGSTRIKE" }
+        { id: "SPEARLUNGE", name: "Estocada Espiritual (Q1)", icon: "SPEARLUNGE" },
+        { id: "IMPALE", name: "Empalar (Q2)", icon: "IMPALE" }
       ],
       w: [
-        { id: "FOREST_OF_SPEARS", name: "Bosque de Lanzas (W1)", icon: "AUTO_FIRE" },
-        { id: "SPEAR_DEFLECT", name: "Desvío Interior (W2)", icon: "PARRYINGSTRIKE" },
-        { id: "CRIPPLING_STRIKE", name: "Golpe Tullidor (W3)", icon: "HAMSTRING" }
+        { id: "FORESTSPEARS", name: "Bosque de Lanzas (W1)", icon: "FORESTSPEARS" },
+        { id: "PARRYINGSTRIKE", name: "Desvío Interior (W2)", icon: "PARRYINGSTRIKE" },
+        { id: "HAMSTRING", name: "Golpe Tullidor (W3)", icon: "HAMSTRING" }
       ],
       e: {
-        MAIN_SPEAR: { id: "RECKLESS_CHARGE", name: "Arremetida Temeraria", icon: "MIGHTYBLOW" },
-        "2H_SPEAR": { id: "ROOTING_THRUST", name: "Estocada Inmovilizadora", icon: "CHARGE" },
-        "2H_HARPOON_HELL": { id: "SPIRIT_HARPOON", name: "Cazaespíritus", icon: "FEARLESS_STRIKE" }
+        MAIN_SPEAR: { id: "RECKLESSCHARGE", name: "Arremetida Temeraria", icon: "RECKLESSCHARGE" },
+        "2H_SPEAR": { id: "CHARGE", name: "Estocada Inmovilizadora", icon: "CHARGE" },
+        "2H_GLAIVE": { id: "FLING", name: "Lanzamiento por el Aire", icon: "MIGHTYBLOW" },
+        "2H_HARPOON_HELL": { id: "FEARLESS_STRIKE", name: "Cazaespíritus", icon: "FEARLESS_STRIKE" }
       },
       passive: [
-        { id: "PASSIVE_LIFE_SPEAR", name: "Sed de Combate", icon: "PASSIVE_LIFELEECH" }
+        { id: "PASSIVE_LIFELEECH", name: "Sed de Combate", icon: "PASSIVE_LIFELEECH" }
       ]
     },
 
     dagger: {
       q: [
-        { id: "ASSASSIN_SPIRIT", name: "Espíritu Asesino (Q1)", icon: "HEROICSTRIKE" },
-        { id: "DEADLY_SWIPE", name: "Golpe Mortal (Q2)", icon: "RENDINGSPIN" }
+        { id: "ASSASSINSPIRIT", name: "Espíritu Asesino (Q1)", icon: "ASSASSINSPIRIT" },
+        { id: "DEADLYSWIPE", name: "Golpe Mortal (Q2)", icon: "DEADLYSWIPE" }
       ],
       w: [
-        { id: "SHADOW_EDGE", name: "Filo Sombrío (W1)", icon: "CHARGE" },
-        { id: "FORBIDDEN_STAB", name: "Estocada Prohibida (W2)", icon: "INTERRUPT" },
-        { id: "THROWING_BLADES", name: "Cuchillas Arrojadizas (W3)", icon: "CALTROPS" }
+        { id: "SHADOWEDGE", name: "Filo Sombrío (W1)", icon: "SHADOWEDGE" },
+        { id: "INTERRUPT", name: "Estocada Prohibida (W2)", icon: "INTERRUPT" },
+        { id: "CALTROPS", name: "Cuchillas Arrojadizas (W3)", icon: "CALTROPS" }
       ],
       e: {
-        MAIN_DAGGER: { id: "BLOODTHIRSTY_STRIKE", name: "Sed Asesina", icon: "ADRENALINEBOOST" },
-        MAIN_RAPIER_MORGANA: { id: "BLOODLETTER_LUNGE", name: "Corte Sangriento", icon: "FEARLESS_STRIKE" },
-        "2H_DUALSICKLE_UNDEAD": { id: "DEATH_GIVER", name: "Muerte Silenciosa", icon: "SOUL_CARVER" }
+        MAIN_DAGGER: { id: "BLOODLUST", name: "Sed Asesina", icon: "BLOODLUST" },
+        "2H_DAGGERPAIR": { id: "SLIT_THROAT", name: "Cortar Cuello", icon: "MIGHTYBLOW" },
+        "2H_CLAWPAIR": { id: "DISEMBOWEL", name: "Destripar", icon: "DEADLYSWIPE" },
+        MAIN_RAPIER_MORGANA: { id: "FEARLESS_STRIKE", name: "Corte Sangriento (Bloodletter)", icon: "FEARLESS_STRIKE" },
+        "2H_DUALDAGGER_UNDEAD": { id: "SOUL_CARVER", name: "Muerte Silenciosa (Deathgivers)", icon: "SOUL_CARVER" }
       },
       passive: [
-        { id: "PASSIVE_DAGGER_BLEED", name: "Veneno Profundo", icon: "PASSIVE_DEEPWOUNDS" }
+        { id: "PASSIVE_DEEPWOUNDS", name: "Veneno Profundo", icon: "PASSIVE_DEEPWOUNDS" }
       ]
     },
 
     quarterstaff: {
       q: [
-        { id: "CONCUSSIVE_BLOW", name: "Golpe Contundente (Q1)", icon: "HEROICSTRIKE" },
-        { id: "CARTWHEEL", name: "Rueda Ágil (Q2)", icon: "ADRENALINEBOOST" }
+        { id: "CONCUSSIVEBLOW", name: "Golpe Contundente (Q1)", icon: "CONCUSSIVEBLOW" },
+        { id: "ADRENALINEBOOST", name: "Rueda Ágil (Q2)", icon: "ADRENALINEBOOST" }
       ],
       w: [
-        { id: "FORCEFUL_SWING", name: "Giro de Fuerza (W1)", icon: "KNOCKBACK_SHOT" },
-        { id: "STUN_RUN", name: "Carrera Aturdidora (W2)", icon: "CHARGE" }
+        { id: "KNOCKBACKSHOT", name: "Giro de Fuerza (W1)", icon: "KNOCKBACKSHOT" },
+        { id: "CHARGE", name: "Carrera Aturdidora (W2)", icon: "CHARGE" }
       ],
       e: {
-        "2H_QUARTERSTAFF": { id: "VAULT_KICK", name: "Patada Voladora", icon: "DEEP_LEAP" },
-        "2H_DOUBLEBLADEDSTAFF": { id: "OVERPOWER", name: "Arremetida Sobrecargada", icon: "FEARLESS_STRIKE" },
-        "2H_QUARTERSTAFF_AVALON": { id: "GRAIL_WALL", name: "Muro del Grial", icon: "MAJESTIC_STRIKE" }
+        "2H_QUARTERSTAFF": { id: "DEEPLEAP", name: "Patada Voladora", icon: "DEEPLEAP" },
+        "2H_IRONCLADEDSTAFF": { id: "HURRICANE", name: "Huracán", icon: "WHIRLWIND" },
+        "2H_DOUBLEBLADEDSTAFF": { id: "FEARLESS_STRIKE", name: "Arremetida Sobrecargada", icon: "FEARLESS_STRIKE" },
+        "2H_COMBATSTAFF_MORGANA": { id: "SOUL_CARVER", name: "Golpe de Monje Negro", icon: "SOUL_CARVER" },
+        "2H_QUARTERSTAFF_AVALON": { id: "MAJESTIC_STRIKE", name: "Muro del Grial", icon: "MAJESTIC_STRIKE" }
       },
       passive: [
-        { id: "PASSIVE_STUN_CHANCE", name: "Maestría en Bastón", icon: "PASSIVE_CC_DURATION" }
+        { id: "PASSIVE_CC_DURATION", name: "Maestría en Bastón", icon: "PASSIVE_CC_DURATION" }
       ]
     },
 
     holy: {
       q: [
-        { id: "GENEROUS_HEAL", name: "Curación Generosa (Q1)", icon: "GENEROUS_HEAL" },
-        { id: "FLASH_HEAL", name: "Curación Fugaz (Q2)", icon: "FLASH_HEAL" }
+        { id: "GENEROUSHEAL", name: "Curación Generosa (Q1)", icon: "GENEROUSHEAL" },
+        { id: "FLASHHEAL", name: "Curación Fugaz (Q2)", icon: "FLASHHEAL" }
       ],
       w: [
-        { id: "HOLY_BEAM", name: "Rayo Sagrado (W1)", icon: "HOLY_BEAM" },
-        { id: "HOLY_ORB", name: "Orbe Sagrado (W2)", icon: "HOLY_ORB" },
-        { id: "SACRED_GROUND", name: "Suelo Sagrado (W3)", icon: "SACRED_GROUND" }
+        { id: "HOLYBEAM", name: "Rayo Sagrado (W1)", icon: "HOLYBEAM" },
+        { id: "HOLYORB", name: "Orbe Sagrado (W2)", icon: "HOLYORB" },
+        { id: "SACREDGROUND", name: "Suelo Sagrado (W3)", icon: "SACREDGROUND" }
       ],
       e: {
-        MAIN_HOLYSTAFF: { id: "DESPERATE_HEAL", name: "Curación Desesperada", icon: "GENEROUS_HEAL" },
-        "2H_HOLYSTAFF_HELL": { id: "FALLEN_SANCTUARY", name: "Santuario Caído", icon: "SACRED_GROUND" },
-        MAIN_HOLYSTAFF_AVALON: { id: "HALLOWFALL_LEAP", name: "Salto Santificado", icon: "MAJESTIC_STRIKE" }
+        MAIN_HOLYSTAFF: { id: "GENEROUSHEAL", name: "Curación Desesperada", icon: "GENEROUSHEAL" },
+        "2H_HOLYSTAFF": { id: "HOLY_EXPLOSION", name: "Explosión Sagrada", icon: "SACREDGROUND" },
+        "2H_DIVINESTAFF": { id: "DIVINE_PROTECTION", name: "Protección Divina", icon: "ENERGYSHIELD" },
+        "2H_HOLYSTAFF_HELL": { id: "SACREDGROUND", name: "Santuario Caído", icon: "SACREDGROUND" },
+        MAIN_HOLYSTAFF_AVALON: { id: "MAJESTIC_STRIKE", name: "Salto Santificado (Hallowfall)", icon: "MAJESTIC_STRIKE" }
       },
       passive: [
-        { id: "PASSIVE_HEAL_BOOST", name: "Luz Radiante", icon: "PASSIVE_INCREASED_DEFENSE" }
+        { id: "PASSIVE_INCREASED_DEFENSE", name: "Luz Radiante", icon: "PASSIVE_INCREASED_DEFENSE" }
       ]
     },
 
     nature: {
       q: [
         { id: "REJUVENATION", name: "Rejuvenecimiento (Q1)", icon: "REJUVENATION" },
-        { id: "THORN_GROWTH", name: "Espinas Vivas (Q2)", icon: "THORN_GROWTH" }
+        { id: "THORNGROWTH", name: "Espinas Vivas (Q2)", icon: "THORNGROWTH" }
       ],
       w: [
         { id: "REVITALIZE", name: "Revitalizar (W1)", icon: "REVITALIZE" },
-        { id: "CLEANSE_HEAL", name: "Semilla Limpiadora (W2)", icon: "CLEANSE_HEAL" },
-        { id: "BRAMBLE_THORN", name: "Zarza Espinosa (W3)", icon: "BRAMBLE_THORN" }
+        { id: "CLEANSE", name: "Semilla Limpiadora (W2)", icon: "CLEANSE" }
       ],
       e: {
-        MAIN_NATURESTAFF: { id: "CIRCLE_OF_LIFE", name: "Círculo de Vida", icon: "CIRCLE_OF_LIFE" },
-        "2H_NATURESTAFF_KEEPER": { id: "WILD_PATH", name: "Senda Silvestre", icon: "WILD_PATH" },
-        "2H_NATURESTAFF_HELL": { id: "BLIGHT_CANAL", name: "Nube de Plaga", icon: "BLIGHT_CANAL" }
+        MAIN_NATURESTAFF: { id: "CIRCLEOFLIFE", name: "Círculo de Vida", icon: "CIRCLEOFLIFE" },
+        "2H_NATURESTAFF": { id: "LIVING_ARMOR", name: "Armadura Viva", icon: "STONESKIN" },
+        "2H_WILDSTAFF": { id: "WILD_PATH", name: "Senda Silvestre", icon: "CIRCLEOFLIFE" },
+        "2H_NATURESTAFF_KEEPER": { id: "DRUIDIC_HEAL", name: "Espíritu de la Naturaleza", icon: "REJUVENATION" },
+        "2H_NATURESTAFF_HELL": { id: "CIRCLEOFLIFE", name: "Nube de Plaga (Blight)", icon: "CIRCLEOFLIFE" }
       },
       passive: [
-        { id: "PASSIVE_NATURE_HEAL", name: "Poder Natural", icon: "PASSIVE_INCREASED_DEFENSE" }
+        { id: "PASSIVE_INCREASED_DEFENSE", name: "Poder Natural", icon: "PASSIVE_INCREASED_DEFENSE" }
       ]
     },
 
     fire: {
       q: [
         { id: "FIREBOLT", name: "Saeta de Fuego (Q1)", icon: "FIREBOLT" },
-        { id: "BURNING_FIELD", name: "Campo Llameante (Q2)", icon: "BURNING_FIELD" }
+        { id: "BURNINGFIELD", name: "Campo Llameante (Q2)", icon: "BURNINGFIELD" }
       ],
       w: [
-        { id: "WALL_OF_FLAMES", name: "Muro de Llamas (W1)", icon: "WALL_OF_FLAMES" },
-        { id: "FIRE_BALL", name: "Bola de Fuego (W2)", icon: "FIRE_BALL" }
+        { id: "WALLOFFLAMES", name: "Muro de Llamas (W1)", icon: "WALLOFFLAMES" },
+        { id: "FIREBALL", name: "Bola de Fuego (W2)", icon: "FIREBALL" }
       ],
       e: {
-        MAIN_FIRESTAFF: { id: "PYROBLAST", name: "Piroexplosión", icon: "FIRE_BALL" },
-        "2H_INFERNOSTAFF": { id: "CONFLAGRATION", name: "Conflagración", icon: "WALL_OF_FLAMES" },
-        "2H_FIRE_RING_UNDEAD": { id: "BRIMSTONE_FALL", name: "Meteoro Brimstone", icon: "FIRE_BALL" }
+        MAIN_FIRESTAFF: { id: "PYROBLAST", name: "Piroexplosión", icon: "PYROBLAST" },
+        "2H_FIRESTAFF": { id: "FIREBALL", name: "Pilar de Fuego", icon: "FIREBALL" },
+        "2H_INFERNOSTAFF": { id: "WALLOFFLAMES", name: "Conflagración", icon: "WALLOFFLAMES" },
+        MAIN_FIRESTAFF_KEEPER: { id: "FIREBALL", name: "Fuego Fatuo (Magma Sphere)", icon: "FIREBALL" },
+        "2H_FIRESTAFF_HELL": { id: "FIREBALL", name: "Meteoro Brimstone", icon: "FIREBALL" },
+        "2H_FIRE_RINGPAIR_AVALON": { id: "PYROBLAST", name: "Canción del Ocaso", icon: "PYROBLAST" }
       },
       passive: [
-        { id: "PASSIVE_BURN", name: "Piromanía", icon: "PASSIVE_BURN" }
+        { id: "PASSIVE_WELL_PREPARED", name: "Furia Ígnea", icon: "PASSIVE_WELL_PREPARED" }
       ]
     },
 
     frost: {
       q: [
-        { id: "FROST_BOLT", name: "Saeta de Hielo (Q1)", icon: "FROST_BOLT" },
-        { id: "ICE_SHARDS", name: "Esquirlas de Hielo (Q2)", icon: "ICE_SHARDS" }
+        { id: "FROSTBOLT", name: "Saeta de Hielo (Q1)", icon: "FROSTBOLT" },
+        { id: "ICESHARDS", name: "Esquirlas de Hielo (Q2)", icon: "ICESHARDS" }
       ],
       w: [
-        { id: "FROST_NOVA", name: "Nova de Escarcha (W1)", icon: "FROST_NOVA" },
-        { id: "FROST_BEAM", name: "Rayo Congelante (W2)", icon: "FROST_BEAM" }
+        { id: "FROSTNOVA", name: "Nova de Escarcha (W1)", icon: "FROSTNOVA" },
+        { id: "FROSTBEAM", name: "Rayo Congelante (W2)", icon: "FROSTBEAM" }
       ],
       e: {
-        "2H_ICE_CRYSTAL_UNDEAD": { id: "PERMAFROST_PRISM", name: "Prisma Permafrost", icon: "PERMAFROST_PRISM" }
+        MAIN_FROSTSTAFF: { id: "FROSTNOVA", name: "Nova Libre", icon: "FROSTNOVA" },
+        "2H_FROSTSTAFF": { id: "FROSTBEAM", name: "Ventisca Helada", icon: "FROSTBEAM" },
+        "2H_GLACIALSTAFF": { id: "ICESHARDS", name: "Pilar Glacial", icon: "ICESHARDS" },
+        MAIN_FROSTSTAFF_KEEPER: { id: "FROSTNOVA", name: "Orbe de Escarcha", icon: "FROSTNOVA" },
+        MAIN_FROSTSTAFF_AVALON: { id: "FROSTNOVA", name: "Prisma Permafrost", icon: "FROSTNOVA" }
       },
       passive: [
-        { id: "PASSIVE_FROST_FREEZE", name: "Congelación Profunda", icon: "PASSIVE_CC_DURATION" }
+        { id: "PASSIVE_CC_DURATION", name: "Congelación Profunda", icon: "PASSIVE_CC_DURATION" }
       ]
     },
 
     curse: {
       q: [
-        { id: "VILE_CURSE", name: "Maldición Vil (Q1)", icon: "VILE_CURSE" },
-        { id: "CURSED_SICKLE", name: "Hoz Maldita (Q2)", icon: "CURSED_SICKLE" }
+        { id: "VILECURSE", name: "Maldición Vil (Q1)", icon: "VILECURSE" },
+        { id: "CURSEDSICKLE", name: "Hoz Maldita (Q2)", icon: "CURSEDSICKLE" }
       ],
       w: [
-        { id: "ARMOR_PIERCER", name: "Perforador de Armadura (W1)", icon: "ARMOR_PIERCER" },
+        { id: "ARMORPIERCER", name: "Perforador de Armadura (W1)", icon: "ARMORPIERCER" },
         { id: "DESECRATE", name: "Profanación (W2)", icon: "DESECRATE" }
       ],
       e: {
-        MAIN_CURSEDSTAFF: { id: "DEATH_CURSE", name: "Maldición Mortal", icon: "DEATH_CURSE" },
-        "2H_CURSEDSTAFF_MORGANA": { id: "DAMNATION_CATA", name: "Cataclismo Damnation", icon: "DESECRATE" },
-        MAIN_CURSEDSTAFF_AVALON: { id: "SHADOWCALLER_SOUL", name: "Invocación Shadowcaller", icon: "DARK_MATTER" }
+        MAIN_CURSEDSTAFF: { id: "DEATHCURSE", name: "Maldición Mortal", icon: "DEATHCURSE" },
+        "2H_CURSEDSTAFF": { id: "DESECRATE", name: "Área de Maldición", icon: "DESECRATE" },
+        "2H_DEMONICSTAFF": { id: "ARMORPIERCER", name: "Rayo Demoníaco", icon: "ARMORPIERCER" },
+        MAIN_CURSEDSTAFF_UNDEAD: { id: "DEATHCURSE", name: "Calavera Maldita", icon: "DEATHCURSE" },
+        "2H_CURSEDSTAFF_MORGANA": { id: "DESECRATE", name: "Cataclismo Damnation", icon: "DESECRATE" },
+        MAIN_CURSEDSTAFF_AVALON: { id: "DEATHCURSE", name: "Invocación Shadowcaller", icon: "DEATHCURSE" }
       },
       passive: [
-        { id: "PASSIVE_CURSE_BANE", name: "Perdición", icon: "PASSIVE_DEEPWOUNDS" }
+        { id: "PASSIVE_DEEPWOUNDS", name: "Perdición", icon: "PASSIVE_DEEPWOUNDS" }
       ]
     },
 
     arcane: {
       q: [
-        { id: "ARCANE_BOLT", name: "Saeta Arcana (Q1)", icon: "FIREBOLT" },
-        { id: "ARCANE_PROTECTION", name: "Escudo Arcano (Q2)", icon: "SACRED_GROUND" }
+        { id: "FIREBOLT", name: "Saeta Arcana (Q1)", icon: "FIREBOLT" },
+        { id: "ENERGYSHIELD", name: "Escudo Arcano (Q2)", icon: "ENERGYSHIELD" }
       ],
       w: [
-        { id: "ARCANE_CLEANSE", name: "Limpieza Arcana (W1)", icon: "CLEANSE_HEAL" },
-        { id: "TIME_CORRIDOR", name: "Corredor Temporal (W2)", icon: "WILD_PATH" }
+        { id: "CLEANSE", name: "Limpieza Arcana (W1)", icon: "CLEANSE" }
       ],
       e: {
-        "2H_ARCANE_RING_AVALON": { id: "EVOKER_BEAM", name: "Haz del Evocador", icon: "MAJESTIC_STRIKE" }
+        MAIN_ARCANESTAFF: { id: "ENERGYSHIELD", name: "Escudo Protector", icon: "ENERGYSHIELD" },
+        "2H_ARCANESTAFF": { id: "IMMORTAL", name: "Tiempo Congelado", icon: "IMMORTAL" },
+        "2H_ENIGMATICSTAFF": { id: "ENERGYSHIELD", name: "Canalización de Escudo", icon: "ENERGYSHIELD" },
+        "2H_ARCANE_RINGPAIR_AVALON": { id: "MAJESTIC_STRIKE", name: "Haz del Evocador", icon: "MAJESTIC_STRIKE" }
       },
       passive: [
-        { id: "PASSIVE_ARCANE_HASTE", name: "Prontitud Arcana", icon: "PASSIVE_WELL_PREPARED" }
+        { id: "PASSIVE_WELL_PREPARED", name: "Prontitud Arcana", icon: "PASSIVE_WELL_PREPARED" }
       ]
     },
 
     wargloves: {
       q: [
-        { id: "DRAGON_LEAP", name: "Salto del Dragón (Q1)", icon: "HEROICSTRIKE" },
-        { id: "COMBO_PUNCH", name: "Puñetazo Creador (Q2)", icon: "RENDINGSTRIKE" }
+        { id: "HEROICSTRIKE", name: "Salto del Dragón (Q1)", icon: "HEROICSTRIKE" },
+        { id: "RENDINGSTRIKE", name: "Puñetazo Creador (Q2)", icon: "RENDINGSTRIKE" }
       ],
       w: [
-        { id: "TRIPLE_KICK", name: "Patada Triple (W1)", icon: "CHARGE" },
-        { id: "COUNTER_STANCE", name: "Guardia de Contraataque (W2)", icon: "PARRYINGSTRIKE" }
+        { id: "CHARGE", name: "Patada Triple (W1)", icon: "CHARGE" },
+        { id: "PARRYINGSTRIKE", name: "Guardia de Contraataque (W2)", icon: "PARRYINGSTRIKE" }
       ],
       e: {
-        "2H_WARGLOVES_SPIKED": { id: "GRAVITATIONAL_PUNCH", name: "Impacto Gravitacional", icon: "MIGHTYBLOW" },
-        "2H_WARGLOVES_AVALON": { id: "PURIFYING_FISTS", name: "Puños Purificadores", icon: "MAJESTIC_STRIKE" }
+        "2H_KNUCKLES_SET1": { id: "MIGHTYBLOW", name: "Golpe de Pelea", icon: "MIGHTYBLOW" },
+        "2H_WARGLOVES_KEEPER": { id: "CHARGE", name: "Salto de Batalla", icon: "CHARGE" },
+        "2H_KNUCKLES_SET3": { id: "MIGHTYBLOW", name: "Impacto Gravitacional (Spiked)", icon: "MIGHTYBLOW" },
+        "2H_KNUCKLES_SET2": { id: "RENDINGSPIN", name: "Desgarro de Ursino", icon: "RENDINGSPIN" },
+        "2H_KNUCKLES_HELL": { id: "FIREBALL", name: "Manos Infernales", icon: "FIREBALL" },
+        "2H_KNUCKLES_UNDEAD": { id: "MAJESTIC_STRIKE", name: "Golpe Ravenstrike", icon: "MAJESTIC_STRIKE" },
+        "2H_KNUCKLES_AVALON": { id: "MAJESTIC_STRIKE", name: "Puños Purificadores", icon: "MAJESTIC_STRIKE" }
       },
       passive: [
-        { id: "PASSIVE_GLOVES_FLOW", name: "Flujo Marcial", icon: "PASSIVE_WELL_PREPARED" }
+        { id: "PASSIVE_WELL_PREPARED", name: "Flujo Marcial", icon: "PASSIVE_WELL_PREPARED" }
       ]
     },
 
     shapeshifter: {
       q: [
-        { id: "SHAPE_Q1", name: "Pulso Humano (Q1)", icon: "FIREBOLT" }
+        { id: "FIREBOLT", name: "Pulso Humano (Q1)", icon: "FIREBOLT" }
       ],
       w: [
-        { id: "SHAPE_W1", name: "Cambio de Fase (W1)", icon: "FROST_NOVA" }
+        { id: "FROSTNOVA", name: "Cambio de Fase (W1)", icon: "FROSTNOVA" }
       ],
       e: {
-        "2H_SHAPESHIFTER_PANTHER": { id: "PANTHER_FORM", name: "Forma de Pantera", icon: "ADRENALINEBOOST" },
-        "2H_SHAPESHIFTER_BEAR": { id: "BEAR_FORM", name: "Forma de Oso", icon: "DEEP_LEAP" },
-        "2H_SHAPESHIFTER_TREANT": { id: "TREANT_FORM", name: "Forma de Treant", icon: "SACRED_GROUND" }
+        "2H_SHAPESHIFTER_SET1": { id: "ADRENALINEBOOST", name: "Forma de Pantera", icon: "ADRENALINEBOOST" },
+        "2H_SHAPESHIFTER_SET2": { id: "SACREDGROUND", name: "Forma de Treant", icon: "SACREDGROUND" },
+        "2H_SHAPESHIFTER_SET3": { id: "DEEPLEAP", name: "Forma de Oso", icon: "DEEPLEAP" },
+        "2H_SHAPESHIFTER_MORGANA": { id: "BLOODLUST", name: "Forma de Hombre Lobo", icon: "BLOODLUST" },
+        "2H_SHAPESHIFTER_HELL": { id: "STONESKIN", name: "Forma de Golem Infernal", icon: "STONESKIN" },
+        "2H_SHAPESHIFTER_KEEPER": { id: "REJUVENATION", name: "Forma de Ent", icon: "REJUVENATION" },
+        "2H_SHAPESHIFTER_AVALON": { id: "MAJESTIC_STRIKE", name: "Forma de Luz Áurica", icon: "MAJESTIC_STRIKE" }
       },
       passive: [
-        { id: "PASSIVE_SHAPE_SHIFT", name: "Afinidad Animal", icon: "PASSIVE_INCREASED_DEFENSE" }
+        { id: "PASSIVE_INCREASED_DEFENSE", name: "Afinidad Animal", icon: "PASSIVE_INCREASED_DEFENSE" }
       ]
     }
   },
 
-  // CABEZA (SLOT D)
   head: {
     plate_head: {
       active: [
-        { id: "STONE_SKIN", name: "Piel de Piedra", icon: "STONE_SKIN" },
-        { id: "CLEANSE_HEAD", name: "Bloqueo Defensivo", icon: "CLEANSE_HEAD" },
-        { id: "ENERGY_SHIELD", name: "Escudo Protector", icon: "ENERGY_SHIELD" }
+        { id: "STONESKIN", name: "Piel de Piedra", icon: "STONESKIN" },
+        { id: "CLEANSE", name: "Bloqueo Defensivo", icon: "CLEANSE" },
+        { id: "ENERGYSHIELD", name: "Escudo Protector", icon: "ENERGYSHIELD" }
       ],
       passive: [
-        { id: "PASSIVE_TOUGHNESS", name: "Dureza", icon: "PASSIVE_INCREASED_DEFENSE" },
-        { id: "PASSIVE_TENACITY", name: "Tenacidad", icon: "PASSIVE_CC_DURATION" }
+        { id: "PASSIVE_INCREASED_DEFENSE", name: "Dureza", icon: "PASSIVE_INCREASED_DEFENSE" },
+        { id: "PASSIVE_CC_DURATION", name: "Tenacidad", icon: "PASSIVE_CC_DURATION" }
       ]
     },
     leather_head: {
       active: [
         { id: "CLEANSE", name: "Purga / Limpieza", icon: "CLEANSE" },
         { id: "RETALIATE", name: "Reflejo (Hunter Hood)", icon: "RETALIATE" },
-        { id: "MEDITATION", name: "Meditación (Assassin Hood)", icon: "MEDITATION" },
-        { id: "STALKER_REVEAL", name: "Aliento de Dragón (Stalker)", icon: "STALKER_REVEAL" }
+        { id: "MEDITATION", name: "Meditación (Assassin Hood)", icon: "MEDITATION" }
       ],
       passive: [
-        { id: "PASSIVE_BALANCED_MIND", name: "Mente Equilibrada", icon: "PASSIVE_WELL_PREPARED" },
-        { id: "PASSIVE_SWIFTNESS", name: "Ligereza", icon: "PASSIVE_INCREASED_DEFENSE" }
+        { id: "PASSIVE_WELL_PREPARED", name: "Mente Equilibrada", icon: "PASSIVE_WELL_PREPARED" },
+        { id: "PASSIVE_INCREASED_DEFENSE", name: "Ligereza", icon: "PASSIVE_INCREASED_DEFENSE" }
       ]
     },
     cloth_head: {
       active: [
-        { id: "ENERGY_SHIELD_SCHOLAR", name: "Escudo de Energía (Scholar)", icon: "ENERGY_SHIELD" },
-        { id: "ICE_BLOCK", name: "Bloque de Hielo (Cleric)", icon: "ICE_BLOCK" },
-        { id: "POISON_HOOD", name: "Bofetada de Veneno (Mage)", icon: "POISON_ARROW" },
-        { id: "MAGIC_CIRCLE", name: "Círculo Mágico (Royal)", icon: "SACRED_GROUND" }
+        { id: "ENERGYSHIELD", name: "Escudo de Energía (Scholar)", icon: "ENERGYSHIELD" },
+        { id: "ICEBLOCK", name: "Bloque de Hielo (Cleric)", icon: "ICEBLOCK" },
+        { id: "POISONARROW", name: "Bofetada de Veneno (Mage)", icon: "POISONARROW" },
+        { id: "SACREDGROUND", name: "Círculo Mágico (Royal)", icon: "SACREDGROUND" }
       ],
       passive: [
-        { id: "PASSIVE_AGGRESSION", name: "Agresión", icon: "PASSIVE_WELL_PREPARED" },
-        { id: "PASSIVE_CASTING", name: "Concentración", icon: "PASSIVE_INCREASED_DEFENSE" }
+        { id: "PASSIVE_WELL_PREPARED", name: "Agresión", icon: "PASSIVE_WELL_PREPARED" },
+        { id: "PASSIVE_INCREASED_DEFENSE", name: "Concentración", icon: "PASSIVE_INCREASED_DEFENSE" }
       ]
     }
   },
 
-  // PECHO (SLOT R)
   armor: {
     plate_armor: {
       active: [
         { id: "FURY", name: "Furia (Soldier)", icon: "FURY" },
-        { id: "WIND_WALL", name: "Muro de Viento (Knight)", icon: "WIND_WALL" },
-        { id: "ENFEEBLE_AURA", name: "Aura Debilitante (Guardian)", icon: "ENFEEBLE_AURA" },
-        { id: "DEMONIC_SHIELD", name: "Escudo Demoníaco (Demon)", icon: "RETALIATE" }
+        { id: "WINDWALL", name: "Muro de Viento (Knight)", icon: "WINDWALL" },
+        { id: "ENFEEBLEAURA", name: "Aura Debilitante (Guardian)", icon: "ENFEEBLEAURA" },
+        { id: "RETALIATE", name: "Escudo Demoníaco (Demon)", icon: "RETALIATE" }
       ],
       passive: [
-        { id: "PASSIVE_TOUGHNESS_CHEST", name: "Dureza Reforzada", icon: "PASSIVE_INCREASED_DEFENSE" },
-        { id: "PASSIVE_THREAT", name: "Amenaza Aumentada", icon: "PASSIVE_CC_DURATION" }
+        { id: "PASSIVE_INCREASED_DEFENSE", name: "Dureza Reforzada", icon: "PASSIVE_INCREASED_DEFENSE" },
+        { id: "PASSIVE_CC_DURATION", name: "Amenaza Aumentada", icon: "PASSIVE_CC_DURATION" }
       ]
     },
     leather_armor: {
       active: [
         { id: "BLOODLUST", name: "Sed de Sangre (Mercenary)", icon: "BLOODLUST" },
-        { id: "HASTE_HUNTER", name: "Premura (Hunter)", icon: "ADRENALINEBOOST" },
+        { id: "HASTE", name: "Premura (Hunter)", icon: "HASTE" },
         { id: "AMBUSH", name: "Emboscada (Assassin)", icon: "AMBUSH" },
-        { id: "ELECTRIC_FIELD", name: "Campo Eléctrico (Stalker)", icon: "ELECTRIC_FIELD" },
-        { id: "LIFE_DRAIN_AURA", name: "Aura Vampírica (Hellion)", icon: "LIFE_DRAIN_AURA" }
+        { id: "ELECTRICFIELD", name: "Campo Eléctrico (Stalker)", icon: "ELECTRICFIELD" },
+        { id: "LIFEDRAINAURA", name: "Aura Vampírica (Hellion)", icon: "LIFEDRAINAURA" }
       ],
       passive: [
-        { id: "PASSIVE_BALANCED_BODY", name: "Mente y Cuerpo", icon: "PASSIVE_WELL_PREPARED" },
-        { id: "PASSIVE_SWIFT_REFLEX", name: "Reflejos Rápidos", icon: "PASSIVE_INCREASED_DEFENSE" }
+        { id: "PASSIVE_WELL_PREPARED", name: "Mente y Cuerpo", icon: "PASSIVE_WELL_PREPARED" },
+        { id: "PASSIVE_INCREASED_DEFENSE", name: "Reflejos Rápidos", icon: "PASSIVE_INCREASED_DEFENSE" }
       ]
     },
     cloth_armor: {
       active: [
-        { id: "SPEED_CASTER", name: "Celeridad de Hechizo (Scholar)", icon: "SPEED_CASTER" },
-        { id: "EVERLASTING_SPIRIT", name: "Espíritu Inmortal (Cleric)", icon: "EVERLASTING_SPIRIT" },
-        { id: "PURGE_SHIELD", name: "Escudo Purificador (Mage)", icon: "PURGE_SHIELD" },
-        { id: "ROYAL_BANNER", name: "Estandarte Real (Royal)", icon: "SACRED_GROUND" }
+        { id: "SPEEDCASTER", name: "Celeridad de Hechizo (Scholar)", icon: "SPEEDCASTER" },
+        { id: "IMMORTAL", name: "Espíritu Inmortal (Cleric)", icon: "IMMORTAL" },
+        { id: "PURGESHIELD", name: "Escudo Purificador (Mage)", icon: "PURGESHIELD" },
+        { id: "SACREDGROUND", name: "Estandarte Real (Royal)", icon: "SACREDGROUND" }
       ],
       passive: [
-        { id: "PASSIVE_AGRESSIVE_CASTER", name: "Poder Arcano Máximo", icon: "PASSIVE_WELL_PREPARED" },
-        { id: "PASSIVE_CONCENTRATION_CHEST", name: "Concentración", icon: "PASSIVE_INCREASED_DEFENSE" }
+        { id: "PASSIVE_WELL_PREPARED", name: "Poder Arcano Máximo", icon: "PASSIVE_WELL_PREPARED" },
+        { id: "PASSIVE_INCREASED_DEFENSE", name: "Concentración", icon: "PASSIVE_INCREASED_DEFENSE" }
       ]
     }
   },
 
-  // BOTAS (SLOT F)
   shoes: {
     plate_shoes: {
       active: [
         { id: "WANDERLUST", name: "Ansia de Viajar (Soldier)", icon: "WANDERLUST" },
-        { id: "SHIELD_CHARGE", name: "Carga Protectora (Knight)", icon: "SHIELD_CHARGE" },
-        { id: "GIANT_STEPS", name: "Pies de Gigante (Guardian)", icon: "GIANT_STEPS" },
-        { id: "RUN_GENERIC", name: "Carrera Estándar", icon: "RUN_GENERIC" }
+        { id: "SHIELDCHARGE", name: "Carga Protectora (Knight)", icon: "SHIELDCHARGE" },
+        { id: "GIANTSTEPS", name: "Pies de Gigante (Guardian)", icon: "GIANTSTEPS" },
+        { id: "SPRINT", name: "Carrera Estándar", icon: "SPRINT" }
       ],
       passive: [
-        { id: "PASSIVE_TOUGH_FEET", name: "Paso Firme", icon: "PASSIVE_INCREASED_DEFENSE" },
-        { id: "PASSIVE_TENACIOUS_FEET", name: "Tenacidad", icon: "PASSIVE_CC_DURATION" }
+        { id: "PASSIVE_INCREASED_DEFENSE", name: "Paso Firme", icon: "PASSIVE_INCREASED_DEFENSE" },
+        { id: "PASSIVE_CC_DURATION", name: "Tenacidad", icon: "PASSIVE_CC_DURATION" }
       ]
     },
     leather_shoes: {
       active: [
-        { id: "REFRESHING_SPRINT", name: "Sprint Refrescante (Hunter)", icon: "REFRESHING_SPRINT" },
+        { id: "REFRESHINGSPRINT", name: "Sprint Refrescante (Hunter)", icon: "REFRESHINGSPRINT" },
         { id: "DODGE", name: "Evasión (Assassin)", icon: "DODGE" },
-        { id: "RUN_GENERIC", name: "Carrera Estándar", icon: "RUN_GENERIC" }
+        { id: "SPRINT", name: "Carrera Estándar", icon: "SPRINT" }
       ],
       passive: [
-        { id: "PASSIVE_BALANCED_FEET", name: "Mente Equilibrada", icon: "PASSIVE_WELL_PREPARED" },
-        { id: "PASSIVE_SPEED_FEET", name: "Paso Ligero", icon: "PASSIVE_INCREASED_DEFENSE" }
+        { id: "PASSIVE_WELL_PREPARED", name: "Mente Equilibrada", icon: "PASSIVE_WELL_PREPARED" },
+        { id: "PASSIVE_INCREASED_DEFENSE", name: "Paso Ligero", icon: "PASSIVE_INCREASED_DEFENSE" }
       ]
     },
     cloth_shoes: {
       active: [
-        { id: "FOCUSED_RUN", name: "Carrera Concentrada (Scholar)", icon: "FOCUSED_RUN" },
+        { id: "FOCUSEDRUN", name: "Carrera Concentrada (Scholar)", icon: "FOCUSEDRUN" },
         { id: "BLINK", name: "Teletransporte / Blink (Cleric)", icon: "BLINK" },
-        { id: "DELAYED_TELEPORT", name: "Carrera Retardada (Mage)", icon: "DELAYED_TELEPORT" },
-        { id: "RUN_GENERIC", name: "Carrera Estándar", icon: "RUN_GENERIC" }
+        { id: "DELAYEDTELEPORT", name: "Carrera Retardada (Mage)", icon: "DELAYEDTELEPORT" },
+        { id: "SPRINT", name: "Carrera Estándar", icon: "SPRINT" }
       ],
       passive: [
-        { id: "PASSIVE_AGGRESSION_FEET", name: "Agresión", icon: "PASSIVE_WELL_PREPARED" },
-        { id: "PASSIVE_CAST_FEET", name: "Concentración", icon: "PASSIVE_INCREASED_DEFENSE" }
+        { id: "PASSIVE_WELL_PREPARED", name: "Agresión", icon: "PASSIVE_WELL_PREPARED" },
+        { id: "PASSIVE_INCREASED_DEFENSE", name: "Concentración", icon: "PASSIVE_INCREASED_DEFENSE" }
       ]
     }
   }

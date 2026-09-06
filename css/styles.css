@@ -1,21 +1,22 @@
 /* ==========================================================================
-   Furia de Dragones - Estilos Simples y Básicos
+   Furia de Dragones - Estilos Generales
    ========================================================================== */
 
 :root {
-  --bg-main: #14171a;
-  --bg-card: #1c2024;
-  --bg-slot: #24292e;
-  --bg-input: #101214;
-  --border-color: #384047;
+  --bg-main: #121417;
+  --bg-header: #0a0b0d;
+  --bg-card: #181b20;
+  --bg-slot: #20242a;
+  --bg-input: #0e1012;
+  --border-color: #2f363d;
   --border-highlight: #c99738;
-  --text-main: #e1e4e8;
+  --text-main: #e6edf3;
   --text-muted: #8b949e;
   --text-gold: #e2b755;
-  --btn-primary: #b33927;
-  --btn-primary-hover: #962819;
-  --btn-secondary: #2f363d;
-  --btn-secondary-hover: #444d56;
+  --btn-primary: #a6301f;
+  --btn-primary-hover: #8c2415;
+  --btn-secondary: #272d34;
+  --btn-secondary-hover: #38404a;
   --btn-danger: #8b1e1e;
   --radius: 4px;
 }
@@ -32,24 +33,26 @@ body {
   color: var(--text-main);
   line-height: 1.5;
   font-size: 14px;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 16px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ==========================================================================
-   Encabezado y Navegación
+   Encabezado
    ========================================================================== */
 .app-header {
-  background-color: #0d0f11;
+  background-color: var(--bg-header);
   border-bottom: 2px solid var(--border-highlight);
-  padding: 12px 0;
+  padding: 14px 0;
+  width: 100%;
 }
 
 .header-content {
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -58,7 +61,7 @@ body {
 }
 
 .brand-title {
-  font-size: 20px;
+  font-size: 22px;
   color: var(--text-gold);
   font-weight: bold;
 }
@@ -71,18 +74,18 @@ body {
 
 .nav-tabs {
   display: flex;
-  gap: 6px;
+  gap: 8px;
 }
 
 .tab-btn {
   background: var(--btn-secondary);
   color: var(--text-main);
   border: 1px solid var(--border-color);
-  padding: 8px 14px;
+  padding: 8px 16px;
   border-radius: var(--radius);
   cursor: pointer;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .tab-btn:hover {
@@ -97,11 +100,14 @@ body {
 }
 
 /* ==========================================================================
-   Contenido Principal y Secciones
+   Contenido Principal
    ========================================================================== */
 .main-content {
-  padding-top: 20px;
-  padding-bottom: 40px;
+  flex: 1;
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 24px 40px;
 }
 
 .tab-section {
@@ -114,11 +120,12 @@ body {
 
 .builder-layout {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 24px;
+  align-items: start;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .builder-layout {
     grid-template-columns: 1fr;
   }
@@ -128,8 +135,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
-  padding-bottom: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--border-color);
   flex-wrap: wrap;
   gap: 10px;
@@ -144,11 +151,11 @@ body {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 18px;
 }
 
 .panel-card h2, .panel-card h3 {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--text-gold);
   margin-bottom: 12px;
   border-bottom: 1px solid var(--border-color);
@@ -160,15 +167,15 @@ body {
    ========================================================================== */
 .slots-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
 }
 
 .slot-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
-  padding: 10px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
 }
@@ -177,9 +184,9 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
-  border-bottom: 1px solid #282e34;
-  padding-bottom: 4px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #23282f;
+  padding-bottom: 5px;
 }
 
 .slot-title {
@@ -191,9 +198,9 @@ body {
 
 .slot-tier-badge {
   font-size: 11px;
-  background-color: #2b3137;
+  background-color: #252b32;
   color: var(--text-gold);
-  padding: 1px 6px;
+  padding: 2px 7px;
   border-radius: 3px;
   border: 1px solid var(--border-color);
   font-weight: bold;
@@ -201,13 +208,13 @@ body {
 
 .slot-body {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
 }
 
 .slot-icon-wrapper {
-  width: 64px;
-  height: 64px;
+  width: 68px;
+  height: 68px;
   background-color: var(--bg-slot);
   border: 1px dashed var(--border-color);
   border-radius: var(--radius);
@@ -230,7 +237,7 @@ body {
 }
 
 .slot-empty-text {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-muted);
   text-align: center;
   padding: 2px;
@@ -241,7 +248,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
   overflow: hidden;
 }
 
@@ -255,7 +262,7 @@ body {
   display: block;
 }
 
-/* Botones de Hechizos / Spells */
+/* Botones de Hechizos */
 .spells-bar {
   display: flex;
   gap: 6px;
@@ -263,9 +270,9 @@ body {
 }
 
 .spell-btn {
-  width: 28px;
-  height: 28px;
-  background-color: #121417;
+  width: 30px;
+  height: 30px;
+  background-color: #101215;
   border: 1px solid var(--border-color);
   border-radius: 3px;
   color: var(--text-gold);
@@ -281,7 +288,7 @@ body {
 
 .spell-btn:hover {
   border-color: var(--border-highlight);
-  background-color: #2a2f35;
+  background-color: #262c33;
 }
 
 .spell-img {
@@ -294,7 +301,7 @@ body {
    Formularios y Controles
    ========================================================================== */
 .form-group {
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .form-group label {
@@ -330,7 +337,7 @@ body {
 }
 
 .form-control-sm {
-  padding: 4px 8px;
+  padding: 5px 8px;
   font-size: 12px;
 }
 
@@ -403,7 +410,7 @@ textarea.form-control {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-top: 15px;
+  margin-top: 16px;
 }
 
 .import-export-row {
@@ -420,7 +427,7 @@ textarea.form-control {
   color: var(--text-muted);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .summary-list li {
@@ -433,15 +440,16 @@ textarea.form-control {
 }
 
 /* ==========================================================================
-   Estructura de Carpetas (Navegación por Contenido)
+   Estructura de Carpetas
    ========================================================================== */
 .folders-layout {
   display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 20px;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .folders-layout {
     grid-template-columns: 1fr;
   }
@@ -451,8 +459,7 @@ textarea.form-control {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
-  padding: 14px;
-  height: fit-content;
+  padding: 16px;
 }
 
 .folders-sidebar-header {
@@ -473,16 +480,16 @@ textarea.form-control {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .folder-nav-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 10px;
+  padding: 10px 12px;
   border-radius: var(--radius);
-  background-color: #16191c;
+  background-color: #14171a;
   border: 1px solid transparent;
   color: var(--text-main);
   cursor: pointer;
@@ -490,12 +497,12 @@ textarea.form-control {
 }
 
 .folder-nav-item:hover {
-  background-color: #242a30;
+  background-color: #21262c;
   border-color: var(--border-color);
 }
 
 .folder-nav-item.active {
-  background-color: #2e353d;
+  background-color: #2a313a;
   border-color: var(--border-highlight);
   color: var(--text-gold);
   font-weight: bold;
@@ -503,9 +510,9 @@ textarea.form-control {
 
 .folder-badge-count {
   font-size: 11px;
-  background-color: #121417;
+  background-color: #101215;
   color: var(--text-muted);
-  padding: 1px 6px;
+  padding: 1px 7px;
   border-radius: 10px;
 }
 
@@ -529,7 +536,7 @@ textarea.form-control {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -542,7 +549,7 @@ textarea.form-control {
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
   width: 100%;
-  max-width: 680px;
+  max-width: 760px;
   max-height: 85vh;
   display: flex;
   flex-direction: column;
@@ -550,20 +557,20 @@ textarea.form-control {
 }
 
 .modal-dialog-sm {
-  max-width: 500px;
+  max-width: 520px;
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
+  padding: 14px 18px;
   border-bottom: 1px solid var(--border-color);
-  background-color: #14171a;
+  background-color: #101215;
 }
 
 .modal-header h3 {
-  font-size: 15px;
+  font-size: 16px;
   color: var(--text-gold);
 }
 
@@ -571,7 +578,7 @@ textarea.form-control {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 20px;
+  font-size: 22px;
   cursor: pointer;
   line-height: 1;
 }
@@ -581,7 +588,7 @@ textarea.form-control {
 }
 
 .modal-body {
-  padding: 14px 16px;
+  padding: 16px 18px;
   overflow-y: auto;
   flex: 1;
 }
@@ -590,14 +597,14 @@ textarea.form-control {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .item-config-bar {
   display: flex;
   gap: 10px;
-  background-color: #131619;
-  padding: 8px 10px;
+  background-color: #111316;
+  padding: 10px 12px;
   border-radius: var(--radius);
   border: 1px solid var(--border-color);
 }
@@ -610,14 +617,14 @@ textarea.form-control {
   display: block;
   font-size: 11px;
   color: var(--text-muted);
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 
 .items-list-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 8px;
-  max-height: 380px;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 10px;
+  max-height: 400px;
   overflow-y: auto;
   padding-right: 4px;
 }
@@ -626,7 +633,7 @@ textarea.form-control {
   background-color: var(--bg-slot);
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
-  padding: 8px;
+  padding: 8px 10px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -635,15 +642,15 @@ textarea.form-control {
 
 .item-option-card:hover {
   border-color: var(--border-highlight);
-  background-color: #2c333a;
+  background-color: #272d34;
 }
 
 .item-option-img {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
   flex-shrink: 0;
-  background: #111316;
+  background: #0f1114;
   border-radius: 3px;
 }
 
@@ -652,7 +659,7 @@ textarea.form-control {
 }
 
 .item-option-name {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-main);
   white-space: nowrap;
@@ -666,12 +673,12 @@ textarea.form-control {
 }
 
 .modal-footer {
-  padding: 10px 16px;
+  padding: 12px 18px;
   border-top: 1px solid var(--border-color);
   display: flex;
   justify-content: flex-end;
   gap: 8px;
-  background-color: #14171a;
+  background-color: #101215;
 }
 
 /* Lista de Hechizos en Modal */
@@ -685,7 +692,7 @@ textarea.form-control {
   background-color: var(--bg-slot);
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
-  padding: 10px;
+  padding: 10px 14px;
   display: flex;
   gap: 12px;
   align-items: center;
@@ -694,7 +701,7 @@ textarea.form-control {
 
 .spell-option-card:hover {
   border-color: var(--border-highlight);
-  background-color: #2c333a;
+  background-color: #272d34;
 }
 
 .spell-option-card.active-spell {
@@ -703,9 +710,9 @@ textarea.form-control {
 }
 
 .spell-option-icon {
-  width: 40px;
-  height: 40px;
-  background-color: #121417;
+  width: 42px;
+  height: 42px;
+  background-color: #101215;
   border: 1px solid var(--border-color);
   border-radius: 4px;
   flex-shrink: 0;
@@ -734,65 +741,66 @@ textarea.form-control {
    ========================================================================== */
 .saved-builds-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
 }
 
 .saved-build-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
-  padding: 14px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .saved-build-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  border-bottom: 1px solid #2b3137;
-  padding-bottom: 6px;
+  border-bottom: 1px solid #282e35;
+  padding-bottom: 8px;
 }
 
 .saved-build-title {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
   color: var(--text-gold);
 }
 
 .saved-build-badge {
   font-size: 11px;
-  background-color: #2b3137;
+  background-color: #262c33;
   color: var(--text-main);
-  padding: 2px 6px;
+  padding: 2px 8px;
   border-radius: 3px;
+  font-weight: 500;
 }
 
 .saved-build-notes {
   font-size: 12px;
   color: var(--text-muted);
   font-style: italic;
-  min-height: 24px;
+  min-height: 20px;
 }
 
 .saved-build-items-preview {
   display: flex;
   gap: 6px;
-  background-color: #121417;
-  padding: 6px;
-  border-radius: 3px;
+  background-color: #101215;
+  padding: 8px;
+  border-radius: 4px;
   overflow-x: auto;
 }
 
 .saved-item-thumb {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
-  background: #1c2024;
+  background: #181b20;
   border: 1px solid var(--border-color);
-  border-radius: 2px;
+  border-radius: 3px;
   flex-shrink: 0;
 }
 
@@ -803,55 +811,38 @@ textarea.form-control {
 }
 
 /* ==========================================================================
-   Panel de Ayuda
-   ========================================================================== */
-.help-panel {
-  line-height: 1.6;
-}
-
-.help-panel h3 {
-  margin-top: 14px;
-}
-
-.help-panel ol, .help-panel ul {
-  padding-left: 20px;
-  margin-bottom: 12px;
-  font-size: 13px;
-  color: var(--text-main);
-}
-
-.help-panel code {
-  background-color: #121417;
-  border: 1px solid var(--border-color);
-  padding: 2px 6px;
-  border-radius: 3px;
-  color: var(--text-gold);
-}
-
-/* ==========================================================================
    Notificaciones Toast
    ========================================================================== */
 .toast {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #1f2429;
+  bottom: 24px;
+  right: 24px;
+  background-color: #1a1e24;
   border: 1px solid var(--border-highlight);
   color: #fff;
-  padding: 10px 16px;
+  padding: 12px 20px;
   border-radius: var(--radius);
   font-size: 13px;
   z-index: 10000;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
 }
 
 /* ==========================================================================
    Pie de Página
    ========================================================================== */
 .app-footer {
-  background-color: #0d0f11;
+  background-color: var(--bg-header);
   border-top: 1px solid var(--border-color);
-  padding: 16px 0;
+  padding: 18px 0;
+  margin-top: auto;
+  width: 100%;
+}
+
+.footer-content {
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
   text-align: center;
   font-size: 12px;
   color: var(--text-muted);

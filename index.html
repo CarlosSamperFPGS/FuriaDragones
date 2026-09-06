@@ -11,21 +11,20 @@
 
   <!-- Encabezado Principal -->
   <header class="app-header">
-    <div class="container header-content">
+    <div class="header-content">
       <div class="brand">
         <h1 class="brand-title">🐉 Furia de Dragones</h1>
-        <span class="brand-tag">Gestor de Builds - Albion Online</span>
+        <span class="brand-tag">Gestor de Builds & Equipamiento - Albion Online</span>
       </div>
       <nav class="nav-tabs">
         <button type="button" class="tab-btn active" data-tab="builder">🛠️ Creador de Build</button>
         <button type="button" class="tab-btn" data-tab="saved-builds">📁 Builds por Contenido (<span id="saved-count">0</span>)</button>
-        <button type="button" class="tab-btn" data-tab="help">ℹ️ Ayuda & GitHub Pages</button>
       </nav>
     </div>
   </header>
 
   <!-- Contenedor Principal -->
-  <main class="container main-content">
+  <main class="main-content">
 
     <!-- SECCIÓN 1: CREADOR DE BUILD -->
     <section id="tab-builder" class="tab-section active">
@@ -263,7 +262,7 @@
                 <label for="build-folder-select">Carpeta / Contenido:</label>
                 <div style="display: flex; gap: 4px;">
                   <select id="build-folder-select" class="form-control">
-                    <!-- Opciones de carpetas cargadas dinámicamente -->
+                    <!-- Opciones de carpetas -->
                   </select>
                   <button type="button" id="btn-add-folder-inline" class="btn btn-secondary btn-sm" title="Crear nueva carpeta">+</button>
                 </div>
@@ -272,7 +271,7 @@
 
             <div class="form-group">
               <label for="build-notes-input">Notas / Comentarios:</label>
-              <textarea id="build-notes-input" class="form-control" rows="2" placeholder="Notas sobre el combo o uso..."></textarea>
+              <textarea id="build-notes-input" class="form-control" rows="3" placeholder="Notas sobre el combo o uso..."></textarea>
             </div>
 
             <div class="actions-group">
@@ -340,29 +339,6 @@
       </div>
     </section>
 
-    <!-- SECCIÓN 3: AYUDA Y GITHUB PAGES -->
-    <section id="tab-help" class="tab-section">
-      <div class="panel-card help-panel">
-        <h2>Cómo publicar y usar esta Web en GitHub Pages</h2>
-        
-        <h3>1. Pasos para activar GitHub Pages</h3>
-        <ol>
-          <li>Crea un repositorio en GitHub llamado por ejemplo <code>FuriaDragonesWeb</code>.</li>
-          <li>Sube todos los archivos del proyecto a la rama <code>main</code> o <code>master</code>.</li>
-          <li>Entra a <strong>Settings (Configuración)</strong> de tu repositorio &gt; <strong>Pages</strong>.</li>
-          <li>En <strong>Build and deployment &gt; Source</strong>, selecciona <strong>GitHub Actions</strong> (o selecciona la rama <code>main</code> y carpeta <code>/ root</code>).</li>
-          <li>Tu web quedará disponible en: <code>https://TU_USUARIO.github.io/FuriaDragonesWeb/</code>.</li>
-        </ol>
-
-        <h3>2. Cómo organizar Builds por Carpetas de Contenido</h3>
-        <ul>
-          <li><strong>Carpetas por Content:</strong> Crea y navega entre carpetas según el tipo de actividad (ZvZ, Ganking, PvE, Small Scale, 1v1, etc.).</li>
-          <li><strong>Equipar y Configurar:</strong> Elige items oficiales con su Tier (T4-T8), Encantamiento (.0-.4) y equipa habilidades Q, W, E, D, R, F y pasivas.</li>
-          <li><strong>Compartir con el Gremio:</strong> Usa el botón de Discord para pegar la build directamente en tu servidor o copia el enlace web compartible.</li>
-        </ul>
-      </div>
-    </section>
-
   </main>
 
   <!-- MODAL: SELECTOR DE ITEMS -->
@@ -376,7 +352,7 @@
       <div class="modal-body">
         <div class="modal-filters">
           <div class="form-row">
-            <input type="text" id="item-search-input" class="form-control" placeholder="Buscar por nombre...">
+            <input type="text" id="item-search-input" class="form-control" placeholder="Buscar por nombre (ej: Clarent, Soldado, etc.)...">
             <select id="item-category-select" class="form-control">
               <option value="ALL">Todas las categorías</option>
             </select>
@@ -454,7 +430,7 @@
   <div id="toast-message" class="toast" style="display: none;"></div>
 
   <footer class="app-footer">
-    <div class="container">
+    <div class="footer-content">
       <p>Furia de Dragones &copy; 2026 - Albion Online Guild Tool.</p>
     </div>
   </footer>

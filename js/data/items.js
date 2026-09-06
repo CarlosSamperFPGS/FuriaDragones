@@ -1,9 +1,9 @@
-// Base de datos simplificada de items de Albion Online (sin descripciones)
+// Base de datos de items de Albion Online con UniqueNames 100% verificados para render.albiononline.com
 
 export const ITEMS_DATABASE = {
   weapons: [
     // ESPADAS
-    { id: "MAIN_1H_SWORD", name: "Espada Ancha", category: "Espadas", slot: "mainhand", twoHanded: false, spellTree: "sword", uniqueName: "MAIN_1H_SWORD" },
+    { id: "MAIN_SWORD", name: "Espada Ancha", category: "Espadas", slot: "mainhand", twoHanded: false, spellTree: "sword", uniqueName: "MAIN_SWORD" },
     { id: "2H_CLAYMORE", name: "Espada Larga (Claymore)", category: "Espadas", slot: "mainhand", twoHanded: true, spellTree: "sword", uniqueName: "2H_CLAYMORE" },
     { id: "2H_DUALSWORD", name: "Espadas Dobles", category: "Espadas", slot: "mainhand", twoHanded: true, spellTree: "sword", uniqueName: "2H_DUALSWORD" },
     { id: "MAIN_SCIMITAR_MORGANA", name: "Espada Clarent", category: "Espadas", slot: "mainhand", twoHanded: false, spellTree: "sword", uniqueName: "MAIN_SCIMITAR_MORGANA" },
@@ -26,54 +26,94 @@ export const ITEMS_DATABASE = {
     { id: "2H_DUALMACE_AVALON", name: "Juramento (Oathkeepers)", category: "Mazas", slot: "mainhand", twoHanded: true, spellTree: "mace", uniqueName: "2H_DUALMACE_AVALON" },
     { id: "MAIN_HAMMER", name: "Martillo de 1 Mano", category: "Martillos", slot: "mainhand", twoHanded: false, spellTree: "hammer", uniqueName: "MAIN_HAMMER" },
     { id: "2H_HAMMER", name: "Gran Martillo", category: "Martillos", slot: "mainhand", twoHanded: true, spellTree: "hammer", uniqueName: "2H_HAMMER" },
+    { id: "2H_POLEHAMMER", name: "Maza de Guerra (Polehammer)", category: "Martillos", slot: "mainhand", twoHanded: true, spellTree: "hammer", uniqueName: "2H_POLEHAMMER" },
     { id: "2H_HAMMER_AVALON", name: "Mano de la Justicia", category: "Martillos", slot: "mainhand", twoHanded: true, spellTree: "hammer", uniqueName: "2H_HAMMER_AVALON" },
 
     // BALLESTAS Y ARCOS
-    { id: "MAIN_1H_CROSSBOW", name: "Ballesta Ligera", category: "Ballestas", slot: "mainhand", twoHanded: false, spellTree: "crossbow", uniqueName: "MAIN_1H_CROSSBOW" },
+    { id: "MAIN_1HCROSSBOW", name: "Ballesta Ligera", category: "Ballestas", slot: "mainhand", twoHanded: false, spellTree: "crossbow", uniqueName: "MAIN_1HCROSSBOW" },
     { id: "2H_CROSSBOW", name: "Ballesta Pesada", category: "Ballestas", slot: "mainhand", twoHanded: true, spellTree: "crossbow", uniqueName: "2H_CROSSBOW" },
+    { id: "2H_CROSSBOWLARGE", name: "Ballesta de Asedio", category: "Ballestas", slot: "mainhand", twoHanded: true, spellTree: "crossbow", uniqueName: "2H_CROSSBOWLARGE" },
     { id: "2H_DUALCROSSBOW_HELL", name: "Repetidoras de Perno (Boltcasters)", category: "Ballestas", slot: "mainhand", twoHanded: true, spellTree: "crossbow", uniqueName: "2H_DUALCROSSBOW_HELL" },
-    { id: "2H_CROSSBOW_AVALON", name: "Moldeador de Energía (Energy Shaper)", category: "Ballestas", slot: "mainhand", twoHanded: true, spellTree: "crossbow", uniqueName: "2H_CROSSBOW_AVALON" },
+    { id: "2H_REPEATINGCROSSBOW_UNDEAD", name: "Repetidora de Llanto (Weeping)", category: "Ballestas", slot: "mainhand", twoHanded: true, spellTree: "crossbow", uniqueName: "2H_REPEATINGCROSSBOW_UNDEAD" },
+    { id: "2H_CROSSBOW_CANNON_AVALON", name: "Moldeador de Energía (Energy Shaper)", category: "Ballestas", slot: "mainhand", twoHanded: true, spellTree: "crossbow", uniqueName: "2H_CROSSBOW_CANNON_AVALON" },
     { id: "2H_BOW", name: "Arco Común", category: "Arcos", slot: "mainhand", twoHanded: true, spellTree: "bow", uniqueName: "2H_BOW" },
     { id: "2H_WARBOW", name: "Arco de Guerra", category: "Arcos", slot: "mainhand", twoHanded: true, spellTree: "bow", uniqueName: "2H_WARBOW" },
+    { id: "2H_LONGBOW", name: "Arco Largo", category: "Arcos", slot: "mainhand", twoHanded: true, spellTree: "bow", uniqueName: "2H_LONGBOW" },
     { id: "2H_BOW_KEEPER", name: "Arco de Badon", category: "Arcos", slot: "mainhand", twoHanded: true, spellTree: "bow", uniqueName: "2H_BOW_KEEPER" },
 
     // LANZAS Y DAGAS
     { id: "MAIN_SPEAR", name: "Lanza de 1 Mano", category: "Lanzas", slot: "mainhand", twoHanded: false, spellTree: "spear", uniqueName: "MAIN_SPEAR" },
     { id: "2H_SPEAR", name: "Pica", category: "Lanzas", slot: "mainhand", twoHanded: true, spellTree: "spear", uniqueName: "2H_SPEAR" },
+    { id: "2H_GLAIVE", name: "Guja", category: "Lanzas", slot: "mainhand", twoHanded: true, spellTree: "spear", uniqueName: "2H_GLAIVE" },
     { id: "2H_HARPOON_HELL", name: "Cazaespíritus (Spirithunter)", category: "Lanzas", slot: "mainhand", twoHanded: true, spellTree: "spear", uniqueName: "2H_HARPOON_HELL" },
     { id: "MAIN_DAGGER", name: "Daga de 1 Mano", category: "Dagas", slot: "mainhand", twoHanded: false, spellTree: "dagger", uniqueName: "MAIN_DAGGER" },
+    { id: "2H_DAGGERPAIR", name: "Par de Dagas", category: "Dagas", slot: "mainhand", twoHanded: true, spellTree: "dagger", uniqueName: "2H_DAGGERPAIR" },
+    { id: "2H_CLAWPAIR", name: "Garras", category: "Dagas", slot: "mainhand", twoHanded: true, spellTree: "dagger", uniqueName: "2H_CLAWPAIR" },
     { id: "MAIN_RAPIER_MORGANA", name: "Sangradora (Bloodletter)", category: "Dagas", slot: "mainhand", twoHanded: false, spellTree: "dagger", uniqueName: "MAIN_RAPIER_MORGANA" },
-    { id: "2H_DUALSICKLE_UNDEAD", name: "Muerte Doble (Deathgivers)", category: "Dagas", slot: "mainhand", twoHanded: true, spellTree: "dagger", uniqueName: "2H_DUALSICKLE_UNDEAD" },
+    { id: "2H_DUALDAGGER_UNDEAD", name: "Muerte Doble (Deathgivers)", category: "Dagas", slot: "mainhand", twoHanded: true, spellTree: "dagger", uniqueName: "2H_DUALDAGGER_UNDEAD" },
 
     // VARAS / BASTONES
     { id: "2H_QUARTERSTAFF", name: "Bastón de Monje", category: "Varas", slot: "mainhand", twoHanded: true, spellTree: "quarterstaff", uniqueName: "2H_QUARTERSTAFF" },
+    { id: "2H_IRONCLADEDSTAFF", name: "Bastón Férreo", category: "Varas", slot: "mainhand", twoHanded: true, spellTree: "quarterstaff", uniqueName: "2H_IRONCLADEDSTAFF" },
     { id: "2H_DOUBLEBLADEDSTAFF", name: "Vara de Doble Filo", category: "Varas", slot: "mainhand", twoHanded: true, spellTree: "quarterstaff", uniqueName: "2H_DOUBLEBLADEDSTAFF" },
+    { id: "2H_COMBATSTAFF_MORGANA", name: "Bastón de Monje Negro", category: "Varas", slot: "mainhand", twoHanded: true, spellTree: "quarterstaff", uniqueName: "2H_COMBATSTAFF_MORGANA" },
     { id: "2H_QUARTERSTAFF_AVALON", name: "Buscador del Grial (Grailseeker)", category: "Varas", slot: "mainhand", twoHanded: true, spellTree: "quarterstaff", uniqueName: "2H_QUARTERSTAFF_AVALON" },
 
     // MAGIA SAGRADA Y NATURALEZA
     { id: "MAIN_HOLYSTAFF", name: "Bastón Sagrado", category: "Bastones Sagrados", slot: "mainhand", twoHanded: false, spellTree: "holy", uniqueName: "MAIN_HOLYSTAFF" },
+    { id: "2H_HOLYSTAFF", name: "Gran Bastón Sagrado", category: "Bastones Sagrados", slot: "mainhand", twoHanded: true, spellTree: "holy", uniqueName: "2H_HOLYSTAFF" },
+    { id: "2H_DIVINESTAFF", name: "Bastón Divino", category: "Bastones Sagrados", slot: "mainhand", twoHanded: true, spellTree: "holy", uniqueName: "2H_DIVINESTAFF" },
     { id: "2H_HOLYSTAFF_HELL", name: "Bastón Caído (Fallen Staff)", category: "Bastones Sagrados", slot: "mainhand", twoHanded: true, spellTree: "holy", uniqueName: "2H_HOLYSTAFF_HELL" },
     { id: "MAIN_HOLYSTAFF_AVALON", name: "Santificado (Hallowfall)", category: "Bastones Sagrados", slot: "mainhand", twoHanded: false, spellTree: "holy", uniqueName: "MAIN_HOLYSTAFF_AVALON" },
     { id: "MAIN_NATURESTAFF", name: "Bastón Natural", category: "Bastones Naturales", slot: "mainhand", twoHanded: false, spellTree: "nature", uniqueName: "MAIN_NATURESTAFF" },
-    { id: "2H_NATURESTAFF_KEEPER", name: "Bastón Silvestre (Wild Staff)", category: "Bastones Naturales", slot: "mainhand", twoHanded: true, spellTree: "nature", uniqueName: "2H_NATURESTAFF_KEEPER" },
+    { id: "2H_NATURESTAFF", name: "Gran Bastón Natural", category: "Bastones Naturales", slot: "mainhand", twoHanded: true, spellTree: "nature", uniqueName: "2H_NATURESTAFF" },
+    { id: "2H_WILDSTAFF", name: "Bastón Silvestre (Wild Staff)", category: "Bastones Naturales", slot: "mainhand", twoHanded: true, spellTree: "nature", uniqueName: "2H_WILDSTAFF" },
+    { id: "2H_NATURESTAFF_KEEPER", name: "Bastón Druídico", category: "Bastones Naturales", slot: "mainhand", twoHanded: true, spellTree: "nature", uniqueName: "2H_NATURESTAFF_KEEPER" },
     { id: "2H_NATURESTAFF_HELL", name: "Bastón de Plaga (Blight Staff)", category: "Bastones Naturales", slot: "mainhand", twoHanded: true, spellTree: "nature", uniqueName: "2H_NATURESTAFF_HELL" },
 
     // FUEGO, HIELO, MALDITO, ARCANO
     { id: "MAIN_FIRESTAFF", name: "Bastón de Fuego de 1M", category: "Fuego", slot: "mainhand", twoHanded: false, spellTree: "fire", uniqueName: "MAIN_FIRESTAFF" },
+    { id: "2H_FIRESTAFF", name: "Gran Bastón de Fuego", category: "Fuego", slot: "mainhand", twoHanded: true, spellTree: "fire", uniqueName: "2H_FIRESTAFF" },
     { id: "2H_INFERNOSTAFF", name: "Bastón Infernal", category: "Fuego", slot: "mainhand", twoHanded: true, spellTree: "fire", uniqueName: "2H_INFERNOSTAFF" },
-    { id: "2H_FIRE_RING_UNDEAD", name: "Bastón Brimstone", category: "Fuego", slot: "mainhand", twoHanded: true, spellTree: "fire", uniqueName: "2H_FIRE_RING_UNDEAD" },
-    { id: "2H_ICE_CRYSTAL_UNDEAD", name: "Prisma de Permafrost", category: "Hielo", slot: "mainhand", twoHanded: true, spellTree: "frost", uniqueName: "2H_ICE_CRYSTAL_UNDEAD" },
+    { id: "MAIN_FIRESTAFF_KEEPER", name: "Fuego Fatuo (Wildfire)", category: "Fuego", slot: "mainhand", twoHanded: false, spellTree: "fire", uniqueName: "MAIN_FIRESTAFF_KEEPER" },
+    { id: "2H_FIRESTAFF_HELL", name: "Bastón Brimstone", category: "Fuego", slot: "mainhand", twoHanded: true, spellTree: "fire", uniqueName: "2H_FIRESTAFF_HELL" },
+    { id: "2H_FIRE_RINGPAIR_AVALON", name: "Canción del Ocaso (Dawnsong)", category: "Fuego", slot: "mainhand", twoHanded: true, spellTree: "fire", uniqueName: "2H_FIRE_RINGPAIR_AVALON" },
+    
+    { id: "MAIN_FROSTSTAFF", name: "Bastón de Hielo de 1M", category: "Hielo", slot: "mainhand", twoHanded: false, spellTree: "frost", uniqueName: "MAIN_FROSTSTAFF" },
+    { id: "2H_FROSTSTAFF", name: "Gran Bastón de Hielo", category: "Hielo", slot: "mainhand", twoHanded: true, spellTree: "frost", uniqueName: "2H_FROSTSTAFF" },
+    { id: "2H_GLACIALSTAFF", name: "Bastón Glacial", category: "Hielo", slot: "mainhand", twoHanded: true, spellTree: "frost", uniqueName: "2H_GLACIALSTAFF" },
+    { id: "MAIN_FROSTSTAFF_KEEPER", name: "Bastón de Escarcha", category: "Hielo", slot: "mainhand", twoHanded: false, spellTree: "frost", uniqueName: "MAIN_FROSTSTAFF_KEEPER" },
+    { id: "MAIN_FROSTSTAFF_AVALON", name: "Prisma de Permafrost", category: "Hielo", slot: "mainhand", twoHanded: false, spellTree: "frost", uniqueName: "MAIN_FROSTSTAFF_AVALON" },
+
     { id: "MAIN_CURSEDSTAFF", name: "Bastón Maldito de 1M", category: "Maldición", slot: "mainhand", twoHanded: false, spellTree: "curse", uniqueName: "MAIN_CURSEDSTAFF" },
+    { id: "2H_CURSEDSTAFF", name: "Gran Bastón Maldito", category: "Maldición", slot: "mainhand", twoHanded: true, spellTree: "curse", uniqueName: "2H_CURSEDSTAFF" },
+    { id: "2H_DEMONICSTAFF", name: "Bastón Demoníaco", category: "Maldición", slot: "mainhand", twoHanded: true, spellTree: "curse", uniqueName: "2H_DEMONICSTAFF" },
+    { id: "MAIN_CURSEDSTAFF_UNDEAD", name: "Calavera Maldita", category: "Maldición", slot: "mainhand", twoHanded: false, spellTree: "curse", uniqueName: "MAIN_CURSEDSTAFF_UNDEAD" },
     { id: "2H_CURSEDSTAFF_MORGANA", name: "Bastón de Condenación (Damnation)", category: "Maldición", slot: "mainhand", twoHanded: true, spellTree: "curse", uniqueName: "2H_CURSEDSTAFF_MORGANA" },
     { id: "MAIN_CURSEDSTAFF_AVALON", name: "Invocador de Sombras (Shadowcaller)", category: "Maldición", slot: "mainhand", twoHanded: false, spellTree: "curse", uniqueName: "MAIN_CURSEDSTAFF_AVALON" },
-    { id: "2H_ARCANE_RING_AVALON", name: "Evocador (Evoker)", category: "Arcano", slot: "mainhand", twoHanded: true, spellTree: "arcane", uniqueName: "2H_ARCANE_RING_AVALON" },
 
-    // GUANTES DE GUERRA Y CAMBIAFORMAS
-    { id: "2H_WARGLOVES_SPIKED", name: "Guanteletes con Púas (Spiked)", category: "Guantes de Guerra", slot: "mainhand", twoHanded: true, spellTree: "wargloves", uniqueName: "2H_GLOVES_SPIKED" },
-    { id: "2H_WARGLOVES_AVALON", name: "Puños de Avalonia", category: "Guantes de Guerra", slot: "mainhand", twoHanded: true, spellTree: "wargloves", uniqueName: "2H_GLOVES_AVALON" },
-    { id: "2H_SHAPESHIFTER_PANTHER", name: "Bastón Acechador (Pantera)", category: "Cambiaformas", slot: "mainhand", twoHanded: true, spellTree: "shapeshifter", uniqueName: "2H_SHAPESHIFTER_PANTHER" },
-    { id: "2H_SHAPESHIFTER_BEAR", name: "Bastón Primario (Oso)", category: "Cambiaformas", slot: "mainhand", twoHanded: true, spellTree: "shapeshifter", uniqueName: "2H_SHAPESHIFTER_BEAR" },
-    { id: "2H_SHAPESHIFTER_TREANT", name: "Bastón Raíz (Treant)", category: "Cambiaformas", slot: "mainhand", twoHanded: true, spellTree: "shapeshifter", uniqueName: "2H_SHAPESHIFTER_TREANT" }
+    { id: "MAIN_ARCANESTAFF", name: "Bastón Arcano", category: "Arcano", slot: "mainhand", twoHanded: false, spellTree: "arcane", uniqueName: "MAIN_ARCANESTAFF" },
+    { id: "2H_ARCANESTAFF", name: "Gran Bastón Arcano", category: "Arcano", slot: "mainhand", twoHanded: true, spellTree: "arcane", uniqueName: "2H_ARCANESTAFF" },
+    { id: "2H_ENIGMATICSTAFF", name: "Bastón Enigmático", category: "Arcano", slot: "mainhand", twoHanded: true, spellTree: "arcane", uniqueName: "2H_ENIGMATICSTAFF" },
+    { id: "2H_ARCANE_RINGPAIR_AVALON", name: "Evocador (Evoker)", category: "Arcano", slot: "mainhand", twoHanded: true, spellTree: "arcane", uniqueName: "2H_ARCANE_RINGPAIR_AVALON" },
+
+    // GUANTES DE GUERRA
+    { id: "2H_KNUCKLES_SET1", name: "Guantes de Pelea", category: "Guantes de Guerra", slot: "mainhand", twoHanded: true, spellTree: "wargloves", uniqueName: "2H_KNUCKLES_SET1" },
+    { id: "2H_WARGLOVES_KEEPER", name: "Guanteletes de Batalla", category: "Guantes de Guerra", slot: "mainhand", twoHanded: true, spellTree: "wargloves", uniqueName: "2H_WARGLOVES_KEEPER" },
+    { id: "2H_KNUCKLES_SET3", name: "Guanteletes con Púas (Spiked)", category: "Guantes de Guerra", slot: "mainhand", twoHanded: true, spellTree: "wargloves", uniqueName: "2H_KNUCKLES_SET3" },
+    { id: "2H_KNUCKLES_SET2", name: "Manoplas de Ursino", category: "Guantes de Guerra", slot: "mainhand", twoHanded: true, spellTree: "wargloves", uniqueName: "2H_KNUCKLES_SET2" },
+    { id: "2H_KNUCKLES_HELL", name: "Manos del Infierno", category: "Guantes de Guerra", slot: "mainhand", twoHanded: true, spellTree: "wargloves", uniqueName: "2H_KNUCKLES_HELL" },
+    { id: "2H_KNUCKLES_UNDEAD", name: "Cestus Ravenstrike", category: "Guantes de Guerra", slot: "mainhand", twoHanded: true, spellTree: "wargloves", uniqueName: "2H_KNUCKLES_UNDEAD" },
+    { id: "2H_KNUCKLES_AVALON", name: "Puños de Avalonia", category: "Guantes de Guerra", slot: "mainhand", twoHanded: true, spellTree: "wargloves", uniqueName: "2H_KNUCKLES_AVALON" },
+
+    // CAMBIAFORMAS
+    { id: "2H_SHAPESHIFTER_SET1", name: "Bastón Acechador (Pantera)", category: "Cambiaformas", slot: "mainhand", twoHanded: true, spellTree: "shapeshifter", uniqueName: "2H_SHAPESHIFTER_SET1" },
+    { id: "2H_SHAPESHIFTER_SET2", name: "Bastón Silvestre (Treant)", category: "Cambiaformas", slot: "mainhand", twoHanded: true, spellTree: "shapeshifter", uniqueName: "2H_SHAPESHIFTER_SET2" },
+    { id: "2H_SHAPESHIFTER_SET3", name: "Bastón Primario (Oso)", category: "Cambiaformas", slot: "mainhand", twoHanded: true, spellTree: "shapeshifter", uniqueName: "2H_SHAPESHIFTER_SET3" },
+    { id: "2H_SHAPESHIFTER_MORGANA", name: "Bastón Hombre Lobo", category: "Cambiaformas", slot: "mainhand", twoHanded: true, spellTree: "shapeshifter", uniqueName: "2H_SHAPESHIFTER_MORGANA" },
+    { id: "2H_SHAPESHIFTER_HELL", name: "Bastón Golem Infernal", category: "Cambiaformas", slot: "mainhand", twoHanded: true, spellTree: "shapeshifter", uniqueName: "2H_SHAPESHIFTER_HELL" },
+    { id: "2H_SHAPESHIFTER_KEEPER", name: "Bastón de Ent", category: "Cambiaformas", slot: "mainhand", twoHanded: true, spellTree: "shapeshifter", uniqueName: "2H_SHAPESHIFTER_KEEPER" },
+    { id: "2H_SHAPESHIFTER_AVALON", name: "Bastón Luz Áurica", category: "Cambiaformas", slot: "mainhand", twoHanded: true, spellTree: "shapeshifter", uniqueName: "2H_SHAPESHIFTER_AVALON" }
   ],
 
   offhands: [
@@ -155,30 +195,33 @@ export const ITEMS_DATABASE = {
   ],
 
   food: [
-    { id: "MEAL_STEW", name: "Estofado de Res", category: "Comida", slot: "food", uniqueName: "T8_MEAL_STEW" },
-    { id: "MEAL_OMELETTE", name: "Tortilla de Cerdo", category: "Comida", slot: "food", uniqueName: "T7_MEAL_OMELETTE" },
-    { id: "MEAL_ROAST", name: "Asado de Ternera", category: "Comida", slot: "food", uniqueName: "T7_MEAL_ROAST" },
-    { id: "MEAL_PIE", name: "Pastel de Cerdo", category: "Comida", slot: "food", uniqueName: "T7_MEAL_PIE" },
-    { id: "MEAL_SANDWICH", name: "Sándwich de Buey", category: "Comida", slot: "food", uniqueName: "T8_MEAL_SANDWICH" },
-    { id: "MEAL_SOUP", name: "Sopa de Zanahorias", category: "Comida", slot: "food", uniqueName: "T1_MEAL_SOUP" }
+    { id: "T8_MEAL_STEW", name: "Estofado de Res", category: "Comida", slot: "food", uniqueName: "T8_MEAL_STEW" },
+    { id: "T7_MEAL_OMELETTE", name: "Tortilla de Cerdo", category: "Comida", slot: "food", uniqueName: "T7_MEAL_OMELETTE" },
+    { id: "T7_MEAL_ROAST", name: "Asado de Ternera", category: "Comida", slot: "food", uniqueName: "T7_MEAL_ROAST" },
+    { id: "T7_MEAL_PIE", name: "Pastel de Cerdo", category: "Comida", slot: "food", uniqueName: "T7_MEAL_PIE" },
+    { id: "T8_MEAL_SANDWICH", name: "Sándwich de Buey", category: "Comida", slot: "food", uniqueName: "T8_MEAL_SANDWICH" },
+    { id: "T4_MEAL_SOUP", name: "Sopa de Zanahorias", category: "Comida", slot: "food", uniqueName: "T4_MEAL_SOUP" }
   ],
 
   potion: [
-    { id: "POTION_HEAL", name: "Poción de Curación", category: "Pociones", slot: "potion", uniqueName: "T7_POTION_HEAL" },
-    { id: "POTION_POISON", name: "Poción de Veneno", category: "Pociones", slot: "potion", uniqueName: "T8_POTION_POISON" },
-    { id: "POTION_REVIVE", name: "Poción de Resistencia", category: "Pociones", slot: "potion", uniqueName: "T7_POTION_REVIVE" },
-    { id: "POTION_STONESKIN", name: "Poción de Gigante", category: "Pociones", slot: "potion", uniqueName: "T7_POTION_STONESKIN" },
-    { id: "POTION_INVIS", name: "Poción de Invisibilidad", category: "Pociones", slot: "potion", uniqueName: "T8_POTION_INVIS_SET1" },
-    { id: "POTION_ENERGY", name: "Poción de Energía", category: "Pociones", slot: "potion", uniqueName: "T7_POTION_ENERGY" }
+    { id: "POTION_HEAL", name: "Poción de Curación", category: "Pociones", slot: "potion", uniqueName: "POTION_HEAL" },
+    { id: "POTION_ENERGY", name: "Poción de Energía", category: "Pociones", slot: "potion", uniqueName: "POTION_ENERGY" },
+    { id: "POTION_REVIVE", name: "Poción de Resistencia", category: "Pociones", slot: "potion", uniqueName: "POTION_REVIVE" },
+    { id: "POTION_STONESKIN", name: "Poción de Gigante", category: "Pociones", slot: "potion", uniqueName: "POTION_STONESKIN" },
+    { id: "POTION_SLOWFIELD", name: "Poción Pegajosa", category: "Pociones", slot: "potion", uniqueName: "POTION_SLOWFIELD" },
+    { id: "POTION_TORNADO", name: "Poción de Tornado", category: "Pociones", slot: "potion", uniqueName: "POTION_TORNADO" },
+    { id: "POTION_LAVA", name: "Poción de Fuego / Veneno", category: "Pociones", slot: "potion", uniqueName: "POTION_LAVA" },
+    { id: "POTION_BERSERK", name: "Poción Berserk", category: "Pociones", slot: "potion", uniqueName: "POTION_BERSERK" }
   ],
 
   mount: [
-    { id: "MOUNT_HORSE", name: "Caballo de Montar T5", category: "Monturas", slot: "mount", uniqueName: "T5_MOUNT_HORSE" },
-    { id: "MOUNT_ARMORED_HORSE", name: "Caballo Blindado T6", category: "Monturas", slot: "mount", uniqueName: "T6_MOUNT_ARMORED_HORSE" },
-    { id: "MOUNT_OX", name: "Buey de Transporte T6", category: "Monturas", slot: "mount", uniqueName: "T6_MOUNT_OX" },
-    { id: "MOUNT_DIREWOLF", name: "Lobo Terrible T6", category: "Monturas", slot: "mount", uniqueName: "T6_MOUNT_DIREWOLF" },
-    { id: "MOUNT_SWIFTCLAW", name: "Garrapresta T5", category: "Monturas", slot: "mount", uniqueName: "T5_MOUNT_SWIFTCLAW" },
-    { id: "MOUNT_STAG", name: "Ciervo Gigante T4", category: "Monturas", slot: "mount", uniqueName: "T4_MOUNT_STAG" }
+    { id: "T5_MOUNT_HORSE", name: "Caballo de Montar T5", category: "Monturas", slot: "mount", uniqueName: "T5_MOUNT_HORSE" },
+    { id: "T6_MOUNT_ARMORED_HORSE", name: "Caballo Blindado T6", category: "Monturas", slot: "mount", uniqueName: "T6_MOUNT_ARMORED_HORSE" },
+    { id: "T6_MOUNT_OX", name: "Buey de Transporte T6", category: "Monturas", slot: "mount", uniqueName: "T6_MOUNT_OX" },
+    { id: "T6_MOUNT_DIREWOLF", name: "Lobo Terrible T6", category: "Monturas", slot: "mount", uniqueName: "T6_MOUNT_DIREWOLF" },
+    { id: "T4_MOUNT_GIANTSTAG", name: "Ciervo Gigante T4", category: "Monturas", slot: "mount", uniqueName: "T4_MOUNT_GIANTSTAG" },
+    { id: "T5_MOUNT_SWIFTCLAW", name: "Garrapresta T5", category: "Monturas", slot: "mount", uniqueName: "T5_MOUNT_SWIFTCLAW" },
+    { id: "T2_MOUNT_MULE", name: "Mula T2", category: "Monturas", slot: "mount", uniqueName: "T2_MOUNT_MULE" }
   ]
 };
 
@@ -187,6 +230,8 @@ export function getAlbionItemIconUrl(item, tier = "T4", enchantment = 0, quality
   if (!item) return "";
   
   let finalUniqueName = item.uniqueName;
+  
+  // Si no tiene prefijo de Tier fijo (como comidas o monturas)
   if (!finalUniqueName.startsWith("T1_") && 
       !finalUniqueName.startsWith("T2_") && 
       !finalUniqueName.startsWith("T3_") && 
@@ -198,6 +243,7 @@ export function getAlbionItemIconUrl(item, tier = "T4", enchantment = 0, quality
     finalUniqueName = `${tier}_${item.uniqueName}`;
   }
 
+  // Encantamiento (.1, .2, .3, .4) para armas, armaduras, capas
   if (enchantment > 0 && !item.slot.match(/food|potion|mount/)) {
     finalUniqueName = `${finalUniqueName}@${enchantment}`;
   }

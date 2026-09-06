@@ -1,4 +1,4 @@
-// Furia de Dragones - Controlador Principal del Gestor de Builds con Carpetas
+// Furia de Dragones - Controlador Principal del Gestor de Builds
 
 import { ITEMS_DATABASE, getAlbionItemIconUrl } from './data/items.js';
 import { SPELLS_DATABASE, getAlbionSpellIconUrl } from './data/spells.js';
@@ -40,6 +40,9 @@ const DEFAULT_FOLDERS = [
   "Soporte & Healers"
 ];
 
+// Versión del almacenamiento para migrar datos anteriores
+const STORAGE_VERSION = "v2_verified_ids";
+
 // ==========================================================================
 // Inicialización
 // ==========================================================================
@@ -52,11 +55,9 @@ document.addEventListener("DOMContentLoaded", () => {
   setupActionButtons();
   setupFolderEvents();
   
-  // Revisar si viene una build por parámetro en la URL
   if (window.location.hash.startsWith("#build=")) {
     loadBuildFromUrlHash();
   } else {
-    // Cargar la primera build por defecto para empezar con equipamiento visible
     if (DEFAULT_BUILDS.length > 0) {
       loadBuild(DEFAULT_BUILDS[0]);
     } else {
@@ -74,6 +75,14 @@ document.addEventListener("DOMContentLoaded", () => {
 // Almacenamiento Local (LocalStorage)
 // ==========================================================================
 function initStorage() {
+  const currentVer = localStorage.getItem("furia_storage_ver");
+  if (currentVer !== STORAGE_VERSION) {
+    localStorage.setItem("furia_saved_builds", JSON.stringify(DEFAULT_BUILDS));
+    localStorage.setItem("furia_custom_folders", JSON.stringify(DEFAULT_FOLDERS));
+    localStorage.setItem("furia_storage_ver", STORAGE_VERSION);
+    return;
+  }
+
   const storedBuilds = localStorage.getItem("furia_saved_builds");
   if (!storedBuilds) {
     localStorage.setItem("furia_saved_builds", JSON.stringify(DEFAULT_BUILDS));
@@ -88,7 +97,7 @@ function initStorage() {
 function getSavedBuilds() {
   try {
     const raw = localStorage.getItem("furia_saved_builds");
-    return raw ? JSON.parse(raw) : [];
+    return raw ? JSON.parse(raw) : DEFAULT_BUILDS;
   } catch (e) {
     return DEFAULT_BUILDS;
   }
@@ -156,7 +165,6 @@ function setupNavigation() {
 // Gestión de Carpetas
 // ==========================================================================
 function setupFolderEvents() {
-  // Botón crear carpeta en la barra lateral
   const btnCreateFolder = document.getElementById("btn-create-new-folder");
   if (btnCreateFolder) {
     btnCreateFolder.addEventListener("click", () => {
@@ -167,7 +175,6 @@ function setupFolderEvents() {
     });
   }
 
-  // Botón crear carpeta inline en el formulario de la build
   const btnAddFolderInline = document.getElementById("btn-add-folder-inline");
   if (btnAddFolderInline) {
     btnAddFolderInline.addEventListener("click", () => {
@@ -217,7 +224,6 @@ function renderFoldersSidebar() {
 
   listEl.innerHTML = "";
 
-  // Opción "Todas las Builds"
   const allItem = document.createElement("li");
   allItem.className = `folder-nav-item ${activeSelectedFolder === 'ALL' ? 'active' : ''}`;
   allItem.innerHTML = `
@@ -231,7 +237,6 @@ function renderFoldersSidebar() {
   });
   listEl.appendChild(allItem);
 
-  // Lista de carpetas específicas
   folders.forEach(folder => {
     const count = allBuilds.filter(b => (b.folder || "ZvZ") === folder).length;
     const item = document.createElement("li");
@@ -326,7 +331,6 @@ function setupFormEvents() {
 // Botones de Acción
 // ==========================================================================
 function setupActionButtons() {
-  // Guardar Build
   const btnSave = document.getElementById("btn-save-build");
   if (btnSave) {
     btnSave.addEventListener("click", () => {
@@ -349,7 +353,6 @@ function setupActionButtons() {
     });
   }
 
-  // Copiar Discord
   const btnDiscord = document.getElementById("btn-copy-discord");
   if (btnDiscord) {
     btnDiscord.addEventListener("click", () => {
@@ -358,7 +361,6 @@ function setupActionButtons() {
     });
   }
 
-  // Compartir Enlace
   const btnShare = document.getElementById("btn-share-link");
   if (btnShare) {
     btnShare.addEventListener("click", () => {
@@ -368,7 +370,6 @@ function setupActionButtons() {
     });
   }
 
-  // Exportar JSON
   const btnExport = document.getElementById("btn-export-json");
   if (btnExport) {
     btnExport.addEventListener("click", () => {
@@ -383,7 +384,6 @@ function setupActionButtons() {
     });
   }
 
-  // Importar JSON
   const btnImport = document.getElementById("btn-import-json");
   const fileImport = document.getElementById("file-import-json");
   if (btnImport && fileImport) {
@@ -414,7 +414,6 @@ function setupActionButtons() {
     });
   }
 
-  // Buscador de builds
   const searchSaved = document.getElementById("search-saved-builds");
   if (searchSaved) {
     searchSaved.addEventListener("input", () => {
@@ -568,7 +567,10 @@ function updateSpellButton(slot, type, spellId) {
       imgEl.style.display = "block";
       imgEl.onerror = () => {
         imgEl.style.display = "none";
-        if (txtEl) txtEl.style.display = "block";
+        if (txtEl) {
+          txtEl.style.display = "block";
+          txtEl.textContent = getSpellShortCode(type);
+        }
       };
     }
     if (txtEl) txtEl.style.display = "none";
@@ -579,9 +581,20 @@ function updateSpellButton(slot, type, spellId) {
     }
     if (txtEl) {
       txtEl.style.display = "block";
-      txtEl.textContent = type === "active" ? (slot === "head" ? "D" : (slot === "armor" ? "R" : "F")) : (type === "passive" ? "P" : type.toUpperCase());
+      txtEl.textContent = getSpellShortCode(type, slot);
     }
   }
+}
+
+function getSpellShortCode(type, slot = "") {
+  if (type === "active") {
+    if (slot === "head") return "D";
+    if (slot === "armor") return "R";
+    if (slot === "shoes") return "F";
+    return "ACT";
+  }
+  if (type === "passive") return "P";
+  return type.toUpperCase();
 }
 
 function renderQuickSummary() {
@@ -821,7 +834,7 @@ function openSpellPickerModal(slot, spellType) {
 
     card.innerHTML = `
       <div class="spell-option-icon">
-        <img src="${iconUrl}" alt="${spell.name}" onerror="this.style.display='none'; this.parentElement.textContent='${spell.name.substring(0,2)}';">
+        <img src="${iconUrl}" alt="${spell.name}" onerror="this.style.display='none'; this.parentElement.textContent='${getSpellShortCode(spellType, slot)}';">
       </div>
       <div class="spell-option-content">
         <div class="spell-option-name">${spell.name}</div>
@@ -947,13 +960,11 @@ function renderSavedBuildsList() {
 
   const allBuilds = getSavedBuilds();
   
-  // Filtrar por carpeta seleccionada
   let filtered = allBuilds;
   if (activeSelectedFolder !== "ALL") {
     filtered = filtered.filter(b => (b.folder || "ZvZ") === activeSelectedFolder);
   }
 
-  // Filtrar por buscador
   if (searchVal) {
     filtered = filtered.filter(b => {
       return (b.name || "").toLowerCase().includes(searchVal) || 
@@ -1000,7 +1011,6 @@ function renderSavedBuildsList() {
       }
     });
 
-    // Opciones de cambio de carpeta
     let folderOptionsHtml = "";
     allFolders.forEach(f => {
       folderOptionsHtml += `<option value="${f}" ${f === (build.folder || 'ZvZ') ? 'selected' : ''}>📁 ${f}</option>`;
@@ -1037,20 +1047,17 @@ function renderSavedBuildsList() {
       </div>
     `;
 
-    // Cargar build al creador
     card.querySelector(".btn-load-build").addEventListener("click", () => {
       loadBuild(build);
       document.querySelector('[data-tab="builder"]').click();
       showToast(`Build "${build.name}" cargada.`);
     });
 
-    // Copiar Discord
     card.querySelector(".btn-discord-build").addEventListener("click", () => {
       const discordText = generateDiscordText(build);
       copyToClipboard(discordText, "¡Ficha para Discord copiada!");
     });
 
-    // Mover a otra carpeta
     const moveSelect = card.querySelector(".select-move-folder");
     moveSelect.addEventListener("change", (e) => {
       const newFolder = e.target.value;
@@ -1063,7 +1070,6 @@ function renderSavedBuildsList() {
       }
     });
 
-    // Eliminar build
     card.querySelector(".btn-delete-build").addEventListener("click", () => {
       if (confirm(`¿Eliminar la build "${build.name}"?`)) {
         const remaining = getSavedBuilds().filter(b => b.id !== build.id);
