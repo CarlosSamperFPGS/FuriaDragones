@@ -2148,12 +2148,14 @@ export const TIERS = [
   { id: 'T8', label: 'T8 - Anciano', num: 8 }
 ];
 
-export const ENCHANTMENTS = [
-  { id: 0, label: '.0 (Base)', suffix: '' },
-  { id: 1, label: '.1 (Verde)', suffix: '@1' },
-  { id: 2, label: '.2 (Azul)', suffix: '@2' },
-  { id: 3, label: '.3 (Morado)', suffix: '@3' },
-  { id: 4, label: '.4 (Dorado)', suffix: '@4' }
+export const TIER_EQUIVALENTS = [
+  { value: 6, label: "Tier 6 Equivalente (6.0 / 5.1 / 4.2)" },
+  { value: 7, label: "Tier 7 Equivalente (7.0 / 6.1 / 5.2 / 4.3)" },
+  { value: 8, label: "Tier 8 Equivalente (8.0 / 7.1 / 6.2 / 5.3 / 4.4)" },
+  { value: 9, label: "Tier 9 Equivalente (8.1 / 7.2 / 6.3 / 5.4)" },
+  { value: 10, label: "Tier 10 Equivalente (8.2 / 7.3 / 6.4)" },
+  { value: 11, label: "Tier 11 Equivalente (8.3 / 7.4)" },
+  { value: 12, label: "Tier 12 Equivalente (8.4)" }
 ];
 
 export const QUALITIES = [
@@ -2161,20 +2163,20 @@ export const QUALITIES = [
   { id: 2, label: 'Bueno' },
   { id: 3, label: 'Notable' },
   { id: 4, label: 'Sobresaliente' },
-  { id: 5, label: 'Excelente' }
+  { id: 5, label: 'Obra Maestra' }
 ];
 
 /**
  * Helper to build official Albion Online render API URL
+ * Guías fijadas en T8 .0 Sobresaliente (quality 4)
  */
-export function getItemImageUrl(item, tier = 'T4', enchant = 0, quality = 1) {
+export function getItemImageUrl(item, tier = 'T8', enchant = 0, quality = 4) {
   if (!item) return '';
-  const itemTier = item.fixedTier || tier || 'T4';
+  const itemTier = item.fixedTier || tier || 'T8';
   const enchantSuffix = enchant > 0 ? `@${enchant}` : '';
   const qualityParam = quality > 1 ? `?quality=${quality}` : '';
   
   if (item.id.includes('@')) {
-    // already has special suffix
     return `https://render.albiononline.com/v1/item/${itemTier}_${item.id}.png${qualityParam}`;
   }
   if (item.fixedTier === 'UNIQUE') {

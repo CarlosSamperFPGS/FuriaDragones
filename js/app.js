@@ -1,7 +1,7 @@
 // Furia de Dragones - Controlador Principal del Gestor de Builds
 // Gremio de Albion Online
 
-import { ALBION_ITEMS, ITEM_CATEGORIES, TIERS, ENCHANTMENTS, QUALITIES, getItemImageUrl } from './data/items.js';
+import { ALBION_ITEMS, ITEM_CATEGORIES, TIER_EQUIVALENTS, getItemImageUrl } from './data/items.js';
 import { ALBION_SPELLS, ITEM_SPELLS_MAP, getItemSpells } from './data/spells.js';
 import { DEFAULT_BUILDS } from './data/default-builds.js';
 
@@ -12,6 +12,7 @@ let currentBuild = {
   id: null,
   name: "Nueva Build",
   role: "DPS Melee",
+  tierEquiv: 8,
   folder: "ZvZ",
   notes: "",
   equipment: {
@@ -42,7 +43,7 @@ const DEFAULT_FOLDERS = [
   "Soporte & Healers"
 ];
 
-const STORAGE_VERSION = "v4_separated_viewer_hazard";
+const STORAGE_VERSION = "v5_t8_sobresaliente_tier_equiv";
 
 // ==========================================================================
 // Inicialización
@@ -223,21 +224,6 @@ function addNewFolder(name) {
   }
 }
 
-function updateFolderDropdowns() {
-  const select = document.getElementById("build-folder-select");
-  if (!select) return;
-
-  const folders = getAllFolders();
-  select.innerHTML = "";
-  folders.forEach(folder => {
-    const opt = document.createElement("option");
-    opt.value = folder;
-    opt.textContent = `📁 ${folder}`;
-    if (folder === currentBuild.folder) opt.selected = true;
-    select.appendChild(opt);
-  });
-}
-
 function deleteFolder(folderName) {
   if (confirm(`¿Eliminar la carpeta "${folderName}"?\nLas builds que estén en esta carpeta se moverán a "ZvZ".`)) {
     const builds = getSavedBuilds();
@@ -260,6 +246,21 @@ function deleteFolder(folderName) {
     renderSavedBuildsList();
     showToast(`Carpeta "${folderName}" eliminada.`);
   }
+}
+
+function updateFolderDropdowns() {
+  const select = document.getElementById("build-folder-select");
+  if (!select) return;
+
+  const folders = getAllFolders();
+  select.innerHTML = "";
+  folders.forEach(folder => {
+    const opt = document.createElement("option");
+    opt.value = folder;
+    opt.textContent = `📁 ${folder}`;
+    if (folder === currentBuild.folder) opt.selected = true;
+    select.appendChild(opt);
+  });
 }
 
 function renderFoldersSidebar() {
@@ -366,6 +367,7 @@ function setupSlotClickEvents() {
 function setupFormEvents() {
   const nameInput = document.getElementById("build-name-input");
   const roleInput = document.getElementById("build-role-input");
+  const tierEquivSelect = document.getElementById("build-tier-equiv-select");
   const folderSelect = document.getElementById("build-folder-select");
   const notesInput = document.getElementById("build-notes-input");
 
@@ -377,6 +379,11 @@ function setupFormEvents() {
   if (roleInput) {
     roleInput.addEventListener("input", (e) => {
       currentBuild.role = e.target.value;
+    });
+  }
+  if (tierEquivSelect) {
+    tierEquivSelect.addEventListener("change", (e) => {
+      currentBuild.tierEquiv = parseInt(e.target.value, 10) || 8;
     });
   }
   if (folderSelect) {
@@ -494,6 +501,7 @@ function startNewBuild() {
     id: "build_" + Date.now(),
     name: "Nueva Build",
     role: "DPS Melee",
+    tierEquiv: 8,
     folder: activeSelectedFolder !== "ALL" ? activeSelectedFolder : "ZvZ",
     notes: "",
     equipment: {
@@ -519,6 +527,8 @@ function startNewBuild() {
 
 function editBuild(build) {
   currentBuild = JSON.parse(JSON.stringify(build));
+  if (!currentBuild.tierEquiv) currentBuild.tierEquiv = 8;
+
   const editorTitle = document.getElementById("editor-title");
   if (editorTitle) editorTitle.textContent = `🛠️ Editando: ${build.name || 'Build'}`;
 
@@ -530,11 +540,13 @@ function editBuild(build) {
 function renderBuild() {
   const nameInput = document.getElementById("build-name-input");
   const roleInput = document.getElementById("build-role-input");
+  const tierEquivSelect = document.getElementById("build-tier-equiv-select");
   const folderSelect = document.getElementById("build-folder-select");
   const notesInput = document.getElementById("build-notes-input");
 
   if (nameInput) nameInput.value = currentBuild.name || "";
   if (roleInput) roleInput.value = currentBuild.role || "";
+  if (tierEquivSelect) tierEquivSelect.value = String(currentBuild.tierEquiv || 8);
   if (folderSelect) folderSelect.value = currentBuild.folder || "ZvZ";
   if (notesInput) notesInput.value = currentBuild.notes || "";
 
@@ -564,9 +576,9 @@ function renderBuild() {
     }
 
     if (slotData && dbItem) {
-      const tier = slotData.tier || "T8";
+      const tier = slotData.tier || dbItem.fixedTier || "T8";
       const enchant = slotData.enchant !== undefined ? slotData.enchant : 0;
-      const quality = slotData.quality || 1;
+      const quality = slotData.quality || 4;
 
       if (imgEl) {
         imgEl.src = getItemImageUrl(dbItem, tier, enchant, quality);
@@ -585,7 +597,7 @@ function renderBuild() {
         if (slotKey.match(/food|potion|mount/)) {
           badgeEl.textContent = tier;
         } else {
-          badgeEl.textContent = `${tier}.${enchant}`;
+          badgeEl.textContent = "T8 Sobresaliente";
         }
       }
     } else {
@@ -716,16 +728,16 @@ function renderQuickSummary() {
   const capeItem = ALBION_ITEMS.find(i => i.id === eq.cape?.id);
 
   summaryEl.innerHTML = `
-    <li><strong>Cabeza:</strong> ${headItem ? `${headItem.name} [${eq.head.tier}.${eq.head.enchant || 0}]` : '<em>Sin equipar</em>'}</li>
-    <li><strong>Arma:</strong> ${mhItem ? `${mhItem.name} [${eq.mainhand.tier}.${eq.mainhand.enchant || 0}]` : '<em>Sin equipar</em>'}</li>
-    <li><strong>Pecho:</strong> ${armorItem ? `${armorItem.name} [${eq.armor.tier}.${eq.armor.enchant || 0}]` : '<em>Sin equipar</em>'}</li>
-    <li><strong>Botas:</strong> ${shoesItem ? `${shoesItem.name} [${eq.shoes.tier}.${eq.shoes.enchant || 0}]` : '<em>Sin equipar</em>'}</li>
-    <li><strong>Capa:</strong> ${capeItem ? `${capeItem.name} [${eq.cape.tier}.${eq.cape.enchant || 0}]` : '<em>Sin equipar</em>'}</li>
+    <li><strong>Cabeza:</strong> ${headItem ? `${headItem.name} [T8]` : '<em>Sin equipar</em>'}</li>
+    <li><strong>Arma:</strong> ${mhItem ? `${mhItem.name} [T8]` : '<em>Sin equipar</em>'}</li>
+    <li><strong>Pecho:</strong> ${armorItem ? `${armorItem.name} [T8]` : '<em>Sin equipar</em>'}</li>
+    <li><strong>Botas:</strong> ${shoesItem ? `${shoesItem.name} [T8]` : '<em>Sin equipar</em>'}</li>
+    <li><strong>Capa:</strong> ${capeItem ? `${capeItem.name} [T8]` : '<em>Sin equipar</em>'}</li>
   `;
 }
 
 // ==========================================================================
-// Modal: Selector de Items
+// Modal: Selector de Items (Fijado en T8 Sobresaliente)
 // ==========================================================================
 function openItemPickerModal(slot) {
   activeModalSlot = slot;
@@ -733,7 +745,6 @@ function openItemPickerModal(slot) {
   const modalTitle = document.getElementById("modal-item-title");
   const categorySelect = document.getElementById("item-category-select");
   const searchInput = document.getElementById("item-search-input");
-  const enchantWrapper = document.getElementById("config-enchant-wrapper");
 
   if (!modal) return;
 
@@ -750,20 +761,6 @@ function openItemPickerModal(slot) {
   };
 
   modalTitle.textContent = slotTitles[slot] || "Seleccionar Item";
-
-  if (enchantWrapper) {
-    enchantWrapper.style.display = slot.match(/food|potion|mount/) ? "none" : "block";
-  }
-
-  const currentSlotData = currentBuild.equipment[slot];
-  const tierSelect = document.getElementById("item-tier-select");
-  const enchantSelect = document.getElementById("item-enchant-select");
-  const qualitySelect = document.getElementById("item-quality-select");
-
-  if (tierSelect) tierSelect.value = currentSlotData?.tier || "T8";
-  if (enchantSelect) enchantSelect.value = currentSlotData?.enchant !== undefined ? currentSlotData.enchant : "0";
-  if (qualitySelect) qualitySelect.value = currentSlotData?.quality || "2";
-
   populateCategoriesForSlot(slot);
 
   if (searchInput) searchInput.value = "";
@@ -799,9 +796,6 @@ function renderItemsList() {
 
   const searchVal = (document.getElementById("item-search-input")?.value || "").toLowerCase().trim();
   const selectedCat = document.getElementById("item-category-select")?.value || "ALL";
-  const currentTier = document.getElementById("item-tier-select")?.value || "T8";
-  const currentEnchant = parseInt(document.getElementById("item-enchant-select")?.value || "0", 10);
-  const currentQuality = parseInt(document.getElementById("item-quality-select")?.value || "1", 10);
 
   const pool = getItemsPoolForSlot(activeModalSlot);
   const filtered = pool.filter(item => {
@@ -820,7 +814,8 @@ function renderItemsList() {
     const card = document.createElement("div");
     card.className = "item-option-card";
     
-    const iconUrl = getItemImageUrl(item, currentTier, currentEnchant, currentQuality);
+    // Default tier T8, enchant 0, quality 4 (Sobresaliente)
+    const iconUrl = getItemImageUrl(item, item.fixedTier || "T8", 0, 4);
 
     card.innerHTML = `
       <img class="item-option-img" src="${iconUrl}" alt="${item.name}" loading="lazy" onerror="this.src=''; this.style.display='none';">
@@ -831,7 +826,7 @@ function renderItemsList() {
     `;
 
     card.addEventListener("click", () => {
-      equipItemToSlot(activeModalSlot, item, currentTier, currentEnchant, currentQuality);
+      equipItemToSlot(activeModalSlot, item);
       closeItemPickerModal();
     });
 
@@ -839,12 +834,12 @@ function renderItemsList() {
   });
 }
 
-function equipItemToSlot(slot, item, tier, enchant, quality) {
+function equipItemToSlot(slot, item) {
   currentBuild.equipment[slot] = {
     id: item.id,
-    tier: item.fixedTier || tier,
-    enchant: enchant,
-    quality: quality
+    tier: item.fixedTier || "T8",
+    enchant: 0,
+    quality: 4
   };
 
   if (slot === "mainhand" && item.twoHanded) {
@@ -1030,13 +1025,13 @@ function openBuildViewerModal(build) {
 
   document.getElementById("viewer-build-title").textContent = build.name || "Sin título";
   document.getElementById("viewer-build-role").textContent = build.role || "General";
+  document.getElementById("viewer-build-tier").textContent = `⭐ Tier ${build.tierEquiv || 8} Eq.`;
   document.getElementById("viewer-build-folder").textContent = `📁 ${build.folder || 'ZvZ'}`;
 
   const gearContainer = document.getElementById("viewer-gear-container");
   const spellsContainer = document.getElementById("viewer-spells-container");
   const notesEl = document.getElementById("viewer-build-notes");
 
-  // Render Gear
   const slotsConfig = [
     { key: "head", label: "Casco / Cabeza" },
     { key: "cape", label: "Capa" },
@@ -1069,11 +1064,9 @@ function openBuildViewerModal(build) {
         </div>
       `;
     } else if (slotData && item) {
-      const tier = slotData.tier || "T8";
-      const enchant = slotData.enchant !== undefined ? slotData.enchant : 0;
-      const quality = slotData.quality || 1;
-      const iconUrl = getItemImageUrl(item, tier, enchant, quality);
-      const tierBadgeText = s.key.match(/food|potion|mount/) ? tier : `${tier}.${enchant}`;
+      const tier = slotData.tier || item.fixedTier || "T8";
+      const iconUrl = getItemImageUrl(item, tier, 0, 4);
+      const tierBadgeText = s.key.match(/food|potion|mount/) ? tier : "T8 Sobresaliente";
 
       card.innerHTML = `
         <img class="viewer-gear-img" src="${iconUrl}" alt="${item.name}" onerror="this.style.display='none';">
@@ -1097,7 +1090,6 @@ function openBuildViewerModal(build) {
     gearContainer.appendChild(card);
   });
 
-  // Render Spells
   spellsContainer.innerHTML = "";
   const spellsToRender = [];
 
@@ -1153,7 +1145,6 @@ function openBuildViewerModal(build) {
     });
   }
 
-  // Notes
   if (notesEl) {
     notesEl.textContent = build.notes || "Sin notas adicionales.";
   }
@@ -1172,9 +1163,6 @@ function setupModalEvents() {
   document.getElementById("btn-cancel-item-modal")?.addEventListener("click", closeItemPickerModal);
   document.getElementById("item-search-input")?.addEventListener("input", renderItemsList);
   document.getElementById("item-category-select")?.addEventListener("change", renderItemsList);
-  document.getElementById("item-tier-select")?.addEventListener("change", renderItemsList);
-  document.getElementById("item-enchant-select")?.addEventListener("change", renderItemsList);
-  document.getElementById("item-quality-select")?.addEventListener("change", renderItemsList);
 
   document.getElementById("btn-remove-item")?.addEventListener("click", () => {
     if (activeModalSlot) {
@@ -1256,8 +1244,8 @@ function renderSavedBuildsList() {
       if (slotData) {
         const item = ALBION_ITEMS.find(i => i.id === slotData.id);
         if (item) {
-          const iconUrl = getItemImageUrl(item, slotData.tier || "T8", slotData.enchant || 0, slotData.quality || 1);
-          thumbsHtml += `<img class="saved-item-thumb" src="${iconUrl}" title="${item.name} (${slotData.tier || 'T8'})" alt="${item.name}" onerror="this.style.display='none';">`;
+          const iconUrl = getItemImageUrl(item, slotData.tier || item.fixedTier || "T8", 0, 4);
+          thumbsHtml += `<img class="saved-item-thumb" src="${iconUrl}" title="${item.name}" alt="${item.name}" onerror="this.style.display='none';">`;
         }
       }
     });
@@ -1267,11 +1255,15 @@ function renderSavedBuildsList() {
       folderOptionsHtml += `<option value="${f}" ${f === (build.folder || 'ZvZ') ? 'selected' : ''}>📁 ${f}</option>`;
     });
 
+    const tierEquiv = build.tierEquiv || 8;
+
     card.innerHTML = `
       <div class="saved-build-header">
         <div>
           <div class="saved-build-title">${build.name || 'Sin título'}</div>
-          <div style="font-size: 11px; color: var(--text-muted);">${build.role || 'General'}</div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+            ${build.role || 'General'} · <strong style="color:var(--text-gold);">Tier ${tierEquiv} Eq.</strong>
+          </div>
         </div>
         <span class="saved-build-badge">${build.folder || 'ZvZ'}</span>
       </div>
@@ -1299,7 +1291,6 @@ function renderSavedBuildsList() {
       </div>
     `;
 
-    // Click on "Ver Build" (or clicking the card header) opens the Viewer Modal
     card.querySelector(".btn-view-build").addEventListener("click", (e) => {
       e.stopPropagation();
       openBuildViewerModal(build);
@@ -1338,7 +1329,6 @@ function renderSavedBuildsList() {
       }
     });
 
-    // Make the entire card click open the viewer
     card.addEventListener("click", () => {
       openBuildViewerModal(build);
     });
@@ -1363,8 +1353,22 @@ function loadBuildFromUrlHash() {
 // ==========================================================================
 // Generador de Texto para Discord
 // ==========================================================================
+function getTierEquivExample(tier) {
+  switch (Number(tier)) {
+    case 6: return "6.0, 5.1, 4.2";
+    case 7: return "7.0, 6.1, 5.2, 4.3";
+    case 8: return "8.0, 7.1, 6.2, 5.3, 4.4";
+    case 9: return "8.1, 7.2, 6.3, 5.4";
+    case 10: return "8.2, 7.3, 6.4";
+    case 11: return "8.3, 7.4";
+    case 12: return "8.4";
+    default: return "8.0+";
+  }
+}
+
 function generateDiscordText(build) {
   const eq = build.equipment || {};
+  const tEq = build.tierEquiv || 8;
 
   function getItemLine(slotKey, label) {
     const slotData = eq[slotKey];
@@ -1372,7 +1376,6 @@ function generateDiscordText(build) {
     const item = ALBION_ITEMS.find(i => i.id === slotData.id);
     if (!item) return `• **${label}:** *Sin equipar*`;
 
-    const tierStr = slotKey.match(/food|potion|mount/) ? `[${slotData.tier || 'T8'}]` : `[${slotData.tier || 'T8'}.${slotData.enchant || 0}]`;
     let spellsStr = "";
 
     if (slotKey === "mainhand") {
@@ -1390,11 +1393,12 @@ function generateDiscordText(build) {
       if (spells.length > 0) spellsStr = ` (${spells.join(" | ")})`;
     }
 
-    return `• **${label}:** ${item.name} ${tierStr}${spellsStr}`;
+    return `• **${label}:** ${item.name}${spellsStr}`;
   }
 
-  return `🐉 **Furia de Dragones - Ficha de Build**
+  return `🐉 **Furia de Dragones - Guía de Build**
 📁 **Carpeta:** ${build.folder || 'ZvZ'} | **Rol:** ${build.role || 'General'}
+⭐ **Tier Equivalente:** Tier ${tEq} Equivalente (${getTierEquivExample(tEq)})
 ⚔️ **Nombre:** ${build.name || 'Sin título'}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━
 ${getItemLine("head", "Cabeza")}
@@ -1407,7 +1411,7 @@ ${getItemLine("food", "Comida")}
 ${getItemLine("potion", "Poción")}
 ${getItemLine("mount", "Montura")}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━
-📝 **Notas:** ${build.notes || 'Ninguna'}
+📝 **Notas & Combo:** ${build.notes || 'Ninguna'}
 `;
 }
 

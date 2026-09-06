@@ -295,13 +295,26 @@
                 <input type="text" id="build-role-input" class="form-control" placeholder="Ej: DPS, Healer, Tanque">
               </div>
               <div class="form-group flex-1">
-                <label for="build-folder-select">Carpeta / Contenido:</label>
-                <div style="display: flex; gap: 4px;">
-                  <select id="build-folder-select" class="form-control">
-                    <!-- Opciones de carpetas -->
-                  </select>
-                  <button type="button" id="btn-add-folder-inline" class="btn btn-secondary btn-sm" title="Crear nueva carpeta">+</button>
-                </div>
+                <label for="build-tier-equiv-select">Tier Equivalente Recomendado:</label>
+                <select id="build-tier-equiv-select" class="form-control">
+                  <option value="6">Tier 6 Equivalente (6.0 / 5.1 / 4.2)</option>
+                  <option value="7">Tier 7 Equivalente (7.0 / 6.1 / 5.2 / 4.3)</option>
+                  <option value="8" selected>Tier 8 Equivalente (8.0 / 7.1 / 6.2 / 5.3 / 4.4)</option>
+                  <option value="9">Tier 9 Equivalente (8.1 / 7.2 / 6.3 / 5.4)</option>
+                  <option value="10">Tier 10 Equivalente (8.2 / 7.3 / 6.4)</option>
+                  <option value="11">Tier 11 Equivalente (8.3 / 7.4)</option>
+                  <option value="12">Tier 12 Equivalente (8.4)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="build-folder-select">Carpeta / Contenido:</label>
+              <div style="display: flex; gap: 4px;">
+                <select id="build-folder-select" class="form-control">
+                  <!-- Opciones de carpetas -->
+                </select>
+                <button type="button" id="btn-add-folder-inline" class="btn btn-secondary btn-sm" title="Crear nueva carpeta">+</button>
               </div>
             </div>
 
@@ -326,7 +339,7 @@
 
           <!-- Resumen Rápido -->
           <div class="panel-card" style="margin-top: 15px;">
-            <h3>Resumen del Equipamiento</h3>
+            <h3>Resumen del Equipamiento (Tier 8 Sobresaliente)</h3>
             <ul class="summary-list" id="build-summary-list">
               <li>Cabeza: <em>Sin equipar</em></li>
               <li>Arma: <em>Sin equipar</em></li>
@@ -348,8 +361,9 @@
       <div class="modal-header">
         <div>
           <h3 id="viewer-build-title">Nombre de la Build</h3>
-          <div style="display: flex; gap: 8px; margin-top: 4px; align-items: center;">
+          <div style="display: flex; gap: 8px; margin-top: 4px; align-items: center; flex-wrap: wrap;">
             <span id="viewer-build-role" class="slot-tier-badge">DPS</span>
+            <span id="viewer-build-tier" class="slot-tier-badge" style="background:#262013; color:var(--text-gold); border-color:var(--border-highlight);">Tier 8 Eq.</span>
             <span id="viewer-build-folder" class="saved-build-badge">ZvZ</span>
           </div>
         </div>
@@ -359,7 +373,7 @@
       <div class="modal-body">
         
         <!-- Equipamiento Visual -->
-        <h4 style="color: var(--text-gold); font-size: 13px; margin-bottom: 10px; text-transform: uppercase;">⚔️ Equipamiento</h4>
+        <h4 style="color: var(--text-gold); font-size: 13px; margin-bottom: 10px; text-transform: uppercase;">⚔️ Equipamiento (T8 Sobresaliente)</h4>
         <div class="viewer-gear-grid" id="viewer-gear-container">
           <!-- Renderizado dinámicamente -->
         </div>
@@ -408,41 +422,6 @@
             <select id="item-category-select" class="form-control">
               <option value="ALL">Todas las categorías</option>
             </select>
-          </div>
-
-          <div class="item-config-bar" id="item-config-bar">
-            <div class="config-item">
-              <label>Tier:</label>
-              <select id="item-tier-select" class="form-control form-control-sm">
-                <option value="T4">Tier 4</option>
-                <option value="T5">Tier 5</option>
-                <option value="T6">Tier 6</option>
-                <option value="T7">Tier 7</option>
-                <option value="T8" selected>Tier 8</option>
-              </select>
-            </div>
-
-            <div class="config-item" id="config-enchant-wrapper">
-              <label>Encantamiento:</label>
-              <select id="item-enchant-select" class="form-control form-control-sm">
-                <option value="0">.0</option>
-                <option value="1">.1</option>
-                <option value="2">.2</option>
-                <option value="3">.3</option>
-                <option value="4">.4</option>
-              </select>
-            </div>
-
-            <div class="config-item">
-              <label>Calidad:</label>
-              <select id="item-quality-select" class="form-control form-control-sm">
-                <option value="1">Normal</option>
-                <option value="2" selected>Bueno</option>
-                <option value="3">Notable</option>
-                <option value="4">Sobresaliente</option>
-                <option value="5">Obra Maestra</option>
-              </select>
-            </div>
           </div>
         </div>
 
