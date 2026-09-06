@@ -43,12 +43,39 @@ const DEFAULT_FOLDERS = [
   "Soporte & Healers"
 ];
 
-const STORAGE_VERSION = "v5_t8_sobresaliente_tier_equiv";
+const STORAGE_VERSION = "v7_furia_albion_full_sobresaliente";
 
 // ==========================================================================
-// Inicialización
+// Helpers de Texto y Tier Equivalente
 // ==========================================================================
-document.addEventListener("DOMContentLoaded", () => {
+export function getTierEquivExample(tier) {
+  switch (Number(tier)) {
+    case 6: return "6.0, 5.1, 4.2";
+    case 7: return "7.0, 6.1, 5.2, 4.3";
+    case 8: return "8.0, 7.1, 6.2, 5.3, 4.4";
+    case 9: return "8.1, 7.2, 6.3, 5.4";
+    case 10: return "8.2, 7.3, 6.4";
+    case 11: return "8.3, 7.4";
+    case 12: return "8.4";
+    default: return "8.0+";
+  }
+}
+
+export function getSpellShortCode(type, slot = "") {
+  if (type === "active") {
+    if (slot === "head") return "D";
+    if (slot === "armor") return "R";
+    if (slot === "shoes") return "F";
+    return "ACT";
+  }
+  if (type === "passive") return "P";
+  return type.toUpperCase();
+}
+
+// ==========================================================================
+// Inicialización Segura (Evita Race Condition de DOMContentLoaded en Modules)
+// ==========================================================================
+function initApp() {
   initStorage();
   setupNavigation();
   setupSlotClickEvents();
@@ -77,10 +104,16 @@ document.addEventListener("DOMContentLoaded", () => {
   renderFoldersSidebar();
   renderSavedBuildsList();
   updateSavedBuildsCount();
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initApp);
+} else {
+  initApp();
+}
 
 // ==========================================================================
-// Almacenamiento Local (LocalStorage)
+// Almacenamiento Local (LocalStorage con Autorreparación)
 // ==========================================================================
 function initStorage() {
   const currentVer = localStorage.getItem("furia_storage_ver");
@@ -92,12 +125,12 @@ function initStorage() {
   }
 
   const storedBuilds = localStorage.getItem("furia_saved_builds");
-  if (!storedBuilds) {
+  if (!storedBuilds || storedBuilds === "[]") {
     localStorage.setItem("furia_saved_builds", JSON.stringify(DEFAULT_BUILDS));
   }
 
   const storedFolders = localStorage.getItem("furia_custom_folders");
-  if (!storedFolders) {
+  if (!storedFolders || storedFolders === "[]") {
     localStorage.setItem("furia_custom_folders", JSON.stringify(DEFAULT_FOLDERS));
   }
 }
@@ -105,7 +138,12 @@ function initStorage() {
 function getSavedBuilds() {
   try {
     const raw = localStorage.getItem("furia_saved_builds");
-    return raw ? JSON.parse(raw) : DEFAULT_BUILDS;
+    if (!raw) return DEFAULT_BUILDS;
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      return DEFAULT_BUILDS;
+    }
+    return parsed;
   } catch (e) {
     return DEFAULT_BUILDS;
   }
@@ -705,17 +743,6 @@ function updateSpellButton(slot, type, spellId) {
   }
 }
 
-function getSpellShortCode(type, slot = "") {
-  if (type === "active") {
-    if (slot === "head") return "D";
-    if (slot === "armor") return "R";
-    if (slot === "shoes") return "F";
-    return "ACT";
-  }
-  if (type === "passive") return "P";
-  return type.toUpperCase();
-}
-
 function renderQuickSummary() {
   const summaryEl = document.getElementById("build-summary-list");
   if (!summaryEl) return;
@@ -760,7 +787,7 @@ function openItemPickerModal(slot) {
     mount: "Seleccionar Montura"
   };
 
-  modalTitle.textContent = slotTitles[slot] || "Seleccionar Item";
+  if (modalTitle) modalTitle.textContent = slotTitles[slot] || "Seleccionar Item";
   populateCategoriesForSlot(slot);
 
   if (searchInput) searchInput.value = "";
@@ -897,7 +924,7 @@ function openSpellPickerModal(slot, spellType) {
     return;
   }
 
-  modalTitle.textContent = `Seleccionar Habilidad (${spellType.toUpperCase()}) - ${dbItem.name}`;
+  if (modalTitle) modalTitle.textContent = `Seleccionar Habilidad (${spellType.toUpperCase()}) - ${dbItem.name}`;
   container.innerHTML = "";
 
   const currentSelectedSpellId = getCurrentSpellId(slot, spellType);
@@ -914,7 +941,7 @@ function openSpellPickerModal(slot, spellType) {
       </div>
       <div class="spell-option-content">
         <div class="spell-option-name">${spell.name}</div>
-        <div class="spell-option-meta" style="font-size: 11px; color: var(--accent-gold); margin-bottom: 2px;">
+        <div class="spell-option-meta" style="font-size: 11px; color: var(--text-gold); margin-bottom: 2px;">
           ${spell.cooldown ? `⏱ ${spell.cooldown}` : ''} ${spell.energy ? `⚡ ${spell.energy} energía` : ''} ${spell.castTime ? `✋ ${spell.castTime}` : ''}
         </div>
         ${spell.desc ? `<div class="spell-option-desc" style="font-size: 11px; color: var(--text-muted); line-height: 1.3;">${spell.desc}</div>` : ''}
@@ -986,36 +1013,6 @@ function closeSpellPickerModal() {
   if (modal) modal.style.display = "none";
   activeSpellSlot = null;
   activeSpellType = null;
-}
-
-// ==========================================================================
-// Visor de Builds (Modal de Consulta sin Editor)
-// ==========================================================================
-function setupViewerModalEvents() {
-  document.getElementById("btn-close-viewer-modal")?.addEventListener("click", closeBuildViewerModal);
-  document.getElementById("btn-cancel-viewer-modal")?.addEventListener("click", closeBuildViewerModal);
-
-  document.getElementById("btn-viewer-copy-discord")?.addEventListener("click", () => {
-    if (viewingBuild) {
-      const text = generateDiscordText(viewingBuild);
-      copyToClipboard(text, "¡Ficha para Discord copiada!");
-    }
-  });
-
-  document.getElementById("btn-viewer-share-link")?.addEventListener("click", () => {
-    if (viewingBuild) {
-      const serialized = encodeURIComponent(JSON.stringify(viewingBuild));
-      const shareUrl = `${window.location.origin}${window.location.pathname}#build=${serialized}`;
-      copyToClipboard(shareUrl, "¡Enlace a la build copiado!");
-    }
-  });
-
-  document.getElementById("btn-viewer-edit-build")?.addEventListener("click", () => {
-    if (viewingBuild) {
-      closeBuildViewerModal();
-      editBuild(viewingBuild);
-    }
-  });
 }
 
 // ==========================================================================
@@ -1191,7 +1188,7 @@ function renderAlbionLoadoutWheel(build, container) {
       container.appendChild(createSlotElement(offHtml));
     } else {
       const offHtml = `
-        <div class="albion-slot-card" title="Mano secundaria (Vacía)">
+        <div class="albion-slot-card" title="Mano secundaria (Vacia)">
           <span class="albion-empty-slot-icon">Offhand</span>
         </div>
       `;
@@ -1347,8 +1344,9 @@ function setupViewerModalEvents() {
 
   document.getElementById("btn-viewer-share-link")?.addEventListener("click", () => {
     if (viewingBuild) {
-      const url = `${window.location.origin}${window.location.pathname}#build=${encodeURIComponent(JSON.stringify(viewingBuild))}`;
-      copyToClipboard(url, "¡Enlace compartible de la build copiado!");
+      const serialized = encodeURIComponent(JSON.stringify(viewingBuild));
+      const shareUrl = `${window.location.origin}${window.location.pathname}#build=${serialized}`;
+      copyToClipboard(shareUrl, "¡Enlace a la build copiado!");
     }
   });
 
@@ -1556,19 +1554,6 @@ function loadBuildFromUrlHash() {
 // ==========================================================================
 // Generador de Texto para Discord
 // ==========================================================================
-function getTierEquivExample(tier) {
-  switch (Number(tier)) {
-    case 6: return "6.0, 5.1, 4.2";
-    case 7: return "7.0, 6.1, 5.2, 4.3";
-    case 8: return "8.0, 7.1, 6.2, 5.3, 4.4";
-    case 9: return "8.1, 7.2, 6.3, 5.4";
-    case 10: return "8.2, 7.3, 6.4";
-    case 11: return "8.3, 7.4";
-    case 12: return "8.4";
-    default: return "8.0+";
-  }
-}
-
 function generateDiscordText(build) {
   const eq = build.equipment || {};
   const tEq = build.tierEquiv || 8;
