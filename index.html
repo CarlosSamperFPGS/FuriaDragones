@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Furia de Dragones - Gestor de Builds Albion Online</title>
+  <meta name="description" content="Gestor de builds de Albion Online para el gremio Furia de Dragones. Organizado por carpetas de contenido.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Encabezado Principal -->
+  <header class="app-header">
+    <div class="container header-content">
+      <div class="brand">
+        <h1 class="brand-title">🐉 Furia de Dragones</h1>
+        <span class="brand-tag">Gestor de Builds - Albion Online</span>
+      </div>
+      <nav class="nav-tabs">
+        <button type="button" class="tab-btn active" data-tab="builder">🛠️ Creador de Build</button>
+        <button type="button" class="tab-btn" data-tab="saved-builds">📁 Builds por Contenido (<span id="saved-count">0</span>)</button>
+        <button type="button" class="tab-btn" data-tab="help">ℹ️ Ayuda & GitHub Pages</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal -->
+  <main class="container main-content">
+
+    <!-- SECCIÓN 1: CREADOR DE BUILD -->
+    <section id="tab-builder" class="tab-section active">
+      <div class="builder-layout">
+
+        <!-- Columna Izquierda: Ranuras de Equipamiento -->
+        <div class="equipment-column">
+          <div class="panel-header">
+            <h2>Equipamiento del Personaje</h2>
+            <button type="button" id="btn-clear-build" class="btn btn-secondary btn-sm">Limpiar Ranuras</button>
+          </div>
+
+          <div class="slots-grid">
+
+            <!-- CASCO (HEAD) -->
+            <div class="slot-card" id="slot-card-head">
+              <div class="slot-header">
+                <span class="slot-title">Casco / Cabeza</span>
+                <span class="slot-tier-badge" id="badge-head">T4.0</span>
+              </div>
+              <div class="slot-body">
+                <div class="slot-icon-wrapper" data-slot="head" title="Clic para seleccionar Casco">
+                  <img id="img-head" class="slot-img" src="" alt="Casco" style="display: none;">
+                  <span class="slot-empty-text" id="empty-head">+ Equipar</span>
+                </div>
+                <div class="slot-details">
+                  <span class="item-name" id="name-head">Ninguno</span>
+                  <div class="spells-bar" id="spells-head">
+                    <button type="button" class="spell-btn" data-slot="head" data-spell-type="active" title="Habilidad Activa (D)">
+                      <img id="spell-img-head-active" class="spell-img" src="" alt="D" style="display:none;">
+                      <span id="spell-txt-head-active">D</span>
+                    </button>
+                    <button type="button" class="spell-btn" data-slot="head" data-spell-type="passive" title="Pasiva">
+                      <img id="spell-img-head-passive" class="spell-img" src="" alt="P" style="display:none;">
+                      <span id="spell-txt-head-passive">P</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CAPA (CAPE) -->
+            <div class="slot-card" id="slot-card-cape">
+              <div class="slot-header">
+                <span class="slot-title">Capa</span>
+                <span class="slot-tier-badge" id="badge-cape">T4.0</span>
+              </div>
+              <div class="slot-body">
+                <div class="slot-icon-wrapper" data-slot="cape" title="Clic para seleccionar Capa">
+                  <img id="img-cape" class="slot-img" src="" alt="Capa" style="display: none;">
+                  <span class="slot-empty-text" id="empty-cape">+ Equipar</span>
+                </div>
+                <div class="slot-details">
+                  <span class="item-name" id="name-cape">Ninguno</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ARMA PRINCIPAL (MAIN HAND) -->
+            <div class="slot-card" id="slot-card-mainhand">
+              <div class="slot-header">
+                <span class="slot-title">Arma Principal</span>
+                <span class="slot-tier-badge" id="badge-mainhand">T4.0</span>
+              </div>
+              <div class="slot-body">
+                <div class="slot-icon-wrapper" data-slot="mainhand" title="Clic para seleccionar Arma">
+                  <img id="img-mainhand" class="slot-img" src="" alt="Arma" style="display: none;">
+                  <span class="slot-empty-text" id="empty-mainhand">+ Equipar</span>
+                </div>
+                <div class="slot-details">
+                  <span class="item-name" id="name-mainhand">Ninguno</span>
+                  <div class="spells-bar" id="spells-mainhand">
+                    <button type="button" class="spell-btn" data-slot="mainhand" data-spell-type="q" title="Habilidad Q">
+                      <img id="spell-img-mainhand-q" class="spell-img" src="" alt="Q" style="display:none;">
+                      <span id="spell-txt-mainhand-q">Q</span>
+                    </button>
+                    <button type="button" class="spell-btn" data-slot="mainhand" data-spell-type="w" title="Habilidad W">
+                      <img id="spell-img-mainhand-w" class="spell-img" src="" alt="W" style="display:none;">
+                      <span id="spell-txt-mainhand-w">W</span>
+                    </button>
+                    <button type="button" class="spell-btn" data-slot="mainhand" data-spell-type="e" title="Habilidad E">
+                      <img id="spell-img-mainhand-e" class="spell-img" src="" alt="E" style="display:none;">
+                      <span id="spell-txt-mainhand-e">E</span>
+                    </button>
+                    <button type="button" class="spell-btn" data-slot="mainhand" data-spell-type="passive" title="Pasiva">
+                      <img id="spell-img-mainhand-passive" class="spell-img" src="" alt="P" style="display:none;">
+                      <span id="spell-txt-mainhand-passive">P</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- MANO SECUNDARIA (OFF-HAND) -->
+            <div class="slot-card" id="slot-card-offhand">
+              <div class="slot-header">
+                <span class="slot-title">Mano Secundaria</span>
+                <span class="slot-tier-badge" id="badge-offhand">T4.0</span>
+              </div>
+              <div class="slot-body">
+                <div class="slot-icon-wrapper" data-slot="offhand" title="Clic para seleccionar Mano Secundaria">
+                  <img id="img-offhand" class="slot-img" src="" alt="Mano Secundaria" style="display: none;">
+                  <span class="slot-empty-text" id="empty-offhand">+ Equipar</span>
+                </div>
+                <div class="slot-details">
+                  <span class="item-name" id="name-offhand">Ninguno</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ARMADURA / PECHO (ARMOR) -->
+            <div class="slot-card" id="slot-card-armor">
+              <div class="slot-header">
+                <span class="slot-title">Armadura / Pecho</span>
+                <span class="slot-tier-badge" id="badge-armor">T4.0</span>
+              </div>
+              <div class="slot-body">
+                <div class="slot-icon-wrapper" data-slot="armor" title="Clic para seleccionar Armadura">
+                  <img id="img-armor" class="slot-img" src="" alt="Armadura" style="display: none;">
+                  <span class="slot-empty-text" id="empty-armor">+ Equipar</span>
+                </div>
+                <div class="slot-details">
+                  <span class="item-name" id="name-armor">Ninguno</span>
+                  <div class="spells-bar" id="spells-armor">
+                    <button type="button" class="spell-btn" data-slot="armor" data-spell-type="active" title="Habilidad Activa (R)">
+                      <img id="spell-img-armor-active" class="spell-img" src="" alt="R" style="display:none;">
+                      <span id="spell-txt-armor-active">R</span>
+                    </button>
+                    <button type="button" class="spell-btn" data-slot="armor" data-spell-type="passive" title="Pasiva">
+                      <img id="spell-img-armor-passive" class="spell-img" src="" alt="P" style="display:none;">
+                      <span id="spell-txt-armor-passive">P</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- BOTAS / CALZADO (SHOES) -->
+            <div class="slot-card" id="slot-card-shoes">
+              <div class="slot-header">
+                <span class="slot-title">Botas / Calzado</span>
+                <span class="slot-tier-badge" id="badge-shoes">T4.0</span>
+              </div>
+              <div class="slot-body">
+                <div class="slot-icon-wrapper" data-slot="shoes" title="Clic para seleccionar Botas">
+                  <img id="img-shoes" class="slot-img" src="" alt="Botas" style="display: none;">
+                  <span class="slot-empty-text" id="empty-shoes">+ Equipar</span>
+                </div>
+                <div class="slot-details">
+                  <span class="item-name" id="name-shoes">Ninguno</span>
+                  <div class="spells-bar" id="spells-shoes">
+                    <button type="button" class="spell-btn" data-slot="shoes" data-spell-type="active" title="Habilidad Activa (F)">
+                      <img id="spell-img-shoes-active" class="spell-img" src="" alt="F" style="display:none;">
+                      <span id="spell-txt-shoes-active">F</span>
+                    </button>
+                    <button type="button" class="spell-btn" data-slot="shoes" data-spell-type="passive" title="Pasiva">
+                      <img id="spell-img-shoes-passive" class="spell-img" src="" alt="P" style="display:none;">
+                      <span id="spell-txt-shoes-passive">P</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- COMIDA (FOOD) -->
+            <div class="slot-card" id="slot-card-food">
+              <div class="slot-header">
+                <span class="slot-title">Comida</span>
+                <span class="slot-tier-badge" id="badge-food">Comida</span>
+              </div>
+              <div class="slot-body">
+                <div class="slot-icon-wrapper" data-slot="food" title="Clic para seleccionar Comida">
+                  <img id="img-food" class="slot-img" src="" alt="Comida" style="display: none;">
+                  <span class="slot-empty-text" id="empty-food">+ Equipar</span>
+                </div>
+                <div class="slot-details">
+                  <span class="item-name" id="name-food">Ninguno</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- POCIÓN (POTION) -->
+            <div class="slot-card" id="slot-card-potion">
+              <div class="slot-header">
+                <span class="slot-title">Poción</span>
+                <span class="slot-tier-badge" id="badge-potion">Poción</span>
+              </div>
+              <div class="slot-body">
+                <div class="slot-icon-wrapper" data-slot="potion" title="Clic para seleccionar Poción">
+                  <img id="img-potion" class="slot-img" src="" alt="Poción" style="display: none;">
+                  <span class="slot-empty-text" id="empty-potion">+ Equipar</span>
+                </div>
+                <div class="slot-details">
+                  <span class="item-name" id="name-potion">Ninguno</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- MONTURA (MOUNT) -->
+            <div class="slot-card" id="slot-card-mount">
+              <div class="slot-header">
+                <span class="slot-title">Montura</span>
+                <span class="slot-tier-badge" id="badge-mount">Montura</span>
+              </div>
+              <div class="slot-body">
+                <div class="slot-icon-wrapper" data-slot="mount" title="Clic para seleccionar Montura">
+                  <img id="img-mount" class="slot-img" src="" alt="Montura" style="display: none;">
+                  <span class="slot-empty-text" id="empty-mount">+ Equipar</span>
+                </div>
+                <div class="slot-details">
+                  <span class="item-name" id="name-mount">Ninguno</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Columna Derecha: Información y Acciones de la Build -->
+        <div class="info-column">
+          <div class="panel-card">
+            <h2>Información de la Build</h2>
+            
+            <div class="form-group">
+              <label for="build-name-input">Nombre de la Build:</label>
+              <input type="text" id="build-name-input" class="form-control" placeholder="Ej: Bruiser - Rompe-reinos">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label for="build-role-input">Rol / Función:</label>
+                <input type="text" id="build-role-input" class="form-control" placeholder="Ej: DPS, Healer, Tanque">
+              </div>
+              <div class="form-group flex-1">
+                <label for="build-folder-select">Carpeta / Contenido:</label>
+                <div style="display: flex; gap: 4px;">
+                  <select id="build-folder-select" class="form-control">
+                    <!-- Opciones de carpetas cargadas dinámicamente -->
+                  </select>
+                  <button type="button" id="btn-add-folder-inline" class="btn btn-secondary btn-sm" title="Crear nueva carpeta">+</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="build-notes-input">Notas / Comentarios:</label>
+              <textarea id="build-notes-input" class="form-control" rows="2" placeholder="Notas sobre el combo o uso..."></textarea>
+            </div>
+
+            <div class="actions-group">
+              <button type="button" id="btn-save-build" class="btn btn-primary">💾 Guardar Build en la Carpeta</button>
+              <button type="button" id="btn-copy-discord" class="btn btn-secondary">📋 Copiar Formato para Discord</button>
+              <button type="button" id="btn-share-link" class="btn btn-secondary">🔗 Copiar Enlace Compartible</button>
+            </div>
+
+            <div class="import-export-row">
+              <button type="button" id="btn-export-json" class="btn btn-outline btn-sm">Exportar JSON</button>
+              <button type="button" id="btn-import-json" class="btn btn-outline btn-sm">Importar JSON</button>
+              <input type="file" id="file-import-json" accept=".json" style="display: none;">
+            </div>
+
+          </div>
+
+          <!-- Resumen Rápido -->
+          <div class="panel-card" style="margin-top: 15px;">
+            <h3>Resumen del Equipamiento</h3>
+            <ul class="summary-list" id="build-summary-list">
+              <li>Cabeza: <em>Sin equipar</em></li>
+              <li>Arma: <em>Sin equipar</em></li>
+              <li>Pecho: <em>Sin equipar</em></li>
+              <li>Botas: <em>Sin equipar</em></li>
+              <li>Capa: <em>Sin equipar</em></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: BUILDS DEL GREMIO ORGANIZADAS POR CARPETAS -->
+    <section id="tab-saved-builds" class="tab-section">
+      <div class="folders-layout">
+        
+        <!-- Barra lateral de Carpetas -->
+        <aside class="folders-sidebar">
+          <div class="folders-sidebar-header">
+            <h3>📁 Carpetas de Contenido</h3>
+            <button type="button" id="btn-create-new-folder" class="btn btn-secondary btn-sm">+ Nueva Carpeta</button>
+          </div>
+          <ul class="folders-list" id="folders-nav-list">
+            <!-- Renderizado dinámicamente -->
+          </ul>
+        </aside>
+
+        <!-- Contenedor de Builds de la Carpeta Activa -->
+        <div class="folders-content-area">
+          <div class="panel-header">
+            <div>
+              <h2 id="current-folder-title">📁 Todas las Builds</h2>
+              <span id="current-folder-count" style="font-size: 12px; color: var(--text-muted);">0 builds</span>
+            </div>
+            <div class="filter-controls">
+              <input type="text" id="search-saved-builds" class="form-control form-control-sm" placeholder="Buscar build por nombre o rol...">
+            </div>
+          </div>
+
+          <div class="saved-builds-grid" id="saved-builds-container">
+            <!-- Renderizado dinámicamente -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECCIÓN 3: AYUDA Y GITHUB PAGES -->
+    <section id="tab-help" class="tab-section">
+      <div class="panel-card help-panel">
+        <h2>Cómo publicar y usar esta Web en GitHub Pages</h2>
+        
+        <h3>1. Pasos para activar GitHub Pages</h3>
+        <ol>
+          <li>Crea un repositorio en GitHub llamado por ejemplo <code>FuriaDragonesWeb</code>.</li>
+          <li>Sube todos los archivos del proyecto a la rama <code>main</code> o <code>master</code>.</li>
+          <li>Entra a <strong>Settings (Configuración)</strong> de tu repositorio &gt; <strong>Pages</strong>.</li>
+          <li>En <strong>Build and deployment &gt; Source</strong>, selecciona <strong>GitHub Actions</strong> (o selecciona la rama <code>main</code> y carpeta <code>/ root</code>).</li>
+          <li>Tu web quedará disponible en: <code>https://TU_USUARIO.github.io/FuriaDragonesWeb/</code>.</li>
+        </ol>
+
+        <h3>2. Cómo organizar Builds por Carpetas de Contenido</h3>
+        <ul>
+          <li><strong>Carpetas por Content:</strong> Crea y navega entre carpetas según el tipo de actividad (ZvZ, Ganking, PvE, Small Scale, 1v1, etc.).</li>
+          <li><strong>Equipar y Configurar:</strong> Elige items oficiales con su Tier (T4-T8), Encantamiento (.0-.4) y equipa habilidades Q, W, E, D, R, F y pasivas.</li>
+          <li><strong>Compartir con el Gremio:</strong> Usa el botón de Discord para pegar la build directamente en tu servidor o copia el enlace web compartible.</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: SELECTOR DE ITEMS -->
+  <div id="modal-item-picker" class="modal-backdrop" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modal-item-title">Seleccionar Item</h3>
+        <button type="button" class="modal-close" id="btn-close-item-modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-filters">
+          <div class="form-row">
+            <input type="text" id="item-search-input" class="form-control" placeholder="Buscar por nombre...">
+            <select id="item-category-select" class="form-control">
+              <option value="ALL">Todas las categorías</option>
+            </select>
+          </div>
+
+          <div class="item-config-bar" id="item-config-bar">
+            <div class="config-item">
+              <label>Tier:</label>
+              <select id="item-tier-select" class="form-control form-control-sm">
+                <option value="T4">Tier 4</option>
+                <option value="T5">Tier 5</option>
+                <option value="T6">Tier 6</option>
+                <option value="T7">Tier 7</option>
+                <option value="T8" selected>Tier 8</option>
+              </select>
+            </div>
+
+            <div class="config-item" id="config-enchant-wrapper">
+              <label>Encantamiento:</label>
+              <select id="item-enchant-select" class="form-control form-control-sm">
+                <option value="0">.0</option>
+                <option value="1">.1</option>
+                <option value="2">.2</option>
+                <option value="3">.3</option>
+                <option value="4">.4</option>
+              </select>
+            </div>
+
+            <div class="config-item">
+              <label>Calidad:</label>
+              <select id="item-quality-select" class="form-control form-control-sm">
+                <option value="1">Normal</option>
+                <option value="2" selected>Bueno</option>
+                <option value="3">Notable</option>
+                <option value="4">Sobresaliente</option>
+                <option value="5">Obra Maestra</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="items-list-grid" id="items-list-container">
+          <!-- Renderizado dinámicamente -->
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" id="btn-remove-item" class="btn btn-danger btn-sm">Quitar Item Actual</button>
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-item-modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SELECTOR DE HABILIDADES (SPELLS) -->
+  <div id="modal-spell-picker" class="modal-backdrop" style="display: none;">
+    <div class="modal-dialog modal-dialog-sm">
+      <div class="modal-header">
+        <h3 id="modal-spell-title">Seleccionar Habilidad</h3>
+        <button type="button" class="modal-close" id="btn-close-spell-modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="spells-list-grid" id="spells-list-container">
+          <!-- Renderizado dinámicamente -->
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-spell-modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICACIÓN TOAST SIMPLE -->
+  <div id="toast-message" class="toast" style="display: none;"></div>
+
+  <footer class="app-footer">
+    <div class="container">
+      <p>Furia de Dragones &copy; 2026 - Albion Online Guild Tool.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
