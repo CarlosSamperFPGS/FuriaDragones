@@ -516,10 +516,29 @@ textarea.form-control {
   border-radius: 10px;
 }
 
-.folder-nav-item.active .folder-badge-count {
-  background-color: var(--border-highlight);
-  color: #101214;
-  font-weight: bold;
+.folder-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.folder-delete-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 12px;
+  opacity: 0.5;
+  line-height: 1;
+  transition: all 0.15s ease;
+}
+
+.folder-delete-btn:hover {
+  color: #ff5555;
+  background-color: rgba(255, 85, 85, 0.15);
+  opacity: 1;
 }
 
 .folders-content-area {

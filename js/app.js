@@ -238,6 +238,30 @@ function updateFolderDropdowns() {
   });
 }
 
+function deleteFolder(folderName) {
+  if (confirm(`¿Eliminar la carpeta "${folderName}"?\nLas builds que estén en esta carpeta se moverán a "ZvZ".`)) {
+    const builds = getSavedBuilds();
+    builds.forEach(b => {
+      if (b.folder === folderName) {
+        b.folder = "ZvZ";
+      }
+    });
+    saveBuildsToStorage(builds);
+
+    let folders = getAllFolders().filter(f => f !== folderName);
+    if (folders.length === 0) folders = ["ZvZ"];
+    saveCustomFolders(folders);
+
+    if (activeSelectedFolder === folderName) {
+      activeSelectedFolder = "ALL";
+    }
+
+    renderFoldersSidebar();
+    renderSavedBuildsList();
+    showToast(`Carpeta "${folderName}" eliminada.`);
+  }
+}
+
 function renderFoldersSidebar() {
   const listEl = document.getElementById("folders-nav-list");
   if (!listEl) return;
@@ -264,15 +288,32 @@ function renderFoldersSidebar() {
     const count = allBuilds.filter(b => (b.folder || "ZvZ") === folder).length;
     const item = document.createElement("li");
     item.className = `folder-nav-item ${activeSelectedFolder === folder ? 'active' : ''}`;
+    const canDelete = folders.length > 1;
+
     item.innerHTML = `
-      <span title="${folder}">📁 ${folder}</span>
-      <span class="folder-badge-count">${count}</span>
+      <span title="${folder}" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">📁 ${folder}</span>
+      <div class="folder-nav-right">
+        <span class="folder-badge-count">${count}</span>
+        ${canDelete ? `<button type="button" class="folder-delete-btn" title="Eliminar carpeta">&times;</button>` : ''}
+      </div>
     `;
+
     item.addEventListener("click", () => {
       activeSelectedFolder = folder;
       renderFoldersSidebar();
       renderSavedBuildsList();
     });
+
+    if (canDelete) {
+      const delBtn = item.querySelector(".folder-delete-btn");
+      if (delBtn) {
+        delBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          deleteFolder(folder);
+        });
+      }
+    }
+
     listEl.appendChild(item);
   });
 }
