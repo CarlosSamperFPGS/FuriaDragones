@@ -355,51 +355,69 @@
 
   </main>
 
-  <!-- MODAL: VISOR DE BUILD (CONSULTA SIN ABRIR EL EDITOR) -->
+  <!-- MODAL: VISOR DE BUILD (ESTILO OFICIAL ALBION ONLINE IN-GAME) -->
   <div id="modal-build-viewer" class="modal-backdrop" style="display: none;">
-    <div class="modal-dialog modal-dialog-lg">
-      <div class="modal-header">
-        <div>
-          <h3 id="viewer-build-title">Nombre de la Build</h3>
-          <div style="display: flex; gap: 8px; margin-top: 4px; align-items: center; flex-wrap: wrap;">
-            <span id="viewer-build-role" class="slot-tier-badge">DPS</span>
-            <span id="viewer-build-tier" class="slot-tier-badge" style="background:#262013; color:var(--text-gold); border-color:var(--border-highlight);">Tier 8 Eq.</span>
-            <span id="viewer-build-folder" class="saved-build-badge">ZvZ</span>
+    <div class="modal-dialog modal-dialog-albion">
+      
+      <!-- Encabezado Superior: FURIA DE DRAGONES -->
+      <div class="albion-modal-header">
+        <div class="albion-guild-badge">
+          <span class="albion-guild-logo">🐉</span>
+          <div class="albion-guild-text">
+            <h2 class="albion-guild-name">FURIA DE DRAGONES</h2>
+            <span class="albion-guild-sub">Guía Oficial de Equipamiento</span>
           </div>
         </div>
         <button type="button" class="modal-close" id="btn-close-viewer-modal">&times;</button>
       </div>
 
-      <div class="modal-body">
+      <!-- Barra de Metadatos de la Build -->
+      <div class="albion-build-metabar">
+        <div class="albion-build-name" id="viewer-build-title">Nombre de la Build</div>
+        <div class="albion-build-tags">
+          <span id="viewer-build-role" class="albion-tag albion-tag-role">DPS Melee</span>
+          <span id="viewer-build-tier" class="albion-tag albion-tag-tier">⭐ Tier 8 Equivalente</span>
+          <span id="viewer-build-folder" class="albion-tag albion-tag-folder">📁 ZvZ</span>
+        </div>
+      </div>
+
+      <div class="modal-body albion-viewer-body">
         
-        <!-- Equipamiento Visual -->
-        <h4 style="color: var(--text-gold); font-size: 13px; margin-bottom: 10px; text-transform: uppercase;">⚔️ Equipamiento (T8 Sobresaliente)</h4>
-        <div class="viewer-gear-grid" id="viewer-gear-container">
-          <!-- Renderizado dinámicamente -->
+        <!-- Rueda / Grid 3x3 de Equipamiento con Spells Superpuestos -->
+        <div class="albion-wheel-wrapper">
+          <div class="albion-character-wheel" id="viewer-albion-wheel">
+            <!-- Renderizado dinámicamente con 9 slots idénticos a la interfaz de Albion -->
+          </div>
         </div>
 
-        <!-- Habilidades Detalladas -->
-        <h4 style="color: var(--text-gold); font-size: 13px; margin: 16px 0 10px; text-transform: uppercase;">✨ Habilidades Equipadas</h4>
-        <div class="viewer-spells-list" id="viewer-spells-container">
-          <!-- Renderizado dinámicamente -->
-        </div>
+        <!-- Panel de Pestañas: Habilidades y Notas -->
+        <div class="albion-details-panel">
+          <div class="albion-subtabs-nav">
+            <button type="button" class="albion-subtab-btn active" id="btn-subtab-spells" data-subtab="spells">✨ Habilidades Equipadas</button>
+            <button type="button" class="albion-subtab-btn" id="btn-subtab-notes" data-subtab="notes">📝 Notas & Combo</button>
+          </div>
 
-        <!-- Notas / Estrategia -->
-        <div id="viewer-notes-wrapper" style="margin-top: 16px;">
-          <h4 style="color: var(--text-gold); font-size: 13px; margin-bottom: 6px; text-transform: uppercase;">📝 Notas & Combo</h4>
-          <div id="viewer-build-notes" class="viewer-notes-box">
-            Sin notas.
+          <div id="subtab-content-spells" class="albion-subtab-pane active">
+            <div class="viewer-spells-list" id="viewer-spells-container">
+              <!-- Renderizado dinámicamente -->
+            </div>
+          </div>
+
+          <div id="subtab-content-notes" class="albion-subtab-pane">
+            <div id="viewer-build-notes" class="viewer-notes-box">
+              Sin notas adicionales.
+            </div>
           </div>
         </div>
 
       </div>
 
-      <div class="modal-footer" style="justify-content: space-between;">
-        <div style="display: flex; gap: 6px;">
+      <div class="modal-footer albion-modal-footer">
+        <div class="albion-footer-left">
           <button type="button" id="btn-viewer-copy-discord" class="btn btn-secondary btn-sm">📋 Copiar Discord</button>
-          <button type="button" id="btn-viewer-share-link" class="btn btn-secondary btn-sm">🔗 Copiar Enlace</button>
+          <button type="button" id="btn-viewer-share-link" class="btn btn-secondary btn-sm">🔗 Compartir Enlace</button>
         </div>
-        <div style="display: flex; gap: 6px;">
+        <div class="albion-footer-right">
           <button type="button" id="btn-viewer-edit-build" class="btn btn-primary btn-sm">✏️ Modificar en Creador</button>
           <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-viewer-modal">Cerrar</button>
         </div>

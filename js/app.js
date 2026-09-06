@@ -1018,144 +1018,347 @@ function setupViewerModalEvents() {
   });
 }
 
+// ==========================================================================
+// Visor de Build: Estilo Oficial Albion Online In-Game
+// ==========================================================================
 function openBuildViewerModal(build) {
   viewingBuild = build;
   const modal = document.getElementById("modal-build-viewer");
   if (!modal) return;
 
-  document.getElementById("viewer-build-title").textContent = build.name || "Sin título";
-  document.getElementById("viewer-build-role").textContent = build.role || "General";
-  document.getElementById("viewer-build-tier").textContent = `⭐ Tier ${build.tierEquiv || 8} Eq.`;
-  document.getElementById("viewer-build-folder").textContent = `📁 ${build.folder || 'ZvZ'}`;
+  // Encabezado & Metadatos
+  const titleEl = document.getElementById("viewer-build-title");
+  const roleEl = document.getElementById("viewer-build-role");
+  const tierEl = document.getElementById("viewer-build-tier");
+  const folderEl = document.getElementById("viewer-build-folder");
 
-  const gearContainer = document.getElementById("viewer-gear-container");
+  if (titleEl) titleEl.textContent = build.name || "Sin título";
+  if (roleEl) roleEl.textContent = build.role || "General";
+  const tEq = build.tierEquiv || 8;
+  if (tierEl) tierEl.textContent = `⭐ Tier ${tEq} Equivalente (${getTierEquivExample(tEq)})`;
+  if (folderEl) folderEl.textContent = `📁 ${build.folder || 'ZvZ'}`;
+
+  // Rueda 3x3 de Equipamiento estilo Albion
+  const wheelContainer = document.getElementById("viewer-albion-wheel");
+  if (wheelContainer) {
+    renderAlbionLoadoutWheel(build, wheelContainer);
+  }
+
+  // Lista Detallada de Habilidades
   const spellsContainer = document.getElementById("viewer-spells-container");
   const notesEl = document.getElementById("viewer-build-notes");
-
-  const slotsConfig = [
-    { key: "head", label: "Casco / Cabeza" },
-    { key: "cape", label: "Capa" },
-    { key: "mainhand", label: "Arma Principal" },
-    { key: "offhand", label: "Mano Secundaria" },
-    { key: "armor", label: "Armadura / Pecho" },
-    { key: "shoes", label: "Botas / Calzado" },
-    { key: "food", label: "Comida" },
-    { key: "potion", label: "Poción" },
-    { key: "mount", label: "Montura" }
-  ];
-
-  gearContainer.innerHTML = "";
   const eq = build.equipment || {};
-  const mhItem = ALBION_ITEMS.find(i => i.id === eq.mainhand?.id);
 
-  slotsConfig.forEach(s => {
-    const slotData = eq[s.key];
-    const item = ALBION_ITEMS.find(i => i.id === slotData?.id);
-    const card = document.createElement("div");
-    card.className = "viewer-gear-card";
+  if (spellsContainer) {
+    spellsContainer.innerHTML = "";
+    const spellsToRender = [];
 
-    if (s.key === "offhand" && mhItem && mhItem.twoHanded) {
-      card.innerHTML = `
-        <div class="viewer-gear-img" style="display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:11px;">2M</div>
-        <div class="viewer-gear-info">
-          <div class="viewer-gear-slot">${s.label}</div>
-          <div class="viewer-gear-name" style="color:var(--text-muted);">Arma a 2 Manos</div>
-          <span class="viewer-gear-badge">Bloqueado</span>
-        </div>
-      `;
-    } else if (slotData && item) {
-      const tier = slotData.tier || item.fixedTier || "T8";
-      const iconUrl = getItemImageUrl(item, tier, 0, 4);
-      const tierBadgeText = s.key.match(/food|potion|mount/) ? tier : "T8 Sobresaliente";
-
-      card.innerHTML = `
-        <img class="viewer-gear-img" src="${iconUrl}" alt="${item.name}" onerror="this.style.display='none';">
-        <div class="viewer-gear-info">
-          <div class="viewer-gear-slot">${s.label}</div>
-          <div class="viewer-gear-name" title="${item.name}">${item.name}</div>
-          <span class="viewer-gear-badge">${tierBadgeText}</span>
-        </div>
-      `;
-    } else {
-      card.innerHTML = `
-        <div class="viewer-gear-img" style="display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:11px;">-</div>
-        <div class="viewer-gear-info">
-          <div class="viewer-gear-slot">${s.label}</div>
-          <div class="viewer-gear-name" style="color:var(--text-muted);">Sin equipar</div>
-          <span class="viewer-gear-badge" style="opacity:0.5;">Vacío</span>
-        </div>
-      `;
+    if (eq.mainhand) {
+      if (eq.mainhand.qSpell) spellsToRender.push({ spellId: eq.mainhand.qSpell, key: "Q (Arma)" });
+      if (eq.mainhand.wSpell) spellsToRender.push({ spellId: eq.mainhand.wSpell, key: "W (Arma)" });
+      if (eq.mainhand.eSpell) spellsToRender.push({ spellId: eq.mainhand.eSpell, key: "E (Especial)" });
+      if (eq.mainhand.passiveSpell) spellsToRender.push({ spellId: eq.mainhand.passiveSpell, key: "Pasiva (Arma)" });
     }
 
-    gearContainer.appendChild(card);
-  });
+    if (eq.head) {
+      if (eq.head.activeSpell) spellsToRender.push({ spellId: eq.head.activeSpell, key: "D (Cabeza)" });
+      if (eq.head.passiveSpell) spellsToRender.push({ spellId: eq.head.passiveSpell, key: "Pasiva (Cabeza)" });
+    }
 
-  spellsContainer.innerHTML = "";
-  const spellsToRender = [];
+    if (eq.armor) {
+      if (eq.armor.activeSpell) spellsToRender.push({ spellId: eq.armor.activeSpell, key: "R (Pecho)" });
+      if (eq.armor.passiveSpell) spellsToRender.push({ spellId: eq.armor.passiveSpell, key: "Pasiva (Pecho)" });
+    }
 
-  if (eq.mainhand) {
-    if (eq.mainhand.qSpell) spellsToRender.push({ spellId: eq.mainhand.qSpell, key: "Q (Arma)" });
-    if (eq.mainhand.wSpell) spellsToRender.push({ spellId: eq.mainhand.wSpell, key: "W (Arma)" });
-    if (eq.mainhand.eSpell) spellsToRender.push({ spellId: eq.mainhand.eSpell, key: "E (Especial)" });
-    if (eq.mainhand.passiveSpell) spellsToRender.push({ spellId: eq.mainhand.passiveSpell, key: "Pasiva (Arma)" });
+    if (eq.shoes) {
+      if (eq.shoes.activeSpell) spellsToRender.push({ spellId: eq.shoes.activeSpell, key: "F (Botas)" });
+      if (eq.shoes.passiveSpell) spellsToRender.push({ spellId: eq.shoes.passiveSpell, key: "Pasiva (Botas)" });
+    }
+
+    if (spellsToRender.length === 0) {
+      spellsContainer.innerHTML = `<div style="grid-column: 1/-1; color: var(--text-muted); font-size: 12px; padding: 10px;">No hay habilidades seleccionadas para esta build.</div>`;
+    } else {
+      spellsToRender.forEach(sObj => {
+        const spell = ALBION_SPELLS[sObj.spellId];
+        if (!spell) return;
+
+        const row = document.createElement("div");
+        row.className = "viewer-spell-row";
+        row.id = `spell-detail-${sObj.spellId}`;
+        const iconUrl = spell.icon || `https://render.albiononline.com/v1/spell/${spell.id}.png`;
+
+        row.innerHTML = `
+          <div class="viewer-spell-icon">
+            <img src="${iconUrl}" alt="${spell.name}" onerror="this.style.display='none'; this.parentElement.textContent='${sObj.key.split(' ')[0]}';">
+          </div>
+          <div class="viewer-spell-details">
+            <div class="viewer-spell-header">
+              <span class="viewer-spell-title">${spell.name}</span>
+              <span class="viewer-spell-slotkey">${sObj.key}</span>
+            </div>
+            <div class="viewer-spell-meta">
+              ${spell.cooldown ? `⏱ ${spell.cooldown}` : ''} ${spell.energy ? `⚡ ${spell.energy} energía` : ''} ${spell.castTime ? `✋ ${spell.castTime}` : ''}
+            </div>
+            ${spell.desc ? `<div class="viewer-spell-desc">${spell.desc}</div>` : ''}
+          </div>
+        `;
+        spellsContainer.appendChild(row);
+      });
+    }
   }
 
-  if (eq.head) {
-    if (eq.head.activeSpell) spellsToRender.push({ spellId: eq.head.activeSpell, key: "D (Cabeza)" });
-    if (eq.head.passiveSpell) spellsToRender.push({ spellId: eq.head.passiveSpell, key: "Pasiva (Cabeza)" });
+  // Notas
+  if (notesEl) {
+    notesEl.textContent = build.notes || "Sin notas adicionales para esta build.";
   }
 
-  if (eq.armor) {
-    if (eq.armor.activeSpell) spellsToRender.push({ spellId: eq.armor.activeSpell, key: "R (Pecho)" });
-    if (eq.armor.passiveSpell) spellsToRender.push({ spellId: eq.armor.passiveSpell, key: "Pasiva (Pecho)" });
+  switchViewerSubtab("spells");
+  modal.style.display = "flex";
+}
+
+function renderAlbionLoadoutWheel(build, container) {
+  container.innerHTML = "";
+  const eq = build.equipment || {};
+  const mhItem = ALBION_ITEMS.find(i => i.id === eq.mainhand?.id);
+  const isTwoHanded = mhItem && mhItem.twoHanded;
+
+  function createSlotElement(slotHtml) {
+    const div = document.createElement("div");
+    div.innerHTML = slotHtml.trim();
+    return div.firstElementChild;
   }
 
-  if (eq.shoes) {
-    if (eq.shoes.activeSpell) spellsToRender.push({ spellId: eq.shoes.activeSpell, key: "F (Botas)" });
-    if (eq.shoes.passiveSpell) spellsToRender.push({ spellId: eq.shoes.passiveSpell, key: "Pasiva (Botas)" });
-  }
+  // 1. Mochila (Bag) - Top Left
+  const bagHtml = `
+    <div class="albion-slot-card" title="Bolsa de Anciano (T8 Sobresaliente)">
+      <img class="albion-slot-img" src="https://render.albiononline.com/v1/item/T8_BAG.png?quality=4" alt="Mochila T8">
+    </div>
+  `;
+  container.appendChild(createSlotElement(bagHtml));
 
-  if (spellsToRender.length === 0) {
-    spellsContainer.innerHTML = `<div style="grid-column: 1/-1; color: var(--text-muted); font-size: 12px;">No hay habilidades seleccionadas.</div>`;
-  } else {
-    spellsToRender.forEach(sObj => {
-      const spell = ALBION_SPELLS[sObj.spellId];
-      if (!spell) return;
+  // 2. Casco (Head) - Top Center
+  container.appendChild(createAlbionSlot(eq.head, [
+    { id: eq.head?.activeSpell, key: "D" },
+    { id: eq.head?.passiveSpell, key: "P" }
+  ], "Casco / Cabeza"));
 
-      const row = document.createElement("div");
-      row.className = "viewer-spell-row";
-      const iconUrl = spell.icon || `https://render.albiononline.com/v1/spell/${spell.id}.png`;
+  // 3. Capa (Cape) - Top Right
+  const capeItem = ALBION_ITEMS.find(i => i.id === eq.cape?.id);
+  const capeUrl = capeItem ? getItemImageUrl(capeItem, eq.cape?.tier || "T8", 0, 4) : "https://render.albiononline.com/v1/item/T8_CAPE.png?quality=4";
+  const capeHtml = `
+    <div class="albion-slot-card" title="${capeItem ? capeItem.name : 'Capa'}">
+      <img class="albion-slot-img" src="${capeUrl}" alt="${capeItem ? capeItem.name : 'Capa'}">
+    </div>
+  `;
+  container.appendChild(createSlotElement(capeHtml));
 
-      row.innerHTML = `
-        <div class="viewer-spell-icon">
-          <img src="${iconUrl}" alt="${spell.name}" onerror="this.style.display='none'; this.parentElement.textContent='${sObj.key.split(' ')[0]}';">
+  // 4. Arma Principal (Mainhand) - Middle Left
+  container.appendChild(createAlbionSlot(eq.mainhand, [
+    { id: eq.mainhand?.qSpell, key: "Q" },
+    { id: eq.mainhand?.wSpell, key: "W" },
+    { id: eq.mainhand?.eSpell, key: "E" },
+    { id: eq.mainhand?.passiveSpell, key: "P" }
+  ], "Arma Principal"));
+
+  // 5. Armadura (Armor) - Middle Center
+  container.appendChild(createAlbionSlot(eq.armor, [
+    { id: eq.armor?.activeSpell, key: "R" },
+    { id: eq.armor?.passiveSpell, key: "P" }
+  ], "Armadura / Pecho"));
+
+  // 6. Mano Secundaria (Offhand) - Middle Right
+  if (isTwoHanded) {
+    const offhandHtml = `
+      <div class="albion-slot-card albion-slot-blocked" title="Arma a 2 Manos (Ranura Mano Secundaria Bloqueada)">
+        <div class="albion-twohanded-cross">
+          <svg viewBox="0 0 24 24" width="46" height="46" stroke="#525d6b" stroke-width="2.2" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
         </div>
-        <div class="viewer-spell-details">
-          <div class="viewer-spell-header">
-            <span class="viewer-spell-title">${spell.name}</span>
-            <span class="viewer-spell-slotkey">${sObj.key}</span>
-          </div>
-          <div class="viewer-spell-meta">
-            ${spell.cooldown ? `⏱ ${spell.cooldown}` : ''} ${spell.energy ? `⚡ ${spell.energy} energía` : ''} ${spell.castTime ? `✋ ${spell.castTime}` : ''}
-          </div>
-          ${spell.desc ? `<div class="viewer-spell-desc">${spell.desc}</div>` : ''}
+      </div>
+    `;
+    container.appendChild(createSlotElement(offhandHtml));
+  } else {
+    const offItem = ALBION_ITEMS.find(i => i.id === eq.offhand?.id);
+    if (offItem) {
+      const offUrl = getItemImageUrl(offItem, eq.offhand?.tier || "T8", 0, 4);
+      const offHtml = `
+        <div class="albion-slot-card" title="${offItem.name}">
+          <img class="albion-slot-img" src="${offUrl}" alt="${offItem.name}">
         </div>
       `;
-      spellsContainer.appendChild(row);
+      container.appendChild(createSlotElement(offHtml));
+    } else {
+      const offHtml = `
+        <div class="albion-slot-card" title="Mano secundaria (Vacía)">
+          <span class="albion-empty-slot-icon">Offhand</span>
+        </div>
+      `;
+      container.appendChild(createSlotElement(offHtml));
+    }
+  }
+
+  // 7. Poción (Potion) - Bottom Left
+  const potItem = ALBION_ITEMS.find(i => i.id === eq.potion?.id);
+  const potUrl = potItem ? getItemImageUrl(potItem, eq.potion?.tier || "T7", 0, 4) : "https://render.albiononline.com/v1/item/T7_POTION_HEAL.png?quality=4";
+  const potHtml = `
+    <div class="albion-slot-card" title="${potItem ? potItem.name : 'Poción'}">
+      <img class="albion-slot-img" src="${potUrl}" alt="${potItem ? potItem.name : 'Poción'}">
+    </div>
+  `;
+  container.appendChild(createSlotElement(potHtml));
+
+  // 8. Botas (Shoes) - Bottom Center
+  container.appendChild(createAlbionSlot(eq.shoes, [
+    { id: eq.shoes?.activeSpell, key: "F" },
+    { id: eq.shoes?.passiveSpell, key: "P" }
+  ], "Botas / Calzado"));
+
+  // 9. Comida y Montura (Food & Mount) - Bottom Right
+  const foodItem = ALBION_ITEMS.find(i => i.id === eq.food?.id);
+  const mountItem = ALBION_ITEMS.find(i => i.id === eq.mount?.id);
+  const foodUrl = foodItem ? getItemImageUrl(foodItem, eq.food?.tier || "T8", 0, 4) : "https://render.albiononline.com/v1/item/T8_MEAL_STEW.png?quality=4";
+  
+  let foodMountHtml = `
+    <div class="albion-slot-card" title="${foodItem ? foodItem.name : 'Comida'}">
+      <img class="albion-slot-img" src="${foodUrl}" alt="${foodItem ? foodItem.name : 'Comida'}">
+  `;
+
+  if (mountItem) {
+    const mountUrl = getItemImageUrl(mountItem, eq.mount?.tier || "T6", 0, 4);
+    foodMountHtml += `
+      <div class="albion-mini-mount-badge" title="Montura: ${mountItem.name}">
+        <img src="${mountUrl}" alt="${mountItem.name}">
+      </div>
+    `;
+  }
+
+  foodMountHtml += `</div>`;
+  container.appendChild(createSlotElement(foodMountHtml));
+}
+
+function createAlbionSlot(slotData, spellsList, defaultLabel) {
+  const item = ALBION_ITEMS.find(i => i.id === slotData?.id);
+  const slotCard = document.createElement("div");
+  slotCard.className = "albion-slot-card";
+
+  if (!item) {
+    slotCard.title = `${defaultLabel} (Vacío)`;
+    slotCard.innerHTML = `<span class="albion-empty-slot-icon">${defaultLabel}</span>`;
+    return slotCard;
+  }
+
+  const url = getItemImageUrl(item, slotData.tier || "T8", 0, 4);
+  slotCard.title = `${item.name} (T8 Sobresaliente)`;
+
+  const img = document.createElement("img");
+  img.className = "albion-slot-img";
+  img.src = url;
+  img.alt = item.name;
+  slotCard.appendChild(img);
+
+  const activeSpells = spellsList.filter(s => s && s.id);
+  if (activeSpells.length > 0) {
+    const overlay = document.createElement("div");
+    overlay.className = `albion-spells-overlay ${activeSpells.length >= 4 ? 'spells-4' : ''}`;
+
+    activeSpells.forEach(sObj => {
+      const spell = ALBION_SPELLS[sObj.id];
+      const spellCircle = document.createElement("div");
+      spellCircle.className = "albion-spell-circle";
+      const spellTitle = spell ? `${spell.name} [${sObj.key}]${spell.cooldown ? ' - Enfriamiento: ' + spell.cooldown : ''}` : sObj.key;
+      spellCircle.title = spellTitle;
+
+      const spellIconUrl = spell?.icon || `https://render.albiononline.com/v1/spell/${sObj.id}.png`;
+      const spellImg = document.createElement("img");
+      spellImg.src = spellIconUrl;
+      spellImg.alt = sObj.key;
+      spellImg.onerror = () => {
+        spellImg.style.display = 'none';
+        spellCircle.textContent = sObj.key;
+      };
+      spellCircle.appendChild(spellImg);
+
+      spellCircle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        switchViewerSubtab("spells");
+        const targetRow = document.getElementById(`spell-detail-${sObj.id}`);
+        if (targetRow) {
+          targetRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          targetRow.style.borderColor = "var(--text-gold)";
+          setTimeout(() => {
+            targetRow.style.borderColor = "var(--border-color)";
+          }, 1500);
+        }
+      });
+
+      overlay.appendChild(spellCircle);
     });
+
+    slotCard.appendChild(overlay);
   }
 
-  if (notesEl) {
-    notesEl.textContent = build.notes || "Sin notas adicionales.";
-  }
+  return slotCard;
+}
 
-  modal.style.display = "flex";
+function switchViewerSubtab(tabName) {
+  document.querySelectorAll(".albion-subtab-btn").forEach(btn => {
+    if (btn.getAttribute("data-subtab") === tabName) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  });
+
+  document.querySelectorAll(".albion-subtab-pane").forEach(pane => {
+    pane.classList.remove("active");
+  });
+
+  const activePane = document.getElementById(`subtab-content-${tabName}`);
+  if (activePane) {
+    activePane.classList.add("active");
+  }
 }
 
 function closeBuildViewerModal() {
   const modal = document.getElementById("modal-build-viewer");
   if (modal) modal.style.display = "none";
   viewingBuild = null;
+}
+
+function setupViewerModalEvents() {
+  document.getElementById("btn-close-viewer-modal")?.addEventListener("click", closeBuildViewerModal);
+  document.getElementById("btn-cancel-viewer-modal")?.addEventListener("click", closeBuildViewerModal);
+
+  document.querySelectorAll(".albion-subtab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const subtab = btn.getAttribute("data-subtab");
+      if (subtab) switchViewerSubtab(subtab);
+    });
+  });
+
+  document.getElementById("btn-viewer-copy-discord")?.addEventListener("click", () => {
+    if (viewingBuild) {
+      const text = generateDiscordText(viewingBuild);
+      copyToClipboard(text, "¡Ficha de build para Discord copiada!");
+    }
+  });
+
+  document.getElementById("btn-viewer-share-link")?.addEventListener("click", () => {
+    if (viewingBuild) {
+      const url = `${window.location.origin}${window.location.pathname}#build=${encodeURIComponent(JSON.stringify(viewingBuild))}`;
+      copyToClipboard(url, "¡Enlace compartible de la build copiado!");
+    }
+  });
+
+  document.getElementById("btn-viewer-edit-build")?.addEventListener("click", () => {
+    if (viewingBuild) {
+      const toEdit = JSON.parse(JSON.stringify(viewingBuild));
+      closeBuildViewerModal();
+      editBuild(toEdit);
+    }
+  });
 }
 
 function setupModalEvents() {
