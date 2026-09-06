@@ -27,6 +27,7 @@ let currentBuild = {
   }
 };
 
+let viewingBuild = null;
 let activeSelectedFolder = "ALL";
 let activeModalSlot = null;
 let activeSpellSlot = null;
@@ -41,7 +42,7 @@ const DEFAULT_FOLDERS = [
   "Soporte & Healers"
 ];
 
-const STORAGE_VERSION = "v3_official_es_spells";
+const STORAGE_VERSION = "v4_separated_viewer_hazard";
 
 // ==========================================================================
 // Inicialización
@@ -54,15 +55,18 @@ document.addEventListener("DOMContentLoaded", () => {
   setupFormEvents();
   setupActionButtons();
   setupFolderEvents();
+  setupViewerModalEvents();
   
   if (window.location.hash.startsWith("#build=")) {
     loadBuildFromUrlHash();
   } else {
     const saved = getSavedBuilds();
     if (saved && saved.length > 0) {
-      loadBuild(saved[0]);
+      currentBuild = JSON.parse(JSON.stringify(saved[0]));
+      renderBuild();
     } else if (DEFAULT_BUILDS.length > 0) {
-      loadBuild(DEFAULT_BUILDS[0]);
+      currentBuild = JSON.parse(JSON.stringify(DEFAULT_BUILDS[0]));
+      renderBuild();
     } else {
       renderBuild();
     }
@@ -143,25 +147,34 @@ function setupNavigation() {
   tabButtons.forEach(btn => {
     btn.addEventListener("click", () => {
       const tabTarget = btn.getAttribute("data-tab");
-      
-      tabButtons.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-
-      document.querySelectorAll(".tab-section").forEach(sec => {
-        sec.classList.remove("active");
-      });
-
-      const activeSection = document.getElementById(`tab-${tabTarget}`);
-      if (activeSection) {
-        activeSection.classList.add("active");
-      }
-
-      if (tabTarget === "saved-builds") {
-        renderFoldersSidebar();
-        renderSavedBuildsList();
-      }
+      switchTab(tabTarget);
     });
   });
+}
+
+function switchTab(tabTarget) {
+  const tabButtons = document.querySelectorAll(".tab-btn");
+  tabButtons.forEach(b => {
+    if (b.getAttribute("data-tab") === tabTarget) {
+      b.classList.add("active");
+    } else {
+      b.classList.remove("active");
+    }
+  });
+
+  document.querySelectorAll(".tab-section").forEach(sec => {
+    sec.classList.remove("active");
+  });
+
+  const activeSection = document.getElementById(`tab-${tabTarget}`);
+  if (activeSection) {
+    activeSection.classList.add("active");
+  }
+
+  if (tabTarget === "saved-builds") {
+    renderFoldersSidebar();
+    renderSavedBuildsList();
+  }
 }
 
 // ==========================================================================
@@ -190,6 +203,13 @@ function setupFolderEvents() {
           currentBuild.folder = folderName.trim();
         }
       }
+    });
+  }
+
+  const btnCreateFromList = document.getElementById("btn-create-build-from-list");
+  if (btnCreateFromList) {
+    btnCreateFromList.addEventListener("click", () => {
+      startNewBuild();
     });
   }
 }
@@ -403,8 +423,8 @@ function setupActionButtons() {
         try {
           const imported = JSON.parse(event.target.result);
           if (imported && imported.equipment) {
-            loadBuild(imported);
-            showToast("Build importada con éxito.");
+            editBuild(imported);
+            showToast("Build importada en el creador.");
           } else {
             alert("El archivo JSON no tiene el formato de build correcto.");
           }
@@ -426,8 +446,46 @@ function setupActionButtons() {
 }
 
 // ==========================================================================
-// Renderizado Principal de la Build
+// Creador / Modificador de Build
 // ==========================================================================
+function startNewBuild() {
+  currentBuild = {
+    id: "build_" + Date.now(),
+    name: "Nueva Build",
+    role: "DPS Melee",
+    folder: activeSelectedFolder !== "ALL" ? activeSelectedFolder : "ZvZ",
+    notes: "",
+    equipment: {
+      head: null,
+      mainhand: null,
+      offhand: null,
+      armor: null,
+      shoes: null,
+      cape: null,
+      food: null,
+      potion: null,
+      mount: null
+    }
+  };
+
+  const editorTitle = document.getElementById("editor-title");
+  if (editorTitle) editorTitle.textContent = "🛠️ Creador de Nueva Build";
+
+  renderBuild();
+  switchTab("builder");
+  showToast("Creador listo para una nueva build.");
+}
+
+function editBuild(build) {
+  currentBuild = JSON.parse(JSON.stringify(build));
+  const editorTitle = document.getElementById("editor-title");
+  if (editorTitle) editorTitle.textContent = `🛠️ Editando: ${build.name || 'Build'}`;
+
+  renderBuild();
+  switchTab("builder");
+  showToast(`Cargada "${build.name}" en el editor.`);
+}
+
 function renderBuild() {
   const nameInput = document.getElementById("build-name-input");
   const roleInput = document.getElementById("build-role-input");
@@ -752,7 +810,6 @@ function equipItemToSlot(slot, item, tier, enchant, quality) {
     currentBuild.equipment.offhand = null;
   }
 
-  // Bind exact spells specifically for this item
   const itemSpells = ITEM_SPELLS_MAP[item.id] || {};
 
   if (slot === "mainhand") {
@@ -761,7 +818,6 @@ function equipItemToSlot(slot, item, tier, enchant, quality) {
     currentBuild.equipment.mainhand.eSpell = itemSpells.e?.[0] || null;
     currentBuild.equipment.mainhand.passiveSpell = itemSpells.passive?.[0] || null;
   } else if (slot === "head" || slot === "armor" || slot === "shoes") {
-    // Pick the unique/last active spell as default (e.g. Life Drain Aura for Vandal Jacket)
     const activeList = itemSpells.active || [];
     currentBuild.equipment[slot].activeSpell = activeList.length > 0 ? activeList[activeList.length - 1] : null;
     currentBuild.equipment[slot].passiveSpell = itemSpells.passive?.[0] || null;
@@ -896,6 +952,180 @@ function closeSpellPickerModal() {
   activeSpellType = null;
 }
 
+// ==========================================================================
+// Visor de Builds (Modal de Consulta sin Editor)
+// ==========================================================================
+function setupViewerModalEvents() {
+  document.getElementById("btn-close-viewer-modal")?.addEventListener("click", closeBuildViewerModal);
+  document.getElementById("btn-cancel-viewer-modal")?.addEventListener("click", closeBuildViewerModal);
+
+  document.getElementById("btn-viewer-copy-discord")?.addEventListener("click", () => {
+    if (viewingBuild) {
+      const text = generateDiscordText(viewingBuild);
+      copyToClipboard(text, "¡Ficha para Discord copiada!");
+    }
+  });
+
+  document.getElementById("btn-viewer-share-link")?.addEventListener("click", () => {
+    if (viewingBuild) {
+      const serialized = encodeURIComponent(JSON.stringify(viewingBuild));
+      const shareUrl = `${window.location.origin}${window.location.pathname}#build=${serialized}`;
+      copyToClipboard(shareUrl, "¡Enlace a la build copiado!");
+    }
+  });
+
+  document.getElementById("btn-viewer-edit-build")?.addEventListener("click", () => {
+    if (viewingBuild) {
+      closeBuildViewerModal();
+      editBuild(viewingBuild);
+    }
+  });
+}
+
+function openBuildViewerModal(build) {
+  viewingBuild = build;
+  const modal = document.getElementById("modal-build-viewer");
+  if (!modal) return;
+
+  document.getElementById("viewer-build-title").textContent = build.name || "Sin título";
+  document.getElementById("viewer-build-role").textContent = build.role || "General";
+  document.getElementById("viewer-build-folder").textContent = `📁 ${build.folder || 'ZvZ'}`;
+
+  const gearContainer = document.getElementById("viewer-gear-container");
+  const spellsContainer = document.getElementById("viewer-spells-container");
+  const notesEl = document.getElementById("viewer-build-notes");
+
+  // Render Gear
+  const slotsConfig = [
+    { key: "head", label: "Casco / Cabeza" },
+    { key: "cape", label: "Capa" },
+    { key: "mainhand", label: "Arma Principal" },
+    { key: "offhand", label: "Mano Secundaria" },
+    { key: "armor", label: "Armadura / Pecho" },
+    { key: "shoes", label: "Botas / Calzado" },
+    { key: "food", label: "Comida" },
+    { key: "potion", label: "Poción" },
+    { key: "mount", label: "Montura" }
+  ];
+
+  gearContainer.innerHTML = "";
+  const eq = build.equipment || {};
+  const mhItem = ALBION_ITEMS.find(i => i.id === eq.mainhand?.id);
+
+  slotsConfig.forEach(s => {
+    const slotData = eq[s.key];
+    const item = ALBION_ITEMS.find(i => i.id === slotData?.id);
+    const card = document.createElement("div");
+    card.className = "viewer-gear-card";
+
+    if (s.key === "offhand" && mhItem && mhItem.twoHanded) {
+      card.innerHTML = `
+        <div class="viewer-gear-img" style="display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:11px;">2M</div>
+        <div class="viewer-gear-info">
+          <div class="viewer-gear-slot">${s.label}</div>
+          <div class="viewer-gear-name" style="color:var(--text-muted);">Arma a 2 Manos</div>
+          <span class="viewer-gear-badge">Bloqueado</span>
+        </div>
+      `;
+    } else if (slotData && item) {
+      const tier = slotData.tier || "T8";
+      const enchant = slotData.enchant !== undefined ? slotData.enchant : 0;
+      const quality = slotData.quality || 1;
+      const iconUrl = getItemImageUrl(item, tier, enchant, quality);
+      const tierBadgeText = s.key.match(/food|potion|mount/) ? tier : `${tier}.${enchant}`;
+
+      card.innerHTML = `
+        <img class="viewer-gear-img" src="${iconUrl}" alt="${item.name}" onerror="this.style.display='none';">
+        <div class="viewer-gear-info">
+          <div class="viewer-gear-slot">${s.label}</div>
+          <div class="viewer-gear-name" title="${item.name}">${item.name}</div>
+          <span class="viewer-gear-badge">${tierBadgeText}</span>
+        </div>
+      `;
+    } else {
+      card.innerHTML = `
+        <div class="viewer-gear-img" style="display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:11px;">-</div>
+        <div class="viewer-gear-info">
+          <div class="viewer-gear-slot">${s.label}</div>
+          <div class="viewer-gear-name" style="color:var(--text-muted);">Sin equipar</div>
+          <span class="viewer-gear-badge" style="opacity:0.5;">Vacío</span>
+        </div>
+      `;
+    }
+
+    gearContainer.appendChild(card);
+  });
+
+  // Render Spells
+  spellsContainer.innerHTML = "";
+  const spellsToRender = [];
+
+  if (eq.mainhand) {
+    if (eq.mainhand.qSpell) spellsToRender.push({ spellId: eq.mainhand.qSpell, key: "Q (Arma)" });
+    if (eq.mainhand.wSpell) spellsToRender.push({ spellId: eq.mainhand.wSpell, key: "W (Arma)" });
+    if (eq.mainhand.eSpell) spellsToRender.push({ spellId: eq.mainhand.eSpell, key: "E (Especial)" });
+    if (eq.mainhand.passiveSpell) spellsToRender.push({ spellId: eq.mainhand.passiveSpell, key: "Pasiva (Arma)" });
+  }
+
+  if (eq.head) {
+    if (eq.head.activeSpell) spellsToRender.push({ spellId: eq.head.activeSpell, key: "D (Cabeza)" });
+    if (eq.head.passiveSpell) spellsToRender.push({ spellId: eq.head.passiveSpell, key: "Pasiva (Cabeza)" });
+  }
+
+  if (eq.armor) {
+    if (eq.armor.activeSpell) spellsToRender.push({ spellId: eq.armor.activeSpell, key: "R (Pecho)" });
+    if (eq.armor.passiveSpell) spellsToRender.push({ spellId: eq.armor.passiveSpell, key: "Pasiva (Pecho)" });
+  }
+
+  if (eq.shoes) {
+    if (eq.shoes.activeSpell) spellsToRender.push({ spellId: eq.shoes.activeSpell, key: "F (Botas)" });
+    if (eq.shoes.passiveSpell) spellsToRender.push({ spellId: eq.shoes.passiveSpell, key: "Pasiva (Botas)" });
+  }
+
+  if (spellsToRender.length === 0) {
+    spellsContainer.innerHTML = `<div style="grid-column: 1/-1; color: var(--text-muted); font-size: 12px;">No hay habilidades seleccionadas.</div>`;
+  } else {
+    spellsToRender.forEach(sObj => {
+      const spell = ALBION_SPELLS[sObj.spellId];
+      if (!spell) return;
+
+      const row = document.createElement("div");
+      row.className = "viewer-spell-row";
+      const iconUrl = spell.icon || `https://render.albiononline.com/v1/spell/${spell.id}.png`;
+
+      row.innerHTML = `
+        <div class="viewer-spell-icon">
+          <img src="${iconUrl}" alt="${spell.name}" onerror="this.style.display='none'; this.parentElement.textContent='${sObj.key.split(' ')[0]}';">
+        </div>
+        <div class="viewer-spell-details">
+          <div class="viewer-spell-header">
+            <span class="viewer-spell-title">${spell.name}</span>
+            <span class="viewer-spell-slotkey">${sObj.key}</span>
+          </div>
+          <div class="viewer-spell-meta">
+            ${spell.cooldown ? `⏱ ${spell.cooldown}` : ''} ${spell.energy ? `⚡ ${spell.energy} energía` : ''} ${spell.castTime ? `✋ ${spell.castTime}` : ''}
+          </div>
+          ${spell.desc ? `<div class="viewer-spell-desc">${spell.desc}</div>` : ''}
+        </div>
+      `;
+      spellsContainer.appendChild(row);
+    });
+  }
+
+  // Notes
+  if (notesEl) {
+    notesEl.textContent = build.notes || "Sin notas adicionales.";
+  }
+
+  modal.style.display = "flex";
+}
+
+function closeBuildViewerModal() {
+  const modal = document.getElementById("modal-build-viewer");
+  if (modal) modal.style.display = "none";
+  viewingBuild = null;
+}
+
 function setupModalEvents() {
   document.getElementById("btn-close-item-modal")?.addEventListener("click", closeItemPickerModal);
   document.getElementById("btn-cancel-item-modal")?.addEventListener("click", closeItemPickerModal);
@@ -920,8 +1150,10 @@ function setupModalEvents() {
   window.addEventListener("click", (e) => {
     const itemModal = document.getElementById("modal-item-picker");
     const spellModal = document.getElementById("modal-spell-picker");
+    const viewerModal = document.getElementById("modal-build-viewer");
     if (e.target === itemModal) closeItemPickerModal();
     if (e.target === spellModal) closeSpellPickerModal();
+    if (e.target === viewerModal) closeBuildViewerModal();
   });
 }
 
@@ -1019,24 +1251,32 @@ function renderSavedBuildsList() {
       </div>
 
       <div class="saved-build-actions">
-        <button type="button" class="btn btn-primary btn-sm btn-load-build">Cargar</button>
+        <button type="button" class="btn btn-primary btn-sm btn-view-build">👁️ Ver Build</button>
+        <button type="button" class="btn btn-secondary btn-sm btn-edit-build">✏️ Editar</button>
         <button type="button" class="btn btn-secondary btn-sm btn-discord-build">Copiar Discord</button>
         <button type="button" class="btn btn-danger btn-sm btn-delete-build">Eliminar</button>
       </div>
     `;
 
-    card.querySelector(".btn-load-build").addEventListener("click", () => {
-      loadBuild(build);
-      document.querySelector('[data-tab="builder"]').click();
-      showToast(`Build "${build.name}" cargada.`);
+    // Click on "Ver Build" (or clicking the card header) opens the Viewer Modal
+    card.querySelector(".btn-view-build").addEventListener("click", (e) => {
+      e.stopPropagation();
+      openBuildViewerModal(build);
     });
 
-    card.querySelector(".btn-discord-build").addEventListener("click", () => {
+    card.querySelector(".btn-edit-build").addEventListener("click", (e) => {
+      e.stopPropagation();
+      editBuild(build);
+    });
+
+    card.querySelector(".btn-discord-build").addEventListener("click", (e) => {
+      e.stopPropagation();
       const discordText = generateDiscordText(build);
       copyToClipboard(discordText, "¡Ficha para Discord copiada!");
     });
 
     const moveSelect = card.querySelector(".select-move-folder");
+    moveSelect.addEventListener("click", (e) => e.stopPropagation());
     moveSelect.addEventListener("change", (e) => {
       const newFolder = e.target.value;
       const all = getSavedBuilds();
@@ -1048,7 +1288,8 @@ function renderSavedBuildsList() {
       }
     });
 
-    card.querySelector(".btn-delete-build").addEventListener("click", () => {
+    card.querySelector(".btn-delete-build").addEventListener("click", (e) => {
+      e.stopPropagation();
       if (confirm(`¿Eliminar la build "${build.name}"?`)) {
         const remaining = getSavedBuilds().filter(b => b.id !== build.id);
         saveBuildsToStorage(remaining);
@@ -1056,13 +1297,13 @@ function renderSavedBuildsList() {
       }
     });
 
+    // Make the entire card click open the viewer
+    card.addEventListener("click", () => {
+      openBuildViewerModal(build);
+    });
+
     container.appendChild(card);
   });
-}
-
-function loadBuild(build) {
-  currentBuild = JSON.parse(JSON.stringify(build));
-  renderBuild();
 }
 
 function loadBuildFromUrlHash() {
@@ -1070,7 +1311,7 @@ function loadBuildFromUrlHash() {
     const rawData = decodeURIComponent(window.location.hash.replace("#build=", ""));
     const parsed = JSON.parse(rawData);
     if (parsed && parsed.equipment) {
-      loadBuild(parsed);
+      openBuildViewerModal(parsed);
       showToast("Build cargada desde el enlace.");
     }
   } catch (e) {
