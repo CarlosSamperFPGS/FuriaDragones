@@ -1,7 +1,8 @@
 // Furia de Dragones - Controlador Principal del Gestor de Builds
+// Gremio de Albion Online
 
-import { ITEMS_DATABASE, getAlbionItemIconUrl } from './data/items.js';
-import { SPELLS_DATABASE, getAlbionSpellIconUrl } from './data/spells.js';
+import { ALBION_ITEMS, ITEM_CATEGORIES, TIERS, ENCHANTMENTS, QUALITIES, getItemImageUrl } from './data/items.js';
+import { ALBION_SPELLS, ITEM_SPELLS_MAP, getItemSpells } from './data/spells.js';
 import { DEFAULT_BUILDS } from './data/default-builds.js';
 
 // ==========================================================================
@@ -10,7 +11,7 @@ import { DEFAULT_BUILDS } from './data/default-builds.js';
 let currentBuild = {
   id: null,
   name: "Nueva Build",
-  role: "DPS",
+  role: "DPS Melee",
   folder: "ZvZ",
   notes: "",
   equipment: {
@@ -40,8 +41,7 @@ const DEFAULT_FOLDERS = [
   "Soporte & Healers"
 ];
 
-// Versión del almacenamiento para migrar datos anteriores
-const STORAGE_VERSION = "v2_verified_ids";
+const STORAGE_VERSION = "v3_official_es_spells";
 
 // ==========================================================================
 // Inicialización
@@ -58,7 +58,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (window.location.hash.startsWith("#build=")) {
     loadBuildFromUrlHash();
   } else {
-    if (DEFAULT_BUILDS.length > 0) {
+    const saved = getSavedBuilds();
+    if (saved && saved.length > 0) {
+      loadBuild(saved[0]);
+    } else if (DEFAULT_BUILDS.length > 0) {
       loadBuild(DEFAULT_BUILDS[0]);
     } else {
       renderBuild();
@@ -438,12 +441,12 @@ function renderBuild() {
 
   const slots = ["head", "cape", "mainhand", "offhand", "armor", "shoes", "food", "potion", "mount"];
   
-  const mainHandItem = getItemFromDb("mainhand", currentBuild.equipment.mainhand?.id);
+  const mainHandItem = ALBION_ITEMS.find(i => i.id === currentBuild.equipment.mainhand?.id);
   const isTwoHanded = mainHandItem && mainHandItem.twoHanded;
 
   slots.forEach(slotKey => {
     const slotData = currentBuild.equipment[slotKey];
-    const dbItem = getItemFromDb(slotKey, slotData?.id);
+    const dbItem = ALBION_ITEMS.find(i => i.id === slotData?.id);
 
     const imgEl = document.getElementById(`img-${slotKey}`);
     const emptyEl = document.getElementById(`empty-${slotKey}`);
@@ -454,20 +457,20 @@ function renderBuild() {
       if (imgEl) imgEl.style.display = "none";
       if (emptyEl) {
         emptyEl.style.display = "block";
-        emptyEl.textContent = "Ocupado (2M)";
+        emptyEl.textContent = "Ocupado (2 Manos)";
       }
       if (nameEl) nameEl.textContent = "Arma a 2 Manos";
-      if (badgeEl) badgeEl.textContent = "Bloqueado";
+      if (badgeEl) badgeEl.textContent = "2M";
       return;
     }
 
     if (slotData && dbItem) {
-      const tier = slotData.tier || "T4";
+      const tier = slotData.tier || "T8";
       const enchant = slotData.enchant !== undefined ? slotData.enchant : 0;
       const quality = slotData.quality || 1;
 
       if (imgEl) {
-        imgEl.src = getAlbionItemIconUrl(dbItem, tier, enchant, quality);
+        imgEl.src = getItemImageUrl(dbItem, tier, enchant, quality);
         imgEl.style.display = "block";
         imgEl.onerror = () => {
           imgEl.style.display = "none";
@@ -480,7 +483,11 @@ function renderBuild() {
       if (emptyEl) emptyEl.style.display = "none";
       if (nameEl) nameEl.textContent = dbItem.name;
       if (badgeEl) {
-        badgeEl.textContent = slotKey.match(/food|potion|mount/) ? tier : `${tier}.${enchant}`;
+        if (slotKey.match(/food|potion|mount/)) {
+          badgeEl.textContent = tier;
+        } else {
+          badgeEl.textContent = `${tier}.${enchant}`;
+        }
       }
     } else {
       if (imgEl) {
@@ -491,8 +498,8 @@ function renderBuild() {
         emptyEl.style.display = "block";
         emptyEl.textContent = "+ Equipar";
       }
-      if (nameEl) nameEl.textContent = "Ninguno";
-      if (badgeEl) badgeEl.textContent = "Vacío";
+      if (nameEl) nameEl.textContent = "Vacío";
+      if (badgeEl) badgeEl.textContent = "Ninguno";
     }
   });
 
@@ -502,7 +509,7 @@ function renderBuild() {
 
 function renderSpellButtons() {
   const mhData = currentBuild.equipment.mainhand;
-  const mhItem = getItemFromDb("mainhand", mhData?.id);
+  const mhItem = ALBION_ITEMS.find(i => i.id === mhData?.id);
   const spellsBarMh = document.getElementById("spells-mainhand");
   
   if (spellsBarMh) {
@@ -518,7 +525,7 @@ function renderSpellButtons() {
   }
 
   const headData = currentBuild.equipment.head;
-  const headItem = getItemFromDb("head", headData?.id);
+  const headItem = ALBION_ITEMS.find(i => i.id === headData?.id);
   const spellsBarHead = document.getElementById("spells-head");
   if (spellsBarHead) {
     if (!headItem) {
@@ -531,7 +538,7 @@ function renderSpellButtons() {
   }
 
   const armorData = currentBuild.equipment.armor;
-  const armorItem = getItemFromDb("armor", armorData?.id);
+  const armorItem = ALBION_ITEMS.find(i => i.id === armorData?.id);
   const spellsBarArmor = document.getElementById("spells-armor");
   if (spellsBarArmor) {
     if (!armorItem) {
@@ -544,7 +551,7 @@ function renderSpellButtons() {
   }
 
   const shoesData = currentBuild.equipment.shoes;
-  const shoesItem = getItemFromDb("shoes", shoesData?.id);
+  const shoesItem = ALBION_ITEMS.find(i => i.id === shoesData?.id);
   const spellsBarShoes = document.getElementById("spells-shoes");
   if (spellsBarShoes) {
     if (!shoesItem) {
@@ -560,16 +567,17 @@ function renderSpellButtons() {
 function updateSpellButton(slot, type, spellId) {
   const imgEl = document.getElementById(`spell-img-${slot}-${type}`);
   const txtEl = document.getElementById(`spell-txt-${slot}-${type}`);
+  const spell = ALBION_SPELLS[spellId];
 
-  if (spellId) {
+  if (spellId && spell) {
     if (imgEl) {
-      imgEl.src = getAlbionSpellIconUrl(spellId);
+      imgEl.src = spell.icon || `https://render.albiononline.com/v1/spell/${spellId}.png`;
       imgEl.style.display = "block";
       imgEl.onerror = () => {
         imgEl.style.display = "none";
         if (txtEl) {
           txtEl.style.display = "block";
-          txtEl.textContent = getSpellShortCode(type);
+          txtEl.textContent = getSpellShortCode(type, slot);
         }
       };
     }
@@ -602,11 +610,11 @@ function renderQuickSummary() {
   if (!summaryEl) return;
 
   const eq = currentBuild.equipment;
-  const headItem = getItemFromDb("head", eq.head?.id);
-  const mhItem = getItemFromDb("mainhand", eq.mainhand?.id);
-  const armorItem = getItemFromDb("armor", eq.armor?.id);
-  const shoesItem = getItemFromDb("shoes", eq.shoes?.id);
-  const capeItem = getItemFromDb("cape", eq.cape?.id);
+  const headItem = ALBION_ITEMS.find(i => i.id === eq.head?.id);
+  const mhItem = ALBION_ITEMS.find(i => i.id === eq.mainhand?.id);
+  const armorItem = ALBION_ITEMS.find(i => i.id === eq.armor?.id);
+  const shoesItem = ALBION_ITEMS.find(i => i.id === eq.shoes?.id);
+  const capeItem = ALBION_ITEMS.find(i => i.id === eq.cape?.id);
 
   summaryEl.innerHTML = `
     <li><strong>Cabeza:</strong> ${headItem ? `${headItem.name} [${eq.head.tier}.${eq.head.enchant || 0}]` : '<em>Sin equipar</em>'}</li>
@@ -683,18 +691,7 @@ function populateCategoriesForSlot(slot) {
 }
 
 function getItemsPoolForSlot(slot) {
-  switch (slot) {
-    case "head": return ITEMS_DATABASE.head || [];
-    case "mainhand": return ITEMS_DATABASE.weapons || [];
-    case "offhand": return ITEMS_DATABASE.offhands || [];
-    case "armor": return ITEMS_DATABASE.armor || [];
-    case "shoes": return ITEMS_DATABASE.shoes || [];
-    case "cape": return ITEMS_DATABASE.cape || [];
-    case "food": return ITEMS_DATABASE.food || [];
-    case "potion": return ITEMS_DATABASE.potion || [];
-    case "mount": return ITEMS_DATABASE.mount || [];
-    default: return [];
-  }
+  return ALBION_ITEMS.filter(item => item.slot === slot);
 }
 
 function renderItemsList() {
@@ -724,7 +721,7 @@ function renderItemsList() {
     const card = document.createElement("div");
     card.className = "item-option-card";
     
-    const iconUrl = getAlbionItemIconUrl(item, currentTier, currentEnchant, currentQuality);
+    const iconUrl = getItemImageUrl(item, currentTier, currentEnchant, currentQuality);
 
     card.innerHTML = `
       <img class="item-option-img" src="${iconUrl}" alt="${item.name}" loading="lazy" onerror="this.src=''; this.style.display='none';">
@@ -746,7 +743,7 @@ function renderItemsList() {
 function equipItemToSlot(slot, item, tier, enchant, quality) {
   currentBuild.equipment[slot] = {
     id: item.id,
-    tier: tier,
+    tier: item.fixedTier || tier,
     enchant: enchant,
     quality: quality
   };
@@ -755,32 +752,19 @@ function equipItemToSlot(slot, item, tier, enchant, quality) {
     currentBuild.equipment.offhand = null;
   }
 
+  // Bind exact spells specifically for this item
+  const itemSpells = ITEM_SPELLS_MAP[item.id] || {};
+
   if (slot === "mainhand") {
-    const tree = SPELLS_DATABASE.weapons[item.spellTree];
-    if (tree) {
-      currentBuild.equipment.mainhand.qSpell = tree.q?.[0]?.id || null;
-      currentBuild.equipment.mainhand.wSpell = tree.w?.[0]?.id || null;
-      currentBuild.equipment.mainhand.eSpell = tree.e?.[item.id]?.id || null;
-      currentBuild.equipment.mainhand.passiveSpell = tree.passive?.[0]?.id || null;
-    }
-  } else if (slot === "head") {
-    const tree = SPELLS_DATABASE.head[item.armorType];
-    if (tree) {
-      currentBuild.equipment.head.activeSpell = tree.active?.[0]?.id || null;
-      currentBuild.equipment.head.passiveSpell = tree.passive?.[0]?.id || null;
-    }
-  } else if (slot === "armor") {
-    const tree = SPELLS_DATABASE.armor[item.armorType];
-    if (tree) {
-      currentBuild.equipment.armor.activeSpell = tree.active?.[0]?.id || null;
-      currentBuild.equipment.armor.passiveSpell = tree.passive?.[0]?.id || null;
-    }
-  } else if (slot === "shoes") {
-    const tree = SPELLS_DATABASE.shoes[item.armorType];
-    if (tree) {
-      currentBuild.equipment.shoes.activeSpell = tree.active?.[0]?.id || null;
-      currentBuild.equipment.shoes.passiveSpell = tree.passive?.[0]?.id || null;
-    }
+    currentBuild.equipment.mainhand.qSpell = itemSpells.q?.[0] || null;
+    currentBuild.equipment.mainhand.wSpell = itemSpells.w?.[0] || null;
+    currentBuild.equipment.mainhand.eSpell = itemSpells.e?.[0] || null;
+    currentBuild.equipment.mainhand.passiveSpell = itemSpells.passive?.[0] || null;
+  } else if (slot === "head" || slot === "armor" || slot === "shoes") {
+    // Pick the unique/last active spell as default (e.g. Life Drain Aura for Vandal Jacket)
+    const activeList = itemSpells.active || [];
+    currentBuild.equipment[slot].activeSpell = activeList.length > 0 ? activeList[activeList.length - 1] : null;
+    currentBuild.equipment[slot].passiveSpell = itemSpells.passive?.[0] || null;
   }
 
   renderBuild();
@@ -807,7 +791,7 @@ function openSpellPickerModal(slot, spellType) {
   if (!modal || !container) return;
 
   const itemData = currentBuild.equipment[slot];
-  const dbItem = getItemFromDb(slot, itemData?.id);
+  const dbItem = ALBION_ITEMS.find(i => i.id === itemData?.id);
 
   if (!dbItem) {
     alert("Primero debes equipar un item en esta ranura.");
@@ -830,14 +814,18 @@ function openSpellPickerModal(slot, spellType) {
     const card = document.createElement("div");
     card.className = `spell-option-card ${currentSelectedSpellId === spell.id ? 'active-spell' : ''}`;
 
-    const iconUrl = getAlbionSpellIconUrl(spell.icon || spell.id);
+    const iconUrl = spell.icon || `https://render.albiononline.com/v1/spell/${spell.id}.png`;
 
     card.innerHTML = `
       <div class="spell-option-icon">
-        <img src="${iconUrl}" alt="${spell.name}" onerror="this.style.display='none'; this.parentElement.textContent='${getSpellShortCode(spellType, slot)}';">
+        <img src="${iconUrl}" alt="${spell.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\\'font-weight:bold; font-size:12px;\\'>${getSpellShortCode(spellType, slot)}</span>';">
       </div>
       <div class="spell-option-content">
         <div class="spell-option-name">${spell.name}</div>
+        <div class="spell-option-meta" style="font-size: 11px; color: var(--accent-gold); margin-bottom: 2px;">
+          ${spell.cooldown ? `⏱ ${spell.cooldown}` : ''} ${spell.energy ? `⚡ ${spell.energy} energía` : ''} ${spell.castTime ? `✋ ${spell.castTime}` : ''}
+        </div>
+        ${spell.desc ? `<div class="spell-option-desc" style="font-size: 11px; color: var(--text-muted); line-height: 1.3;">${spell.desc}</div>` : ''}
       </div>
     `;
 
@@ -853,30 +841,20 @@ function openSpellPickerModal(slot, spellType) {
 }
 
 function getSpellsListForSlot(slot, item, spellType) {
+  const itemSpells = ITEM_SPELLS_MAP[item.id] || {};
+  let ids = [];
+
   if (slot === "mainhand") {
-    const tree = SPELLS_DATABASE.weapons[item.spellTree];
-    if (!tree) return [];
-    if (spellType === "q") return tree.q || [];
-    if (spellType === "w") return tree.w || [];
-    if (spellType === "e") return tree.e?.[item.id] ? [tree.e[item.id]] : [];
-    if (spellType === "passive") return tree.passive || [];
-  } else if (slot === "head") {
-    const tree = SPELLS_DATABASE.head[item.armorType];
-    if (!tree) return [];
-    if (spellType === "active") return tree.active || [];
-    if (spellType === "passive") return tree.passive || [];
-  } else if (slot === "armor") {
-    const tree = SPELLS_DATABASE.armor[item.armorType];
-    if (!tree) return [];
-    if (spellType === "active") return tree.active || [];
-    if (spellType === "passive") return tree.passive || [];
-  } else if (slot === "shoes") {
-    const tree = SPELLS_DATABASE.shoes[item.armorType];
-    if (!tree) return [];
-    if (spellType === "active") return tree.active || [];
-    if (spellType === "passive") return tree.passive || [];
+    if (spellType === "q") ids = itemSpells.q || [];
+    else if (spellType === "w") ids = itemSpells.w || [];
+    else if (spellType === "e") ids = itemSpells.e || [];
+    else if (spellType === "passive") ids = itemSpells.passive || [];
+  } else {
+    if (spellType === "active") ids = itemSpells.active || [];
+    else if (spellType === "passive") ids = itemSpells.passive || [];
   }
-  return [];
+
+  return ids.map(id => ALBION_SPELLS[id]).filter(Boolean);
 }
 
 function getCurrentSpellId(slot, spellType) {
@@ -1003,10 +981,10 @@ function renderSavedBuildsList() {
     slots.forEach(slotKey => {
       const slotData = eq[slotKey];
       if (slotData) {
-        const item = getItemFromDb(slotKey, slotData.id);
+        const item = ALBION_ITEMS.find(i => i.id === slotData.id);
         if (item) {
-          const iconUrl = getAlbionItemIconUrl(item, slotData.tier || "T4", slotData.enchant || 0, slotData.quality || 1);
-          thumbsHtml += `<img class="saved-item-thumb" src="${iconUrl}" title="${item.name} (${slotData.tier || 'T4'})" alt="${item.name}" onerror="this.style.display='none';">`;
+          const iconUrl = getItemImageUrl(item, slotData.tier || "T8", slotData.enchant || 0, slotData.quality || 1);
+          thumbsHtml += `<img class="saved-item-thumb" src="${iconUrl}" title="${item.name} (${slotData.tier || 'T8'})" alt="${item.name}" onerror="this.style.display='none';">`;
         }
       }
     });
@@ -1109,24 +1087,24 @@ function generateDiscordText(build) {
   function getItemLine(slotKey, label) {
     const slotData = eq[slotKey];
     if (!slotData) return `• **${label}:** *Sin equipar*`;
-    const item = getItemFromDb(slotKey, slotData.id);
+    const item = ALBION_ITEMS.find(i => i.id === slotData.id);
     if (!item) return `• **${label}:** *Sin equipar*`;
 
-    const tierStr = slotKey.match(/food|potion|mount/) ? `[${slotData.tier || 'T4'}]` : `[${slotData.tier || 'T4'}.${slotData.enchant || 0}]`;
+    const tierStr = slotKey.match(/food|potion|mount/) ? `[${slotData.tier || 'T8'}]` : `[${slotData.tier || 'T8'}.${slotData.enchant || 0}]`;
     let spellsStr = "";
 
     if (slotKey === "mainhand") {
       const spells = [];
-      if (slotData.qSpell) spells.push(`Q: ${getSpellName(slotData.qSpell)}`);
-      if (slotData.wSpell) spells.push(`W: ${getSpellName(slotData.wSpell)}`);
-      if (slotData.eSpell) spells.push(`E: ${getSpellName(slotData.eSpell)}`);
-      if (slotData.passiveSpell) spells.push(`P: ${getSpellName(slotData.passiveSpell)}`);
+      if (slotData.qSpell && ALBION_SPELLS[slotData.qSpell]) spells.push(`Q: ${ALBION_SPELLS[slotData.qSpell].name}`);
+      if (slotData.wSpell && ALBION_SPELLS[slotData.wSpell]) spells.push(`W: ${ALBION_SPELLS[slotData.wSpell].name}`);
+      if (slotData.eSpell && ALBION_SPELLS[slotData.eSpell]) spells.push(`E: ${ALBION_SPELLS[slotData.eSpell].name}`);
+      if (slotData.passiveSpell && ALBION_SPELLS[slotData.passiveSpell]) spells.push(`P: ${ALBION_SPELLS[slotData.passiveSpell].name}`);
       if (spells.length > 0) spellsStr = ` (${spells.join(" | ")})`;
     } else if (slotKey === "head" || slotKey === "armor" || slotKey === "shoes") {
       const spells = [];
       const actKey = slotKey === "head" ? "D" : (slotKey === "armor" ? "R" : "F");
-      if (slotData.activeSpell) spells.push(`${actKey}: ${getSpellName(slotData.activeSpell)}`);
-      if (slotData.passiveSpell) spells.push(`P: ${getSpellName(slotData.passiveSpell)}`);
+      if (slotData.activeSpell && ALBION_SPELLS[slotData.activeSpell]) spells.push(`${actKey}: ${ALBION_SPELLS[slotData.activeSpell].name}`);
+      if (slotData.passiveSpell && ALBION_SPELLS[slotData.passiveSpell]) spells.push(`P: ${ALBION_SPELLS[slotData.passiveSpell].name}`);
       if (spells.length > 0) spellsStr = ` (${spells.join(" | ")})`;
     }
 
@@ -1151,42 +1129,9 @@ ${getItemLine("mount", "Montura")}
 `;
 }
 
-function getSpellName(spellId) {
-  for (const treeKey in SPELLS_DATABASE.weapons) {
-    const tree = SPELLS_DATABASE.weapons[treeKey];
-    const qMatch = tree.q?.find(s => s.id === spellId);
-    if (qMatch) return qMatch.name.split(" (")[0];
-    const wMatch = tree.w?.find(s => s.id === spellId);
-    if (wMatch) return wMatch.name.split(" (")[0];
-    for (const eKey in tree.e || {}) {
-      if (tree.e[eKey].id === spellId) return tree.e[eKey].name;
-    }
-    const pMatch = tree.passive?.find(s => s.id === spellId);
-    if (pMatch) return pMatch.name;
-  }
-
-  for (const slotKey of ["head", "armor", "shoes"]) {
-    for (const typeKey in SPELLS_DATABASE[slotKey]) {
-      const typeObj = SPELLS_DATABASE[slotKey][typeKey];
-      const actMatch = typeObj.active?.find(s => s.id === spellId);
-      if (actMatch) return actMatch.name.split(" (")[0];
-      const passMatch = typeObj.passive?.find(s => s.id === spellId);
-      if (passMatch) return passMatch.name;
-    }
-  }
-
-  return spellId;
-}
-
 // ==========================================================================
 // Utilidades
 // ==========================================================================
-function getItemFromDb(slot, itemId) {
-  if (!itemId) return null;
-  const pool = getItemsPoolForSlot(slot);
-  return pool.find(i => i.id === itemId) || null;
-}
-
 function copyToClipboard(text, successMessage) {
   if (navigator.clipboard && window.isSecureContext) {
     navigator.clipboard.writeText(text).then(() => {
