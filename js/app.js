@@ -1814,20 +1814,30 @@ function renderSavedBuildsList() {
   container.innerHTML = "";
 
   filtered.forEach(build => {
-    const card = document.createElement("div");
-    card.className = "saved-build-card";
+    const row = document.createElement("div");
+    row.className = "saved-build-row";
 
     const eq = build.equipment || {};
-    const slots = ["head", "mainhand", "offhand", "armor", "shoes", "cape", "food", "potion", "mount"];
-    let thumbsHtml = "";
+    const mhData = eq.mainhand;
+    const mhItem = mhData ? ALBION_ITEMS.find(i => i.id === mhData.id) : null;
+    const mhUrl = mhItem ? getItemImageUrl(mhItem, mhData.tier || mhItem.fixedTier || "T8", 0, 4) : null;
 
-    slots.forEach(slotKey => {
+    // Equipamiento secundario ordenado al estilo oficial Albion:
+    // Casco, Pecho, Botas, Mano Secundaria (si aplica), Capa, Poción, Comida
+    const secondarySlots = ["head", "armor", "shoes", "offhand", "cape", "potion", "food"];
+    let secondaryThumbsHtml = "";
+
+    secondarySlots.forEach(slotKey => {
       const slotData = eq[slotKey];
       if (slotData) {
         const item = ALBION_ITEMS.find(i => i.id === slotData.id);
         if (item) {
           const iconUrl = getItemImageUrl(item, slotData.tier || item.fixedTier || "T8", 0, 4);
-          thumbsHtml += `<img class="saved-item-thumb" src="${iconUrl}" title="${item.name}" alt="${item.name}" onerror="this.style.display='none';">`;
+          secondaryThumbsHtml += `
+            <div class="build-equip-slot" title="${item.name}">
+              <img class="build-equip-img" src="${iconUrl}" alt="${item.name}" onerror="this.style.display='none';">
+            </div>
+          `;
         }
       }
     });
@@ -1839,59 +1849,73 @@ function renderSavedBuildsList() {
 
     const tierEquiv = build.tierEquiv || 8;
 
-    card.innerHTML = `
-      <div class="saved-build-header">
-        <div>
-          <div class="saved-build-title">${build.name || 'Sin título'}</div>
-          <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
-            ${build.role || 'General'} · <strong style="color:var(--text-gold);">Tier ${tierEquiv} Eq.</strong>
+    row.innerHTML = `
+      <div class="build-folder-pill">${build.folder || 'ZvZ'}</div>
+
+      <div class="build-row-main">
+        <!-- Arma Principal Destacada (Hero Slot a la izquierda) -->
+        <div class="build-hero-slot" title="${mhItem ? mhItem.name : 'Sin arma principal'}">
+          ${mhUrl 
+            ? `<img class="build-hero-img" src="${mhUrl}" alt="${mhItem.name}" onerror="this.style.display='none';">`
+            : `<div class="build-hero-empty">Sin Arma</div>`}
+        </div>
+
+        <!-- Info & Equipamiento -->
+        <div class="build-row-content">
+          <div class="build-row-header">
+            <h3 class="build-row-title">${build.name || 'Sin título'}</h3>
+            <div class="build-row-tags">
+              <span class="build-tag-role">${build.role || 'General'}</span>
+              <span class="build-tag-tier">Tier ${tierEquiv} Eq.</span>
+            </div>
+          </div>
+
+          ${build.notes ? `<div class="build-row-notes">"${build.notes}"</div>` : ''}
+
+          <div class="build-row-equipment">
+            ${secondaryThumbsHtml || '<span style="font-size: 11px; color: var(--text-muted);">Sin equipo secundario</span>'}
           </div>
         </div>
-        <span class="saved-build-badge">${build.folder || 'ZvZ'}</span>
       </div>
 
-      <div class="saved-build-notes">
-        ${build.notes ? `"${build.notes}"` : '<em>Sin notas</em>'}
-      </div>
-
-      <div class="saved-build-items-preview">
-        ${thumbsHtml || '<span style="font-size: 11px; color: var(--text-muted);">Sin items</span>'}
-      </div>
-
-      ${officerMode ? `
-        <div style="display: flex; gap: 6px; align-items: center; margin-top: 4px;">
-          <label style="font-size: 11px; color: var(--text-muted);">Mover a:</label>
-          <select class="form-control form-control-sm select-move-folder" style="width: auto; flex: 1;">
-            ${folderOptionsHtml}
-          </select>
+      <!-- Acciones a la derecha -->
+      <div class="build-row-actions">
+        ${officerMode ? `
+          <div class="build-move-box" onclick="event.stopPropagation();">
+            <label>Mover:</label>
+            <select class="form-control form-control-sm select-move-folder">
+              ${folderOptionsHtml}
+            </select>
+          </div>
+        ` : ''}
+        <div class="build-btn-group">
+          <button type="button" class="btn btn-primary btn-sm btn-view-build">Ver Build</button>
+          <button type="button" class="btn btn-secondary btn-sm btn-discord-build" title="Copiar formato Discord">Copiar Discord</button>
+          ${officerMode ? `
+            <button type="button" class="btn btn-secondary btn-sm btn-edit-build">Editar</button>
+            <button type="button" class="btn btn-danger btn-sm btn-delete-build">Eliminar</button>
+          ` : ''}
         </div>
-      ` : ''}
-
-      <div class="saved-build-actions">
-        <button type="button" class="btn btn-primary btn-sm btn-view-build">Ver Build</button>
-        ${officerMode ? `<button type="button" class="btn btn-secondary btn-sm btn-edit-build">Editar</button>` : ''}
-        <button type="button" class="btn btn-secondary btn-sm btn-discord-build">Copiar Discord</button>
-        ${officerMode ? `<button type="button" class="btn btn-danger btn-sm btn-delete-build">Eliminar</button>` : ''}
       </div>
     `;
 
-    card.querySelector(".btn-view-build")?.addEventListener("click", (e) => {
+    row.querySelector(".btn-view-build")?.addEventListener("click", (e) => {
       e.stopPropagation();
       openBuildViewerModal(build);
     });
 
-    card.querySelector(".btn-edit-build")?.addEventListener("click", (e) => {
+    row.querySelector(".btn-edit-build")?.addEventListener("click", (e) => {
       e.stopPropagation();
       editBuild(build);
     });
 
-    card.querySelector(".btn-discord-build")?.addEventListener("click", (e) => {
+    row.querySelector(".btn-discord-build")?.addEventListener("click", (e) => {
       e.stopPropagation();
       const discordText = generateDiscordText(build);
       copyToClipboard(discordText, "¡Ficha para Discord copiada!");
     });
 
-    const moveSelect = card.querySelector(".select-move-folder");
+    const moveSelect = row.querySelector(".select-move-folder");
     if (moveSelect) {
       moveSelect.addEventListener("click", (e) => e.stopPropagation());
       moveSelect.addEventListener("change", (e) => {
@@ -1906,7 +1930,7 @@ function renderSavedBuildsList() {
       });
     }
 
-    card.querySelector(".btn-delete-build")?.addEventListener("click", (e) => {
+    row.querySelector(".btn-delete-build")?.addEventListener("click", (e) => {
       e.stopPropagation();
       if (confirm(`¿Eliminar la build "${build.name}"?`)) {
         const remaining = getSavedBuilds().filter(b => b.id !== build.id);
@@ -1915,11 +1939,11 @@ function renderSavedBuildsList() {
       }
     });
 
-    card.addEventListener("click", () => {
+    row.addEventListener("click", () => {
       openBuildViewerModal(build);
     });
 
-    container.appendChild(card);
+    container.appendChild(row);
   });
 }
 

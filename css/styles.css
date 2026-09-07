@@ -1248,91 +1248,230 @@ textarea.form-control {
    Sección: Builds Guardadas
    ========================================================================== */
 .saved-builds-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 16px;
-}
-
-.saved-build-card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 }
 
-.saved-build-card:hover {
-  border-color: #3e4856;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
-}
-
-.saved-build-header {
+.saved-build-row {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 14px 18px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  border-bottom: 1px solid #23282f;
-  padding-bottom: 8px;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+  cursor: pointer;
+  overflow: hidden;
 }
 
-.saved-build-title {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text-gold);
-  letter-spacing: 0.2px;
+.saved-build-row:hover {
+  border-color: #3e4858;
+  background-color: #171c23;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+  transform: translateY(-1px);
 }
 
-.saved-build-badge {
+/* Badge de Carpeta estilo imagen (Verde esmeralda en la esquina superior derecha) */
+.build-folder-pill {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #00874e;
+  color: #ffffff;
   font-size: 11px;
-  background-color: #20262e;
-  color: var(--text-main);
-  padding: 3px 9px;
-  border-radius: 3px;
-  border: 1px solid #303844;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 0 5px 0 8px;
+  letter-spacing: 0.4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  z-index: 2;
+}
+
+/* Contenido Principal de la Fila */
+.build-row-main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Hero Weapon Slot (Arma principal destacada en la izquierda) */
+.build-hero-slot {
+  width: 62px;
+  height: 62px;
+  background: radial-gradient(circle, #222933 0%, #111419 100%);
+  border: 1.5px solid #3d4656;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.7), 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.saved-build-row:hover .build-hero-slot {
+  border-color: var(--border-highlight);
+  transform: scale(1.04);
+}
+
+.build-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.build-hero-empty {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 4px;
   font-weight: 600;
 }
 
-.saved-build-notes {
+/* Información y Fila de Equipo */
+.build-row-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+.build-row-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.build-row-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: 0.2px;
+}
+
+.build-row-tags {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.build-tag-role {
+  background: #1c222b;
+  color: #9cb1c9;
+  border: 1px solid #2d3744;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+.build-tag-tier {
+  background: rgba(226, 183, 85, 0.12);
+  color: var(--text-gold);
+  border: 1px solid rgba(226, 183, 85, 0.3);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+.build-row-notes {
   font-size: 12px;
   color: var(--text-muted);
-  line-height: 1.4;
-  min-height: 20px;
+  line-height: 1.3;
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 580px;
 }
 
-.saved-build-items-preview {
+/* Fila de Items Secundarios (sin barras de desplazamiento) */
+.build-row-equipment {
   display: flex;
-  gap: 8px;
-  background-color: #0c0e11;
-  border: 1px solid #1c2026;
-  padding: 8px;
-  border-radius: 4px;
-  overflow-x: auto;
   align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.saved-item-thumb {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  background: #16191f;
-  border: 1px solid #282f38;
-  border-radius: 3px;
+.build-equip-slot {
+  width: 44px;
+  height: 44px;
+  background: #13161c;
+  border: 1px solid #282f3a;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
-  transition: transform 0.12s ease;
+  transition: transform 0.12s ease, border-color 0.15s ease;
 }
 
-.saved-item-thumb:hover {
+.build-equip-slot:hover {
   transform: scale(1.08);
   border-color: var(--border-highlight);
 }
 
-.saved-build-actions {
+.build-equip-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Columna de Acciones a la Derecha */
+.build-row-actions {
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+  padding-top: 10px;
+}
+
+.build-move-box {
+  display: flex;
+  align-items: center;
   gap: 6px;
-  margin-top: auto;
+}
+
+.build-move-box label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.build-move-box select {
+  font-size: 11px;
+  padding: 2px 6px;
+  height: 26px;
+}
+
+.build-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   flex-wrap: wrap;
+}
+
+@media (max-width: 960px) {
+  .saved-build-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .build-row-actions {
+    align-items: flex-start;
+    width: 100%;
+    border-top: 1px solid #222730;
+    padding-top: 10px;
+  }
 }
 
 /* ==========================================================================
