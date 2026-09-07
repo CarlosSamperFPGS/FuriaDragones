@@ -1,5 +1,5 @@
 /**
- * Albion Online Items Database (Official ES-ES Spanish Names)
+ * Albion Online Items Database (Official ES-ES Spanish Names & Verified IDs)
  * Gremio: Furia de Dragones
  */
 
@@ -68,11 +68,11 @@ export const ALBION_ITEMS = [
     "maxTier": 8
   },
   {
-    "id": "2H_DUALSWORD_CRYSTAL",
+    "id": "MAIN_SWORD_CRYSTAL",
     "name": "Espadas del infinito",
     "category": "Espadas",
     "slot": "mainhand",
-    "twoHanded": true,
+    "twoHanded": false,
     "minTier": 4,
     "maxTier": 8
   },
@@ -293,8 +293,8 @@ export const ALBION_ITEMS = [
     "maxTier": 8
   },
   {
-    "id": "2H_WARGLOVES_KEEPER",
-    "name": "Cañones de oso",
+    "id": "2H_KNUCKLES_KEEPER",
+    "name": "Zarpas osunas",
     "category": "Guantes de Guerra",
     "slot": "mainhand",
     "twoHanded": true,
@@ -311,8 +311,8 @@ export const ALBION_ITEMS = [
     "maxTier": 8
   },
   {
-    "id": "2H_KNUCKLES_UNDEAD",
-    "name": "Cestus de cuervo",
+    "id": "2H_KNUCKLES_MORGANA",
+    "name": "Cestus córvidos",
     "category": "Guantes de Guerra",
     "slot": "mainhand",
     "twoHanded": true,
@@ -491,8 +491,8 @@ export const ALBION_ITEMS = [
     "maxTier": 8
   },
   {
-    "id": "2H_TRINITYSPEAR_AVALON",
-    "name": "Lanza de la trinidad",
+    "id": "2H_TRIDENT_UNDEAD",
+    "name": "Lanza de trinidad",
     "category": "Lanzas",
     "slot": "mainhand",
     "twoHanded": true,
@@ -545,8 +545,8 @@ export const ALBION_ITEMS = [
     "maxTier": 8
   },
   {
-    "id": "2H_DUALDAGGER_UNDEAD",
-    "name": "Dagas mortíferas",
+    "id": "2H_DUALSICKLE_UNDEAD",
+    "name": "Concedemuertes",
     "category": "Dagas",
     "slot": "mainhand",
     "twoHanded": true,
@@ -1157,6 +1157,126 @@ export const ALBION_ITEMS = [
     "maxTier": 8
   },
   {
+    "id": "CAPE",
+    "name": "Capa",
+    "category": "Capas",
+    "slot": "cape",
+    "minTier": 4,
+    "maxTier": 8
+  },
+  {
+    "id": "CAPEITEM_FW_BRIDGEWATCH",
+    "name": "Capa de Bridgewatch",
+    "category": "Capas",
+    "slot": "cape",
+    "minTier": 4,
+    "maxTier": 8
+  },
+  {
+    "id": "CAPEITEM_FW_FORTSTERLING",
+    "name": "Capa de Fort Sterling",
+    "category": "Capas",
+    "slot": "cape",
+    "minTier": 4,
+    "maxTier": 8
+  },
+  {
+    "id": "CAPEITEM_FW_LYMHURST",
+    "name": "Capa de Lymhurst",
+    "category": "Capas",
+    "slot": "cape",
+    "minTier": 4,
+    "maxTier": 8
+  },
+  {
+    "id": "CAPEITEM_FW_MARTLOCK",
+    "name": "Capa de Martlock",
+    "category": "Capas",
+    "slot": "cape",
+    "minTier": 4,
+    "maxTier": 8
+  },
+  {
+    "id": "CAPEITEM_FW_THETFORD",
+    "name": "Capa de Thetford",
+    "category": "Capas",
+    "slot": "cape",
+    "minTier": 4,
+    "maxTier": 8
+  },
+  {
+    "id": "CAPEITEM_FW_CAERLEON",
+    "name": "Capa de Caerleon",
+    "category": "Capas",
+    "slot": "cape",
+    "minTier": 4,
+    "maxTier": 8
+  },
+  {
+    "id": "CAPEITEM_FW_BRECILIEN",
+    "name": "Capa de Brecilien",
+    "category": "Capas",
+    "slot": "cape",
+    "minTier": 4,
+    "maxTier": 8
+  },
+  {
+    "id": "CAPEITEM_AVALON",
+    "name": "Capa avaloniana",
+    "category": "Capas",
+    "slot": "cape",
+    "minTier": 4,
+    "maxTier": 8
+  },
+  {
+    "id": "CAPEITEM_KEEPER",
+    "name": "Capa de guardián",
+    "category": "Capas",
+    "slot": "cape",
+    "minTier": 4,
+    "maxTier": 8
+  },
+  {
+    "id": "CAPEITEM_UNDEAD",
+    "name": "Capa de no muerto",
+    "category": "Capas",
+    "slot": "cape",
+    "minTier": 4,
+    "maxTier": 8
+  },
+  {
+    "id": "CAPEITEM_DEMON",
+    "name": "Capa demoníaca",
+    "category": "Capas",
+    "slot": "cape",
+    "minTier": 4,
+    "maxTier": 8
+  },
+  {
+    "id": "CAPEITEM_MORGANA",
+    "name": "Capa de Morgana",
+    "category": "Capas",
+    "slot": "cape",
+    "minTier": 4,
+    "maxTier": 8
+  },
+  {
+    "id": "CAPEITEM_HERETIC",
+    "name": "Capa hereje",
+    "category": "Capas",
+    "slot": "cape",
+    "minTier": 4,
+    "maxTier": 8
+  },
+  {
+    "id": "CAPEITEM_SMUGGLER",
+    "name": "Capa de contrabandista",
+    "category": "Capas",
+    "slot": "cape",
+    "minTier": 4,
+    "maxTier": 8
+  },
+  {
     "id": "ARMOR_CLOTH_SET1",
     "name": "Túnica de erudito",
     "category": "Armaduras de Tela",
@@ -1697,114 +1817,6 @@ export const ALBION_ITEMS = [
     "maxTier": 8
   },
   {
-    "id": "CAPE",
-    "name": "Capa",
-    "category": "Capas",
-    "slot": "cape",
-    "twoHanded": false,
-    "minTier": 4,
-    "maxTier": 8
-  },
-  {
-    "id": "CAPEITEM_FW_THETFORD",
-    "name": "Capa de Thetford",
-    "category": "Capas de Facción",
-    "slot": "cape",
-    "twoHanded": false,
-    "minTier": 4,
-    "maxTier": 8
-  },
-  {
-    "id": "CAPEITEM_FW_FORTSTERLING",
-    "name": "Capa de Fort Sterling",
-    "category": "Capas de Facción",
-    "slot": "cape",
-    "twoHanded": false,
-    "minTier": 4,
-    "maxTier": 8
-  },
-  {
-    "id": "CAPEITEM_FW_MARTLOCK",
-    "name": "Capa de Martlock",
-    "category": "Capas de Facción",
-    "slot": "cape",
-    "twoHanded": false,
-    "minTier": 4,
-    "maxTier": 8
-  },
-  {
-    "id": "CAPEITEM_FW_LYMHURST",
-    "name": "Capa de Lymhurst",
-    "category": "Capas de Facción",
-    "slot": "cape",
-    "twoHanded": false,
-    "minTier": 4,
-    "maxTier": 8
-  },
-  {
-    "id": "CAPEITEM_FW_BRIDGEWATCH",
-    "name": "Capa de Bridgewatch",
-    "category": "Capas de Facción",
-    "slot": "cape",
-    "twoHanded": false,
-    "minTier": 4,
-    "maxTier": 8
-  },
-  {
-    "id": "CAPEITEM_FW_CAERLEON",
-    "name": "Capa de Caerleon",
-    "category": "Capas de Facción",
-    "slot": "cape",
-    "twoHanded": false,
-    "minTier": 4,
-    "maxTier": 8
-  },
-  {
-    "id": "CAPEITEM_FW_BRECILIEN",
-    "name": "Capa de Brecilien",
-    "category": "Capas de Facción",
-    "slot": "cape",
-    "twoHanded": false,
-    "minTier": 4,
-    "maxTier": 8
-  },
-  {
-    "id": "CAPEITEM_DEMON",
-    "name": "Capa demoníaca",
-    "category": "Capas Especiales",
-    "slot": "cape",
-    "twoHanded": false,
-    "minTier": 4,
-    "maxTier": 8
-  },
-  {
-    "id": "CAPEITEM_UNDEAD",
-    "name": "Capa de no muerto",
-    "category": "Capas Especiales",
-    "slot": "cape",
-    "twoHanded": false,
-    "minTier": 4,
-    "maxTier": 8
-  },
-  {
-    "id": "CAPEITEM_MORGANA",
-    "name": "Capa de Morgana",
-    "category": "Capas Especiales",
-    "slot": "cape",
-    "twoHanded": false,
-    "minTier": 4,
-    "maxTier": 8
-  },
-  {
-    "id": "CAPEITEM_HERETIC",
-    "name": "Capa hereje",
-    "category": "Capas Especiales",
-    "slot": "cape",
-    "twoHanded": false,
-    "minTier": 4,
-    "maxTier": 8
-  },
-  {
     "id": "MEAL_STEW",
     "name": "Guiso de ternera",
     "category": "Comida",
@@ -2084,7 +2096,7 @@ export const ALBION_ITEMS = [
     "maxTier": 2
   },
   {
-    "id": "MOUNT_BEAR_KEEPER_ADC",
+    "id": "UNIQUE_MOUNT_BEAR_KEEPER_ADC",
     "name": "Oso Grizzly",
     "category": "Monturas",
     "slot": "mount",
@@ -2104,38 +2116,37 @@ export const ALBION_ITEMS = [
 ];
 
 export const ITEM_CATEGORIES = [
-  'Todos',
   'Espadas',
   'Hachas',
   'Mazas',
   'Martillos',
-  'Guantes de Guerra',
   'Ballestas',
   'Arcos',
   'Lanzas',
   'Dagas',
-  'Varas',
-  'Bastones Cambiaformas',
   'Bastones Sagrados',
-  'Bastones Naturales',
-  'Bastones Ígneos',
+  'Bastones de Fuego',
   'Bastones de Hielo',
-  'Bastones Malditos',
   'Bastones Arcanos',
-  'Mano Secundaria',
-  'Armaduras de Tela',
-  'Armaduras de Cuero',
-  'Armaduras de Placa',
-  'Cascos de Tela',
-  'Cascos de Cuero',
-  'Cascos de Placa',
-  'Botas de Tela',
-  'Botas de Cuero',
-  'Botas de Placa',
+  'Bastones Malditos',
+  'Bastones de la Naturaleza',
+  'Bastones de Combate',
+  'Guantes de Guerra',
+  'Bastones Cambiaformas',
+  'Escudos',
+  'Libros y Tomos',
+  'Antorchas y Cuernos',
+  'Cascos de Placas',
+  'Capuchas de Cuero',
+  'Hábitos de Tela',
+  'Armaduras de Placas',
+  'Chaquetas de Cuero',
+  'Túnicas de Tela',
+  'Botas de Placas',
+  'Zapatos de Cuero',
+  'Sandalias de Tela',
   'Capas',
-  'Capas de Facción',
-  'Capas Especiales',
-  'Comida',
+  'Comidas',
   'Pociones',
   'Monturas'
 ];
@@ -2176,11 +2187,11 @@ export function getItemImageUrl(item, tier = 'T8', enchant = 0, quality = 4) {
   const enchantSuffix = enchant > 0 ? `@${enchant}` : '';
   const qualityParam = quality > 1 ? `?quality=${quality}` : '';
   
-  if (item.id.includes('@')) {
-    return `https://render.albiononline.com/v1/item/${itemTier}_${item.id}.png${qualityParam}`;
-  }
-  if (item.fixedTier === 'UNIQUE') {
+  if (item.fixedTier === 'UNIQUE' || item.id.startsWith('UNIQUE_') || item.id.startsWith('QUESTITEM_')) {
     return `https://render.albiononline.com/v1/item/${item.id}.png${qualityParam}`;
+  }
+  if (item.id.startsWith('T') && item.id.includes('_')) {
+    return `https://render.albiononline.com/v1/item/${item.id}${enchantSuffix}.png${qualityParam}`;
   }
   return `https://render.albiononline.com/v1/item/${itemTier}_${item.id}${enchantSuffix}.png${qualityParam}`;
 }

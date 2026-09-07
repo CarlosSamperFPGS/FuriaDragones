@@ -4258,7 +4258,7 @@ export const ITEM_SPELLS_MAP = {
       "PASSIVE_ARMORCHANCE_SWORD"
     ]
   },
-  "2H_DUALSWORD_CRYSTAL": {
+  "MAIN_SWORD_CRYSTAL": {
     "q": [],
     "w": [],
     "e": [],
@@ -4809,7 +4809,7 @@ export const ITEM_SPELLS_MAP = {
       "PASSIVE_KNUCKLE_COMBOBREAKER"
     ]
   },
-  "2H_WARGLOVES_KEEPER": {
+  "2H_KNUCKLES_KEEPER": {
     "q": [],
     "w": [],
     "e": [],
@@ -4838,7 +4838,7 @@ export const ITEM_SPELLS_MAP = {
       "PASSIVE_KNUCKLE_COMBOBREAKER"
     ]
   },
-  "2H_KNUCKLES_UNDEAD": {
+  "2H_KNUCKLES_MORGANA": {
     "q": [],
     "w": [],
     "e": [],
@@ -5268,7 +5268,7 @@ export const ITEM_SPELLS_MAP = {
       "PASSIVE_AASPEEDCHANCE_SPEAR"
     ]
   },
-  "2H_TRINITYSPEAR_AVALON": {
+  "2H_TRIDENT_UNDEAD": {
     "q": [],
     "w": [],
     "e": [],
@@ -5389,7 +5389,7 @@ export const ITEM_SPELLS_MAP = {
       "PASSIVE_SPELLPOWER_CHANCE_DAGGER"
     ]
   },
-  "2H_DUALDAGGER_UNDEAD": {
+  "2H_DUALSICKLE_UNDEAD": {
     "q": [],
     "w": [],
     "e": [],
