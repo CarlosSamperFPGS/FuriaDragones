@@ -100,6 +100,55 @@ body {
 }
 
 /* ==========================================================================
+   Control de Roles y Permisos (Miembro vs Oficial)
+   ========================================================================== */
+.user-role-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+}
+
+.role-badge-member {
+  background-color: #171f28;
+  color: #84a9cb;
+  border: 1px solid #293849;
+}
+
+.role-badge-officer {
+  background: linear-gradient(135deg, #2f2310 0%, #17120a 100%);
+  color: var(--text-gold);
+  border: 1px solid var(--border-highlight);
+  box-shadow: 0 0 10px rgba(229, 169, 59, 0.25);
+}
+
+/* Ocultar elementos exclusivos de Oficial cuando se está en Modo Miembro */
+body.role-member .officer-only {
+  display: none !important;
+}
+
+body.role-officer .officer-only {
+  display: inline-flex !important;
+}
+
+body.role-officer div.officer-only,
+body.role-officer section.officer-only {
+  display: block !important;
+}
+
+/* ==========================================================================
    Contenido Principal
    ========================================================================== */
 .main-content {
