@@ -291,8 +291,13 @@ function saveBuildsToStorage(builds) {
 
 function getAllFolders() {
   try {
-    const custom = JSON.parse(localStorage.getItem("furia_custom_folders") || "[]");
-    return [...new Set([...DEFAULT_FOLDERS, ...custom])];
+    const stored = localStorage.getItem("furia_custom_folders");
+    if (!stored) return DEFAULT_FOLDERS;
+    const parsed = JSON.parse(stored);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed;
+    }
+    return DEFAULT_FOLDERS;
   } catch (e) {
     return DEFAULT_FOLDERS;
   }
@@ -417,18 +422,28 @@ function deleteFolder(folderName) {
     openOfficerLoginModal();
     return;
   }
-  if (confirm(`¿Eliminar la carpeta "${folderName}"?\nLas builds que estén en esta carpeta se moverán a "ZvZ".`)) {
+
+  const allFolders = getAllFolders();
+  if (allFolders.length <= 1) {
+    alert("No puedes eliminar la única carpeta que queda.");
+    return;
+  }
+
+  if (confirm(`¿Eliminar la carpeta "${folderName}"?\nTodas las builds que estén en esta carpeta se moverán a otra carpeta existente.`)) {
+    const remainingFolders = allFolders.filter(f => f !== folderName);
+    const fallbackFolder = remainingFolders[0] || "ZvZ";
+
     const builds = getSavedBuilds();
+    let reallocatedCount = 0;
     builds.forEach(b => {
       if (b.folder === folderName) {
-        b.folder = "ZvZ";
+        b.folder = fallbackFolder;
+        reallocatedCount++;
       }
     });
-    saveBuildsToStorage(builds);
 
-    let folders = getAllFolders().filter(f => f !== folderName);
-    if (folders.length === 0) folders = ["ZvZ"];
-    saveCustomFolders(folders);
+    saveBuildsToStorage(builds);
+    saveCustomFolders(remainingFolders);
 
     if (activeSelectedFolder === folderName) {
       activeSelectedFolder = "ALL";
@@ -436,7 +451,7 @@ function deleteFolder(folderName) {
 
     renderFoldersSidebar();
     renderSavedBuildsList();
-    showToast(`Carpeta "${folderName}" eliminada.`);
+    showToast(`Carpeta "${folderName}" eliminada (${reallocatedCount} builds movidas a "${fallbackFolder}").`);
   }
 }
 
