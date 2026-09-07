@@ -2398,7 +2398,11 @@ export function getItemImageUrl(itemOrId, tier = 'T8', enchant = 0, quality = 4)
   if (!itemId) return '';
   const itemTier = item.fixedTier || tier || 'T8';
   const enchantSuffix = enchant > 0 ? `@${enchant}` : '';
-  const qualityParam = quality > 1 ? `?quality=${quality}` : '';
+
+  // Consumibles (comidas, pociones) y monturas NO admiten cualidad en la API de render de Albion Online
+  const isNoQuality = (item.slot && (item.slot === 'food' || item.slot === 'potion' || item.slot === 'mount')) ||
+                      itemId.includes('POTION') || itemId.includes('MEAL') || itemId.includes('MOUNT');
+  const qualityParam = (!isNoQuality && quality > 1) ? `?quality=${quality}` : '';
   
   if (item.fixedTier === 'UNIQUE' || itemId.startsWith('UNIQUE_') || itemId.startsWith('QUESTITEM_')) {
     return `https://render.albiononline.com/v1/item/${itemId}.png${qualityParam}`;

@@ -1643,7 +1643,7 @@ function renderAlbionLoadoutWheel(build, container) {
 
   // 7. Poción (Potion) - Bottom Left
   const potItem = ALBION_ITEMS.find(i => i.id === eq.potion?.id);
-  const potUrl = potItem ? getItemImageUrl(potItem, eq.potion?.tier || "T7", 0, 4) : "https://render.albiononline.com/v1/item/T7_POTION_HEAL.png?quality=4";
+  const potUrl = potItem ? getItemImageUrl(potItem, eq.potion?.tier || "T7", 0, 4) : "https://render.albiononline.com/v1/item/T7_POTION_HEAL.png";
   const potHtml = `
     <div class="albion-slot-card" title="${potItem ? potItem.name : 'Poción'}">
       <img class="albion-slot-img" src="${potUrl}" alt="${potItem ? potItem.name : 'Poción'}">
@@ -1660,7 +1660,7 @@ function renderAlbionLoadoutWheel(build, container) {
   // 9. Comida y Montura (Food & Mount) - Bottom Right
   const foodItem = ALBION_ITEMS.find(i => i.id === eq.food?.id);
   const mountItem = ALBION_ITEMS.find(i => i.id === eq.mount?.id);
-  const foodUrl = foodItem ? getItemImageUrl(foodItem, eq.food?.tier || "T8", 0, 4) : "https://render.albiononline.com/v1/item/T8_MEAL_STEW.png?quality=4";
+  const foodUrl = foodItem ? getItemImageUrl(foodItem, eq.food?.tier || "T8", 0, 4) : "https://render.albiononline.com/v1/item/T8_MEAL_STEW.png";
   
   let foodMountHtml = `
     <div class="albion-slot-card" title="${foodItem ? foodItem.name : 'Comida'}">
@@ -1938,8 +1938,8 @@ function renderSavedBuildsList(highlightBuildId = null) {
     const mhUrl = mhItem ? getItemImageUrl(mhItem, mhData.tier || mhItem.fixedTier || "T8", 0, 4) : null;
 
     // Equipamiento secundario ordenado al estilo oficial Albion:
-    // Casco, Pecho, Botas, Mano Secundaria (si aplica), Capa, Poción, Comida
-    const secondarySlots = ["head", "armor", "shoes", "offhand", "cape", "potion", "food"];
+    // Casco, Pecho, Botas, Mano Secundaria (si aplica), Capa, Poción, Comida, Montura
+    const secondarySlots = ["head", "armor", "shoes", "offhand", "cape", "potion", "food", "mount"];
     let secondaryThumbsHtml = "";
 
     secondarySlots.forEach(slotKey => {
