@@ -7465,6 +7465,780 @@ export const ITEM_SPELLS_MAP = {
     "passive": [
       "PASSIVE_CAPE_HERETIC"
     ]
+  },
+  "2H_SCYTHE_CRYSTAL": {
+    "q": [
+      "RENDINGSTRIKE",
+      "RENDINGSPIN",
+      "RENDINGCOMBO"
+    ],
+    "w": [
+      "AXESMASH",
+      "AXEBOOST",
+      "AXE_CHARGE",
+      "INNERBLEEDING",
+      "BLADE_AURA"
+    ],
+    "e": [
+      "AXETHROW"
+    ],
+    "passive": [
+      "PASSIVE_BLEEDCHANCE",
+      "PASSIVE_HEALTHCHANCE_AXE",
+      "PASSIVE_ARMORCHANCE_AXE",
+      "PASSIVE_SPELLPOWER_CHANCE_AXE"
+    ]
+  },
+  "MAIN_MACE_CRYSTAL": {
+    "q": [
+      "DEFENSIVESLAM",
+      "THREATENINGSMASH",
+      "SACRED_GROUND"
+    ],
+    "w": [
+      "GROUNDSHAKER",
+      "CHARGE_ROOT",
+      "GUARDRUNE",
+      "PBAOE_PULL"
+    ],
+    "e": [
+      "MACELEAP"
+    ],
+    "passive": [
+      "PASSIVE_STUNCHANCE",
+      "PASSIVE_ENERGYCHANCE_MACE",
+      "PASSIVE_HEALTHCHANCE_MACE",
+      "PASSIVE_CCDURATION_CHANCE_MACE"
+    ]
+  },
+  "2H_HAMMER_CRYSTAL": {
+    "q": [
+      "HAMMER_SHOVE",
+      "THREATENINGSTRIKE_HAMMER",
+      "IRONBREAKER"
+    ],
+    "w": [
+      "HAMMER_TREMOR",
+      "CHARGESLOWAE",
+      "GEYSER",
+      "KNOCKOUT",
+      "TAR_RING"
+    ],
+    "e": [
+      "HAMMERWHIRLWIND2"
+    ],
+    "passive": [
+      "PASSIVE_STUNCHANCE",
+      "PASSIVE_ENERGYCHANCE_HAMMER",
+      "PASSIVE_HEALTHCHANCE_HAMMER",
+      "PASSIVE_CCDURATION_CHANCE_HAMMER"
+    ]
+  },
+  "2H_CROSSBOWLARGE_MORGANA": {
+    "q": [
+      "AUTOFIRE2",
+      "BOLTSHOT"
+    ],
+    "w": [
+      "ACID_BOMB",
+      "SUNDERSHOT",
+      "CALTROPS",
+      "KNOCKBACKSHOT2",
+      "SILENCINGBOLT"
+    ],
+    "e": [
+      "SNIPESHOT_CROSSBOW"
+    ],
+    "passive": [
+      "PASSIVE_KNOCKBACKCHANCE",
+      "PASSIVE_CD_RESET_Q",
+      "PASSIVE_ENERGYCHANCE_CROSSBOW",
+      "PASSIVE_SPELLPOWER_CASTER_CROSSBOW"
+    ]
+  },
+  "2H_DUALCROSSBOW_CRYSTAL": {
+    "q": [
+      "AUTOFIRE2",
+      "BOLTSHOT"
+    ],
+    "w": [
+      "ACID_BOMB",
+      "SUNDERSHOT",
+      "CALTROPS",
+      "KNOCKBACKSHOT2",
+      "SILENCINGBOLT"
+    ],
+    "e": [
+      "SNIPESHOT_CROSSBOW"
+    ],
+    "passive": [
+      "PASSIVE_KNOCKBACKCHANCE",
+      "PASSIVE_CD_RESET_Q",
+      "PASSIVE_ENERGYCHANCE_CROSSBOW",
+      "PASSIVE_SPELLPOWER_CASTER_CROSSBOW"
+    ]
+  },
+  "2H_BOW_CRYSTAL": {
+    "q": [
+      "MULTISHOT2",
+      "DEADLYSHOT",
+      "POISONARROW"
+    ],
+    "w": [
+      "GROUNDARROW",
+      "JUMPSHOT2",
+      "SPEEDSHOT2",
+      "BURNINGARROWS"
+    ],
+    "e": [
+      "SPEEDARCHER_KITE"
+    ],
+    "passive": [
+      "PASSIVE_SLOWPOISON",
+      "PASSIVE_ENERGYCHANCE_BOW",
+      "PASSIVE_ARMOR_PIERCE_STACK",
+      "PASSIVE_AASPEEDCHANCE_BOW"
+    ]
+  },
+  "2H_GLAIVE_CRYSTAL": {
+    "q": [
+      "SPEAR_LUNGE",
+      "SPIRITSPEAR"
+    ],
+    "w": [
+      "FORESTOFSPEARS",
+      "CHARGINGBLADE",
+      "LEGBREAKER",
+      "DEFLECTINGSTANCE",
+      "GROUNDSPEAR",
+      "SKILLSHOT_PULL"
+    ],
+    "e": [
+      "DASHDMG"
+    ],
+    "passive": [
+      "PASSIVE_SLOWPOISON",
+      "PASSIVE_HEALTHCHANCE_SPEAR",
+      "PASSIVE_SPELLPOWER_CHANCE_SPEAR",
+      "PASSIVE_AASPEEDCHANCE_SPEAR"
+    ]
+  },
+  "2H_DAGGERPAIR_CRYSTAL": {
+    "q": [
+      "SUNDERARMOR2",
+      "QDASH",
+      "ASSASSINSPIRIT"
+    ],
+    "w": [
+      "THROWINGBLADES",
+      "GROUNDDASH",
+      "DEEPCUTS",
+      "SKILLSHOT_TELEPORT",
+      "CHAINDASH"
+    ],
+    "e": [
+      "BLOODTHIRSTYBLADE"
+    ],
+    "passive": [
+      "PASSIVE_BLEEDCHANCE",
+      "PASSIVE_HEALTHCHANCE_DAGGER",
+      "PASSIVE_AASPEEDCHANCE_DAGGER",
+      "PASSIVE_SPELLPOWER_CHANCE_DAGGER"
+    ]
+  },
+  "2H_HOLYSTAFF_CRYSTAL": {
+    "q": [
+      "GENEROUSHEAL",
+      "SMITE_AOE",
+      "HOLYFLASH"
+    ],
+    "w": [
+      "PULSINGHEAL",
+      "HEALINGBEAM",
+      "HOLYHOT",
+      "HOLYORB",
+      "RESURRECTION"
+    ],
+    "e": [
+      "HOLYDESPERATEPRAYER2"
+    ],
+    "passive": [
+      "PASSIVE_HEALPOWERCHANCE",
+      "PASSIVE_ENERGYCHANCE_HOLYSTAFF",
+      "PASSIVE_KNOCKBACK_CASTER_HOLYSTAFF",
+      "PASSIVE_HOLY_ASCENDED"
+    ]
+  },
+  "2H_INFERNOSTAFF_MORGANA": {
+    "q": [
+      "FIRESTAFFBOLT2",
+      "FIRESTAFFBOLT_AOE",
+      "SEARING_FLAME"
+    ],
+    "w": [
+      "FIRESTAFFIGNITE2_SPREAD",
+      "FIREWALL",
+      "SKILLSHOT_FIREBALL",
+      "FIRECONE",
+      "FIREARTILLERY"
+    ],
+    "e": [
+      "PYROBLAST_SKILLSHOT"
+    ],
+    "passive": [
+      "PASSIVE_BURN",
+      "PASSIVE_ENERGYCHANCE_FIRESTAFF",
+      "PASSIVE_CASTINGSPEED_CHANCE_FIRESTAFF",
+      "PASSIVE_SPELLPOWER_CASTER_FIRESTAFF"
+    ]
+  },
+  "MAIN_FIRESTAFF_CRYSTAL": {
+    "q": [
+      "FIRESTAFFBOLT2",
+      "FIRESTAFFBOLT_AOE",
+      "SEARING_FLAME"
+    ],
+    "w": [
+      "FIRESTAFFIGNITE2_SPREAD",
+      "FIREWALL",
+      "SKILLSHOT_FIREBALL",
+      "FIRECONE",
+      "FIREARTILLERY"
+    ],
+    "e": [
+      "PYROBLAST_SKILLSHOT"
+    ],
+    "passive": [
+      "PASSIVE_BURN",
+      "PASSIVE_ENERGYCHANCE_FIRESTAFF",
+      "PASSIVE_CASTINGSPEED_CHANCE_FIRESTAFF",
+      "PASSIVE_SPELLPOWER_CASTER_FIRESTAFF"
+    ]
+  },
+  "2H_ICECRYSTAL_UNDEAD": {
+    "q": [
+      "FROST_BITE",
+      "ICESHARD",
+      "SHATTER_Q"
+    ],
+    "w": [
+      "FROSTBOMB_CASTSLOW",
+      "FROSTBEAM",
+      "FROSTNOVA",
+      "FROST_LANCE",
+      "ICE_SCULPTURE"
+    ],
+    "e": [
+      "FREEZINGWIND"
+    ],
+    "passive": [
+      "PASSIVE_FROST",
+      "PASSIVE_ENERGYCHANCE_FROSTSTAFF",
+      "PASSIVE_CASTINGSPEED_CHANCE_FROSTSTAFF",
+      "PASSIVE_SPELLPOWER_CASTER_FROSTSTAFF"
+    ]
+  },
+  "2H_FROSTSTAFF_CRYSTAL": {
+    "q": [
+      "FROST_BITE",
+      "ICESHARD",
+      "SHATTER_Q"
+    ],
+    "w": [
+      "FROSTBOMB_CASTSLOW",
+      "FROSTBEAM",
+      "FROSTNOVA",
+      "FROST_LANCE",
+      "ICE_SCULPTURE"
+    ],
+    "e": [
+      "FREEZINGWIND"
+    ],
+    "passive": [
+      "PASSIVE_FROST",
+      "PASSIVE_ENERGYCHANCE_FROSTSTAFF",
+      "PASSIVE_CASTINGSPEED_CHANCE_FROSTSTAFF",
+      "PASSIVE_SPELLPOWER_CASTER_FROSTSTAFF"
+    ]
+  },
+  "2H_ENIGMATICORB_MORGANA": {
+    "q": [
+      "ARCANE_CHAIN_MISSILE",
+      "SHIELDFRIENDLY",
+      "MAGICSHOCK"
+    ],
+    "w": [
+      "ENIGMA_BLADE",
+      "CLEANSESPEED2",
+      "FRAZZLE2",
+      "EMPOWERBEAM",
+      "MIMIC"
+    ],
+    "e": [
+      "ARCANEORB2"
+    ],
+    "passive": [
+      "PASSIVE_ATTACKBUFF_ARCANESTAFF",
+      "PASSIVE_ENERGYCHANCE_ARCANESTAFF",
+      "PASSIVE_ARMOR_CASTER_ARCANESTAFF",
+      "PASSIVE_SILENCECHANCE"
+    ]
+  },
+  "2H_ARCANESTAFF_CRYSTAL": {
+    "q": [
+      "ARCANE_CHAIN_MISSILE",
+      "SHIELDFRIENDLY",
+      "MAGICSHOCK"
+    ],
+    "w": [
+      "ENIGMA_BLADE",
+      "CLEANSESPEED2",
+      "FRAZZLE2",
+      "EMPOWERBEAM",
+      "MIMIC"
+    ],
+    "e": [
+      "ARCANEORB2"
+    ],
+    "passive": [
+      "PASSIVE_ATTACKBUFF_ARCANESTAFF",
+      "PASSIVE_ENERGYCHANCE_ARCANESTAFF",
+      "PASSIVE_ARMOR_CASTER_ARCANESTAFF",
+      "PASSIVE_SILENCECHANCE"
+    ]
+  },
+  "MAIN_CURSEDSTAFF_CRYSTAL": {
+    "q": [
+      "CURSEDOT",
+      "CURSEBLADE",
+      "CURSED_SPLAT"
+    ],
+    "w": [
+      "ARMORPIERCER",
+      "CURSENOVA",
+      "CURSEDHANDS_STACKUP",
+      "CURSEDBEAM",
+      "DARKMATTER"
+    ],
+    "e": [
+      "DEATHCURSE2"
+    ],
+    "passive": [
+      "PASSIVE_CURSE",
+      "PASSIVE_ENERGYCHANCE_CURSEDSTAFF",
+      "PASSIVE_SPELLPOWER_CASTER_CURSEDSTAFF",
+      "PASSIVE_MOVESPEED_CHANCE_CURSEDSTAFF"
+    ]
+  },
+  "MAIN_NATURESTAFF_CRYSTAL": {
+    "q": [
+      "REJUVENATION",
+      "THORNSAREA",
+      "REJUVMUSHROOM_GRENADE"
+    ],
+    "w": [
+      "BRAMBLESEED",
+      "REANIMATE",
+      "NATURERESILIENCE",
+      "CLEANSEHEAL",
+      "REJUVENATING_BREEZE"
+    ],
+    "e": [
+      "CIRCLEOFLIFE"
+    ],
+    "passive": [
+      "PASSIVE_HEALPOWERCHANCE",
+      "PASSIVE_ENERGYCHANCE_NATURESTAFF",
+      "PASSIVE_ARMOR_CASTER_NATURESTAFF",
+      "PASSIVE_MOVESPEED_CHANCE_NATURESTAFF"
+    ]
+  },
+  "2H_DOUBLEBLADEDSTAFF_CRYSTAL": {
+    "q": [
+      "CONCUSSIVEBLOW_MULTI_1",
+      "WHIRLING_STAFF",
+      "CARTWHEEL"
+    ],
+    "w": [
+      "QSTAFF_COMBO",
+      "STUNRUN",
+      "QS_WHIRLWIND2",
+      "LAUNCHER",
+      "SEPARATING_SLAM"
+    ],
+    "e": [
+      "VAULT_ATTACK"
+    ],
+    "passive": [
+      "PASSIVE_STUNCHANCE_QUARTERSTAFF",
+      "PASSIVE_ENERGYCHANCE_QUARTERSTAFF",
+      "PASSIVE_HEALTHCHANCE_QUARTERSTAFF",
+      "PASSIVE_CCDURATION_CHANCE_QUARTERSTAFF"
+    ]
+  },
+  "2H_IRONGAUNTLETS_HELL": {
+    "q": [
+      "CREATE_OPENING",
+      "DASHKICK",
+      "CROSSSTEP_ROUNDHOUSE",
+      "SHOCKWAVE_PUNCH"
+    ],
+    "w": [
+      "TRIPLE_KICK",
+      "BACKHAND_KNOCKBACK",
+      "KNUCKLE_COUNTER",
+      "KNUCKLECOMBO"
+    ],
+    "e": [
+      "BLAZING_GEYSER"
+    ],
+    "passive": [
+      "PASSIVE_KNUCKLE_BRAWLER",
+      "PASSIVE_KNUCKLE_RAGE",
+      "PASSIVE_KNUCKLE_RUSHDOWN",
+      "PASSIVE_KNUCKLE_COMBOBREAKER"
+    ]
+  },
+  "2H_SHAPESHIFTER_CRYSTAL": {
+    "q": [
+      "SHAPE_Q_CAST",
+      "SHAPE_Q_SKILLSHOT",
+      "SHAPE_Q_DAMAGE_AND_SHIELD",
+      "SHAPE_Q_CONE_MELEE"
+    ],
+    "w": [
+      "SHAPE_W_DAMAGE_AOE",
+      "SHAPE_W_AREA_PULL",
+      "SHAPE_W_TETHERBEAM",
+      "SHAPE_W_POLYMORPH"
+    ],
+    "e": [
+      "SHAPESHIFT_PANTHER"
+    ],
+    "passive": [
+      "PASSIVE_SHAPESHIFT_ATTACK_BUFF",
+      "PASSIVE_SHAPESHIFT_Q_CAST_DAMAGE_REDUCE",
+      "PASSIVE_SHAPESHIFT_GATHER_CHARGES",
+      "PASSIVE_SHAPESHIFT_W_CAST_SPEED_BUFF"
+    ]
+  },
+  "HEAD_PLATE_KEEPER": {
+    "active": [
+      "ENERGY_BARRIER",
+      "STONESKIN",
+      "BLOCK"
+    ],
+    "passive": [
+      "PASSIVE_MR_AR",
+      "PASSIVE_CCDURATION",
+      "PASSIVE_INCREASED_CCR"
+    ]
+  },
+  "HEAD_PLATE_FEY": {
+    "active": [
+      "ENERGY_BARRIER",
+      "STONESKIN",
+      "BLOCK"
+    ],
+    "passive": [
+      "PASSIVE_MR_AR",
+      "PASSIVE_CCDURATION",
+      "PASSIVE_INCREASED_CCR"
+    ]
+  },
+  "HEAD_LEATHER_FEY": {
+    "active": [
+      "ENERGY_BARRIER",
+      "SELF_CLEANSE",
+      "HOWL"
+    ],
+    "passive": [
+      "PASSIVE_BALANCE",
+      "PASSIVE_INCREASED_AASPEED",
+      "PASSIVE_CD_REDUCTION"
+    ]
+  },
+  "HEAD_LEATHER_AVALON": {
+    "active": [
+      "ENERGY_BARRIER",
+      "SELF_CLEANSE",
+      "HOWL"
+    ],
+    "passive": [
+      "PASSIVE_BALANCE",
+      "PASSIVE_INCREASED_AASPEED",
+      "PASSIVE_CD_REDUCTION"
+    ]
+  },
+  "HEAD_LEATHER_DRAGON": {
+    "active": [
+      "ENERGY_BARRIER",
+      "SELF_CLEANSE",
+      "HOWL"
+    ],
+    "passive": [
+      "PASSIVE_BALANCE",
+      "PASSIVE_INCREASED_AASPEED",
+      "PASSIVE_CD_REDUCTION"
+    ]
+  },
+  "HEAD_CLOTH_KEEPER": {
+    "active": [
+      "ENERGY_BARRIER",
+      "PBAOE_KNOCKBACK",
+      "ENERGYSHIELD2"
+    ],
+    "passive": [
+      "PASSIVE_INCREASED_DAMAGE",
+      "PASSIVE_CASTSPEED",
+      "PASSIVE_REDUCED_ENERGYCOST"
+    ]
+  },
+  "HEAD_CLOTH_FEY": {
+    "active": [
+      "ENERGY_BARRIER",
+      "PBAOE_KNOCKBACK",
+      "ENERGYSHIELD2"
+    ],
+    "passive": [
+      "PASSIVE_INCREASED_DAMAGE",
+      "PASSIVE_CASTSPEED",
+      "PASSIVE_REDUCED_ENERGYCOST"
+    ]
+  },
+  "ARMOR_PLATE_KEEPER": {
+    "active": [
+      "OUTOFCOMBATHEAL",
+      "TAUNT",
+      "ENRAGE"
+    ],
+    "passive": [
+      "PASSIVE_ARMOR_MR_AR",
+      "PASSIVE_ARMOR_CCDURATION",
+      "PASSIVE_ARMOR_INCREASED_CCR",
+      "PASSIVE_PLATEARMOR_HEALTH_REDUCTION",
+      "PASSIVE_PLATEARMOR_THREATGENERATION"
+    ]
+  },
+  "ARMOR_PLATE_FEY": {
+    "active": [
+      "OUTOFCOMBATHEAL",
+      "TAUNT",
+      "ENRAGE"
+    ],
+    "passive": [
+      "PASSIVE_ARMOR_MR_AR",
+      "PASSIVE_ARMOR_CCDURATION",
+      "PASSIVE_ARMOR_INCREASED_CCR",
+      "PASSIVE_PLATEARMOR_HEALTH_REDUCTION",
+      "PASSIVE_PLATEARMOR_THREATGENERATION"
+    ]
+  },
+  "ARMOR_LEATHER_FEY": {
+    "active": [
+      "OUTOFCOMBATHEAL",
+      "FLAMESHIELD",
+      "BLOODLUST"
+    ],
+    "passive": [
+      "PASSIVE_ARMOR_BALANCE",
+      "PASSIVE_ARMOR_INCREASED_AASPEED",
+      "PASSIVE_ARMOR_CD_REDUCTION"
+    ]
+  },
+  "ARMOR_LEATHER_DRAGON": {
+    "active": [
+      "OUTOFCOMBATHEAL",
+      "FLAMESHIELD",
+      "BLOODLUST"
+    ],
+    "passive": [
+      "PASSIVE_ARMOR_BALANCE",
+      "PASSIVE_ARMOR_INCREASED_AASPEED",
+      "PASSIVE_ARMOR_CD_REDUCTION"
+    ]
+  },
+  "ARMOR_CLOTH_KEEPER": {
+    "active": [
+      "OUTOFCOMBATHEAL",
+      "FROSTSHIELD",
+      "SPEEDCASTER"
+    ],
+    "passive": [
+      "PASSIVE_ARMOR_INCREASED_DAMAGE",
+      "PASSIVE_ARMOR_INCREASED_CASTSPEED",
+      "PASSIVE_ARMOR_REDUCED_ENERGYCOST"
+    ]
+  },
+  "ARMOR_CLOTH_FEY": {
+    "active": [
+      "OUTOFCOMBATHEAL",
+      "FROSTSHIELD",
+      "SPEEDCASTER"
+    ],
+    "passive": [
+      "PASSIVE_ARMOR_INCREASED_DAMAGE",
+      "PASSIVE_ARMOR_INCREASED_CASTSPEED",
+      "PASSIVE_ARMOR_REDUCED_ENERGYCOST"
+    ]
+  },
+  "SHOES_PLATE_UNDEAD": {
+    "active": [
+      "DODGE",
+      "SPRINTHOT",
+      "WANDERLUST"
+    ],
+    "passive": [
+      "PASSIVE_MAXLOAD_SHOES",
+      "PASSIVE_MR_AR",
+      "PASSIVE_CCDURATION",
+      "PASSIVE_INCREASED_CCR"
+    ]
+  },
+  "SHOES_PLATE_KEEPER": {
+    "active": [
+      "DODGE",
+      "SPRINTHOT",
+      "WANDERLUST"
+    ],
+    "passive": [
+      "PASSIVE_MAXLOAD_SHOES",
+      "PASSIVE_MR_AR",
+      "PASSIVE_CCDURATION",
+      "PASSIVE_INCREASED_CCR"
+    ]
+  },
+  "SHOES_PLATE_FEY": {
+    "active": [
+      "DODGE",
+      "SPRINTHOT",
+      "WANDERLUST"
+    ],
+    "passive": [
+      "PASSIVE_MAXLOAD_SHOES",
+      "PASSIVE_MR_AR",
+      "PASSIVE_CCDURATION",
+      "PASSIVE_INCREASED_CCR"
+    ]
+  },
+  "SHOES_LEATHER_UNDEAD": {
+    "active": [
+      "DODGE",
+      "SPRINT_CD_REDUCTION",
+      "CLEANSE_DASH"
+    ],
+    "passive": [
+      "PASSIVE_MAXLOAD_SHOES",
+      "PASSIVE_BALANCE",
+      "PASSIVE_INCREASED_AASPEED",
+      "PASSIVE_CD_REDUCTION"
+    ]
+  },
+  "SHOES_LEATHER_FEY": {
+    "active": [
+      "DODGE",
+      "SPRINT_CD_REDUCTION",
+      "CLEANSE_DASH"
+    ],
+    "passive": [
+      "PASSIVE_MAXLOAD_SHOES",
+      "PASSIVE_BALANCE",
+      "PASSIVE_INCREASED_AASPEED",
+      "PASSIVE_CD_REDUCTION"
+    ]
+  },
+  "SHOES_LEATHER_AVALON": {
+    "active": [
+      "DODGE",
+      "SPRINT_CD_REDUCTION",
+      "CLEANSE_DASH"
+    ],
+    "passive": [
+      "PASSIVE_MAXLOAD_SHOES",
+      "PASSIVE_BALANCE",
+      "PASSIVE_INCREASED_AASPEED",
+      "PASSIVE_CD_REDUCTION"
+    ]
+  },
+  "SHOES_LEATHER_DRAGON": {
+    "active": [
+      "DODGE",
+      "SPRINT_CD_REDUCTION",
+      "CLEANSE_DASH"
+    ],
+    "passive": [
+      "PASSIVE_MAXLOAD_SHOES",
+      "PASSIVE_BALANCE",
+      "PASSIVE_INCREASED_AASPEED",
+      "PASSIVE_CD_REDUCTION"
+    ]
+  },
+  "SHOES_CLOTH_KEEPER": {
+    "active": [
+      "DODGE",
+      "SPRINTEOT",
+      "CHANNELED_RUN"
+    ],
+    "passive": [
+      "PASSIVE_MAXLOAD_SHOES",
+      "PASSIVE_INCREASED_DAMAGE",
+      "PASSIVE_CASTSPEED",
+      "PASSIVE_REDUCED_ENERGYCOST"
+    ]
+  },
+  "SHOES_CLOTH_HELL": {
+    "active": [
+      "DODGE",
+      "SPRINTEOT",
+      "CHANNELED_RUN"
+    ],
+    "passive": [
+      "PASSIVE_MAXLOAD_SHOES",
+      "PASSIVE_INCREASED_DAMAGE",
+      "PASSIVE_CASTSPEED",
+      "PASSIVE_REDUCED_ENERGYCOST"
+    ]
+  },
+  "SHOES_CLOTH_MORGANA": {
+    "active": [
+      "DODGE",
+      "SPRINTEOT",
+      "CHANNELED_RUN"
+    ],
+    "passive": [
+      "PASSIVE_MAXLOAD_SHOES",
+      "PASSIVE_INCREASED_DAMAGE",
+      "PASSIVE_CASTSPEED",
+      "PASSIVE_REDUCED_ENERGYCOST"
+    ]
+  },
+  "SHOES_CLOTH_FEY": {
+    "active": [
+      "DODGE",
+      "SPRINTEOT",
+      "CHANNELED_RUN"
+    ],
+    "passive": [
+      "PASSIVE_MAXLOAD_SHOES",
+      "PASSIVE_INCREASED_DAMAGE",
+      "PASSIVE_CASTSPEED",
+      "PASSIVE_REDUCED_ENERGYCOST"
+    ]
+  },
+  "CAPEITEM_AVALON": {
+    "passive": [
+      "PASSIVE_CAPE_AVALON"
+    ]
+  },
+  "CAPEITEM_KEEPER": {
+    "passive": [
+      "PASSIVE_CAPE_KEEPER"
+    ]
+  },
+  "CAPEITEM_SMUGGLER": {
+    "passive": [
+      "PASSIVE_CAPE_SMUGGLER"
+    ]
   }
 };
 
