@@ -12,7 +12,7 @@ export const ALBION_SPELLS = {
     "cooldown": "3.0s",
     "energy": 2.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/DECAPITATE.png"
+    "icon": "https://render.albiononline.com/v1/spell/HEROICSTRIKE2.png"
   },
   "CLEAVE": {
     "id": "CLEAVE",
@@ -22,7 +22,7 @@ export const ALBION_SPELLS = {
     "cooldown": "3.0s",
     "energy": 3.5,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/CLEAVE_SWORD.png"
+    "icon": "https://render.albiononline.com/v1/spell/CLEAVE.png"
   },
   "SWORD_SPIN": {
     "id": "SWORD_SPIN",
@@ -42,7 +42,7 @@ export const ALBION_SPELLS = {
     "cooldown": "10.0s",
     "energy": 7.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/INTERRUPT_BLUNT.png"
+    "icon": "https://render.albiononline.com/v1/spell/INTERRUPT2.png"
   },
   "SPLITTINGSLASH": {
     "id": "SPLITTINGSLASH",
@@ -52,7 +52,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 12.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SPLITTING_SMASH.png"
+    "icon": "https://render.albiononline.com/v1/spell/SPLITTINGSLASH.png"
   },
   "HAMSTRINGSWORD": {
     "id": "HAMSTRINGSWORD",
@@ -62,7 +62,7 @@ export const ALBION_SPELLS = {
     "cooldown": "6.0s",
     "energy": 5.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/HAMSTRING.png"
+    "icon": "https://render.albiononline.com/v1/spell/HAMSTRINGSWORD.png"
   },
   "PARRY": {
     "id": "PARRY",
@@ -72,7 +72,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 0.09,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BLOCK.png"
+    "icon": "https://render.albiononline.com/v1/spell/PARRY.png"
   },
   "DEFENSERUN": {
     "id": "DEFENSERUN",
@@ -82,7 +82,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 0.1,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/MELEE_BUFF.png"
+    "icon": "https://render.albiononline.com/v1/spell/DEFENSERUN.png"
   },
   "MIGHTYBLOW": {
     "id": "MIGHTYBLOW",
@@ -92,7 +92,7 @@ export const ALBION_SPELLS = {
     "cooldown": "12.0s",
     "energy": 11.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/WHIRLWIND_SWORD.png"
+    "icon": "https://render.albiononline.com/v1/spell/MIGHTYBLOW.png"
   },
   "PASSIVE_BLEEDCHANCE": {
     "id": "PASSIVE_BLEEDCHANCE",
@@ -102,7 +102,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_FURY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_BLEEDCHANCE.png"
   },
   "PASSIVE_REDUCE_DMG_SWORD": {
     "id": "PASSIVE_REDUCE_DMG_SWORD",
@@ -112,7 +112,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_TACTICIAN.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_REDUCE_DMG_SWORD.png"
   },
   "PASSIVE_HEROICSTACK": {
     "id": "PASSIVE_HEROICSTACK",
@@ -122,7 +122,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_PARALYSIS.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_HEROICSTACK.png"
   },
   "PASSIVE_ARMORCHANCE_SWORD": {
     "id": "PASSIVE_ARMORCHANCE_SWORD",
@@ -132,7 +132,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVEEFFECT_GUARD.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ARMORCHANCE_SWORD.png"
   },
   "CLAYMORECHARGE": {
     "id": "CLAYMORECHARGE",
@@ -142,7 +142,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 16.0,
     "castTime": "0.4s",
-    "icon": "https://render.albiononline.com/v1/spell/CLAYMORESTRIKE.png"
+    "icon": "https://render.albiononline.com/v1/spell/CLAYMORECHARGE.png"
   },
   "SPINATTACK": {
     "id": "SPINATTACK",
@@ -152,7 +152,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 17.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SPINNING_BLADES.png"
+    "icon": "https://render.albiononline.com/v1/spell/SPINATTACK.png"
   },
   "MIGHTYSWING": {
     "id": "MIGHTYSWING",
@@ -162,7 +162,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 14.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/CRESCENT_SLASH_2.png"
+    "icon": "https://render.albiononline.com/v1/spell/MIGHTYSWING.png"
   },
   "CLAYMORESLASH": {
     "id": "CLAYMORESLASH",
@@ -172,7 +172,7 @@ export const ALBION_SPELLS = {
     "cooldown": "25.0s",
     "energy": 16.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/FEARLESS_STRIKE.png"
+    "icon": "https://render.albiononline.com/v1/spell/CLAYMORESLASH.png"
   },
   "BLADE_AREA": {
     "id": "BLADE_AREA",
@@ -182,7 +182,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 22.0,
     "castTime": "0.9s",
-    "icon": "https://render.albiononline.com/v1/spell/SOULLESS_STEAM.png"
+    "icon": "https://render.albiononline.com/v1/spell/BLADE_AREA.png"
   },
   "MAJESTIC_SMASH": {
     "id": "MAJESTIC_SMASH",
@@ -202,7 +202,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Instantáneo",
     "energy": 6.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/LIMITBREAKER.png"
+    "icon": "https://render.albiononline.com/v1/spell/SWORD_BERSERK_RUN_RE.png"
   },
   "RENDINGSTRIKE": {
     "id": "RENDINGSTRIKE",
@@ -212,7 +212,7 @@ export const ALBION_SPELLS = {
     "cooldown": "2.0s",
     "energy": 1.6,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/AXE_DOT.png"
+    "icon": "https://render.albiononline.com/v1/spell/RENDINGSTRIKE.png"
   },
   "RENDINGSPIN": {
     "id": "RENDINGSPIN",
@@ -222,7 +222,7 @@ export const ALBION_SPELLS = {
     "cooldown": "3.0s",
     "energy": 3.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/CLEAVE_SWORD.png"
+    "icon": "https://render.albiononline.com/v1/spell/RENDINGSPIN.png"
   },
   "RENDINGCOMBO": {
     "id": "RENDINGCOMBO",
@@ -232,7 +232,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Instantáneo",
     "energy": 2.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/RENDING_COMBO_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/RENDINGCOMBO.png"
   },
   "AXESMASH": {
     "id": "AXESMASH",
@@ -242,7 +242,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 8.0,
     "castTime": "0.4s",
-    "icon": "https://render.albiononline.com/v1/spell/HEAVY_AXE.png"
+    "icon": "https://render.albiononline.com/v1/spell/AXESMASH.png"
   },
   "AXEBOOST": {
     "id": "AXEBOOST",
@@ -252,7 +252,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 9.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/STRENGTH.png"
+    "icon": "https://render.albiononline.com/v1/spell/AXEBOOST.png"
   },
   "AXE_CHARGE": {
     "id": "AXE_CHARGE",
@@ -262,7 +262,7 @@ export const ALBION_SPELLS = {
     "cooldown": "18.0s",
     "energy": 11.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/DASH_BUFF.png"
+    "icon": "https://render.albiononline.com/v1/spell/AXE_CHARGE.png"
   },
   "INNERBLEEDING": {
     "id": "INNERBLEEDING",
@@ -272,7 +272,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 8.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BLEED.png"
+    "icon": "https://render.albiononline.com/v1/spell/INNERBLEEDING.png"
   },
   "BLADE_AURA": {
     "id": "BLADE_AURA",
@@ -282,7 +282,7 @@ export const ALBION_SPELLS = {
     "cooldown": "12.0s",
     "energy": 9.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/ENFEEBLEBLADES.png"
+    "icon": "https://render.albiononline.com/v1/spell/BLADE_AURA.png"
   },
   "AXETHROW": {
     "id": "AXETHROW",
@@ -292,7 +292,7 @@ export const ALBION_SPELLS = {
     "cooldown": "10.0s",
     "energy": 12.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BLOOD_BANDIT.png"
+    "icon": "https://render.albiononline.com/v1/spell/AXETHROW.png"
   },
   "PASSIVE_HEALTHCHANCE_AXE": {
     "id": "PASSIVE_HEALTHCHANCE_AXE",
@@ -302,7 +302,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_VITALITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_HEALTHCHANCE_AXE.png"
   },
   "PASSIVE_ARMORCHANCE_AXE": {
     "id": "PASSIVE_ARMORCHANCE_AXE",
@@ -312,7 +312,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVEEFFECT_GUARD.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ARMORCHANCE_AXE.png"
   },
   "PASSIVE_SPELLPOWER_CHANCE_AXE": {
     "id": "PASSIVE_SPELLPOWER_CHANCE_AXE",
@@ -322,7 +322,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_PARALYSIS.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SPELLPOWER_CHANCE_AXE.png"
   },
   "AXEWHIRLWIND2": {
     "id": "AXEWHIRLWIND2",
@@ -332,7 +332,7 @@ export const ALBION_SPELLS = {
     "cooldown": "25.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/WHIRLWIND.png"
+    "icon": "https://render.albiononline.com/v1/spell/AXEWHIRLWIND2.png"
   },
   "RENDINGSWING": {
     "id": "RENDINGSWING",
@@ -342,7 +342,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 18.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/AXE_DOT.png"
+    "icon": "https://render.albiononline.com/v1/spell/RENDINGSWING.png"
   },
   "SHOCKWAVE": {
     "id": "SHOCKWAVE",
@@ -352,7 +352,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 17.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/WHIRLWIND.png"
+    "icon": "https://render.albiononline.com/v1/spell/SHOCKWAVE.png"
   },
   "SCYTHESWING": {
     "id": "SCYTHESWING",
@@ -362,7 +362,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 18.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BLOODY_REAP.png"
+    "icon": "https://render.albiononline.com/v1/spell/SCYTHESWING.png"
   },
   "DUALAXE_CRAWLER": {
     "id": "DUALAXE_CRAWLER",
@@ -372,7 +372,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 16.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/RAZOR_CUT.png"
+    "icon": "https://render.albiononline.com/v1/spell/DUALAXE_CRAWLER.png"
   },
   "LETHAL_CLEAVER": {
     "id": "LETHAL_CLEAVER",
@@ -382,7 +382,7 @@ export const ALBION_SPELLS = {
     "cooldown": "25.0s",
     "energy": 20.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/LETHAL_CLEAVE.png"
+    "icon": "https://render.albiononline.com/v1/spell/LETHAL_CLEAVER.png"
   },
   "CRYSTAL_SCYTHE_DASH_ZONE": {
     "id": "CRYSTAL_SCYTHE_DASH_ZONE",
@@ -392,7 +392,7 @@ export const ALBION_SPELLS = {
     "cooldown": "3.0s",
     "energy": 16.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/CRYSTAL_REAP.png"
+    "icon": "https://render.albiononline.com/v1/spell/CRYSTAL_SCYTHE_DASH_ZONE.png"
   },
   "DEFENSIVESLAM": {
     "id": "DEFENSIVESLAM",
@@ -402,7 +402,7 @@ export const ALBION_SPELLS = {
     "cooldown": "2.0s",
     "energy": 3.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/MACE_BUFF.png"
+    "icon": "https://render.albiononline.com/v1/spell/DEFENSIVESLAM.png"
   },
   "THREATENINGSMASH": {
     "id": "THREATENINGSMASH",
@@ -412,7 +412,7 @@ export const ALBION_SPELLS = {
     "cooldown": "4.0s",
     "energy": 5.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/MELEEWHIRLWIND.png"
+    "icon": "https://render.albiononline.com/v1/spell/THREATENINGSMASH.png"
   },
   "SACRED_GROUND": {
     "id": "SACRED_GROUND",
@@ -422,7 +422,7 @@ export const ALBION_SPELLS = {
     "cooldown": "7.0s",
     "energy": 0.06,
     "castTime": "0.6s",
-    "icon": "https://render.albiononline.com/v1/spell/SILENCE.png"
+    "icon": "https://render.albiononline.com/v1/spell/SACRED_GROUND.png"
   },
   "GROUNDSHAKER": {
     "id": "GROUNDSHAKER",
@@ -432,7 +432,7 @@ export const ALBION_SPELLS = {
     "cooldown": "10.0s",
     "energy": 10.0,
     "castTime": "0.6s",
-    "icon": "https://render.albiononline.com/v1/spell/GROUND_SHAKER.png"
+    "icon": "https://render.albiononline.com/v1/spell/GROUNDSHAKER.png"
   },
   "CHARGE_ROOT": {
     "id": "CHARGE_ROOT",
@@ -442,7 +442,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 9.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/DASH_DEBUFF.png"
+    "icon": "https://render.albiononline.com/v1/spell/CHARGE_ROOT.png"
   },
   "GUARDRUNE": {
     "id": "GUARDRUNE",
@@ -452,7 +452,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 14.0,
     "castTime": "0.4s",
-    "icon": "https://render.albiononline.com/v1/spell/MAGICCIRCLE_GUARD.png"
+    "icon": "https://render.albiononline.com/v1/spell/GUARDRUNE.png"
   },
   "PBAOE_PULL": {
     "id": "PBAOE_PULL",
@@ -462,7 +462,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PULL_AOE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PBAOE_PULL.png"
   },
   "MACELEAP": {
     "id": "MACELEAP",
@@ -472,7 +472,7 @@ export const ALBION_SPELLS = {
     "cooldown": "25.0s",
     "energy": 16.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/JUMP_ATTACK.png"
+    "icon": "https://render.albiononline.com/v1/spell/MACELEAP.png"
   },
   "PASSIVE_STUNCHANCE": {
     "id": "PASSIVE_STUNCHANCE",
@@ -482,7 +482,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_DAZE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_STUNCHANCE.png"
   },
   "PASSIVE_ENERGYCHANCE_MACE": {
     "id": "PASSIVE_ENERGYCHANCE_MACE",
@@ -492,7 +492,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_TACTICIAN.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ENERGYCHANCE_MACE.png"
   },
   "PASSIVE_HEALTHCHANCE_MACE": {
     "id": "PASSIVE_HEALTHCHANCE_MACE",
@@ -502,7 +502,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_VITALITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_HEALTHCHANCE_MACE.png"
   },
   "PASSIVE_CCDURATION_CHANCE_MACE": {
     "id": "PASSIVE_CCDURATION_CHANCE_MACE",
@@ -512,7 +512,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_REINFORCE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CCDURATION_CHANCE_MACE.png"
   },
   "SHRIEKMACE": {
     "id": "SHRIEKMACE",
@@ -522,7 +522,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 12.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BATTLE_HOWL.png"
+    "icon": "https://render.albiononline.com/v1/spell/SHRIEKMACE.png"
   },
   "ROOTFIELD": {
     "id": "ROOTFIELD",
@@ -532,7 +532,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Instantáneo",
     "energy": 0.1,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/ROOT_PRISON.png"
+    "icon": "https://render.albiononline.com/v1/spell/ROOTFIELD.png"
   },
   "PRIMALSLAM": {
     "id": "PRIMALSLAM",
@@ -542,7 +542,7 @@ export const ALBION_SPELLS = {
     "cooldown": "27.5s",
     "energy": 10.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/FORCE_OF_NATURE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PRIMALSLAM.png"
   },
   "SHRINKINGSMASH": {
     "id": "SHRINKINGSMASH",
@@ -552,7 +552,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 22.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SHRINKING_CURSE.png"
+    "icon": "https://render.albiononline.com/v1/spell/SHRINKINGSMASH.png"
   },
   "VACUUMSLASH": {
     "id": "VACUUMSLASH",
@@ -562,7 +562,7 @@ export const ALBION_SPELLS = {
     "cooldown": "25.0s",
     "energy": 17.0,
     "castTime": "0.2s",
-    "icon": "https://render.albiononline.com/v1/spell/VENDETTA.png"
+    "icon": "https://render.albiononline.com/v1/spell/VACUUMSLASH.png"
   },
   "BLESSED_MACES": {
     "id": "BLESSED_MACES",
@@ -592,7 +592,7 @@ export const ALBION_SPELLS = {
     "cooldown": "4.0s",
     "energy": 6.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SHOVE.png"
+    "icon": "https://render.albiononline.com/v1/spell/HAMMER_SHOVE.png"
   },
   "THREATENINGSTRIKE_HAMMER": {
     "id": "THREATENINGSTRIKE_HAMMER",
@@ -602,7 +602,7 @@ export const ALBION_SPELLS = {
     "cooldown": "2.0s",
     "energy": 5.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/THREATENING_STRIKE.png"
+    "icon": "https://render.albiononline.com/v1/spell/THREATENINGSTRIKE_HAMMER.png"
   },
   "IRONBREAKER": {
     "id": "IRONBREAKER",
@@ -612,7 +612,7 @@ export const ALBION_SPELLS = {
     "cooldown": "6.0s",
     "energy": 5.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SUNDER_ARMOR.png"
+    "icon": "https://render.albiononline.com/v1/spell/IRONBREAKER.png"
   },
   "HAMMER_TREMOR": {
     "id": "HAMMER_TREMOR",
@@ -622,7 +622,7 @@ export const ALBION_SPELLS = {
     "cooldown": "10.0s",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SEISMIC_TREMOR.png"
+    "icon": "https://render.albiononline.com/v1/spell/HAMMER_TREMOR.png"
   },
   "CHARGESLOWAE": {
     "id": "CHARGESLOWAE",
@@ -632,7 +632,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 11.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/POUNCE.png"
+    "icon": "https://render.albiononline.com/v1/spell/CHARGESLOWAE.png"
   },
   "GEYSER": {
     "id": "GEYSER",
@@ -642,7 +642,7 @@ export const ALBION_SPELLS = {
     "cooldown": "10.0s",
     "energy": 10.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/EMPOWERMENT.png"
+    "icon": "https://render.albiononline.com/v1/spell/GEYSER.png"
   },
   "KNOCKOUT": {
     "id": "KNOCKOUT",
@@ -652,7 +652,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 12.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/MEZZ.png"
+    "icon": "https://render.albiononline.com/v1/spell/KNOCKOUT.png"
   },
   "TAR_RING": {
     "id": "TAR_RING",
@@ -662,7 +662,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 4.0,
     "castTime": "0.5s",
-    "icon": "https://render.albiononline.com/v1/spell/MOUNTSPELL_BIGCLEAVE.png"
+    "icon": "https://render.albiononline.com/v1/spell/TAR_RING.png"
   },
   "HAMMERWHIRLWIND2": {
     "id": "HAMMERWHIRLWIND2",
@@ -672,7 +672,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/WHIRLWIND_HAMMER.png"
+    "icon": "https://render.albiononline.com/v1/spell/HAMMERWHIRLWIND2.png"
   },
   "PASSIVE_ENERGYCHANCE_HAMMER": {
     "id": "PASSIVE_ENERGYCHANCE_HAMMER",
@@ -682,7 +682,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_TACTICIAN.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ENERGYCHANCE_HAMMER.png"
   },
   "PASSIVE_HEALTHCHANCE_HAMMER": {
     "id": "PASSIVE_HEALTHCHANCE_HAMMER",
@@ -692,7 +692,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_VITALITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_HEALTHCHANCE_HAMMER.png"
   },
   "PASSIVE_CCDURATION_CHANCE_HAMMER": {
     "id": "PASSIVE_CCDURATION_CHANCE_HAMMER",
@@ -702,7 +702,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_REINFORCE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CCDURATION_CHANCE_HAMMER.png"
   },
   "GROUNDBREAKER2": {
     "id": "GROUNDBREAKER2",
@@ -712,7 +712,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 16.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/GROUNDBREAKER.png"
+    "icon": "https://render.albiononline.com/v1/spell/GROUNDBREAKER2.png"
   },
   "HAMMERTACKLE": {
     "id": "HAMMERTACKLE",
@@ -732,7 +732,7 @@ export const ALBION_SPELLS = {
     "cooldown": "14.0s",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/UNDEAD_GRASP.png"
+    "icon": "https://render.albiononline.com/v1/spell/UNDEADHAND.png"
   },
   "GIANTSTEPS": {
     "id": "GIANTSTEPS",
@@ -752,7 +752,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 23.0,
     "castTime": "0.4s",
-    "icon": "https://render.albiononline.com/v1/spell/GROUND_POUND.png"
+    "icon": "https://render.albiononline.com/v1/spell/RAM_CHARGE.png"
   },
   "SPINNING_SMASH": {
     "id": "SPINNING_SMASH",
@@ -782,7 +782,7 @@ export const ALBION_SPELLS = {
     "cooldown": "5.0s",
     "energy": 5.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BOLT_DMG.png"
+    "icon": "https://render.albiononline.com/v1/spell/AUTOFIRE2.png"
   },
   "BOLTSHOT": {
     "id": "BOLTSHOT",
@@ -792,7 +792,7 @@ export const ALBION_SPELLS = {
     "cooldown": "2.0s",
     "energy": 3.5,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/MAGICPROJECTILE_FIRE.png"
+    "icon": "https://render.albiononline.com/v1/spell/BOLTSHOT.png"
   },
   "ACID_BOMB": {
     "id": "ACID_BOMB",
@@ -812,7 +812,7 @@ export const ALBION_SPELLS = {
     "cooldown": "7.0s",
     "energy": 9.0,
     "castTime": "1.0s",
-    "icon": "https://render.albiononline.com/v1/spell/RANGED_INTERRUPT.png"
+    "icon": "https://render.albiononline.com/v1/spell/SUNDERSHOT.png"
   },
   "CALTROPS": {
     "id": "CALTROPS",
@@ -832,7 +832,7 @@ export const ALBION_SPELLS = {
     "cooldown": "12.0s",
     "energy": 8.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/ARROW_MAGIC.png"
+    "icon": "https://render.albiononline.com/v1/spell/KNOCKBACKSHOT2.png"
   },
   "SILENCINGBOLT": {
     "id": "SILENCINGBOLT",
@@ -842,7 +842,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 9.0,
     "castTime": "0.7s",
-    "icon": "https://render.albiononline.com/v1/spell/SILENCE.png"
+    "icon": "https://render.albiononline.com/v1/spell/SILENCINGBOLT.png"
   },
   "SNIPESHOT_CROSSBOW": {
     "id": "SNIPESHOT_CROSSBOW",
@@ -852,7 +852,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 16.0,
     "castTime": "2.0s",
-    "icon": "https://render.albiononline.com/v1/spell/CROSSHAIR.png"
+    "icon": "https://render.albiononline.com/v1/spell/SNIPESHOT_CROSSBOW.png"
   },
   "PASSIVE_KNOCKBACKCHANCE": {
     "id": "PASSIVE_KNOCKBACKCHANCE",
@@ -862,7 +862,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_DAZE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_KNOCKBACKCHANCE.png"
   },
   "PASSIVE_CD_RESET_Q": {
     "id": "PASSIVE_CD_RESET_Q",
@@ -872,7 +872,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHARPSHOOTER.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CD_RESET_Q.png"
   },
   "PASSIVE_ENERGYCHANCE_CROSSBOW": {
     "id": "PASSIVE_ENERGYCHANCE_CROSSBOW",
@@ -882,7 +882,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_TACTICIAN.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ENERGYCHANCE_CROSSBOW.png"
   },
   "PASSIVE_SPELLPOWER_CASTER_CROSSBOW": {
     "id": "PASSIVE_SPELLPOWER_CASTER_CROSSBOW",
@@ -892,7 +892,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_PARALYSIS.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SPELLPOWER_CASTER_CROSSBOW.png"
   },
   "CROSSBOW_ARMORPIERCER": {
     "id": "CROSSBOW_ARMORPIERCER",
@@ -902,7 +902,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SWEEPING_BOLT.png"
+    "icon": "https://render.albiononline.com/v1/spell/CROSSBOW_ARMORPIERCER.png"
   },
   "EXPLODING_SHOT": {
     "id": "EXPLODING_SHOT",
@@ -922,7 +922,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 14.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/EXPLOSIVE_MINE.png"
+    "icon": "https://render.albiononline.com/v1/spell/GROUNDMINE.png"
   },
   "DUAL_RAPIDFIRE": {
     "id": "DUAL_RAPIDFIRE",
@@ -932,7 +932,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 13.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/ARROW_SPLIT.png"
+    "icon": "https://render.albiononline.com/v1/spell/DUAL_RAPIDFIRE.png"
   },
   "CROSSBOW_CONE_ULTIMATE": {
     "id": "CROSSBOW_CONE_ULTIMATE",
@@ -942,7 +942,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 21.0,
     "castTime": "0.5s",
-    "icon": "https://render.albiononline.com/v1/spell/ARROW_MULTISHOT.png"
+    "icon": "https://render.albiononline.com/v1/spell/CROSSBOW_CONE_ULTIMATE.png"
   },
   "CROSSBOW_DIVINE_SHOT": {
     "id": "CROSSBOW_DIVINE_SHOT",
@@ -952,7 +952,7 @@ export const ALBION_SPELLS = {
     "cooldown": "35.0s",
     "energy": 29.0,
     "castTime": "0.7s",
-    "icon": "https://render.albiononline.com/v1/spell/DIVINE_SHOT.png"
+    "icon": "https://render.albiononline.com/v1/spell/CROSSBOW_DIVINE_SHOT.png"
   },
   "CRYSTALXBOW": {
     "id": "CRYSTALXBOW",
@@ -972,7 +972,7 @@ export const ALBION_SPELLS = {
     "cooldown": "3.0s",
     "energy": 4.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/ARROW_CONE.png"
+    "icon": "https://render.albiononline.com/v1/spell/MULTISHOT2.png"
   },
   "DEADLYSHOT": {
     "id": "DEADLYSHOT",
@@ -982,7 +982,7 @@ export const ALBION_SPELLS = {
     "cooldown": "2.0s",
     "energy": 3.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/ARROW_AIMED.png"
+    "icon": "https://render.albiononline.com/v1/spell/DEADLYSHOT.png"
   },
   "POISONARROW": {
     "id": "POISONARROW",
@@ -992,7 +992,7 @@ export const ALBION_SPELLS = {
     "cooldown": "3.0s",
     "energy": 5.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/POISONED_ARROW.png"
+    "icon": "https://render.albiononline.com/v1/spell/POISONARROW.png"
   },
   "GROUNDARROW": {
     "id": "GROUNDARROW",
@@ -1002,7 +1002,7 @@ export const ALBION_SPELLS = {
     "cooldown": "10.0s",
     "energy": 10.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/RAY_OF_LIGHT.png"
+    "icon": "https://render.albiononline.com/v1/spell/GROUNDARROW.png"
   },
   "JUMPSHOT2": {
     "id": "JUMPSHOT2",
@@ -1012,7 +1012,7 @@ export const ALBION_SPELLS = {
     "cooldown": "18.0s",
     "energy": 10.0,
     "castTime": "0.3s",
-    "icon": "https://render.albiononline.com/v1/spell/BACKFLIP.png"
+    "icon": "https://render.albiononline.com/v1/spell/JUMPSHOT2.png"
   },
   "SPEEDSHOT2": {
     "id": "SPEEDSHOT2",
@@ -1022,7 +1022,7 @@ export const ALBION_SPELLS = {
     "cooldown": "10.0s",
     "energy": 4.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/ARROW.png"
+    "icon": "https://render.albiononline.com/v1/spell/SPEEDSHOT2.png"
   },
   "BURNINGARROWS": {
     "id": "BURNINGARROWS",
@@ -1032,7 +1032,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 12.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/ARROW_EXPLOSION.png"
+    "icon": "https://render.albiononline.com/v1/spell/BURNINGARROWS.png"
   },
   "SPEEDARCHER_KITE": {
     "id": "SPEEDARCHER_KITE",
@@ -1042,7 +1042,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Instantáneo",
     "energy": 11.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BUFF_DAMAGE.png"
+    "icon": "https://render.albiononline.com/v1/spell/SPEEDARCHER_KITE.png"
   },
   "PASSIVE_SLOWPOISON": {
     "id": "PASSIVE_SLOWPOISON",
@@ -1052,7 +1052,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_DAZE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SLOWPOISON.png"
   },
   "PASSIVE_ENERGYCHANCE_BOW": {
     "id": "PASSIVE_ENERGYCHANCE_BOW",
@@ -1062,7 +1062,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_TACTICIAN.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ENERGYCHANCE_BOW.png"
   },
   "PASSIVE_ARMOR_PIERCE_STACK": {
     "id": "PASSIVE_ARMOR_PIERCE_STACK",
@@ -1072,7 +1072,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHARPSHOOTER.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ARMOR_PIERCE_STACK.png"
   },
   "PASSIVE_AASPEEDCHANCE_BOW": {
     "id": "PASSIVE_AASPEEDCHANCE_BOW",
@@ -1082,7 +1082,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_AGILITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_AASPEEDCHANCE_BOW.png"
   },
   "SKILLSHOT_STUN": {
     "id": "SKILLSHOT_STUN",
@@ -1092,7 +1092,7 @@ export const ALBION_SPELLS = {
     "cooldown": "10.0s",
     "energy": 11.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/MAGIC_ARROW.png"
+    "icon": "https://render.albiononline.com/v1/spell/SKILLSHOT_STUN.png"
   },
   "ARROWRAIN": {
     "id": "ARROWRAIN",
@@ -1102,7 +1102,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 17.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/VOLLEY.png"
+    "icon": "https://render.albiononline.com/v1/spell/ARROWRAIN.png"
   },
   "UNDEADARROWS": {
     "id": "UNDEADARROWS",
@@ -1112,7 +1112,7 @@ export const ALBION_SPELLS = {
     "cooldown": "10.0s",
     "energy": 14.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/UNDEAD_ARROWS.png"
+    "icon": "https://render.albiononline.com/v1/spell/UNDEADARROWS.png"
   },
   "HELL_ARROW": {
     "id": "HELL_ARROW",
@@ -1122,7 +1122,7 @@ export const ALBION_SPELLS = {
     "cooldown": "25.0s",
     "energy": 18.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/ARROW_MAGIC.png"
+    "icon": "https://render.albiononline.com/v1/spell/HELL_ARROW.png"
   },
   "LIGHTNING_ARROW": {
     "id": "LIGHTNING_ARROW",
@@ -1132,7 +1132,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 19.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/RAGING_STORM.png"
+    "icon": "https://render.albiononline.com/v1/spell/LIGHTNING_ARROW.png"
   },
   "HAWK_SHOT_MULTI1": {
     "id": "HAWK_SHOT_MULTI1",
@@ -1142,7 +1142,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Instantáneo",
     "energy": 6.0,
     "castTime": "0.6s",
-    "icon": "https://render.albiononline.com/v1/spell/HAWK_SHOT.png"
+    "icon": "https://render.albiononline.com/v1/spell/HAWK_SHOT_MULTI1.png"
   },
   "AIR_RAID": {
     "id": "AIR_RAID",
@@ -1162,7 +1162,7 @@ export const ALBION_SPELLS = {
     "cooldown": "3.0s",
     "energy": 3.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SPEAR_THROW.png"
+    "icon": "https://render.albiononline.com/v1/spell/SPEAR_LUNGE.png"
   },
   "SPIRITSPEAR": {
     "id": "SPIRITSPEAR",
@@ -1182,7 +1182,7 @@ export const ALBION_SPELLS = {
     "cooldown": "12.0s",
     "energy": 12.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SPEAR_CONE.png"
+    "icon": "https://render.albiononline.com/v1/spell/FORESTOFSPEARS.png"
   },
   "CHARGINGBLADE": {
     "id": "CHARGINGBLADE",
@@ -1192,7 +1192,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 13.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BLAST_FIRE.png"
+    "icon": "https://render.albiononline.com/v1/spell/CHARGINGBLADE.png"
   },
   "LEGBREAKER": {
     "id": "LEGBREAKER",
@@ -1202,7 +1202,7 @@ export const ALBION_SPELLS = {
     "cooldown": "18.0s",
     "energy": 6.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SPEAR_PURGE.png"
+    "icon": "https://render.albiononline.com/v1/spell/LEGBREAKER.png"
   },
   "DEFLECTINGSTANCE": {
     "id": "DEFLECTINGSTANCE",
@@ -1212,7 +1212,7 @@ export const ALBION_SPELLS = {
     "cooldown": "10.0s",
     "energy": 5.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/RETALITATE.png"
+    "icon": "https://render.albiononline.com/v1/spell/DEFLECTINGSTANCE.png"
   },
   "GROUNDSPEAR": {
     "id": "GROUNDSPEAR",
@@ -1222,7 +1222,7 @@ export const ALBION_SPELLS = {
     "cooldown": "12.0s",
     "energy": 10.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/GROUND_SPEAR.png"
+    "icon": "https://render.albiononline.com/v1/spell/GROUNDSPEAR.png"
   },
   "SKILLSHOT_PULL": {
     "id": "SKILLSHOT_PULL",
@@ -1232,7 +1232,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 13.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/HARPOON.png"
+    "icon": "https://render.albiononline.com/v1/spell/SKILLSHOT_PULL.png"
   },
   "DASHDMG": {
     "id": "DASHDMG",
@@ -1242,7 +1242,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 18.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/DASH.png"
+    "icon": "https://render.albiononline.com/v1/spell/DASHDMG.png"
   },
   "PASSIVE_HEALTHCHANCE_SPEAR": {
     "id": "PASSIVE_HEALTHCHANCE_SPEAR",
@@ -1252,7 +1252,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_VITALITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_HEALTHCHANCE_SPEAR.png"
   },
   "PASSIVE_SPELLPOWER_CHANCE_SPEAR": {
     "id": "PASSIVE_SPELLPOWER_CHANCE_SPEAR",
@@ -1262,7 +1262,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_PARALYSIS.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SPELLPOWER_CHANCE_SPEAR.png"
   },
   "PASSIVE_AASPEEDCHANCE_SPEAR": {
     "id": "PASSIVE_AASPEEDCHANCE_SPEAR",
@@ -1272,7 +1272,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_AGILITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_AASPEEDCHANCE_SPEAR.png"
   },
   "HALBERDSMASH": {
     "id": "HALBERDSMASH",
@@ -1282,7 +1282,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 14.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/ROOTING_SMASH.png"
+    "icon": "https://render.albiononline.com/v1/spell/HALBERDSMASH.png"
   },
   "SHOVEL": {
     "id": "SHOVEL",
@@ -1292,7 +1292,7 @@ export const ALBION_SPELLS = {
     "cooldown": "18.0s",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/MELEE_HEAVY.png"
+    "icon": "https://render.albiononline.com/v1/spell/SHOVEL.png"
   },
   "SPEARTHROW": {
     "id": "SPEARTHROW",
@@ -1302,7 +1302,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 18.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SPEAR_THROW_HERON.png"
+    "icon": "https://render.albiononline.com/v1/spell/SPEARTHROW.png"
   },
   "TAINTED_STEEL": {
     "id": "TAINTED_STEEL",
@@ -1322,7 +1322,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 21.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/JUMP_ATTACK.png"
+    "icon": "https://render.albiononline.com/v1/spell/TRIDENTTHROW.png"
   },
   "LANCE_CHARGE": {
     "id": "LANCE_CHARGE",
@@ -1352,7 +1352,7 @@ export const ALBION_SPELLS = {
     "cooldown": "2.0s",
     "energy": 3.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SUNDER_ARMOR.png"
+    "icon": "https://render.albiononline.com/v1/spell/SUNDERARMOR2.png"
   },
   "QDASH": {
     "id": "QDASH",
@@ -1362,7 +1362,7 @@ export const ALBION_SPELLS = {
     "cooldown": "4.0s",
     "energy": 9.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/DEADLY_SWIPE.png"
+    "icon": "https://render.albiononline.com/v1/spell/QDASH.png"
   },
   "ASSASSINSPIRIT": {
     "id": "ASSASSINSPIRIT",
@@ -1372,7 +1372,7 @@ export const ALBION_SPELLS = {
     "cooldown": "1.0s",
     "energy": 6.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/ASSASSIN_SPIRIT.png"
+    "icon": "https://render.albiononline.com/v1/spell/ASSASSINSPIRIT.png"
   },
   "THROWINGBLADES": {
     "id": "THROWINGBLADES",
@@ -1382,7 +1382,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 11.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/THROWING_BLADES.png"
+    "icon": "https://render.albiononline.com/v1/spell/THROWINGBLADES.png"
   },
   "GROUNDDASH": {
     "id": "GROUNDDASH",
@@ -1392,7 +1392,7 @@ export const ALBION_SPELLS = {
     "cooldown": "23.5s",
     "energy": 0.08,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/DASH_DAGGER.png"
+    "icon": "https://render.albiononline.com/v1/spell/GROUNDDASH.png"
   },
   "DEEPCUTS": {
     "id": "DEEPCUTS",
@@ -1402,7 +1402,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 7.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/FORBIDDEN_STAB.png"
+    "icon": "https://render.albiononline.com/v1/spell/DEEPCUTS.png"
   },
   "SKILLSHOT_TELEPORT": {
     "id": "SKILLSHOT_TELEPORT",
@@ -1412,7 +1412,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 12.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/DAGGER_THROW.png"
+    "icon": "https://render.albiononline.com/v1/spell/SKILLSHOT_TELEPORT.png"
   },
   "CHAINDASH": {
     "id": "CHAINDASH",
@@ -1422,7 +1422,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 9.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/CHAIN_SLASH.png"
+    "icon": "https://render.albiononline.com/v1/spell/CHAINDASH.png"
   },
   "BLOODTHIRSTYBLADE": {
     "id": "BLOODTHIRSTYBLADE",
@@ -1442,7 +1442,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_VITALITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_HEALTHCHANCE_DAGGER.png"
   },
   "PASSIVE_AASPEEDCHANCE_DAGGER": {
     "id": "PASSIVE_AASPEEDCHANCE_DAGGER",
@@ -1452,7 +1452,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_AGILITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_AASPEEDCHANCE_DAGGER.png"
   },
   "PASSIVE_SPELLPOWER_CHANCE_DAGGER": {
     "id": "PASSIVE_SPELLPOWER_CHANCE_DAGGER",
@@ -1462,7 +1462,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_PARALYSIS.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SPELLPOWER_CHANCE_DAGGER.png"
   },
   "EXECUTEDAGGER": {
     "id": "EXECUTEDAGGER",
@@ -1472,7 +1472,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 11.0,
     "castTime": "0.4s",
-    "icon": "https://render.albiononline.com/v1/spell/SLIT_THROAT.png"
+    "icon": "https://render.albiononline.com/v1/spell/EXECUTEDAGGER.png"
   },
   "DISEMBOWEL": {
     "id": "DISEMBOWEL",
@@ -1492,7 +1492,7 @@ export const ALBION_SPELLS = {
     "cooldown": "35.0s",
     "energy": 17.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/LUNGING_STABS.png"
+    "icon": "https://render.albiononline.com/v1/spell/RAPIERSTAB.png"
   },
   "BLOOD_BLADE": {
     "id": "BLOOD_BLADE",
@@ -1512,7 +1512,7 @@ export const ALBION_SPELLS = {
     "cooldown": "25.0s",
     "energy": 10.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/UNDEADAURA.png"
+    "icon": "https://render.albiononline.com/v1/spell/GHOSTSTRIKE.png"
   },
   "BACK_SLASH": {
     "id": "BACK_SLASH",
@@ -1522,7 +1522,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BACKSLASH.png"
+    "icon": "https://render.albiononline.com/v1/spell/BACK_SLASH.png"
   },
   "CRYSTAL_DAGGER_BLADE_RING": {
     "id": "CRYSTAL_DAGGER_BLADE_RING",
@@ -1542,7 +1542,7 @@ export const ALBION_SPELLS = {
     "cooldown": "1.5s",
     "energy": 6.2,
     "castTime": "0.5s",
-    "icon": "https://render.albiononline.com/v1/spell/HEAL_SELF_HOLY.png"
+    "icon": "https://render.albiononline.com/v1/spell/GENEROUSHEAL.png"
   },
   "SMITE_AOE": {
     "id": "SMITE_AOE",
@@ -1552,7 +1552,7 @@ export const ALBION_SPELLS = {
     "cooldown": "3.0s",
     "energy": 4.0,
     "castTime": "0.5s",
-    "icon": "https://render.albiononline.com/v1/spell/NOVA_HOLY.png"
+    "icon": "https://render.albiononline.com/v1/spell/SMITE_AOE.png"
   },
   "HOLYFLASH": {
     "id": "HOLYFLASH",
@@ -1562,7 +1562,7 @@ export const ALBION_SPELLS = {
     "cooldown": "3.5s",
     "energy": 8.0,
     "castTime": "0.4s",
-    "icon": "https://render.albiononline.com/v1/spell/AOE_HOLY.png"
+    "icon": "https://render.albiononline.com/v1/spell/HOLYFLASH.png"
   },
   "PULSINGHEAL": {
     "id": "PULSINGHEAL",
@@ -1572,7 +1572,7 @@ export const ALBION_SPELLS = {
     "cooldown": "12.0s",
     "energy": 11.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/HOLY_PULSE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PULSINGHEAL.png"
   },
   "HEALINGBEAM": {
     "id": "HEALINGBEAM",
@@ -1582,7 +1582,7 @@ export const ALBION_SPELLS = {
     "cooldown": "12.0s",
     "energy": 13.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/HOLY_BEAM.png"
+    "icon": "https://render.albiononline.com/v1/spell/HEALINGBEAM.png"
   },
   "HOLYHOT": {
     "id": "HOLYHOT",
@@ -1592,7 +1592,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 8.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/DESPERATEHOLYPRAYER.png"
+    "icon": "https://render.albiononline.com/v1/spell/HOLYHOT.png"
   },
   "HOLYORB": {
     "id": "HOLYORB",
@@ -1602,7 +1602,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 10.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/HOLY_ORB.png"
+    "icon": "https://render.albiononline.com/v1/spell/HOLYORB.png"
   },
   "RESURRECTION": {
     "id": "RESURRECTION",
@@ -1612,7 +1612,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 23.0,
     "castTime": "1.0s",
-    "icon": "https://render.albiononline.com/v1/spell/RESURRECT_HOLY.png"
+    "icon": "https://render.albiononline.com/v1/spell/RESURRECTION.png"
   },
   "HOLYDESPERATEPRAYER2": {
     "id": "HOLYDESPERATEPRAYER2",
@@ -1622,7 +1622,7 @@ export const ALBION_SPELLS = {
     "cooldown": "10.0s",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/DESPERATE_PRAYER.png"
+    "icon": "https://render.albiononline.com/v1/spell/HOLYDESPERATEPRAYER2.png"
   },
   "PASSIVE_HEALPOWERCHANCE": {
     "id": "PASSIVE_HEALPOWERCHANCE",
@@ -1632,7 +1632,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_VITALITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_HEALPOWERCHANCE.png"
   },
   "PASSIVE_ENERGYCHANCE_HOLYSTAFF": {
     "id": "PASSIVE_ENERGYCHANCE_HOLYSTAFF",
@@ -1642,7 +1642,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_TACTICIAN.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ENERGYCHANCE_HOLYSTAFF.png"
   },
   "PASSIVE_KNOCKBACK_CASTER_HOLYSTAFF": {
     "id": "PASSIVE_KNOCKBACK_CASTER_HOLYSTAFF",
@@ -1652,7 +1652,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_DAZE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_KNOCKBACK_CASTER_HOLYSTAFF.png"
   },
   "PASSIVE_HOLY_ASCENDED": {
     "id": "PASSIVE_HOLY_ASCENDED",
@@ -1662,7 +1662,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHARPSHOOTER.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_HOLY_ASCENDED.png"
   },
   "HOLYEXPLOSION": {
     "id": "HOLYEXPLOSION",
@@ -1672,7 +1672,7 @@ export const ALBION_SPELLS = {
     "cooldown": "18.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/HOLY_EXPLOSION.png"
+    "icon": "https://render.albiononline.com/v1/spell/HOLYEXPLOSION.png"
   },
   "HOLYSHIELD": {
     "id": "HOLYSHIELD",
@@ -1682,7 +1682,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Instantáneo",
     "energy": 9.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/DIVINE_PROTECTION.png"
+    "icon": "https://render.albiononline.com/v1/spell/HOLYSHIELD.png"
   },
   "HOLYTOUCH": {
     "id": "HOLYTOUCH",
@@ -1692,7 +1692,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 16.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/HOLY_TOUCH.png"
+    "icon": "https://render.albiononline.com/v1/spell/HOLYTOUCH.png"
   },
   "HOLY_ULTIMATE": {
     "id": "HOLY_ULTIMATE",
@@ -1702,7 +1702,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 18.0,
     "castTime": "1.0s",
-    "icon": "https://render.albiononline.com/v1/spell/SALVATION.png"
+    "icon": "https://render.albiononline.com/v1/spell/HOLY_ULTIMATE.png"
   },
   "CELESTIAL_SPHERE": {
     "id": "CELESTIAL_SPHERE",
@@ -1742,7 +1742,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Instantáneo",
     "energy": 3.0,
     "castTime": "0.8s",
-    "icon": "https://render.albiononline.com/v1/spell/MAGICPROJECTILE_FIRE.png"
+    "icon": "https://render.albiononline.com/v1/spell/FIRESTAFFBOLT2.png"
   },
   "FIRESTAFFBOLT_AOE": {
     "id": "FIRESTAFFBOLT_AOE",
@@ -1752,7 +1752,7 @@ export const ALBION_SPELLS = {
     "cooldown": "4.0s",
     "energy": 6.0,
     "castTime": "0.5s",
-    "icon": "https://render.albiononline.com/v1/spell/AOE_FIRE.png"
+    "icon": "https://render.albiononline.com/v1/spell/FIRESTAFFBOLT_AOE.png"
   },
   "SEARING_FLAME": {
     "id": "SEARING_FLAME",
@@ -1772,7 +1772,7 @@ export const ALBION_SPELLS = {
     "cooldown": "12.0s",
     "energy": 8.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/IGNITE.png"
+    "icon": "https://render.albiononline.com/v1/spell/FIRESTAFFIGNITE2_SPREAD.png"
   },
   "FIREWALL": {
     "id": "FIREWALL",
@@ -1782,7 +1782,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/INCINERATE.png"
+    "icon": "https://render.albiononline.com/v1/spell/FIREWALL.png"
   },
   "SKILLSHOT_FIREBALL": {
     "id": "SKILLSHOT_FIREBALL",
@@ -1792,7 +1792,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 16.0,
     "castTime": "0.4s",
-    "icon": "https://render.albiononline.com/v1/spell/FIRE_WAVE.png"
+    "icon": "https://render.albiononline.com/v1/spell/SKILLSHOT_FIREBALL.png"
   },
   "FIRECONE": {
     "id": "FIRECONE",
@@ -1802,7 +1802,7 @@ export const ALBION_SPELLS = {
     "cooldown": "12.0s",
     "energy": 12.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/FLAMECONE.png"
+    "icon": "https://render.albiononline.com/v1/spell/FIRECONE.png"
   },
   "FIREARTILLERY": {
     "id": "FIREARTILLERY",
@@ -1812,7 +1812,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 16.0,
     "castTime": "1.5s",
-    "icon": "https://render.albiononline.com/v1/spell/FIRE_ARTILLERY.png"
+    "icon": "https://render.albiononline.com/v1/spell/FIREARTILLERY.png"
   },
   "PYROBLAST_SKILLSHOT": {
     "id": "PYROBLAST_SKILLSHOT",
@@ -1822,7 +1822,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/FIRE_BALL.png"
+    "icon": "https://render.albiononline.com/v1/spell/PYROBLAST_SKILLSHOT.png"
   },
   "PASSIVE_BURN": {
     "id": "PASSIVE_BURN",
@@ -1832,7 +1832,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_FURY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_BURN.png"
   },
   "PASSIVE_ENERGYCHANCE_FIRESTAFF": {
     "id": "PASSIVE_ENERGYCHANCE_FIRESTAFF",
@@ -1842,7 +1842,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_TACTICIAN.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ENERGYCHANCE_FIRESTAFF.png"
   },
   "PASSIVE_CASTINGSPEED_CHANCE_FIRESTAFF": {
     "id": "PASSIVE_CASTINGSPEED_CHANCE_FIRESTAFF",
@@ -1852,7 +1852,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHARPSHOOTER.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CASTINGSPEED_CHANCE_FIRESTAFF.png"
   },
   "PASSIVE_SPELLPOWER_CASTER_FIRESTAFF": {
     "id": "PASSIVE_SPELLPOWER_CASTER_FIRESTAFF",
@@ -1862,7 +1862,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_PARALYSIS.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SPELLPOWER_CASTER_FIRESTAFF.png"
   },
   "FLAMEPILLAR": {
     "id": "FLAMEPILLAR",
@@ -1872,7 +1872,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 9.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/RANGED_AOE.png"
+    "icon": "https://render.albiononline.com/v1/spell/FLAMEPILLAR.png"
   },
   "HUMAN_TORCH": {
     "id": "HUMAN_TORCH",
@@ -1882,7 +1882,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 12.0,
     "castTime": "0.7s",
-    "icon": "https://render.albiononline.com/v1/spell/CONTAGIOUS_FIRE.png"
+    "icon": "https://render.albiononline.com/v1/spell/HUMAN_TORCH.png"
   },
   "MAGMASPHERE": {
     "id": "MAGMASPHERE",
@@ -1892,7 +1892,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 20.0,
     "castTime": "0.6s",
-    "icon": "https://render.albiononline.com/v1/spell/MAGMA_SPHERE.png"
+    "icon": "https://render.albiononline.com/v1/spell/MAGMASPHERE.png"
   },
   "METEOR": {
     "id": "METEOR",
@@ -1902,7 +1902,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 24.0,
     "castTime": "2.0s",
-    "icon": "https://render.albiononline.com/v1/spell/METEOR_FIRE.png"
+    "icon": "https://render.albiononline.com/v1/spell/METEOR.png"
   },
   "FLAMETORNADO": {
     "id": "FLAMETORNADO",
@@ -1912,7 +1912,7 @@ export const ALBION_SPELLS = {
     "cooldown": "35.0s",
     "energy": 26.0,
     "castTime": "1.0s",
-    "icon": "https://render.albiononline.com/v1/spell/FLAME_TORNADO.png"
+    "icon": "https://render.albiononline.com/v1/spell/FLAMETORNADO.png"
   },
   "FIREPHOENIX": {
     "id": "FIREPHOENIX",
@@ -1922,7 +1922,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 21.0,
     "castTime": "0.6s",
-    "icon": "https://render.albiononline.com/v1/spell/PHOENIX.png"
+    "icon": "https://render.albiononline.com/v1/spell/FIREPHOENIX.png"
   },
   "FLAMEDASH": {
     "id": "FLAMEDASH",
@@ -1942,7 +1942,7 @@ export const ALBION_SPELLS = {
     "cooldown": "1.2s",
     "energy": 5.0,
     "castTime": "0.3s",
-    "icon": "https://render.albiononline.com/v1/spell/FROSTBITE.png"
+    "icon": "https://render.albiononline.com/v1/spell/FROST_BITE.png"
   },
   "ICESHARD": {
     "id": "ICESHARD",
@@ -1952,7 +1952,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Instantáneo",
     "energy": 5.0,
     "castTime": "1.2s",
-    "icon": "https://render.albiononline.com/v1/spell/ICE_SHARD.png"
+    "icon": "https://render.albiononline.com/v1/spell/ICESHARD.png"
   },
   "SHATTER_Q": {
     "id": "SHATTER_Q",
@@ -1962,7 +1962,7 @@ export const ALBION_SPELLS = {
     "cooldown": "3.0s",
     "energy": 5.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/FROST_NOVA.png"
+    "icon": "https://render.albiononline.com/v1/spell/SHATTER_Q.png"
   },
   "FROSTBOMB_CASTSLOW": {
     "id": "FROSTBOMB_CASTSLOW",
@@ -1972,7 +1972,7 @@ export const ALBION_SPELLS = {
     "cooldown": "10.0s",
     "energy": 10.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/NOVA_FROST.png"
+    "icon": "https://render.albiononline.com/v1/spell/FROSTBOMB_CASTSLOW.png"
   },
   "FROSTBEAM": {
     "id": "FROSTBEAM",
@@ -2002,7 +2002,7 @@ export const ALBION_SPELLS = {
     "cooldown": "8.0s",
     "energy": 8.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/HOARFROST.png"
+    "icon": "https://render.albiononline.com/v1/spell/FROST_LANCE.png"
   },
   "ICE_SCULPTURE": {
     "id": "ICE_SCULPTURE",
@@ -2012,7 +2012,7 @@ export const ALBION_SPELLS = {
     "cooldown": "16.0s",
     "energy": 8.0,
     "castTime": "0.4s",
-    "icon": "https://render.albiononline.com/v1/spell/ICESCULPTURE.png"
+    "icon": "https://render.albiononline.com/v1/spell/ICE_SCULPTURE.png"
   },
   "FREEZINGWIND": {
     "id": "FREEZINGWIND",
@@ -2022,7 +2022,7 @@ export const ALBION_SPELLS = {
     "cooldown": "18.0s",
     "energy": 16.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/CONE_FROST.png"
+    "icon": "https://render.albiononline.com/v1/spell/FREEZINGWIND.png"
   },
   "PASSIVE_FROST": {
     "id": "PASSIVE_FROST",
@@ -2032,7 +2032,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_FURY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_FROST.png"
   },
   "PASSIVE_ENERGYCHANCE_FROSTSTAFF": {
     "id": "PASSIVE_ENERGYCHANCE_FROSTSTAFF",
@@ -2042,7 +2042,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_TACTICIAN.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ENERGYCHANCE_FROSTSTAFF.png"
   },
   "PASSIVE_CASTINGSPEED_CHANCE_FROSTSTAFF": {
     "id": "PASSIVE_CASTINGSPEED_CHANCE_FROSTSTAFF",
@@ -2052,7 +2052,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHARPSHOOTER.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CASTINGSPEED_CHANCE_FROSTSTAFF.png"
   },
   "PASSIVE_SPELLPOWER_CASTER_FROSTSTAFF": {
     "id": "PASSIVE_SPELLPOWER_CASTER_FROSTSTAFF",
@@ -2062,7 +2062,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_PARALYSIS.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SPELLPOWER_CASTER_FROSTSTAFF.png"
   },
   "HAIL_MULTI_1": {
     "id": "HAIL_MULTI_1",
@@ -2072,7 +2072,7 @@ export const ALBION_SPELLS = {
     "cooldown": "1.0s",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/HAIL_FROST.png"
+    "icon": "https://render.albiononline.com/v1/spell/HAIL_MULTI_1.png"
   },
   "ICESTORM2": {
     "id": "ICESTORM2",
@@ -2082,7 +2082,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 23.0,
     "castTime": "0.5s",
-    "icon": "https://render.albiononline.com/v1/spell/ICESTORM.png"
+    "icon": "https://render.albiononline.com/v1/spell/ICESTORM2.png"
   },
   "ICEROCK_EXPLODE": {
     "id": "ICEROCK_EXPLODE",
@@ -2092,7 +2092,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/AVALANCHE.png"
+    "icon": "https://render.albiononline.com/v1/spell/ICEROCK_EXPLODE.png"
   },
   "GLACIALFIELD": {
     "id": "GLACIALFIELD",
@@ -2102,7 +2102,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 20.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/FROZENHELL.png"
+    "icon": "https://render.albiononline.com/v1/spell/GLACIALFIELD.png"
   },
   "FROST_ULTIMATE": {
     "id": "FROST_ULTIMATE",
@@ -2112,7 +2112,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 21.0,
     "castTime": "0.7s",
-    "icon": "https://render.albiononline.com/v1/spell/ICE_CRYSTAL.png"
+    "icon": "https://render.albiononline.com/v1/spell/FROST_ULTIMATE.png"
   },
   "FROZEN_CRYSTAL": {
     "id": "FROZEN_CRYSTAL",
@@ -2132,7 +2132,7 @@ export const ALBION_SPELLS = {
     "cooldown": "12.0s",
     "energy": 3.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/GLACIAL_VOLLEY.png"
+    "icon": "https://render.albiononline.com/v1/spell/FROST_TARGETED_CHANNEL.png"
   },
   "ARCANE_CHAIN_MISSILE": {
     "id": "ARCANE_CHAIN_MISSILE",
@@ -2142,7 +2142,7 @@ export const ALBION_SPELLS = {
     "cooldown": "3.0s",
     "energy": 5.0,
     "castTime": "0.2s",
-    "icon": "https://render.albiononline.com/v1/spell/CHAIN_MISSILE.png"
+    "icon": "https://render.albiononline.com/v1/spell/ARCANE_CHAIN_MISSILE.png"
   },
   "SHIELDFRIENDLY": {
     "id": "SHIELDFRIENDLY",
@@ -2152,7 +2152,7 @@ export const ALBION_SPELLS = {
     "cooldown": "6.0s",
     "energy": 6.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/ARCANE_PROTECTION.png"
+    "icon": "https://render.albiononline.com/v1/spell/SHIELDFRIENDLY.png"
   },
   "MAGICSHOCK": {
     "id": "MAGICSHOCK",
@@ -2162,7 +2162,7 @@ export const ALBION_SPELLS = {
     "cooldown": "5.0s",
     "energy": 4.0,
     "castTime": "0.3s",
-    "icon": "https://render.albiononline.com/v1/spell/NOVA_ARCANE.png"
+    "icon": "https://render.albiononline.com/v1/spell/MAGICSHOCK.png"
   },
   "ENIGMA_BLADE": {
     "id": "ENIGMA_BLADE",
@@ -2182,7 +2182,7 @@ export const ALBION_SPELLS = {
     "cooldown": "18.0s",
     "energy": 0.1,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/MOTIVATING_CLEANSE.png"
+    "icon": "https://render.albiononline.com/v1/spell/CLEANSESPEED2.png"
   },
   "FRAZZLE2": {
     "id": "FRAZZLE2",
@@ -2192,7 +2192,7 @@ export const ALBION_SPELLS = {
     "cooldown": "12.0s",
     "energy": 0.07,
     "castTime": "0.5s",
-    "icon": "https://render.albiononline.com/v1/spell/MAGICPROJECTILE_ARCANE.png"
+    "icon": "https://render.albiononline.com/v1/spell/FRAZZLE2.png"
   },
   "EMPOWERBEAM": {
     "id": "EMPOWERBEAM",
@@ -2202,7 +2202,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 13.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BEAM_ARCANE.png"
+    "icon": "https://render.albiononline.com/v1/spell/EMPOWERBEAM.png"
   },
   "MIMIC": {
     "id": "MIMIC",
@@ -2222,7 +2222,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/ARCANE_ORB_2.png"
+    "icon": "https://render.albiononline.com/v1/spell/ARCANEORB2.png"
   },
   "PASSIVE_ATTACKBUFF_ARCANESTAFF": {
     "id": "PASSIVE_ATTACKBUFF_ARCANESTAFF",
@@ -2232,7 +2232,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHARPSHOOTER.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ATTACKBUFF_ARCANESTAFF.png"
   },
   "PASSIVE_ENERGYCHANCE_ARCANESTAFF": {
     "id": "PASSIVE_ENERGYCHANCE_ARCANESTAFF",
@@ -2242,7 +2242,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_TACTICIAN.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ENERGYCHANCE_ARCANESTAFF.png"
   },
   "PASSIVE_ARMOR_CASTER_ARCANESTAFF": {
     "id": "PASSIVE_ARMOR_CASTER_ARCANESTAFF",
@@ -2252,7 +2252,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVEEFFECT_GUARD.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ARMOR_CASTER_ARCANESTAFF.png"
   },
   "PASSIVE_SILENCECHANCE": {
     "id": "PASSIVE_SILENCECHANCE",
@@ -2262,7 +2262,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_DAZE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SILENCECHANCE.png"
   },
   "TIME_FREEZE": {
     "id": "TIME_FREEZE",
@@ -2282,7 +2282,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PROTECTIVE_BEAM.png"
+    "icon": "https://render.albiononline.com/v1/spell/INVULNERABILITY.png"
   },
   "BLACKHOLE": {
     "id": "BLACKHOLE",
@@ -2302,7 +2302,7 @@ export const ALBION_SPELLS = {
     "cooldown": "44.0s",
     "energy": 0.15,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/TIME_CORRIDOR.png"
+    "icon": "https://render.albiononline.com/v1/spell/ARCANECORRIDOR.png"
   },
   "VOID": {
     "id": "VOID",
@@ -2312,7 +2312,7 @@ export const ALBION_SPELLS = {
     "cooldown": "62.0s",
     "energy": 0.2,
     "castTime": "0.5s",
-    "icon": "https://render.albiononline.com/v1/spell/THE_VOID.png"
+    "icon": "https://render.albiononline.com/v1/spell/VOID.png"
   },
   "ARCANE_METEOR": {
     "id": "ARCANE_METEOR",
@@ -2342,7 +2342,7 @@ export const ALBION_SPELLS = {
     "cooldown": "2.4s",
     "energy": 4.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/VILE_CURSE.png"
+    "icon": "https://render.albiononline.com/v1/spell/CURSEDOT.png"
   },
   "CURSEBLADE": {
     "id": "CURSEBLADE",
@@ -2352,7 +2352,7 @@ export const ALBION_SPELLS = {
     "cooldown": "5.0s",
     "energy": 7.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/CURSED_SICKLE.png"
+    "icon": "https://render.albiononline.com/v1/spell/CURSEBLADE.png"
   },
   "CURSED_SPLAT": {
     "id": "CURSED_SPLAT",
@@ -2362,7 +2362,7 @@ export const ALBION_SPELLS = {
     "cooldown": "5.0s",
     "energy": 5.0,
     "castTime": "0.2s",
-    "icon": "https://render.albiononline.com/v1/spell/CURSED_AREA.png"
+    "icon": "https://render.albiononline.com/v1/spell/CURSED_SPLAT.png"
   },
   "ARMORPIERCER": {
     "id": "ARMORPIERCER",
@@ -2372,7 +2372,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 11.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/ARMOR_PIERCER.png"
+    "icon": "https://render.albiononline.com/v1/spell/ARMORPIERCER.png"
   },
   "CURSENOVA": {
     "id": "CURSENOVA",
@@ -2382,7 +2382,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 12.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/DESECRATE.png"
+    "icon": "https://render.albiononline.com/v1/spell/CURSENOVA.png"
   },
   "CURSEDHANDS_STACKUP": {
     "id": "CURSEDHANDS_STACKUP",
@@ -2392,7 +2392,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 10.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BARRIER_DEMONIC.png"
+    "icon": "https://render.albiononline.com/v1/spell/CURSEDHANDS_STACKUP.png"
   },
   "CURSEDBEAM": {
     "id": "CURSEDBEAM",
@@ -2402,7 +2402,7 @@ export const ALBION_SPELLS = {
     "cooldown": "10.0s",
     "energy": 10.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/CURSED_BEAM.png"
+    "icon": "https://render.albiononline.com/v1/spell/CURSEDBEAM.png"
   },
   "DARKMATTER": {
     "id": "DARKMATTER",
@@ -2412,7 +2412,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 13.0,
     "castTime": "0.5s",
-    "icon": "https://render.albiononline.com/v1/spell/DARK_MATTER.png"
+    "icon": "https://render.albiononline.com/v1/spell/DARKMATTER.png"
   },
   "DEATHCURSE2": {
     "id": "DEATHCURSE2",
@@ -2422,7 +2422,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 15.0,
     "castTime": "0.6s",
-    "icon": "https://render.albiononline.com/v1/spell/COUPDEGRACE.png"
+    "icon": "https://render.albiononline.com/v1/spell/DEATHCURSE2.png"
   },
   "PASSIVE_CURSE": {
     "id": "PASSIVE_CURSE",
@@ -2432,7 +2432,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_FURY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CURSE.png"
   },
   "PASSIVE_ENERGYCHANCE_CURSEDSTAFF": {
     "id": "PASSIVE_ENERGYCHANCE_CURSEDSTAFF",
@@ -2442,7 +2442,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_TACTICIAN.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ENERGYCHANCE_CURSEDSTAFF.png"
   },
   "PASSIVE_SPELLPOWER_CASTER_CURSEDSTAFF": {
     "id": "PASSIVE_SPELLPOWER_CASTER_CURSEDSTAFF",
@@ -2452,7 +2452,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_PARALYSIS.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SPELLPOWER_CASTER_CURSEDSTAFF.png"
   },
   "PASSIVE_MOVESPEED_CHANCE_CURSEDSTAFF": {
     "id": "PASSIVE_MOVESPEED_CHANCE_CURSEDSTAFF",
@@ -2462,7 +2462,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_AGILITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_MOVESPEED_CHANCE_CURSEDSTAFF.png"
   },
   "AREAOFDECAY": {
     "id": "AREAOFDECAY",
@@ -2472,7 +2472,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 17.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/AREA_OF_DECAY.png"
+    "icon": "https://render.albiononline.com/v1/spell/AREAOFDECAY.png"
   },
   "CURSED_WALL": {
     "id": "CURSED_WALL",
@@ -2482,7 +2482,7 @@ export const ALBION_SPELLS = {
     "cooldown": "25.0s",
     "energy": 19.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/ANGUISHED_SOUL.png"
+    "icon": "https://render.albiononline.com/v1/spell/CURSED_WALL.png"
   },
   "ENFEEBLEBLADES": {
     "id": "ENFEEBLEBLADES",
@@ -2502,7 +2502,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 20.0,
     "castTime": "0.4s",
-    "icon": "https://render.albiononline.com/v1/spell/HAUNTING_SCREAMS.png"
+    "icon": "https://render.albiononline.com/v1/spell/SKULLCURSE.png"
   },
   "CURSEULTIMATE": {
     "id": "CURSEULTIMATE",
@@ -2512,7 +2512,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 31.0,
     "castTime": "2.0s",
-    "icon": "https://render.albiononline.com/v1/spell/CATACLYSM.png"
+    "icon": "https://render.albiononline.com/v1/spell/CURSEULTIMATE.png"
   },
   "DYNAMIC_CURSE": {
     "id": "DYNAMIC_CURSE",
@@ -2522,7 +2522,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 21.0,
     "castTime": "0.4s",
-    "icon": "https://render.albiononline.com/v1/spell/INNER_SHADOW.png"
+    "icon": "https://render.albiononline.com/v1/spell/DYNAMIC_CURSE.png"
   },
   "CURSE_SKELETON_BARF_FDHR": {
     "id": "CURSE_SKELETON_BARF_FDHR",
@@ -2542,7 +2542,7 @@ export const ALBION_SPELLS = {
     "cooldown": "1.0s",
     "energy": 3.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/HEAL_HOT.png"
+    "icon": "https://render.albiononline.com/v1/spell/REJUVENATION.png"
   },
   "THORNSAREA": {
     "id": "THORNSAREA",
@@ -2562,7 +2562,7 @@ export const ALBION_SPELLS = {
     "cooldown": "2.5s",
     "energy": 6.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/NATURE_HEALING_SPELL.png"
+    "icon": "https://render.albiononline.com/v1/spell/REJUVMUSHROOM_GRENADE.png"
   },
   "BRAMBLESEED": {
     "id": "BRAMBLESEED",
@@ -2572,7 +2572,7 @@ export const ALBION_SPELLS = {
     "cooldown": "10.0s",
     "energy": 10.0,
     "castTime": "0.2s",
-    "icon": "https://render.albiononline.com/v1/spell/THORNS.png"
+    "icon": "https://render.albiononline.com/v1/spell/BRAMBLESEED.png"
   },
   "REANIMATE": {
     "id": "REANIMATE",
@@ -2592,7 +2592,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 12.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/REJUVMUSHROOM.png"
+    "icon": "https://render.albiononline.com/v1/spell/NATURERESILIENCE.png"
   },
   "CLEANSEHEAL": {
     "id": "CLEANSEHEAL",
@@ -2612,7 +2612,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/REJUVINATING_BREEZE.png"
+    "icon": "https://render.albiononline.com/v1/spell/REJUVENATING_BREEZE.png"
   },
   "CIRCLEOFLIFE": {
     "id": "CIRCLEOFLIFE",
@@ -2632,7 +2632,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_TACTICIAN.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ENERGYCHANCE_NATURESTAFF.png"
   },
   "PASSIVE_ARMOR_CASTER_NATURESTAFF": {
     "id": "PASSIVE_ARMOR_CASTER_NATURESTAFF",
@@ -2642,7 +2642,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVEEFFECT_GUARD.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ARMOR_CASTER_NATURESTAFF.png"
   },
   "PASSIVE_MOVESPEED_CHANCE_NATURESTAFF": {
     "id": "PASSIVE_MOVESPEED_CHANCE_NATURESTAFF",
@@ -2652,7 +2652,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_AGILITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_MOVESPEED_CHANCE_NATURESTAFF.png"
   },
   "BRIEROFLIFE": {
     "id": "BRIEROFLIFE",
@@ -2672,7 +2672,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 18.0,
     "castTime": "0.7s",
-    "icon": "https://render.albiononline.com/v1/spell/MAGICCIRCLE_NATURE.png"
+    "icon": "https://render.albiononline.com/v1/spell/WELLOFLIFE2.png"
   },
   "NATURE_ULTIMATE_SINGLE": {
     "id": "NATURE_ULTIMATE_SINGLE",
@@ -2682,7 +2682,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 9.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SPIRITUALSEED.png"
+    "icon": "https://render.albiononline.com/v1/spell/NATURE_ULTIMATE_SINGLE.png"
   },
   "ROTTENVINES": {
     "id": "ROTTENVINES",
@@ -2692,7 +2692,7 @@ export const ALBION_SPELLS = {
     "cooldown": "25.0s",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/RUTHLESS_NATURE.png"
+    "icon": "https://render.albiononline.com/v1/spell/ROTTENVINES.png"
   },
   "SPIRITANIMAL": {
     "id": "SPIRITANIMAL",
@@ -2702,7 +2702,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 18.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SPIRIT_ANIMAL.png"
+    "icon": "https://render.albiononline.com/v1/spell/SPIRITANIMAL.png"
   },
   "SOUL_LINK": {
     "id": "SOUL_LINK",
@@ -2732,7 +2732,7 @@ export const ALBION_SPELLS = {
     "cooldown": "3.0s",
     "energy": 3.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/STUN.png"
+    "icon": "https://render.albiononline.com/v1/spell/CONCUSSIVEBLOW_MULTI_1.png"
   },
   "WHIRLING_STAFF": {
     "id": "WHIRLING_STAFF",
@@ -2742,7 +2742,7 @@ export const ALBION_SPELLS = {
     "cooldown": "3.0s",
     "energy": 5.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/WHIRLING_STRIKES.png"
+    "icon": "https://render.albiononline.com/v1/spell/WHIRLING_STAFF.png"
   },
   "CARTWHEEL": {
     "id": "CARTWHEEL",
@@ -2772,7 +2772,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 14.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SPRINT_CC.png"
+    "icon": "https://render.albiononline.com/v1/spell/STUNRUN.png"
   },
   "QS_WHIRLWIND2": {
     "id": "QS_WHIRLWIND2",
@@ -2782,7 +2782,7 @@ export const ALBION_SPELLS = {
     "cooldown": "18.0s",
     "energy": 16.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/FORCEFUL_SWING.png"
+    "icon": "https://render.albiononline.com/v1/spell/QS_WHIRLWIND2.png"
   },
   "LAUNCHER": {
     "id": "LAUNCHER",
@@ -2792,7 +2792,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 10.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/KNOCKUP.png"
+    "icon": "https://render.albiononline.com/v1/spell/LAUNCHER.png"
   },
   "SEPARATING_SLAM": {
     "id": "SEPARATING_SLAM",
@@ -2802,7 +2802,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 13.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/OVERHEADSWING_STAFF.png"
+    "icon": "https://render.albiononline.com/v1/spell/SEPARATING_SLAM.png"
   },
   "VAULT_ATTACK": {
     "id": "VAULT_ATTACK",
@@ -2812,7 +2812,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 15.0,
     "castTime": "0.6s",
-    "icon": "https://render.albiononline.com/v1/spell/VAULT_LEAP.png"
+    "icon": "https://render.albiononline.com/v1/spell/VAULT_ATTACK.png"
   },
   "PASSIVE_STUNCHANCE_QUARTERSTAFF": {
     "id": "PASSIVE_STUNCHANCE_QUARTERSTAFF",
@@ -2822,7 +2822,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_DAZE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_STUNCHANCE_QUARTERSTAFF.png"
   },
   "PASSIVE_ENERGYCHANCE_QUARTERSTAFF": {
     "id": "PASSIVE_ENERGYCHANCE_QUARTERSTAFF",
@@ -2832,7 +2832,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_TACTICIAN.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ENERGYCHANCE_QUARTERSTAFF.png"
   },
   "PASSIVE_HEALTHCHANCE_QUARTERSTAFF": {
     "id": "PASSIVE_HEALTHCHANCE_QUARTERSTAFF",
@@ -2842,7 +2842,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_VITALITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_HEALTHCHANCE_QUARTERSTAFF.png"
   },
   "PASSIVE_CCDURATION_CHANCE_QUARTERSTAFF": {
     "id": "PASSIVE_CCDURATION_CHANCE_QUARTERSTAFF",
@@ -2852,7 +2852,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_REINFORCE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CCDURATION_CHANCE_QUARTERSTAFF.png"
   },
   "QSWHIRLWIND": {
     "id": "QSWHIRLWIND",
@@ -2862,7 +2862,7 @@ export const ALBION_SPELLS = {
     "cooldown": "29.0s",
     "energy": 0.1,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/HURRICANE.png"
+    "icon": "https://render.albiononline.com/v1/spell/QSWHIRLWIND.png"
   },
   "DASH_KNOCKBACK": {
     "id": "DASH_KNOCKBACK",
@@ -2872,7 +2872,7 @@ export const ALBION_SPELLS = {
     "cooldown": "25.0s",
     "energy": 16.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/CRESCENT_SLASH.png"
+    "icon": "https://render.albiononline.com/v1/spell/DASH_KNOCKBACK.png"
   },
   "COMBATSTAFF_SLASH": {
     "id": "COMBATSTAFF_SLASH",
@@ -2882,7 +2882,7 @@ export const ALBION_SPELLS = {
     "cooldown": "26.8s",
     "energy": 14.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/FATAL_BLADE.png"
+    "icon": "https://render.albiononline.com/v1/spell/COMBATSTAFF_SLASH.png"
   },
   "TORNADO": {
     "id": "TORNADO",
@@ -2902,7 +2902,7 @@ export const ALBION_SPELLS = {
     "cooldown": "37.5s",
     "energy": 0.2,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/STONE_SHIELD.png"
+    "icon": "https://render.albiononline.com/v1/spell/QS_SLOWROPE.png"
   },
   "SOULSHAKER": {
     "id": "SOULSHAKER",
@@ -2922,7 +2922,7 @@ export const ALBION_SPELLS = {
     "cooldown": "1.0s",
     "energy": 5.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/CRYSTAL_ZEPHYR.png"
+    "icon": "https://render.albiononline.com/v1/spell/QS_CRYSTAL_COMBO.png"
   },
   "CREATE_OPENING": {
     "id": "CREATE_OPENING",
@@ -2932,7 +2932,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Instantáneo",
     "energy": 1.2,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/KNUCKLES_CREATE_OPENING.png"
+    "icon": "https://render.albiononline.com/v1/spell/CREATE_OPENING.png"
   },
   "DASHKICK": {
     "id": "DASHKICK",
@@ -2942,7 +2942,7 @@ export const ALBION_SPELLS = {
     "cooldown": "4.0s",
     "energy": 3.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/KNUCKLES_DASHKICK.png"
+    "icon": "https://render.albiononline.com/v1/spell/DASHKICK.png"
   },
   "CROSSSTEP_ROUNDHOUSE": {
     "id": "CROSSSTEP_ROUNDHOUSE",
@@ -2952,7 +2952,7 @@ export const ALBION_SPELLS = {
     "cooldown": "2.0s",
     "energy": 3.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/KNUCKLES_TRIPLE_COMBO_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/CROSSSTEP_ROUNDHOUSE.png"
   },
   "SHOCKWAVE_PUNCH": {
     "id": "SHOCKWAVE_PUNCH",
@@ -2962,7 +2962,7 @@ export const ALBION_SPELLS = {
     "cooldown": "3.5s",
     "energy": 4.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/KNUCKLES_SHOCKWAVE_PUNCH.png"
+    "icon": "https://render.albiononline.com/v1/spell/SHOCKWAVE_PUNCH.png"
   },
   "TRIPLE_KICK": {
     "id": "TRIPLE_KICK",
@@ -2972,7 +2972,7 @@ export const ALBION_SPELLS = {
     "cooldown": "18.0s",
     "energy": 11.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/KNUCKLES_TRIPLE_KICK.png"
+    "icon": "https://render.albiononline.com/v1/spell/TRIPLE_KICK.png"
   },
   "BACKHAND_KNOCKBACK": {
     "id": "BACKHAND_KNOCKBACK",
@@ -2982,7 +2982,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 0.1,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/KNUCKLES_BACKHAND_PUNCH.png"
+    "icon": "https://render.albiononline.com/v1/spell/BACKHAND_KNOCKBACK.png"
   },
   "KNUCKLE_COUNTER": {
     "id": "KNUCKLE_COUNTER",
@@ -2992,7 +2992,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 0.09,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/KNUCKLES_COUNTER.png"
+    "icon": "https://render.albiononline.com/v1/spell/KNUCKLE_COUNTER.png"
   },
   "KNUCKLECOMBO": {
     "id": "KNUCKLECOMBO",
@@ -3002,7 +3002,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/KNUCKLES_PUNCH_COMBO.png"
+    "icon": "https://render.albiononline.com/v1/spell/KNUCKLECOMBO.png"
   },
   "CONEPUNCH2": {
     "id": "CONEPUNCH2",
@@ -3022,7 +3022,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_TACTICIAN.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_KNUCKLE_RAGE.png"
   },
   "PASSIVE_KNUCKLE_RUSHDOWN": {
     "id": "PASSIVE_KNUCKLE_RUSHDOWN",
@@ -3032,7 +3032,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_AGILITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_KNUCKLE_RUSHDOWN.png"
   },
   "PASSIVE_KNUCKLE_COMBOBREAKER": {
     "id": "PASSIVE_KNUCKLE_COMBOBREAKER",
@@ -3042,7 +3042,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_GUARD.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_KNUCKLE_COMBOBREAKER.png"
   },
   "PASSIVE_KNUCKLE_BRAWLER_SPEED": {
     "id": "PASSIVE_KNUCKLE_BRAWLER_SPEED",
@@ -3052,7 +3052,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_DAZE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_KNUCKLE_BRAWLER_SPEED.png"
   },
   "BLAZING_GEYSER": {
     "id": "BLAZING_GEYSER",
@@ -3062,7 +3062,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/KNUCKLES_POWER_GEYSER.png"
+    "icon": "https://render.albiononline.com/v1/spell/BLAZING_GEYSER.png"
   },
   "PASSIVE_KNUCKLE_BRAWLER": {
     "id": "PASSIVE_KNUCKLE_BRAWLER",
@@ -3072,7 +3072,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_DAZE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_KNUCKLE_BRAWLER.png"
   },
   "DIVEPUNCH_RISE": {
     "id": "DIVEPUNCH_RISE",
@@ -3082,7 +3082,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Instantáneo",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/KNUCKLES_DIVEKICK_RISE.png"
+    "icon": "https://render.albiononline.com/v1/spell/DIVEPUNCH_RISE.png"
   },
   "IMPULSE_PUNCH": {
     "id": "IMPULSE_PUNCH",
@@ -3092,7 +3092,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 20.0,
     "castTime": "0.6s",
-    "icon": "https://render.albiononline.com/v1/spell/KNUCKLES_IMPULSE_PUNCH.png"
+    "icon": "https://render.albiononline.com/v1/spell/IMPULSE_PUNCH.png"
   },
   "PUMMELING_STRIKES": {
     "id": "PUMMELING_STRIKES",
@@ -3102,7 +3102,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 18.0,
     "castTime": "0.5s",
-    "icon": "https://render.albiononline.com/v1/spell/KNUCKLES_PUMMELING_STRIKES.png"
+    "icon": "https://render.albiononline.com/v1/spell/PUMMELING_STRIKES.png"
   },
   "BOULDER_TOSS": {
     "id": "BOULDER_TOSS",
@@ -3112,7 +3112,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 18.0,
     "castTime": "0.6s",
-    "icon": "https://render.albiononline.com/v1/spell/KNUCKLES_BOULDER_TOSS.png"
+    "icon": "https://render.albiononline.com/v1/spell/BOULDER_TOSS.png"
   },
   "GROWING_PUNCH": {
     "id": "GROWING_PUNCH",
@@ -3122,7 +3122,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 23.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/KNUCKLES_GROWING_PUNCH.png"
+    "icon": "https://render.albiononline.com/v1/spell/GROWING_PUNCH.png"
   },
   "TRIPLECOMBO_DIVEKICK": {
     "id": "TRIPLECOMBO_DIVEKICK",
@@ -3132,7 +3132,7 @@ export const ALBION_SPELLS = {
     "cooldown": "25.0s",
     "energy": 7.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/KNUCKLES_TRIPLE_COMBO_2.png"
+    "icon": "https://render.albiononline.com/v1/spell/TRIPLECOMBO_DIVEKICK.png"
   },
   "SHAPE_Q_CAST": {
     "id": "SHAPE_Q_CAST",
@@ -3142,7 +3142,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Instantáneo",
     "energy": 4.0,
     "castTime": "0.8s",
-    "icon": "https://render.albiononline.com/v1/spell/UNSTABLE_PROJECTILE.png"
+    "icon": "https://render.albiononline.com/v1/spell/SHAPE_Q_CAST.png"
   },
   "SHAPE_Q_SKILLSHOT": {
     "id": "SHAPE_Q_SKILLSHOT",
@@ -3152,7 +3152,7 @@ export const ALBION_SPELLS = {
     "cooldown": "2.0s",
     "energy": 7.0,
     "castTime": "0.3s",
-    "icon": "https://render.albiononline.com/v1/spell/REALITY_FISSURE.png"
+    "icon": "https://render.albiononline.com/v1/spell/SHAPE_Q_SKILLSHOT.png"
   },
   "SHAPE_Q_DAMAGE_AND_SHIELD": {
     "id": "SHAPE_Q_DAMAGE_AND_SHIELD",
@@ -3162,7 +3162,7 @@ export const ALBION_SPELLS = {
     "cooldown": "7.0s",
     "energy": 12.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/MALLUABLE_FLUX.png"
+    "icon": "https://render.albiononline.com/v1/spell/SHAPE_Q_DAMAGE_AND_SHIELD.png"
   },
   "SHAPE_Q_CONE_MELEE": {
     "id": "SHAPE_Q_CONE_MELEE",
@@ -3172,7 +3172,7 @@ export const ALBION_SPELLS = {
     "cooldown": "4.0s",
     "energy": 8.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/ENERGY_EXERTION.png"
+    "icon": "https://render.albiononline.com/v1/spell/SHAPE_Q_CONE_MELEE.png"
   },
   "SHAPE_W_DAMAGE_AOE": {
     "id": "SHAPE_W_DAMAGE_AOE",
@@ -3182,7 +3182,7 @@ export const ALBION_SPELLS = {
     "cooldown": "8.0s",
     "energy": 15.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/DISTORTION.png"
+    "icon": "https://render.albiononline.com/v1/spell/SHAPE_W_DAMAGE_AOE.png"
   },
   "SHAPE_W_AREA_PULL": {
     "id": "SHAPE_W_AREA_PULL",
@@ -3192,7 +3192,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 15.0,
     "castTime": "0.4s",
-    "icon": "https://render.albiononline.com/v1/spell/POSITIONAL_DRIFT.png"
+    "icon": "https://render.albiononline.com/v1/spell/SHAPE_W_AREA_PULL.png"
   },
   "SHAPE_W_TETHERBEAM": {
     "id": "SHAPE_W_TETHERBEAM",
@@ -3202,7 +3202,7 @@ export const ALBION_SPELLS = {
     "cooldown": "18.0s",
     "energy": 11.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/REALITY_TENDRIL.png"
+    "icon": "https://render.albiononline.com/v1/spell/SHAPE_W_TETHERBEAM.png"
   },
   "SHAPE_W_POLYMORPH": {
     "id": "SHAPE_W_POLYMORPH",
@@ -3212,7 +3212,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 17.0,
     "castTime": "0.4s",
-    "icon": "https://render.albiononline.com/v1/spell/POLYMORPH.png"
+    "icon": "https://render.albiononline.com/v1/spell/SHAPE_W_POLYMORPH.png"
   },
   "SHAPESHIFT_PANTHER": {
     "id": "SHAPESHIFT_PANTHER",
@@ -3232,7 +3232,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHAPE_ENT.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHAPESHIFT_ATTACK_BUFF.png"
   },
   "PASSIVE_SHAPESHIFT_Q_CAST_DAMAGE_REDUCE": {
     "id": "PASSIVE_SHAPESHIFT_Q_CAST_DAMAGE_REDUCE",
@@ -3242,7 +3242,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHAPE_BEAR.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHAPESHIFT_Q_CAST_DAMAGE_REDUCE.png"
   },
   "PASSIVE_SHAPESHIFT_GATHER_CHARGES": {
     "id": "PASSIVE_SHAPESHIFT_GATHER_CHARGES",
@@ -3252,7 +3252,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_TACTICIAN.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHAPESHIFT_GATHER_CHARGES.png"
   },
   "PASSIVE_SHAPESHIFT_W_CAST_SPEED_BUFF": {
     "id": "PASSIVE_SHAPESHIFT_W_CAST_SPEED_BUFF",
@@ -3262,7 +3262,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHARPSHOOTER.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHAPESHIFT_W_CAST_SPEED_BUFF.png"
   },
   "SHAPESHIFT_ENT": {
     "id": "SHAPESHIFT_ENT",
@@ -3342,7 +3342,7 @@ export const ALBION_SPELLS = {
     "cooldown": "25.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/MAGICBARRIER.png"
+    "icon": "https://render.albiononline.com/v1/spell/ENERGY_BARRIER.png"
   },
   "STONESKIN": {
     "id": "STONESKIN",
@@ -3352,7 +3352,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/OVERLOAD.png"
+    "icon": "https://render.albiononline.com/v1/spell/STONESKIN.png"
   },
   "BLOCK": {
     "id": "BLOCK",
@@ -3372,7 +3372,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_GUARD.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_MR_AR.png"
   },
   "PASSIVE_CCDURATION": {
     "id": "PASSIVE_CCDURATION",
@@ -3382,7 +3382,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHARPSHOOTER.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CCDURATION.png"
   },
   "PASSIVE_INCREASED_CCR": {
     "id": "PASSIVE_INCREASED_CCR",
@@ -3392,7 +3392,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_THORNS_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_INCREASED_CCR.png"
   },
   "DISRUPTIONIMMUNITY": {
     "id": "DISRUPTIONIMMUNITY",
@@ -3402,7 +3402,7 @@ export const ALBION_SPELLS = {
     "cooldown": "25.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/LIVINGARMOR.png"
+    "icon": "https://render.albiononline.com/v1/spell/DISRUPTIONIMMUNITY.png"
   },
   "EMERGENCY_SHIELD": {
     "id": "EMERGENCY_SHIELD",
@@ -3422,7 +3422,7 @@ export const ALBION_SPELLS = {
     "cooldown": "50.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/LIFESTEAL.png"
+    "icon": "https://render.albiononline.com/v1/spell/SACRIFICE_HEAL.png"
   },
   "WEAPON_SILENCE": {
     "id": "WEAPON_SILENCE",
@@ -3432,7 +3432,7 @@ export const ALBION_SPELLS = {
     "cooldown": "25.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SILENCE.png"
+    "icon": "https://render.albiononline.com/v1/spell/WEAPON_SILENCE.png"
   },
   "ELECTRICSHOCK": {
     "id": "ELECTRICSHOCK",
@@ -3442,7 +3442,7 @@ export const ALBION_SPELLS = {
     "cooldown": "45.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/STORMSHIELD.png"
+    "icon": "https://render.albiononline.com/v1/spell/ELECTRICSHOCK.png"
   },
   "SPIDER_THREAD": {
     "id": "SPIDER_THREAD",
@@ -3462,7 +3462,7 @@ export const ALBION_SPELLS = {
     "cooldown": "40.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/WINDWALL.png"
+    "icon": "https://render.albiononline.com/v1/spell/PURIFYING_SMOKE.png"
   },
   "ARTILLERY_COMMAND": {
     "id": "ARTILLERY_COMMAND",
@@ -3472,7 +3472,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/METEOR_FIRE.png"
+    "icon": "https://render.albiononline.com/v1/spell/ARTILLERY_COMMAND.png"
   },
   "SELF_CLEANSE": {
     "id": "SELF_CLEANSE",
@@ -3482,7 +3482,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/MAGICCIRCLE_MOVEMENT.png"
+    "icon": "https://render.albiononline.com/v1/spell/SELF_CLEANSE.png"
   },
   "HOWL": {
     "id": "HOWL",
@@ -3492,7 +3492,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/INTIMIDATINGSHOUT.png"
+    "icon": "https://render.albiononline.com/v1/spell/HOWL.png"
   },
   "PASSIVE_BALANCE": {
     "id": "PASSIVE_BALANCE",
@@ -3502,7 +3502,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_VITALITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_BALANCE.png"
   },
   "PASSIVE_INCREASED_AASPEED": {
     "id": "PASSIVE_INCREASED_AASPEED",
@@ -3512,7 +3512,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_AGILITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_INCREASED_AASPEED.png"
   },
   "PASSIVE_CD_REDUCTION": {
     "id": "PASSIVE_CD_REDUCTION",
@@ -3522,7 +3522,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_PARALYSIS.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CD_REDUCTION.png"
   },
   "RETALIATE2": {
     "id": "RETALIATE2",
@@ -3532,7 +3532,7 @@ export const ALBION_SPELLS = {
     "cooldown": "45.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/RETALITATE.png"
+    "icon": "https://render.albiononline.com/v1/spell/RETALIATE2.png"
   },
   "SUMMONER_CD_REDUCTION": {
     "id": "SUMMONER_CD_REDUCTION",
@@ -3542,7 +3542,7 @@ export const ALBION_SPELLS = {
     "cooldown": "40.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/HASTEN_COOLDOWN.png"
+    "icon": "https://render.albiononline.com/v1/spell/SUMMONER_CD_REDUCTION.png"
   },
   "SMELLOFBLOOD": {
     "id": "SMELLOFBLOOD",
@@ -3552,7 +3552,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/OVERLOAD_DAMAGE.png"
+    "icon": "https://render.albiononline.com/v1/spell/SMELLOFBLOOD.png"
   },
   "SMOKEBOMB": {
     "id": "SMOKEBOMB",
@@ -3572,7 +3572,7 @@ export const ALBION_SPELLS = {
     "cooldown": "60.0s",
     "energy": 0.0,
     "castTime": "0.5s",
-    "icon": "https://render.albiononline.com/v1/spell/INSPIRATION.png"
+    "icon": "https://render.albiononline.com/v1/spell/ARMOR_CD_RESET.png"
   },
   "IMMORTAL": {
     "id": "IMMORTAL",
@@ -3592,7 +3592,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BUFF_SPEED.png"
+    "icon": "https://render.albiononline.com/v1/spell/NASTY_WOUNDS.png"
   },
   "FLARE": {
     "id": "FLARE",
@@ -3612,7 +3612,7 @@ export const ALBION_SPELLS = {
     "cooldown": "25.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/STRENGTH.png"
+    "icon": "https://render.albiononline.com/v1/spell/GROWING_RAGE.png"
   },
   "PBAOE_KNOCKBACK": {
     "id": "PBAOE_KNOCKBACK",
@@ -3622,7 +3622,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/INTIMIDATINGSHOUT.png"
+    "icon": "https://render.albiononline.com/v1/spell/PBAOE_KNOCKBACK.png"
   },
   "ENERGYSHIELD2": {
     "id": "ENERGYSHIELD2",
@@ -3632,7 +3632,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/POWER_FIELD.png"
+    "icon": "https://render.albiononline.com/v1/spell/ENERGYSHIELD2.png"
   },
   "PASSIVE_INCREASED_DAMAGE": {
     "id": "PASSIVE_INCREASED_DAMAGE",
@@ -3642,7 +3642,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_DAZE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_INCREASED_DAMAGE.png"
   },
   "PASSIVE_CASTSPEED": {
     "id": "PASSIVE_CASTSPEED",
@@ -3652,7 +3652,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHARPSHOOTER.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CASTSPEED.png"
   },
   "PASSIVE_REDUCED_ENERGYCOST": {
     "id": "PASSIVE_REDUCED_ENERGYCOST",
@@ -3662,7 +3662,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CONCENTRATION_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_REDUCED_ENERGYCOST.png"
   },
   "ICEBLOCK2": {
     "id": "ICEBLOCK2",
@@ -3682,7 +3682,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/FLAMECONE.png"
+    "icon": "https://render.albiononline.com/v1/spell/HELMET_FIREBREATH.png"
   },
   "ENERGYFIELD": {
     "id": "ENERGYFIELD",
@@ -3692,7 +3692,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/RESTOREENERGY.png"
+    "icon": "https://render.albiononline.com/v1/spell/ENERGYFIELD.png"
   },
   "PURGE_HELMET": {
     "id": "PURGE_HELMET",
@@ -3702,7 +3702,7 @@ export const ALBION_SPELLS = {
     "cooldown": "40.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PURGE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PURGE_HELMET.png"
   },
   "INNER_CORRUPTION": {
     "id": "INNER_CORRUPTION",
@@ -3712,7 +3712,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/CURSE.png"
+    "icon": "https://render.albiononline.com/v1/spell/INNER_CORRUPTION.png"
   },
   "HYPER_FOCUS": {
     "id": "HYPER_FOCUS",
@@ -3722,7 +3722,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/HYPERFOCUS.png"
+    "icon": "https://render.albiononline.com/v1/spell/HYPER_FOCUS.png"
   },
   "AVALON_BEAM": {
     "id": "AVALON_BEAM",
@@ -3732,7 +3732,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BEAM_HOLY.png"
+    "icon": "https://render.albiononline.com/v1/spell/AVALON_BEAM.png"
   },
   "PERPETUALENERGY": {
     "id": "PERPETUALENERGY",
@@ -3742,7 +3742,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/RESTOREENERGY.png"
+    "icon": "https://render.albiononline.com/v1/spell/PERPETUALENERGY.png"
   },
   "OUTOFCOMBATHEAL": {
     "id": "OUTOFCOMBATHEAL",
@@ -3752,7 +3752,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/MEND_WOUNDS.png"
+    "icon": "https://render.albiononline.com/v1/spell/OUTOFCOMBATHEAL.png"
   },
   "TAUNT": {
     "id": "TAUNT",
@@ -3772,7 +3772,7 @@ export const ALBION_SPELLS = {
     "cooldown": "35.0s",
     "energy": 11.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BUFF_DAMAGE.png"
+    "icon": "https://render.albiononline.com/v1/spell/ENRAGE.png"
   },
   "PASSIVE_ARMOR_MR_AR": {
     "id": "PASSIVE_ARMOR_MR_AR",
@@ -3782,7 +3782,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_GUARD.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ARMOR_MR_AR.png"
   },
   "PASSIVE_ARMOR_CCDURATION": {
     "id": "PASSIVE_ARMOR_CCDURATION",
@@ -3792,7 +3792,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHARPSHOOTER.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ARMOR_CCDURATION.png"
   },
   "PASSIVE_ARMOR_INCREASED_CCR": {
     "id": "PASSIVE_ARMOR_INCREASED_CCR",
@@ -3802,7 +3802,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_THORNS_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ARMOR_INCREASED_CCR.png"
   },
   "PASSIVE_PLATEARMOR_HEALTH_REDUCTION": {
     "id": "PASSIVE_PLATEARMOR_HEALTH_REDUCTION",
@@ -3812,7 +3812,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_TACTICIAN.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_PLATEARMOR_HEALTH_REDUCTION.png"
   },
   "PASSIVE_PLATEARMOR_THREATGENERATION": {
     "id": "PASSIVE_PLATEARMOR_THREATGENERATION",
@@ -3822,7 +3822,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_PARALYSIS.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_PLATEARMOR_THREATGENERATION.png"
   },
   "WINDWALL": {
     "id": "WINDWALL",
@@ -3842,7 +3842,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.08,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BARRIER_DEMONIC.png"
+    "icon": "https://render.albiononline.com/v1/spell/ENFEEBLEAURA.png"
   },
   "ARMORCHAIN": {
     "id": "ARMORCHAIN",
@@ -3852,7 +3852,7 @@ export const ALBION_SPELLS = {
     "cooldown": "40.0s",
     "energy": 11.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PULL_AOE.png"
+    "icon": "https://render.albiononline.com/v1/spell/ARMORCHAIN.png"
   },
   "REFLECTAREA": {
     "id": "REFLECTAREA",
@@ -3862,7 +3862,7 @@ export const ALBION_SPELLS = {
     "cooldown": "40.0s",
     "energy": 12.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/RETALITATE.png"
+    "icon": "https://render.albiononline.com/v1/spell/REFLECTAREA.png"
   },
   "FORCESHIELD": {
     "id": "FORCESHIELD",
@@ -3872,7 +3872,7 @@ export const ALBION_SPELLS = {
     "cooldown": "50.0s",
     "energy": 8.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/FORCEFIELD.png"
+    "icon": "https://render.albiononline.com/v1/spell/FORCESHIELD.png"
   },
   "ARMOR_WEB": {
     "id": "ARMOR_WEB",
@@ -3882,7 +3882,7 @@ export const ALBION_SPELLS = {
     "cooldown": "40.0s",
     "energy": 0.05,
     "castTime": "0.4s",
-    "icon": "https://render.albiononline.com/v1/spell/MYTHICAL_WEB.png"
+    "icon": "https://render.albiononline.com/v1/spell/ARMOR_WEB.png"
   },
   "REFLECT_CHANNEL": {
     "id": "REFLECT_CHANNEL",
@@ -3892,7 +3892,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 8.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/FORCEFIELD.png"
+    "icon": "https://render.albiononline.com/v1/spell/REFLECT_CHANNEL.png"
   },
   "MANADRAIN": {
     "id": "MANADRAIN",
@@ -3902,7 +3902,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 10.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/RESTOREENERGY.png"
+    "icon": "https://render.albiononline.com/v1/spell/MANADRAIN.png"
   },
   "FLAMESHIELD": {
     "id": "FLAMESHIELD",
@@ -3912,7 +3912,7 @@ export const ALBION_SPELLS = {
     "cooldown": "40.0s",
     "energy": 10.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/INFERNOSHIELD.png"
+    "icon": "https://render.albiononline.com/v1/spell/FLAMESHIELD.png"
   },
   "BLOODLUST": {
     "id": "BLOODLUST",
@@ -3932,7 +3932,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_VITALITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ARMOR_BALANCE.png"
   },
   "PASSIVE_ARMOR_INCREASED_AASPEED": {
     "id": "PASSIVE_ARMOR_INCREASED_AASPEED",
@@ -3942,7 +3942,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_AGILITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ARMOR_INCREASED_AASPEED.png"
   },
   "PASSIVE_ARMOR_CD_REDUCTION": {
     "id": "PASSIVE_ARMOR_CD_REDUCTION",
@@ -3952,7 +3952,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_PARALYSIS.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ARMOR_CD_REDUCTION.png"
   },
   "HASTE": {
     "id": "HASTE",
@@ -3962,7 +3962,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 9.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BUFF_SPEED.png"
+    "icon": "https://render.albiononline.com/v1/spell/HASTE.png"
   },
   "AMBUSH": {
     "id": "AMBUSH",
@@ -3972,7 +3972,7 @@ export const ALBION_SPELLS = {
     "cooldown": "50.0s",
     "energy": 12.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/STEALTH.png"
+    "icon": "https://render.albiononline.com/v1/spell/AMBUSH.png"
   },
   "STORMSHIELD": {
     "id": "STORMSHIELD",
@@ -3992,7 +3992,7 @@ export const ALBION_SPELLS = {
     "cooldown": "40.0s",
     "energy": 9.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BARRIER_DEMONIC.png"
+    "icon": "https://render.albiononline.com/v1/spell/LIFESTEALAURA.png"
   },
   "BURNAURA": {
     "id": "BURNAURA",
@@ -4002,7 +4002,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/INCINERATE.png"
+    "icon": "https://render.albiononline.com/v1/spell/BURNAURA.png"
   },
   "MIST_WALKER": {
     "id": "MIST_WALKER",
@@ -4022,7 +4022,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 9.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/LIVINGARMOR.png"
+    "icon": "https://render.albiononline.com/v1/spell/DYNAMIC_DEFENSE.png"
   },
   "IMMUNEAREA": {
     "id": "IMMUNEAREA",
@@ -4042,7 +4042,7 @@ export const ALBION_SPELLS = {
     "cooldown": "50.0s",
     "energy": 10.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/STRENGTH.png"
+    "icon": "https://render.albiononline.com/v1/spell/ROYAL_BANNER.png"
   },
   "FROSTSHIELD": {
     "id": "FROSTSHIELD",
@@ -4062,7 +4062,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 10.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/HASTEN_COOLDOWN.png"
+    "icon": "https://render.albiononline.com/v1/spell/SPEEDCASTER.png"
   },
   "PASSIVE_ARMOR_INCREASED_DAMAGE": {
     "id": "PASSIVE_ARMOR_INCREASED_DAMAGE",
@@ -4072,7 +4072,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_DAZE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ARMOR_INCREASED_DAMAGE.png"
   },
   "PASSIVE_ARMOR_INCREASED_CASTSPEED": {
     "id": "PASSIVE_ARMOR_INCREASED_CASTSPEED",
@@ -4082,7 +4082,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHARPSHOOTER.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ARMOR_INCREASED_CASTSPEED.png"
   },
   "PASSIVE_ARMOR_REDUCED_ENERGYCOST": {
     "id": "PASSIVE_ARMOR_REDUCED_ENERGYCOST",
@@ -4092,7 +4092,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CONCENTRATION_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_ARMOR_REDUCED_ENERGYCOST.png"
   },
   "LIFESAVIOR": {
     "id": "LIFESAVIOR",
@@ -4102,7 +4102,7 @@ export const ALBION_SPELLS = {
     "cooldown": "45.0s",
     "energy": 0.2,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PURGE_HOLY.png"
+    "icon": "https://render.albiononline.com/v1/spell/LIFESAVIOR.png"
   },
   "PURGINGSHIELD2": {
     "id": "PURGINGSHIELD2",
@@ -4112,7 +4112,7 @@ export const ALBION_SPELLS = {
     "cooldown": "35.0s",
     "energy": 10.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PURGE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PURGINGSHIELD2.png"
   },
   "SPELLRUSH": {
     "id": "SPELLRUSH",
@@ -4122,7 +4122,7 @@ export const ALBION_SPELLS = {
     "cooldown": "45.0s",
     "energy": 10.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/OVERLOAD.png"
+    "icon": "https://render.albiononline.com/v1/spell/SPELLRUSH.png"
   },
   "FEAR_AURA": {
     "id": "FEAR_AURA",
@@ -4132,7 +4132,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 10.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/FEAR.png"
+    "icon": "https://render.albiononline.com/v1/spell/FEAR_AURA.png"
   },
   "LEVITATE": {
     "id": "LEVITATE",
@@ -4162,7 +4162,7 @@ export const ALBION_SPELLS = {
     "cooldown": "40.0s",
     "energy": 10.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/MAGICCIRCLE_HOLY.png"
+    "icon": "https://render.albiononline.com/v1/spell/CASTBUBBLE.png"
   },
   "MAGICCIRCLE": {
     "id": "MAGICCIRCLE",
@@ -4172,7 +4172,7 @@ export const ALBION_SPELLS = {
     "cooldown": "40.0s",
     "energy": 8.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/MAGICCIRCLE_DEMONIC.png"
+    "icon": "https://render.albiononline.com/v1/spell/MAGICCIRCLE.png"
   },
   "DODGE": {
     "id": "DODGE",
@@ -4182,7 +4182,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/DODGE_ROLL.png"
+    "icon": "https://render.albiononline.com/v1/spell/DODGE.png"
   },
   "SPRINTHOT": {
     "id": "SPRINTHOT",
@@ -4192,7 +4192,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SPRINT_HEAL.png"
+    "icon": "https://render.albiononline.com/v1/spell/SPRINTHOT.png"
   },
   "WANDERLUST": {
     "id": "WANDERLUST",
@@ -4202,7 +4202,7 @@ export const ALBION_SPELLS = {
     "cooldown": "60.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/POUNCE.png"
+    "icon": "https://render.albiononline.com/v1/spell/WANDERLUST.png"
   },
   "PASSIVE_MAXLOAD_SHOES": {
     "id": "PASSIVE_MAXLOAD_SHOES",
@@ -4212,7 +4212,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_MAXLOAD.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_MAXLOAD_SHOES.png"
   },
   "CHARGE_SHIELD": {
     "id": "CHARGE_SHIELD",
@@ -4222,7 +4222,7 @@ export const ALBION_SPELLS = {
     "cooldown": "18.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/DASH_BUFF.png"
+    "icon": "https://render.albiononline.com/v1/spell/CHARGE_SHIELD.png"
   },
   "MAXHEALTHBUFF": {
     "id": "MAXHEALTHBUFF",
@@ -4232,7 +4232,7 @@ export const ALBION_SPELLS = {
     "cooldown": "40.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/GIANTSTEPS.png"
+    "icon": "https://render.albiononline.com/v1/spell/MAXHEALTHBUFF.png"
   },
   "BATTLEFRENZY": {
     "id": "BATTLEFRENZY",
@@ -4242,7 +4242,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PURGE_HOLY.png"
+    "icon": "https://render.albiononline.com/v1/spell/BATTLEFRENZY.png"
   },
   "BERSERK_SPRINT": {
     "id": "BERSERK_SPRINT",
@@ -4252,7 +4252,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SPRINT_DAMAGE.png"
+    "icon": "https://render.albiononline.com/v1/spell/BERSERK_SPRINT.png"
   },
   "SHOULDERTACKLE": {
     "id": "SHOULDERTACKLE",
@@ -4262,7 +4262,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/HAMMERTACKLE.png"
+    "icon": "https://render.albiononline.com/v1/spell/SHOULDERTACKLE.png"
   },
   "CHARGE_IN": {
     "id": "CHARGE_IN",
@@ -4272,7 +4272,7 @@ export const ALBION_SPELLS = {
     "cooldown": "25.0s",
     "energy": 0.0,
     "castTime": "0.6s",
-    "icon": "https://render.albiononline.com/v1/spell/CARGE_IN.png"
+    "icon": "https://render.albiononline.com/v1/spell/CHARGE_IN.png"
   },
   "CC_BLOCK": {
     "id": "CC_BLOCK",
@@ -4282,7 +4282,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PURGE_HOLY.png"
+    "icon": "https://render.albiononline.com/v1/spell/CC_BLOCK.png"
   },
   "ROYAL_MARCH": {
     "id": "ROYAL_MARCH",
@@ -4292,7 +4292,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/DASH.png"
+    "icon": "https://render.albiononline.com/v1/spell/ROYAL_MARCH.png"
   },
   "SPRINT_CD_REDUCTION": {
     "id": "SPRINT_CD_REDUCTION",
@@ -4302,7 +4302,7 @@ export const ALBION_SPELLS = {
     "cooldown": "32.5s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SPRINT.png"
+    "icon": "https://render.albiononline.com/v1/spell/SPRINT_CD_REDUCTION.png"
   },
   "CLEANSE_DASH": {
     "id": "CLEANSE_DASH",
@@ -4312,7 +4312,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/DASH_BUFF.png"
+    "icon": "https://render.albiononline.com/v1/spell/CLEANSE_DASH.png"
   },
   "OVERSPRINT": {
     "id": "OVERSPRINT",
@@ -4322,7 +4322,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SPRINT_CC.png"
+    "icon": "https://render.albiononline.com/v1/spell/OVERSPRINT.png"
   },
   "ASSASSIN_DASH": {
     "id": "ASSASSIN_DASH",
@@ -4332,7 +4332,7 @@ export const ALBION_SPELLS = {
     "cooldown": "14.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/DASH.png"
+    "icon": "https://render.albiononline.com/v1/spell/ASSASSIN_DASH.png"
   },
   "DMG_BLINK": {
     "id": "DMG_BLINK",
@@ -4342,7 +4342,7 @@ export const ALBION_SPELLS = {
     "cooldown": "25.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BLINK_DAMAGE.png"
+    "icon": "https://render.albiononline.com/v1/spell/DMG_BLINK.png"
   },
   "DEATHMARK": {
     "id": "DEATHMARK",
@@ -4352,7 +4352,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/CROSSHAIR.png"
+    "icon": "https://render.albiononline.com/v1/spell/DEATHMARK.png"
   },
   "INVISIBLE_WALK": {
     "id": "INVISIBLE_WALK",
@@ -4362,7 +4362,7 @@ export const ALBION_SPELLS = {
     "cooldown": "60.0s",
     "energy": 0.02,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/STEALTH.png"
+    "icon": "https://render.albiononline.com/v1/spell/INVISIBLE_WALK.png"
   },
   "AFTER_IMAGE": {
     "id": "AFTER_IMAGE",
@@ -4382,7 +4382,7 @@ export const ALBION_SPELLS = {
     "cooldown": "12.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/STEALTH.png"
+    "icon": "https://render.albiononline.com/v1/spell/BLINDSPOT.png"
   },
   "WEAPON_SPRINT": {
     "id": "WEAPON_SPRINT",
@@ -4402,7 +4402,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/DODGE.png"
+    "icon": "https://render.albiononline.com/v1/spell/JUMP.png"
   },
   "SPRINTEOT": {
     "id": "SPRINTEOT",
@@ -4412,7 +4412,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/SPRINT_ENERGY.png"
+    "icon": "https://render.albiononline.com/v1/spell/SPRINTEOT.png"
   },
   "CHANNELED_RUN": {
     "id": "CHANNELED_RUN",
@@ -4422,7 +4422,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/RUN.png"
+    "icon": "https://render.albiononline.com/v1/spell/CHANNELED_RUN.png"
   },
   "BLINK": {
     "id": "BLINK",
@@ -4442,7 +4442,7 @@ export const ALBION_SPELLS = {
     "cooldown": "15.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/MAGICBARRIER.png"
+    "icon": "https://render.albiononline.com/v1/spell/DELAYED_TELEPORT.png"
   },
   "FROSTWALK": {
     "id": "FROSTWALK",
@@ -4452,7 +4452,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/CONE_FROST.png"
+    "icon": "https://render.albiononline.com/v1/spell/FROSTWALK.png"
   },
   "SWAP": {
     "id": "SWAP",
@@ -4462,7 +4462,7 @@ export const ALBION_SPELLS = {
     "cooldown": "20.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/MAGICBARRIER.png"
+    "icon": "https://render.albiononline.com/v1/spell/SWAP.png"
   },
   "DEMONWALK": {
     "id": "DEMONWALK",
@@ -4472,7 +4472,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/CURSED_AREA.png"
+    "icon": "https://render.albiononline.com/v1/spell/DEMONWALK.png"
   },
   "TRANSLUCENT": {
     "id": "TRANSLUCENT",
@@ -4492,7 +4492,7 @@ export const ALBION_SPELLS = {
     "cooldown": "10.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/LEVITATE.png"
+    "icon": "https://render.albiononline.com/v1/spell/HOVER_SPRINT.png"
   },
   "GLASS_MOVESPEED": {
     "id": "GLASS_MOVESPEED",
@@ -4502,7 +4502,7 @@ export const ALBION_SPELLS = {
     "cooldown": "30.0s",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/BUFF_DAMAGE.png"
+    "icon": "https://render.albiononline.com/v1/spell/GLASS_MOVESPEED.png"
   },
   "PASSIVE_CAPE_BRIDGEWATCH": {
     "id": "PASSIVE_CAPE_BRIDGEWATCH",
@@ -4512,7 +4512,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_FURY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CAPE_BRIDGEWATCH.png"
   },
   "PASSIVE_CAPE_FORTSTERLING": {
     "id": "PASSIVE_CAPE_FORTSTERLING",
@@ -4522,7 +4522,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_THORNS_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CAPE_FORTSTERLING.png"
   },
   "PASSIVE_CAPE_LYMHURST": {
     "id": "PASSIVE_CAPE_LYMHURST",
@@ -4532,7 +4532,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHARPSHOOTER.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CAPE_LYMHURST.png"
   },
   "PASSIVE_CAPE_MARTLOCK": {
     "id": "PASSIVE_CAPE_MARTLOCK",
@@ -4542,7 +4542,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_GUARD.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CAPE_MARTLOCK.png"
   },
   "PASSIVE_CAPE_THETFORD": {
     "id": "PASSIVE_CAPE_THETFORD",
@@ -4552,7 +4552,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_TACTICIAN.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CAPE_THETFORD.png"
   },
   "PASSIVE_CAPE_CAERLEON": {
     "id": "PASSIVE_CAPE_CAERLEON",
@@ -4562,7 +4562,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_AGILITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CAPE_CAERLEON.png"
   },
   "PASSIVE_CAPE_FEY": {
     "id": "PASSIVE_CAPE_FEY",
@@ -4572,7 +4572,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHIELD_BUBBLE.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CAPE_FEY.png"
   },
   "PASSIVE_CAPE_AVALON": {
     "id": "PASSIVE_CAPE_AVALON",
@@ -4582,7 +4582,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_AGILITY_BURST.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CAPE_AVALON.png"
   },
   "PASSIVE_CAPE_KEEPER": {
     "id": "PASSIVE_CAPE_KEEPER",
@@ -4592,7 +4592,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_FURY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CAPE_KEEPER.png"
   },
   "PASSIVE_CAPE_UNDEAD": {
     "id": "PASSIVE_CAPE_UNDEAD",
@@ -4602,7 +4602,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_BRILLIANCE_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CAPE_UNDEAD.png"
   },
   "PASSIVE_CAPE_DEMON": {
     "id": "PASSIVE_CAPE_DEMON",
@@ -4612,7 +4612,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_SHARPSHOOTER.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CAPE_DEMON.png"
   },
   "PASSIVE_CAPE_MORGANA": {
     "id": "PASSIVE_CAPE_MORGANA",
@@ -4622,7 +4622,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_AGILITY_1.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CAPE_MORGANA.png"
   },
   "PASSIVE_CAPE_HERETIC": {
     "id": "PASSIVE_CAPE_HERETIC",
@@ -4632,7 +4632,7 @@ export const ALBION_SPELLS = {
     "cooldown": "Pasiva",
     "energy": 0.0,
     "castTime": "Instantáneo",
-    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_MAXLOAD.png"
+    "icon": "https://render.albiononline.com/v1/spell/PASSIVE_CAPE_HERETIC.png"
   },
   "PASSIVE_CAPE_SMUGGLER": {
     "id": "PASSIVE_CAPE_SMUGGLER",

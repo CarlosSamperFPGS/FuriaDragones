@@ -1971,17 +1971,21 @@ export const QUALITIES = [
  * Helper to build official Albion Online render API URL
  * Guías fijadas en T8 .0 Sobresaliente (quality 4)
  */
-export function getItemImageUrl(item, tier = 'T8', enchant = 0, quality = 4) {
-  if (!item) return '';
+export function getItemImageUrl(itemOrId, tier = 'T8', enchant = 0, quality = 4) {
+  if (!itemOrId) return '';
+  const item = typeof itemOrId === 'string' ? (ALBION_ITEMS.find(i => i.id === itemOrId) || { id: itemOrId }) : itemOrId;
+  const itemId = item.id || (typeof itemOrId === 'string' ? itemOrId : '');
+  if (!itemId) return '';
   const itemTier = item.fixedTier || tier || 'T8';
   const enchantSuffix = enchant > 0 ? `@${enchant}` : '';
   const qualityParam = quality > 1 ? `?quality=${quality}` : '';
   
-  if (item.fixedTier === 'UNIQUE' || item.id.startsWith('UNIQUE_') || item.id.startsWith('QUESTITEM_')) {
-    return `https://render.albiononline.com/v1/item/${item.id}.png${qualityParam}`;
+  if (item.fixedTier === 'UNIQUE' || itemId.startsWith('UNIQUE_') || itemId.startsWith('QUESTITEM_')) {
+    return `https://render.albiononline.com/v1/item/${itemId}.png${qualityParam}`;
   }
-  if (item.id.startsWith('T') && item.id.includes('_')) {
-    return `https://render.albiononline.com/v1/item/${item.id}${enchantSuffix}.png${qualityParam}`;
+  if (itemId.startsWith('T') && itemId.includes('_')) {
+    return `https://render.albiononline.com/v1/item/${itemId}${enchantSuffix}.png${qualityParam}`;
   }
-  return `https://render.albiononline.com/v1/item/${itemTier}_${item.id}${enchantSuffix}.png${qualityParam}`;
+  return `https://render.albiononline.com/v1/item/${itemTier}_${itemId}${enchantSuffix}.png${qualityParam}`;
 }
+

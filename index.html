@@ -13,23 +13,23 @@
   <header class="app-header">
     <div class="header-content">
       <div class="brand">
-        <h1 class="brand-title">🐉 Furia de Dragones</h1>
+        <h1 class="brand-title">Furia de Dragones</h1>
         <span class="brand-tag">Gestor de Builds & Equipamiento - Albion Online</span>
       </div>
 
       <nav class="nav-tabs">
-        <button type="button" class="tab-btn active" data-tab="saved-builds">📁 Consultar Builds (<span id="saved-count">0</span>)</button>
-        <button type="button" class="tab-btn officer-only" data-tab="builder" id="tab-btn-builder">🛠️ Creador / Modificar Build</button>
+        <button type="button" class="tab-btn active" data-tab="saved-builds">Consultar Builds (<span id="saved-count">0</span>)</button>
+        <button type="button" class="tab-btn officer-only" data-tab="builder" id="tab-btn-builder">Creador de Builds</button>
       </nav>
 
       <!-- Control de Rol / Usuario -->
       <div class="user-role-container">
         <div id="user-role-badge" class="role-badge role-badge-member">
-          <span id="user-role-icon">👁️</span>
+          <span id="user-role-icon"></span>
           <span id="user-role-label">Modo Miembro (Solo Lectura)</span>
         </div>
-        <button type="button" id="btn-open-login-modal" class="btn btn-secondary btn-sm">🔐 Acceso Oficial</button>
-        <button type="button" id="btn-logout-officer" class="btn btn-outline btn-sm officer-only" style="display: none;">🔓 Cerrar Sesión</button>
+        <button type="button" id="btn-open-login-modal" class="btn btn-secondary btn-sm">Acceso Oficial</button>
+        <button type="button" id="btn-logout-officer" class="btn btn-outline btn-sm officer-only" style="display: none;">Cerrar Sesión</button>
       </div>
     </div>
   </header>
@@ -44,10 +44,10 @@
         <!-- Barra lateral de Carpetas -->
         <aside class="folders-sidebar">
           <div class="folders-sidebar-header">
-            <h3>📁 Carpetas</h3>
+            <h3>Carpetas</h3>
             <div style="display: flex; gap: 4px;">
               <button type="button" id="btn-create-new-folder" class="btn btn-secondary btn-sm" title="Crear nueva carpeta">+ Nueva</button>
-              <button type="button" id="btn-manage-folders" class="btn btn-secondary btn-sm" title="Administrar y eliminar carpetas">⚙️ Gestionar</button>
+              <button type="button" id="btn-manage-folders" class="btn btn-secondary btn-sm" title="Administrar carpetas">Gestionar</button>
             </div>
           </div>
           <ul class="folders-list" id="folders-nav-list">
@@ -59,12 +59,12 @@
         <div class="folders-content-area">
           <div class="panel-header">
             <div>
-              <h2 id="current-folder-title">📁 Todas las Builds</h2>
+              <h2 id="current-folder-title">Todas las Builds</h2>
               <span id="current-folder-count" style="font-size: 12px; color: var(--text-muted);">0 builds</span>
             </div>
             <div class="filter-controls" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
               <input type="text" id="search-saved-builds" class="form-control form-control-sm" placeholder="Buscar build por nombre o rol...">
-              <button type="button" id="btn-create-build-from-list" class="btn btn-primary btn-sm officer-only">➕ Crear Nueva Build</button>
+              <button type="button" id="btn-create-build-from-list" class="btn btn-primary btn-sm officer-only">Crear Nueva Build</button>
             </div>
           </div>
 
@@ -83,7 +83,7 @@
         <!-- Columna Izquierda: Ranuras de Equipamiento -->
         <div class="equipment-column">
           <div class="panel-header">
-            <h2 id="editor-title">🛠️ Editor de Equipamiento</h2>
+            <h2 id="editor-title">Editor de Equipamiento</h2>
             <button type="button" id="btn-clear-build" class="btn btn-secondary btn-sm">Limpiar Ranuras</button>
           </div>
 
@@ -338,30 +338,18 @@
             </div>
 
             <div class="actions-group">
-              <button type="button" id="btn-save-build" class="btn btn-primary">💾 Guardar Build en la Carpeta</button>
-              <button type="button" id="btn-copy-discord" class="btn btn-secondary">📋 Copiar Formato para Discord</button>
-              <button type="button" id="btn-share-link" class="btn btn-secondary">🔗 Copiar Enlace Compartible</button>
+              <button type="button" id="btn-save-build" class="btn btn-primary">Guardar Build</button>
+              <button type="button" id="btn-copy-discord" class="btn btn-secondary">Copiar Formato Discord</button>
+              <button type="button" id="btn-share-link" class="btn btn-secondary">Copiar Enlace</button>
             </div>
 
             <div class="import-export-row">
               <button type="button" id="btn-export-json" class="btn btn-outline btn-sm">Exportar JSON</button>
               <button type="button" id="btn-import-json" class="btn btn-outline btn-sm">Importar JSON</button>
-              <button type="button" id="btn-restore-defaults" class="btn btn-outline btn-sm" title="Restaurar las guías de builds iniciales del gremio">🔄 Restaurar Builds por Defecto</button>
+              <button type="button" id="btn-restore-defaults" class="btn btn-outline btn-sm" title="Restaurar las guías de builds iniciales del gremio">Restaurar Builds por Defecto</button>
               <input type="file" id="file-import-json" accept=".json" style="display: none;">
             </div>
 
-          </div>
-
-          <!-- Resumen Rápido -->
-          <div class="panel-card" style="margin-top: 15px;">
-            <h3>Resumen del Equipamiento (Tier 8 Sobresaliente)</h3>
-            <ul class="summary-list" id="build-summary-list">
-              <li>Cabeza: <em>Sin equipar</em></li>
-              <li>Arma: <em>Sin equipar</em></li>
-              <li>Pecho: <em>Sin equipar</em></li>
-              <li>Botas: <em>Sin equipar</em></li>
-              <li>Capa: <em>Sin equipar</em></li>
-            </ul>
           </div>
         </div>
 
@@ -377,10 +365,9 @@
       <!-- Encabezado Superior: FURIA DE DRAGONES -->
       <div class="albion-modal-header">
         <div class="albion-guild-badge">
-          <span class="albion-guild-logo">🐉</span>
           <div class="albion-guild-text">
             <h2 class="albion-guild-name">FURIA DE DRAGONES</h2>
-            <span class="albion-guild-sub">Guía Oficial de Equipamiento</span>
+            <span class="albion-guild-sub">Build de Gremio</span>
           </div>
         </div>
         <button type="button" class="modal-close" id="btn-close-viewer-modal">&times;</button>
@@ -391,8 +378,8 @@
         <div class="albion-build-name" id="viewer-build-title">Nombre de la Build</div>
         <div class="albion-build-tags">
           <span id="viewer-build-role" class="albion-tag albion-tag-role">DPS Melee</span>
-          <span id="viewer-build-tier" class="albion-tag albion-tag-tier">⭐ Tier 8 Equivalente</span>
-          <span id="viewer-build-folder" class="albion-tag albion-tag-folder">📁 ZvZ</span>
+          <span id="viewer-build-tier" class="albion-tag albion-tag-tier">Tier 8 Equivalente</span>
+          <span id="viewer-build-folder" class="albion-tag albion-tag-folder">ZvZ</span>
         </div>
       </div>
 
@@ -408,8 +395,8 @@
         <!-- Panel de Pestañas: Habilidades y Notas -->
         <div class="albion-details-panel">
           <div class="albion-subtabs-nav">
-            <button type="button" class="albion-subtab-btn active" id="btn-subtab-spells" data-subtab="spells">✨ Habilidades Equipadas</button>
-            <button type="button" class="albion-subtab-btn" id="btn-subtab-notes" data-subtab="notes">📝 Notas & Combo</button>
+            <button type="button" class="albion-subtab-btn active" id="btn-subtab-spells" data-subtab="spells">Habilidades Equipadas</button>
+            <button type="button" class="albion-subtab-btn" id="btn-subtab-notes" data-subtab="notes">Notas y Combo</button>
           </div>
 
           <div id="subtab-content-spells" class="albion-subtab-pane active">
@@ -429,11 +416,11 @@
 
       <div class="modal-footer albion-modal-footer">
         <div class="albion-footer-left">
-          <button type="button" id="btn-viewer-copy-discord" class="btn btn-secondary btn-sm">📋 Copiar Discord</button>
-          <button type="button" id="btn-viewer-share-link" class="btn btn-secondary btn-sm">🔗 Compartir Enlace</button>
+          <button type="button" id="btn-viewer-copy-discord" class="btn btn-secondary btn-sm">Copiar Discord</button>
+          <button type="button" id="btn-viewer-share-link" class="btn btn-secondary btn-sm">Compartir Enlace</button>
         </div>
         <div class="albion-footer-right">
-          <button type="button" id="btn-viewer-edit-build" class="btn btn-primary btn-sm officer-only">✏️ Modificar en Creador</button>
+          <button type="button" id="btn-viewer-edit-build" class="btn btn-primary btn-sm officer-only">Modificar Build</button>
           <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-viewer-modal">Cerrar</button>
         </div>
       </div>
@@ -445,7 +432,6 @@
     <div class="modal-dialog modal-dialog-sm">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 20px;">🔐</span>
           <h3>Acceso de Oficial / Editor</h3>
         </div>
         <button type="button" class="modal-close" id="btn-close-login-modal">&times;</button>
@@ -453,24 +439,24 @@
 
       <div class="modal-body" style="padding: 20px;">
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.4;">
-          Introduce la contraseña de oficial del gremio para desbloquear las funciones de creación, edición y administración de builds.
+          Introduce la contraseña de oficial para crear, editar o eliminar builds.
         </p>
 
         <form id="form-officer-login">
           <div class="form-group">
             <label for="officer-password-input">Contraseña de Oficial:</label>
             <div style="position: relative; display: flex; align-items: center;">
-              <input type="password" id="officer-password-input" class="form-control" placeholder="Introduce la clave de oficial..." autocomplete="current-password" required style="padding-right: 40px;">
-              <button type="button" id="btn-toggle-password" style="position: absolute; right: 10px; background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 15px;" title="Mostrar/Ocultar contraseña">👁️</button>
+              <input type="password" id="officer-password-input" class="form-control" placeholder="Introduce la clave de oficial..." autocomplete="current-password" required style="padding-right: 50px;">
+              <button type="button" id="btn-toggle-password" style="position: absolute; right: 10px; background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 13px; font-weight: 500;" title="Mostrar u ocultar contraseña">Ver</button>
             </div>
             <div id="login-error-msg" style="display: none; color: #ff5555; font-size: 12px; margin-top: 6px; font-weight: 600;">
-              ❌ Contraseña incorrecta. Contacta con un oficial del gremio.
+              Contraseña incorrecta. Contacta con un oficial del gremio.
             </div>
           </div>
 
           <div style="margin-top: 20px; display: flex; gap: 8px; justify-content: flex-end;">
             <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-login-modal">Cancelar</button>
-            <button type="submit" class="btn btn-primary btn-sm">🔓 Iniciar Sesión</button>
+            <button type="submit" class="btn btn-primary btn-sm">Iniciar Sesión</button>
           </div>
         </form>
       </div>
@@ -481,7 +467,7 @@
   <div id="modal-manage-folders" class="modal-backdrop" style="display: none;">
     <div class="modal-dialog modal-dialog-sm">
       <div class="modal-header">
-        <h3>📁 Administrar Carpetas</h3>
+        <h3>Administrar Carpetas</h3>
         <button type="button" class="modal-close" id="btn-close-manage-folders-modal">&times;</button>
       </div>
 

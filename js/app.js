@@ -7,8 +7,19 @@ import { DEFAULT_BUILDS } from './data/default-builds.js';
 
 // ==========================================================================
 // Estado Global
-// ==========================================================================
-let currentRole = localStorage.getItem("furia_user_role") || "MEMBER"; // "MEMBER" o "OFFICER"
+function checkOfficerSession() {
+  const savedRole = localStorage.getItem("furia_user_role");
+  if (savedRole === "OFFICER") {
+    const activeToken = localStorage.getItem("furia_active_officer_token");
+    const sessionToken = sessionStorage.getItem("furia_officer_session");
+    if (activeToken && sessionToken && activeToken === sessionToken) {
+      return "OFFICER";
+    }
+  }
+  return "MEMBER";
+}
+
+let currentRole = checkOfficerSession();
 const DEFAULT_OFFICER_PASSWORDS = ["furiadragones2026", "furia2026", "furiadragones", "1234"];
 
 let currentBuild = {
@@ -133,7 +144,7 @@ function updateRoleUI() {
     if (badgeEl) {
       badgeEl.className = "role-badge role-badge-officer";
     }
-    if (iconEl) iconEl.textContent = "🛡️";
+    if (iconEl) iconEl.textContent = "";
     if (labelEl) labelEl.textContent = "Modo Oficial (Editor)";
     if (btnLogin) btnLogin.style.display = "none";
     if (btnLogout) btnLogout.style.display = "inline-flex";
@@ -142,7 +153,7 @@ function updateRoleUI() {
     if (badgeEl) {
       badgeEl.className = "role-badge role-badge-member";
     }
-    if (iconEl) iconEl.textContent = "👁️";
+    if (iconEl) iconEl.textContent = "";
     if (labelEl) labelEl.textContent = "Modo Miembro (Solo Lectura)";
     if (btnLogin) btnLogin.style.display = "inline-flex";
     if (btnLogout) btnLogout.style.display = "none";
@@ -183,10 +194,10 @@ function setupAuthEvents() {
     btnTogglePass.addEventListener("click", () => {
       if (passInput.type === "password") {
         passInput.type = "text";
-        btnTogglePass.textContent = "🙈";
+        btnTogglePass.textContent = "Ocultar";
       } else {
         passInput.type = "password";
-        btnTogglePass.textContent = "👁️";
+        btnTogglePass.textContent = "Ver";
       }
     });
   }
@@ -198,14 +209,18 @@ function setupAuthEvents() {
       const errorMsg = document.getElementById("login-error-msg");
 
       if (DEFAULT_OFFICER_PASSWORDS.includes(entered.toLowerCase())) {
-        currentRole = "OFFICER";
+        const sessionToken = "officer_" + Date.now() + "_" + Math.random().toString(36).substring(2, 9);
+        sessionStorage.setItem("furia_officer_session", sessionToken);
+        localStorage.setItem("furia_active_officer_token", sessionToken);
         localStorage.setItem("furia_user_role", "OFFICER");
+        currentRole = "OFFICER";
+
         updateRoleUI();
         renderFoldersSidebar();
         renderSavedBuildsList();
         closeOfficerLoginModal();
         if (errorMsg) errorMsg.style.display = "none";
-        showToast("¡Bienvenido, Oficial! Permisos de edición activados.");
+        showToast("Sesión de oficial iniciada.");
       } else {
         if (errorMsg) errorMsg.style.display = "block";
         if (passInput) passInput.focus();
@@ -215,8 +230,11 @@ function setupAuthEvents() {
 
   if (btnLogout) {
     btnLogout.addEventListener("click", () => {
-      currentRole = "MEMBER";
+      localStorage.removeItem("furia_active_officer_token");
+      sessionStorage.removeItem("furia_officer_session");
       localStorage.setItem("furia_user_role", "MEMBER");
+      currentRole = "MEMBER";
+
       updateRoleUI();
       renderFoldersSidebar();
       renderSavedBuildsList();
@@ -224,6 +242,37 @@ function setupAuthEvents() {
       showToast("Sesión cerrada. Modo Solo Lectura activado.");
     });
   }
+
+  // Escuchar cambios de sesión desde otras pestañas o ventanas
+  window.addEventListener("storage", (e) => {
+    if (e.key === "furia_active_officer_token") {
+      const myToken = sessionStorage.getItem("furia_officer_session");
+      if (currentRole === "OFFICER" && e.newValue !== myToken) {
+        currentRole = "MEMBER";
+        sessionStorage.removeItem("furia_officer_session");
+        updateRoleUI();
+        renderFoldersSidebar();
+        renderSavedBuildsList();
+        showToast("La sesión de oficial se cerró porque se inició en otro navegador.");
+      }
+    }
+  });
+
+  // Verificación periódica de concurrencia de sesión única
+  setInterval(() => {
+    if (currentRole === "OFFICER") {
+      const activeToken = localStorage.getItem("furia_active_officer_token");
+      const myToken = sessionStorage.getItem("furia_officer_session");
+      if (!activeToken || activeToken !== myToken) {
+        currentRole = "MEMBER";
+        sessionStorage.removeItem("furia_officer_session");
+        updateRoleUI();
+        renderFoldersSidebar();
+        renderSavedBuildsList();
+        showToast("La sesión de oficial se cerró porque se inició en otro navegador.");
+      }
+    }
+  }, 2000);
 }
 
 function openOfficerLoginModal() {
@@ -485,11 +534,11 @@ function renderManageFoldersList() {
 
     row.innerHTML = `
       <div>
-        <span style="font-weight: 600; font-size: 13px; color: var(--text-main);">📁 ${folder}</span>
+        <span style="font-weight: 600; font-size: 13px; color: var(--text-main);">${folder}</span>
         <span style="font-size: 11px; color: var(--text-muted); margin-left: 6px;">(${count} builds)</span>
       </div>
       <button type="button" class="btn btn-danger btn-sm btn-modal-del-folder" ${isOnlyOne ? 'disabled style="opacity:0.4; cursor:not-allowed;" title="Debe quedar al menos 1 carpeta activa"' : `title="Eliminar carpeta ${folder}"`}>
-        🗑️ Eliminar
+        Eliminar
       </button>
     `;
 
@@ -572,7 +621,7 @@ function updateFolderDropdowns() {
   folders.forEach(folder => {
     const opt = document.createElement("option");
     opt.value = folder;
-    opt.textContent = `📁 ${folder}`;
+    opt.textContent = folder;
     if (folder === currentBuild.folder) opt.selected = true;
     select.appendChild(opt);
   });
@@ -590,7 +639,7 @@ function renderFoldersSidebar() {
   const allItem = document.createElement("li");
   allItem.className = `folder-nav-item ${activeSelectedFolder === 'ALL' ? 'active' : ''}`;
   allItem.innerHTML = `
-    <span>📁 Todas</span>
+    <span>Todas</span>
     <span class="folder-badge-count">${allBuilds.length}</span>
   `;
   allItem.addEventListener("click", () => {
@@ -607,10 +656,10 @@ function renderFoldersSidebar() {
     const canDelete = folders.length > 1 && isOfficer();
 
     item.innerHTML = `
-      <span title="${folder}" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1;">📁 ${folder}</span>
+      <span title="${folder}" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1;">${folder}</span>
       <div class="folder-nav-right">
         <span class="folder-badge-count">${count}</span>
-        ${canDelete ? `<button type="button" class="folder-delete-btn" title="Eliminar carpeta ${folder}">🗑️</button>` : ''}
+        ${canDelete ? `<button type="button" class="folder-delete-btn" title="Eliminar carpeta ${folder}">×</button>` : ''}
       </div>
     `;
 
@@ -861,7 +910,7 @@ function startNewBuild() {
   };
 
   const editorTitle = document.getElementById("editor-title");
-  if (editorTitle) editorTitle.textContent = "🛠️ Creador de Nueva Build";
+  if (editorTitle) editorTitle.textContent = "Creador de Nueva Build";
 
   renderBuild();
   switchTab("builder");
@@ -877,7 +926,7 @@ function editBuild(build) {
   if (!currentBuild.tierEquiv) currentBuild.tierEquiv = 8;
 
   const editorTitle = document.getElementById("editor-title");
-  if (editorTitle) editorTitle.textContent = `🛠️ Editando: ${build.name || 'Build'}`;
+  if (editorTitle) editorTitle.textContent = `Editando: ${build.name || 'Build'}`;
 
   renderBuild();
   switchTab("builder");
@@ -962,7 +1011,6 @@ function renderBuild() {
   });
 
   renderSpellButtons();
-  renderQuickSummary();
 }
 
 function renderSpellButtons() {
@@ -1050,26 +1098,6 @@ function updateSpellButton(slot, type, spellId) {
       txtEl.textContent = getSpellShortCode(type, slot);
     }
   }
-}
-
-function renderQuickSummary() {
-  const summaryEl = document.getElementById("build-summary-list");
-  if (!summaryEl) return;
-
-  const eq = currentBuild.equipment;
-  const headItem = ALBION_ITEMS.find(i => i.id === eq.head?.id);
-  const mhItem = ALBION_ITEMS.find(i => i.id === eq.mainhand?.id);
-  const armorItem = ALBION_ITEMS.find(i => i.id === eq.armor?.id);
-  const shoesItem = ALBION_ITEMS.find(i => i.id === eq.shoes?.id);
-  const capeItem = ALBION_ITEMS.find(i => i.id === eq.cape?.id);
-
-  summaryEl.innerHTML = `
-    <li><strong>Cabeza:</strong> ${headItem ? `${headItem.name} [T8]` : '<em>Sin equipar</em>'}</li>
-    <li><strong>Arma:</strong> ${mhItem ? `${mhItem.name} [T8]` : '<em>Sin equipar</em>'}</li>
-    <li><strong>Pecho:</strong> ${armorItem ? `${armorItem.name} [T8]` : '<em>Sin equipar</em>'}</li>
-    <li><strong>Botas:</strong> ${shoesItem ? `${shoesItem.name} [T8]` : '<em>Sin equipar</em>'}</li>
-    <li><strong>Capa:</strong> ${capeItem ? `${capeItem.name} [T8]` : '<em>Sin equipar</em>'}</li>
-  `;
 }
 
 // ==========================================================================
@@ -1252,6 +1280,11 @@ function openSpellPickerModal(slot, spellType) {
 
     const iconUrl = spell.icon || `https://render.albiononline.com/v1/spell/${spell.id}.png`;
 
+    const metaParts = [];
+    if (spell.cooldown) metaParts.push(spell.cooldown);
+    if (spell.energy) metaParts.push(`${spell.energy} energía`);
+    if (spell.castTime) metaParts.push(spell.castTime);
+
     card.innerHTML = `
       <div class="spell-option-icon">
         <img src="${iconUrl}" alt="${spell.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\\'font-weight:bold; font-size:12px;\\'>${getSpellShortCode(spellType, slot)}</span>';">
@@ -1259,7 +1292,7 @@ function openSpellPickerModal(slot, spellType) {
       <div class="spell-option-content">
         <div class="spell-option-name">${spell.name}</div>
         <div class="spell-option-meta" style="font-size: 11px; color: var(--text-gold); margin-bottom: 2px;">
-          ${spell.cooldown ? `⏱ ${spell.cooldown}` : ''} ${spell.energy ? `⚡ ${spell.energy} energía` : ''} ${spell.castTime ? `✋ ${spell.castTime}` : ''}
+          ${metaParts.join(" • ")}
         </div>
         ${spell.desc ? `<div class="spell-option-desc" style="font-size: 11px; color: var(--text-muted); line-height: 1.3;">${spell.desc}</div>` : ''}
       </div>
@@ -1349,8 +1382,8 @@ function openBuildViewerModal(build) {
   if (titleEl) titleEl.textContent = build.name || "Sin título";
   if (roleEl) roleEl.textContent = build.role || "General";
   const tEq = build.tierEquiv || 8;
-  if (tierEl) tierEl.textContent = `⭐ Tier ${tEq} Equivalente (${getTierEquivExample(tEq)})`;
-  if (folderEl) folderEl.textContent = `📁 ${build.folder || 'ZvZ'}`;
+  if (tierEl) tierEl.textContent = `Tier ${tEq} Equivalente (${getTierEquivExample(tEq)})`;
+  if (folderEl) folderEl.textContent = build.folder || 'ZvZ';
 
   // Rueda 3x3 de Equipamiento estilo Albion
   const wheelContainer = document.getElementById("viewer-albion-wheel");
@@ -1401,6 +1434,11 @@ function openBuildViewerModal(build) {
         row.id = `spell-detail-${sObj.spellId}`;
         const iconUrl = spell.icon || `https://render.albiononline.com/v1/spell/${spell.id}.png`;
 
+        const metaParts = [];
+        if (spell.cooldown) metaParts.push(spell.cooldown);
+        if (spell.energy) metaParts.push(`${spell.energy} energía`);
+        if (spell.castTime) metaParts.push(spell.castTime);
+
         row.innerHTML = `
           <div class="viewer-spell-icon">
             <img src="${iconUrl}" alt="${spell.name}" onerror="this.style.display='none'; this.parentElement.textContent='${sObj.key.split(' ')[0]}';">
@@ -1411,7 +1449,7 @@ function openBuildViewerModal(build) {
               <span class="viewer-spell-slotkey">${sObj.key}</span>
             </div>
             <div class="viewer-spell-meta">
-              ${spell.cooldown ? `⏱ ${spell.cooldown}` : ''} ${spell.energy ? `⚡ ${spell.energy} energía` : ''} ${spell.castTime ? `✋ ${spell.castTime}` : ''}
+              ${metaParts.join(" • ")}
             </div>
             ${spell.desc ? `<div class="viewer-spell-desc">${spell.desc}</div>` : ''}
           </div>
@@ -1743,8 +1781,11 @@ function renderSavedBuildsList() {
     });
   }
 
+  const allFolders = getAllFolders();
+  const officerMode = isOfficer();
+
   if (folderTitle) {
-    folderTitle.textContent = activeSelectedFolder === "ALL" ? "📁 Todas las Builds" : `📁 ${activeSelectedFolder}`;
+    folderTitle.textContent = activeSelectedFolder === "ALL" ? "Todas las Builds" : activeSelectedFolder;
   }
   if (folderCount) {
     folderCount.textContent = `${filtered.length} builds encontradas`;
@@ -1753,7 +1794,6 @@ function renderSavedBuildsList() {
   if (filtered.length === 0) {
     container.innerHTML = `
       <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 50px 20px; background: rgba(22, 27, 34, 0.4); border-radius: var(--radius); border: 1px dashed var(--border-color);">
-        <div style="font-size: 32px; margin-bottom: 10px;">📂</div>
         <div style="font-size: 15px; font-weight: 600; color: var(--text-main); margin-bottom: 6px;">
           ${allBuilds.length === 0 ? "No hay ninguna build guardada" : "No hay builds en esta carpeta"}
         </div>
@@ -1762,7 +1802,7 @@ function renderSavedBuildsList() {
             ? "Todas las builds han sido eliminadas. Los oficiales pueden crear nuevas builds desde el editor." 
             : `No se encontraron builds en "${activeSelectedFolder}".`}
         </p>
-        ${officerMode ? `<button type="button" class="btn btn-primary btn-sm" id="btn-create-empty-state">➕ Crear Nueva Build</button>` : ''}
+        ${officerMode ? `<button type="button" class="btn btn-primary btn-sm" id="btn-create-empty-state">Crear Nueva Build</button>` : ''}
       </div>
     `;
     container.querySelector("#btn-create-empty-state")?.addEventListener("click", () => {
@@ -1772,8 +1812,6 @@ function renderSavedBuildsList() {
   }
 
   container.innerHTML = "";
-  const allFolders = getAllFolders();
-  const officerMode = isOfficer();
 
   filtered.forEach(build => {
     const card = document.createElement("div");
@@ -1796,7 +1834,7 @@ function renderSavedBuildsList() {
 
     let folderOptionsHtml = "";
     allFolders.forEach(f => {
-      folderOptionsHtml += `<option value="${f}" ${f === (build.folder || 'ZvZ') ? 'selected' : ''}>📁 ${f}</option>`;
+      folderOptionsHtml += `<option value="${f}" ${f === (build.folder || 'ZvZ') ? 'selected' : ''}>${f}</option>`;
     });
 
     const tierEquiv = build.tierEquiv || 8;
@@ -1830,10 +1868,10 @@ function renderSavedBuildsList() {
       ` : ''}
 
       <div class="saved-build-actions">
-        <button type="button" class="btn btn-primary btn-sm btn-view-build">👁️ Ver Build</button>
-        ${officerMode ? `<button type="button" class="btn btn-secondary btn-sm btn-edit-build">✏️ Editar</button>` : ''}
-        <button type="button" class="btn btn-secondary btn-sm btn-discord-build">📋 Copiar Discord</button>
-        ${officerMode ? `<button type="button" class="btn btn-danger btn-sm btn-delete-build">🗑️ Eliminar</button>` : ''}
+        <button type="button" class="btn btn-primary btn-sm btn-view-build">Ver Build</button>
+        ${officerMode ? `<button type="button" class="btn btn-secondary btn-sm btn-edit-build">Editar</button>` : ''}
+        <button type="button" class="btn btn-secondary btn-sm btn-discord-build">Copiar Discord</button>
+        ${officerMode ? `<button type="button" class="btn btn-danger btn-sm btn-delete-build">Eliminar</button>` : ''}
       </div>
     `;
 
