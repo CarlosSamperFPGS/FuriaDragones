@@ -149,7 +149,7 @@ function setupCloudSync() {
       }
     },
     onBuildsUpdated: (newBuilds) => {
-      if (Array.isArray(newBuilds) && newBuilds.length > 0) {
+      if (Array.isArray(newBuilds)) {
         localStorage.setItem("furia_saved_builds", JSON.stringify(newBuilds));
         updateSavedBuildsCount();
         renderSavedBuildsList();

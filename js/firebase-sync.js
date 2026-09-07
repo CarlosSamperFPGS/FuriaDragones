@@ -89,26 +89,8 @@ export function initCloudSync({
       buildsCol,
       async (snapshot) => {
         if (snapshot.empty) {
-          console.log("[Firebase] Colección 'builds' vacía. Autosembrerando builds por defecto...");
-          // Si está completamente vacía, poblamos con los datos por defecto del gremio
-          if (defaultBuilds.length > 0) {
-            try {
-              const batch = writeBatch(db);
-              defaultBuilds.forEach((build, idx) => {
-                const docRef = doc(db, "builds", String(build.id));
-                const dataWithMeta = {
-                  ...sanitizeForFirestore(build),
-                  orderIndex: idx,
-                  createdAt: Date.now() - (defaultBuilds.length - idx) * 1000,
-                  updatedAt: Date.now()
-                };
-                batch.set(docRef, dataWithMeta);
-              });
-              await batch.commit();
-              console.log("[Firebase] Autosembrado de builds completado con éxito.");
-            } catch (seedErr) {
-              console.warn("[Firebase] Error al sembrar builds iniciales:", seedErr);
-            }
+          if (onBuildsUpdated) {
+            onBuildsUpdated([]);
           }
         } else {
           const builds = [];
