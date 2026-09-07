@@ -71,6 +71,16 @@
               <button type="button" id="btn-create-build-from-list" class="btn btn-primary btn-sm officer-only">Crear Nueva Build</button>
             </div>
           </div>
+          
+          <!-- Filtro rápido por rol -->
+          <div class="role-filter-bar" id="role-filter-bar">
+            <button type="button" class="role-filter-chip active" data-role="ALL">Todos los Roles</button>
+            <button type="button" class="role-filter-chip" data-role="DPS Melee">DPS Melee</button>
+            <button type="button" class="role-filter-chip" data-role="DPS Ranged">DPS Ranged</button>
+            <button type="button" class="role-filter-chip" data-role="Tank">Tank</button>
+            <button type="button" class="role-filter-chip" data-role="Healer">Healer</button>
+            <button type="button" class="role-filter-chip" data-role="Soporte">Soporte</button>
+          </div>
 
           <div class="saved-builds-grid" id="saved-builds-container">
             <!-- Renderizado dinámicamente -->
@@ -343,6 +353,7 @@
 
             <div class="actions-group">
               <button type="button" id="btn-save-build" class="btn btn-primary">Guardar Build</button>
+              <button type="button" id="btn-cancel-builder" class="btn btn-outline">Volver a Builds</button>
               <button type="button" id="btn-copy-discord" class="btn btn-secondary">Copiar Formato Discord</button>
               <button type="button" id="btn-share-link" class="btn btn-secondary">Copiar Enlace</button>
             </div>

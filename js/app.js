@@ -51,6 +51,7 @@ let currentBuild = {
 
 let viewingBuild = null;
 let activeSelectedFolder = "ALL";
+let activeSelectedRole = "ALL";
 let activeModalSlot = null;
 let activeSpellSlot = null;
 let activeSpellType = null;
@@ -106,6 +107,7 @@ function initApp() {
   setupFormEvents();
   setupActionButtons();
   setupFolderEvents();
+  setupRoleFilterEvents();
   setupViewerModalEvents();
   
   if (window.location.hash.startsWith("#build=")) {
@@ -847,6 +849,20 @@ function setupActionButtons() {
       saveBuildsToStorage(builds);
       saveBuildToCloud(buildToSave);
       showToast(`¡Build guardada en "${buildToSave.folder || 'ZvZ'}"!`);
+
+      // Redirigir a consultar builds, seleccionar carpeta y resaltar la build guardada
+      const savedFolder = buildToSave.folder || "ALL";
+      activeSelectedFolder = savedFolder;
+      switchTab("saved-builds");
+      renderFoldersSidebar();
+      renderSavedBuildsList(buildToSave.id);
+    });
+  }
+
+  const btnCancelBuilder = document.getElementById("btn-cancel-builder");
+  if (btnCancelBuilder) {
+    btnCancelBuilder.addEventListener("click", () => {
+      switchTab("saved-builds");
     });
   }
 
@@ -1019,15 +1035,21 @@ function renderBuild() {
     const nameEl = document.getElementById(`name-${slotKey}`);
     const badgeEl = document.getElementById(`badge-${slotKey}`);
 
-    if (slotKey === "offhand" && isTwoHanded) {
-      if (imgEl) imgEl.style.display = "none";
-      if (emptyEl) {
-        emptyEl.style.display = "block";
-        emptyEl.textContent = "Ocupado (2 Manos)";
+    const cardEl = document.getElementById(`slot-card-${slotKey}`);
+    if (slotKey === "offhand") {
+      if (isTwoHanded) {
+        if (cardEl) cardEl.classList.add("slot-card-blocked");
+        if (imgEl) imgEl.style.display = "none";
+        if (emptyEl) {
+          emptyEl.style.display = "block";
+          emptyEl.textContent = "2 Manos (Bloqueado)";
+        }
+        if (nameEl) nameEl.textContent = "Arma a 2 Manos";
+        if (badgeEl) badgeEl.textContent = "Bloqueado";
+        return;
+      } else {
+        if (cardEl) cardEl.classList.remove("slot-card-blocked");
       }
-      if (nameEl) nameEl.textContent = "Arma a 2 Manos";
-      if (badgeEl) badgeEl.textContent = "2M";
-      return;
     }
 
     if (slotData && dbItem) {
@@ -1167,6 +1189,15 @@ function openItemPickerModal(slot) {
     openOfficerLoginModal();
     return;
   }
+
+  if (slot === "offhand") {
+    const mainHandItem = ALBION_ITEMS.find(i => i.id === currentBuild.equipment.mainhand?.id);
+    if (mainHandItem && mainHandItem.twoHanded) {
+      showToast("No puedes equipar mano secundaria con un arma a 2 manos.");
+      return;
+    }
+  }
+
   activeModalSlot = slot;
   const modal = document.getElementById("modal-item-picker");
   const modalTitle = document.getElementById("modal-item-title");
@@ -1817,26 +1848,45 @@ function setupModalEvents() {
 // ==========================================================================
 // Renderizado de Builds por Carpeta
 // ==========================================================================
-function renderSavedBuildsList() {
+function setupRoleFilterEvents() {
+  const chips = document.querySelectorAll(".role-filter-chip");
+  chips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      chips.forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      activeSelectedRole = chip.getAttribute("data-role") || "ALL";
+      renderSavedBuildsList();
+    });
+  });
+}
+
+function renderSavedBuildsList(highlightBuildId = null) {
   const container = document.getElementById("saved-builds-container");
   const folderTitle = document.getElementById("current-folder-title");
   const folderCount = document.getElementById("current-folder-count");
-  const searchVal = (document.getElementById("search-saved-builds")?.value || "").toLowerCase().trim();
+  const searchInput = document.getElementById("search-saved-builds");
+  const searchVal = (searchInput?.value || "").toLowerCase().trim();
 
   if (!container) return;
 
   const allBuilds = getSavedBuilds();
-  
   let filtered = allBuilds;
   if (activeSelectedFolder !== "ALL") {
     filtered = filtered.filter(b => (b.folder || "ZvZ") === activeSelectedFolder);
   }
 
+  if (activeSelectedRole !== "ALL") {
+    filtered = filtered.filter(b => (b.role || "").toLowerCase() === activeSelectedRole.toLowerCase());
+  }
+
   if (searchVal) {
     filtered = filtered.filter(b => {
+      const mhItem = b.equipment?.mainhand ? ALBION_ITEMS.find(i => i.id === b.equipment.mainhand.id) : null;
+      const weaponName = (mhItem?.name || "").toLowerCase();
       return (b.name || "").toLowerCase().includes(searchVal) || 
              (b.role || "").toLowerCase().includes(searchVal) ||
-             (b.notes || "").toLowerCase().includes(searchVal);
+             (b.notes || "").toLowerCase().includes(searchVal) ||
+             weaponName.includes(searchVal);
     });
   }
 
@@ -1874,7 +1924,13 @@ function renderSavedBuildsList() {
 
   filtered.forEach(build => {
     const row = document.createElement("div");
-    row.className = "saved-build-row";
+    row.className = `saved-build-row ${highlightBuildId === build.id ? 'flash-highlight' : ''}`;
+    
+    if (highlightBuildId && build.id === highlightBuildId) {
+      setTimeout(() => {
+        row.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }, 100);
+    }
 
     const eq = build.equipment || {};
     const mhData = eq.mainhand;

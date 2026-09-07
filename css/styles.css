@@ -1526,6 +1526,77 @@ textarea.form-control {
 }
 
 /* ==========================================================================
+   Filtros Rápidos por Rol (Chips)
+   ========================================================================== */
+.role-filter-bar {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding-bottom: 4px;
+}
+
+.role-filter-chip {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background-color: #121820;
+  border: 1px solid #293849;
+  color: #84a9cb;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.role-filter-chip:hover {
+  border-color: #3d526b;
+  color: #ffffff;
+  background-color: #18202b;
+}
+
+.role-filter-chip.active {
+  background: linear-gradient(135deg, rgba(229,169,59,0.2) 0%, rgba(184,115,51,0.2) 100%);
+  border-color: var(--border-highlight);
+  color: var(--text-gold);
+  box-shadow: 0 0 8px rgba(229, 169, 59, 0.25);
+}
+
+/* Ranura Bloqueada por Arma a 2 Manos */
+.slot-card.slot-card-blocked {
+  opacity: 0.4;
+  filter: grayscale(0.8);
+  pointer-events: none;
+  border-style: dashed;
+  position: relative;
+}
+
+.slot-card.slot-card-blocked .slot-empty-text {
+  color: #8c9ba5;
+  font-style: italic;
+  font-size: 11px;
+}
+
+/* Efecto de Destello al Guardar Build */
+@keyframes build-saved-flash {
+  0% {
+    border-color: var(--border-highlight);
+    box-shadow: 0 0 16px rgba(229, 169, 59, 0.7);
+    background: rgba(229, 169, 59, 0.12);
+  }
+  100% {
+    border-color: rgba(255, 255, 255, 0.07);
+    box-shadow: none;
+    background: #13171d;
+  }
+}
+
+.saved-build-row.flash-highlight {
+  animation: build-saved-flash 2.5s ease-out;
+}
+
+/* ==========================================================================
    Notificaciones Toast
    ========================================================================== */
 .toast {
