@@ -96,13 +96,8 @@ function initApp() {
     const saved = getSavedBuilds();
     if (saved && saved.length > 0) {
       currentBuild = JSON.parse(JSON.stringify(saved[0]));
-      renderBuild();
-    } else if (DEFAULT_BUILDS.length > 0) {
-      currentBuild = JSON.parse(JSON.stringify(DEFAULT_BUILDS[0]));
-      renderBuild();
-    } else {
-      renderBuild();
     }
+    renderBuild();
   }
 
   updateFolderDropdowns();
@@ -262,12 +257,12 @@ function initStorage() {
   }
 
   const storedBuilds = localStorage.getItem("furia_saved_builds");
-  if (!storedBuilds || storedBuilds === "[]") {
+  if (storedBuilds === null) {
     localStorage.setItem("furia_saved_builds", JSON.stringify(DEFAULT_BUILDS));
   }
 
   const storedFolders = localStorage.getItem("furia_custom_folders");
-  if (!storedFolders || storedFolders === "[]") {
+  if (storedFolders === null) {
     localStorage.setItem("furia_custom_folders", JSON.stringify(DEFAULT_FOLDERS));
   }
 }
@@ -275,14 +270,14 @@ function initStorage() {
 function getSavedBuilds() {
   try {
     const raw = localStorage.getItem("furia_saved_builds");
-    if (!raw) return DEFAULT_BUILDS;
+    if (raw === null) return DEFAULT_BUILDS;
     const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed) || parsed.length === 0) {
-      return DEFAULT_BUILDS;
+    if (Array.isArray(parsed)) {
+      return parsed;
     }
-    return parsed;
-  } catch (e) {
     return DEFAULT_BUILDS;
+  } catch (e) {
+    return [];
   }
 }
 
@@ -810,6 +805,22 @@ function setupActionButtons() {
       };
       reader.readAsText(file);
       fileImport.value = "";
+    });
+  }
+
+  const btnRestore = document.getElementById("btn-restore-defaults");
+  if (btnRestore) {
+    btnRestore.addEventListener("click", () => {
+      if (!isOfficer()) {
+        openOfficerLoginModal();
+        showToast("Inicia sesión como Oficial para restaurar builds.");
+        return;
+      }
+      if (confirm("¿Deseas restaurar las builds oficiales por defecto del gremio?\nEsto restaurará las 7 guías iniciales.")) {
+        saveBuildsToStorage(DEFAULT_BUILDS);
+        saveCustomFolders(DEFAULT_FOLDERS);
+        showToast("¡Builds y carpetas por defecto restauradas!");
+      }
     });
   }
 
@@ -1741,10 +1752,22 @@ function renderSavedBuildsList() {
 
   if (filtered.length === 0) {
     container.innerHTML = `
-      <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">
-        No hay builds en esta carpeta todavía.
+      <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 50px 20px; background: rgba(22, 27, 34, 0.4); border-radius: var(--radius); border: 1px dashed var(--border-color);">
+        <div style="font-size: 32px; margin-bottom: 10px;">📂</div>
+        <div style="font-size: 15px; font-weight: 600; color: var(--text-main); margin-bottom: 6px;">
+          ${allBuilds.length === 0 ? "No hay ninguna build guardada" : "No hay builds en esta carpeta"}
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); max-width: 420px; margin: 0 auto 16px;">
+          ${allBuilds.length === 0 
+            ? "Todas las builds han sido eliminadas. Los oficiales pueden crear nuevas builds desde el editor." 
+            : `No se encontraron builds en "${activeSelectedFolder}".`}
+        </p>
+        ${officerMode ? `<button type="button" class="btn btn-primary btn-sm" id="btn-create-empty-state">➕ Crear Nueva Build</button>` : ''}
       </div>
     `;
+    container.querySelector("#btn-create-empty-state")?.addEventListener("click", () => {
+      startNewBuild();
+    });
     return;
   }
 
