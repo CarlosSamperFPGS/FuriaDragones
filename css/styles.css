@@ -109,6 +109,57 @@ body {
   flex-wrap: wrap;
 }
 
+.cloud-sync-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(0, 230, 118, 0.08);
+  border: 1px solid rgba(0, 230, 118, 0.25);
+  color: #00e676;
+  letter-spacing: 0.2px;
+  transition: all 0.3s ease;
+}
+
+.cloud-sync-badge.syncing {
+  background: rgba(255, 179, 0, 0.08);
+  border-color: rgba(255, 179, 0, 0.3);
+  color: #ffb300;
+}
+
+.cloud-sync-badge.error {
+  background: rgba(255, 68, 68, 0.08);
+  border-color: rgba(255, 68, 68, 0.3);
+  color: #ff4444;
+}
+
+.cloud-sync-badge.offline {
+  background: rgba(140, 160, 180, 0.08);
+  border-color: rgba(140, 160, 180, 0.25);
+  color: #8fa1b3;
+}
+
+.cloud-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 6px currentColor;
+  display: inline-block;
+}
+
+.cloud-sync-badge.syncing .cloud-dot {
+  animation: pulse-cloud-dot 1.2s infinite ease-in-out;
+}
+
+@keyframes pulse-cloud-dot {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
 .role-badge {
   display: inline-flex;
   align-items: center;

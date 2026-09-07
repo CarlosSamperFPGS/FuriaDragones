@@ -4,6 +4,13 @@
 import { ALBION_ITEMS, ITEM_CATEGORIES, TIER_EQUIVALENTS, getItemImageUrl } from './data/items.js';
 import { ALBION_SPELLS, ITEM_SPELLS_MAP, getItemSpells } from './data/spells.js';
 import { DEFAULT_BUILDS } from './data/default-builds.js';
+import {
+  initCloudSync,
+  saveBuildToCloud,
+  deleteBuildFromCloud,
+  saveFoldersToCloud,
+  restoreDefaultsInCloud
+} from './firebase-sync.js';
 
 // ==========================================================================
 // Estado Global
@@ -115,6 +122,49 @@ function initApp() {
   renderFoldersSidebar();
   renderSavedBuildsList();
   updateSavedBuildsCount();
+  setupCloudSync();
+}
+
+function setupCloudSync() {
+  initCloudSync({
+    defaultBuilds: DEFAULT_BUILDS,
+    defaultFolders: DEFAULT_FOLDERS,
+    onStatusChanged: (status) => {
+      const badge = document.getElementById("cloud-sync-badge");
+      const label = document.getElementById("cloud-sync-label");
+      if (!badge || !label) return;
+
+      if (status === "online") {
+        badge.className = "cloud-sync-badge online";
+        label.textContent = "Sincronizado";
+      } else if (status === "syncing") {
+        badge.className = "cloud-sync-badge syncing";
+        label.textContent = "Sincronizando...";
+      } else if (status === "error") {
+        badge.className = "cloud-sync-badge error";
+        label.textContent = "Error Nube";
+      } else {
+        badge.className = "cloud-sync-badge offline";
+        label.textContent = "Modo Local";
+      }
+    },
+    onBuildsUpdated: (newBuilds) => {
+      if (Array.isArray(newBuilds) && newBuilds.length > 0) {
+        localStorage.setItem("furia_saved_builds", JSON.stringify(newBuilds));
+        updateSavedBuildsCount();
+        renderSavedBuildsList();
+        renderFoldersSidebar();
+      }
+    },
+    onFoldersUpdated: (newFolders) => {
+      if (Array.isArray(newFolders) && newFolders.length > 0) {
+        localStorage.setItem("furia_custom_folders", JSON.stringify(newFolders));
+        updateFolderDropdowns();
+        renderFoldersSidebar();
+        renderSavedBuildsList();
+      }
+    }
+  });
 }
 
 if (document.readyState === "loading") {
@@ -561,6 +611,7 @@ function addNewFolder(name) {
   }
   folders.push(name);
   saveCustomFolders(folders);
+  saveFoldersToCloud(folders);
   renderFoldersSidebar();
   renderManageFoldersList();
   showToast(`Carpeta "${name}" creada.`);
@@ -600,9 +651,15 @@ function deleteFolder(folderName) {
       activeSelectedFolder = "ALL";
     }
 
-    // Persistir carpetas primero y luego builds
+    // Persistir carpetas primero y luego builds localmente y en la nube
     saveCustomFolders(remainingFolders);
+    saveFoldersToCloud(remainingFolders);
     saveBuildsToStorage(builds);
+    builds.forEach(b => {
+      if (b.folder === fallbackFolder) {
+        saveBuildToCloud(b);
+      }
+    });
 
     renderFoldersSidebar();
     renderSavedBuildsList();
@@ -788,6 +845,7 @@ function setupActionButtons() {
       }
 
       saveBuildsToStorage(builds);
+      saveBuildToCloud(buildToSave);
       showToast(`¡Build guardada en "${buildToSave.folder || 'ZvZ'}"!`);
     });
   }
@@ -865,10 +923,11 @@ function setupActionButtons() {
         showToast("Inicia sesión como Oficial para restaurar builds.");
         return;
       }
-      if (confirm("¿Deseas restaurar las builds oficiales por defecto del gremio?\nEsto restaurará las 7 guías iniciales.")) {
+      if (confirm("¿Deseas restaurar las builds oficiales por defecto del gremio?\nEsto restaurará las guías iniciales en la nube.")) {
         saveBuildsToStorage(DEFAULT_BUILDS);
         saveCustomFolders(DEFAULT_FOLDERS);
-        showToast("¡Builds y carpetas por defecto restauradas!");
+        restoreDefaultsInCloud(DEFAULT_BUILDS, DEFAULT_FOLDERS);
+        showToast("¡Builds y carpetas por defecto restauradas en la nube!");
       }
     });
   }
@@ -1925,6 +1984,7 @@ function renderSavedBuildsList() {
         if (targetBuild) {
           targetBuild.folder = newFolder;
           saveBuildsToStorage(all);
+          saveBuildToCloud(targetBuild);
           showToast(`Build movida a "${newFolder}".`);
         }
       });
@@ -1935,6 +1995,7 @@ function renderSavedBuildsList() {
       if (confirm(`¿Eliminar la build "${build.name}"?`)) {
         const remaining = getSavedBuilds().filter(b => b.id !== build.id);
         saveBuildsToStorage(remaining);
+        deleteBuildFromCloud(build.id);
         showToast("Build eliminada.");
       }
     });
