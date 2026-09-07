@@ -845,8 +845,8 @@ export const ALBION_ITEMS = [
     "twoHanded": true
   },
   {
-    "id": "2H_IRONGAUNTLETS_HELL",
-    "name": "Manos negras",
+    "id": "2H_KNUCKLES_CRYSTAL",
+    "name": "Brazales de fuerza pulsante",
     "category": "Guantes de Guerra",
     "slot": "mainhand",
     "twoHanded": true
