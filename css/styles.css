@@ -572,13 +572,13 @@ textarea.form-control {
 }
 
 .folder-delete-btn {
-  background: rgba(255, 85, 85, 0.1);
-  border: 1px solid rgba(255, 85, 85, 0.2);
+  background: rgba(255, 85, 85, 0.15);
+  border: 1px solid rgba(255, 85, 85, 0.3);
   color: #ff6b6b;
   cursor: pointer;
-  padding: 2px 7px;
+  padding: 3px 6px;
   border-radius: 4px;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: bold;
   line-height: 1;
   transition: all 0.15s ease;
@@ -591,8 +591,23 @@ textarea.form-control {
   color: #ffffff;
   background-color: #e03131;
   border-color: #e03131;
-  box-shadow: 0 0 6px rgba(224, 49, 49, 0.5);
+  box-shadow: 0 0 8px rgba(224, 49, 49, 0.6);
   transform: scale(1.1);
+}
+
+.manage-folder-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #161b22;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  transition: border-color 0.2s ease;
+}
+
+.manage-folder-row:hover {
+  border-color: var(--border-highlight);
 }
 
 .folders-content-area {

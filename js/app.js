@@ -153,6 +153,8 @@ function updateRoleUI() {
     if (btnLogout) btnLogout.style.display = "none";
     if (builderTabBtn) builderTabBtn.style.display = "none";
   }
+
+  renderFoldersSidebar();
 }
 
 function setupAuthEvents() {
@@ -204,6 +206,7 @@ function setupAuthEvents() {
         currentRole = "OFFICER";
         localStorage.setItem("furia_user_role", "OFFICER");
         updateRoleUI();
+        renderFoldersSidebar();
         renderSavedBuildsList();
         closeOfficerLoginModal();
         if (errorMsg) errorMsg.style.display = "none";
@@ -220,6 +223,7 @@ function setupAuthEvents() {
       currentRole = "MEMBER";
       localStorage.setItem("furia_user_role", "MEMBER");
       updateRoleUI();
+      renderFoldersSidebar();
       renderSavedBuildsList();
       switchTab("saved-builds");
       showToast("Sesión cerrada. Modo Solo Lectura activado.");
@@ -368,6 +372,7 @@ function setupFolderEvents() {
     btnCreateFolder.addEventListener("click", () => {
       if (!isOfficer()) {
         openOfficerLoginModal();
+        showToast("Inicia sesión como Oficial para crear carpetas.");
         return;
       }
       const folderName = prompt("Introduce el nombre de la nueva carpeta de contenido:");
@@ -377,11 +382,53 @@ function setupFolderEvents() {
     });
   }
 
+  const btnManageFolders = document.getElementById("btn-manage-folders");
+  if (btnManageFolders) {
+    btnManageFolders.addEventListener("click", () => {
+      if (!isOfficer()) {
+        openOfficerLoginModal();
+        showToast("Inicia sesión como Oficial para gestionar carpetas.");
+        return;
+      }
+      openManageFoldersModal();
+    });
+  }
+
+  const btnCloseManageModal = document.getElementById("btn-close-manage-folders-modal");
+  if (btnCloseManageModal) {
+    btnCloseManageModal.addEventListener("click", closeManageFoldersModal);
+  }
+
+  const btnCancelManageModal = document.getElementById("btn-cancel-manage-folders-modal");
+  if (btnCancelManageModal) {
+    btnCancelManageModal.addEventListener("click", closeManageFoldersModal);
+  }
+
+  const btnManageAdd = document.getElementById("btn-manage-add-folder");
+  const inputManageNew = document.getElementById("manage-new-folder-input");
+  if (btnManageAdd && inputManageNew) {
+    const handleAdd = () => {
+      const name = (inputManageNew.value || "").trim();
+      if (!name) return;
+      addNewFolder(name);
+      inputManageNew.value = "";
+    };
+
+    btnManageAdd.addEventListener("click", handleAdd);
+    inputManageNew.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleAdd();
+      }
+    });
+  }
+
   const btnAddFolderInline = document.getElementById("btn-add-folder-inline");
   if (btnAddFolderInline) {
     btnAddFolderInline.addEventListener("click", () => {
       if (!isOfficer()) {
         openOfficerLoginModal();
+        showToast("Inicia sesión como Oficial para crear carpetas.");
         return;
       }
       const folderName = prompt("Nombre de la nueva carpeta de contenido:");
@@ -408,28 +455,87 @@ function setupFolderEvents() {
   }
 }
 
+function openManageFoldersModal() {
+  const modal = document.getElementById("modal-manage-folders");
+  if (modal) {
+    renderManageFoldersList();
+    modal.style.display = "flex";
+    const input = document.getElementById("manage-new-folder-input");
+    if (input) {
+      input.value = "";
+      setTimeout(() => input.focus(), 100);
+    }
+  }
+}
+
+function closeManageFoldersModal() {
+  const modal = document.getElementById("modal-manage-folders");
+  if (modal) modal.style.display = "none";
+}
+
+function renderManageFoldersList() {
+  const container = document.getElementById("manage-folders-list");
+  if (!container) return;
+
+  const folders = getAllFolders();
+  const allBuilds = getSavedBuilds();
+
+  container.innerHTML = "";
+  folders.forEach(folder => {
+    const count = allBuilds.filter(b => (b.folder || "ZvZ") === folder).length;
+    const row = document.createElement("div");
+    row.className = "manage-folder-row";
+
+    const isOnlyOne = folders.length <= 1;
+
+    row.innerHTML = `
+      <div>
+        <span style="font-weight: 600; font-size: 13px; color: var(--text-main);">📁 ${folder}</span>
+        <span style="font-size: 11px; color: var(--text-muted); margin-left: 6px;">(${count} builds)</span>
+      </div>
+      <button type="button" class="btn btn-danger btn-sm btn-modal-del-folder" ${isOnlyOne ? 'disabled style="opacity:0.4; cursor:not-allowed;" title="Debe quedar al menos 1 carpeta activa"' : `title="Eliminar carpeta ${folder}"`}>
+        🗑️ Eliminar
+      </button>
+    `;
+
+    if (!isOnlyOne) {
+      row.querySelector(".btn-modal-del-folder")?.addEventListener("click", () => {
+        deleteFolder(folder);
+      });
+    }
+
+    container.appendChild(row);
+  });
+}
+
 function addNewFolder(name) {
   const folders = getAllFolders();
-  if (!folders.includes(name)) {
-    folders.push(name);
-    saveCustomFolders(folders);
-    showToast(`Carpeta "${name}" creada.`);
+  const exists = folders.some(f => f.toLowerCase() === name.toLowerCase());
+  if (exists) {
+    showToast(`La carpeta "${name}" ya existe.`);
+    return;
   }
+  folders.push(name);
+  saveCustomFolders(folders);
+  renderFoldersSidebar();
+  renderManageFoldersList();
+  showToast(`Carpeta "${name}" creada.`);
 }
 
 function deleteFolder(folderName) {
   if (!isOfficer()) {
     openOfficerLoginModal();
+    showToast("Inicia sesión como Oficial para eliminar carpetas.");
     return;
   }
 
   const allFolders = getAllFolders();
   if (allFolders.length <= 1) {
-    alert("No puedes eliminar la única carpeta que queda.");
+    alert("No puedes eliminar la única carpeta que queda en el sistema.");
     return;
   }
 
-  if (confirm(`¿Eliminar la carpeta "${folderName}"?\nTodas las builds que estén en esta carpeta se moverán a otra carpeta existente.`)) {
+  if (confirm(`¿Estás seguro de eliminar la carpeta "${folderName}"?\n\nTodas las builds que contenga se moverán automáticamente a otra carpeta existente.`)) {
     const remainingFolders = allFolders.filter(f => f !== folderName);
     const fallbackFolder = remainingFolders[0] || "ZvZ";
 
@@ -442,15 +548,22 @@ function deleteFolder(folderName) {
       }
     });
 
-    saveBuildsToStorage(builds);
-    saveCustomFolders(remainingFolders);
+    if (currentBuild.folder === folderName) {
+      currentBuild.folder = fallbackFolder;
+    }
 
     if (activeSelectedFolder === folderName) {
       activeSelectedFolder = "ALL";
     }
 
+    // Persistir carpetas primero y luego builds
+    saveCustomFolders(remainingFolders);
+    saveBuildsToStorage(builds);
+
     renderFoldersSidebar();
     renderSavedBuildsList();
+    renderManageFoldersList();
+    
     showToast(`Carpeta "${folderName}" eliminada (${reallocatedCount} builds movidas a "${fallbackFolder}").`);
   }
 }
@@ -499,10 +612,10 @@ function renderFoldersSidebar() {
     const canDelete = folders.length > 1 && isOfficer();
 
     item.innerHTML = `
-      <span title="${folder}" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">📁 ${folder}</span>
+      <span title="${folder}" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1;">📁 ${folder}</span>
       <div class="folder-nav-right">
         <span class="folder-badge-count">${count}</span>
-        ${canDelete ? `<button type="button" class="folder-delete-btn" title="Eliminar carpeta">&times;</button>` : ''}
+        ${canDelete ? `<button type="button" class="folder-delete-btn" title="Eliminar carpeta ${folder}">🗑️</button>` : ''}
       </div>
     `;
 
@@ -1583,11 +1696,13 @@ function setupModalEvents() {
     const spellModal = document.getElementById("modal-spell-picker");
     const viewerModal = document.getElementById("modal-build-viewer");
     const loginModal = document.getElementById("modal-officer-login");
+    const manageModal = document.getElementById("modal-manage-folders");
 
     if (e.target === itemModal) closeItemPickerModal();
     if (e.target === spellModal) closeSpellPickerModal();
     if (e.target === viewerModal) closeBuildViewerModal();
     if (e.target === loginModal) closeOfficerLoginModal();
+    if (e.target === manageModal) closeManageFoldersModal();
   });
 }
 
