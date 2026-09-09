@@ -77,13 +77,14 @@ export function BuildEditor({
     };
   });
 
-  // Modal de Selección de Ítem
+  // Modal de Selección de Ítem y Filtros
   const [itemSelectModal, setItemSelectModal] = useState<{
     slotKey: string;
     slotType: string;
     label: string;
   } | null>(null);
   const [itemSearchQuery, setItemSearchQuery] = useState("");
+  const [subFilter, setSubFilter] = useState<string>("TODAS");
 
   // Modal de Selección de Habilidad (Simplificado)
   const [spellSelectModal, setSpellSelectModal] = useState<{
@@ -98,17 +99,28 @@ export function BuildEditor({
   const [newActivityModalOpen, setNewActivityModalOpen] = useState(false);
   const [newActivityName, setNewActivityName] = useState("");
 
+  // Categorías de armas extraídas dinámicamente de ALBION_ITEMS
+  const weaponCategories = useMemo(() => {
+    const cats = new Set<string>();
+    ALBION_ITEMS.forEach((it) => {
+      if (it.slot === "mainhand" && it.category) {
+        cats.add(it.category);
+      }
+    });
+    return ["TODAS", ...Array.from(cats)];
+  }, []);
+
   // Helper estricto de renderizado de imagen según reglas
   const getRenderUrl = (itemId?: string | null, slotType?: string) => {
     if (!itemId) return "";
     const isConsumableOrMount =
-      ["food", "potion", "mount"].includes(slotType || "") ||
+      ["food", "potion", "mount"].includes((slotType || "").toLowerCase()) ||
       itemId.includes("POTION") ||
       itemId.includes("MEAL") ||
       itemId.includes("MOUNT");
 
-    // Armas, armaduras, cascos, botas y capas: Tier 8, Calidad 4
-    // Comidas, pociones y monturas: Enchant 0, Calidad 1
+    // Armas, armaduras, cascos, botas y capas: Tier 8, Calidad 4 (Sobresaliente)
+    // Comidas, pociones y monturas: Tier 8, Enchant 0, Calidad 1
     return getItemImageUrl(
       itemId,
       "T8",
@@ -117,7 +129,7 @@ export function BuildEditor({
     );
   };
 
-  // Helper para URL de icono de hechizo
+  // Helper para URL de icono de hechizo (propiedad icon en spells.js)
   const getSpellIcon = (spellId?: string) => {
     if (!spellId) return "";
     if (spellId.startsWith("http://") || spellId.startsWith("https://")) {
@@ -128,7 +140,7 @@ export function BuildEditor({
     return `https://render.albiononline.com/v1/spell/${spellId}.png`;
   };
 
-  // Filtrar ítems de ALBION_ITEMS para el slot activo
+  // Filtrar ítems de ALBION_ITEMS para el slot activo con filtros dinámicos y limpieza de monturas
   const filteredItemsForModal = useMemo(() => {
     if (!itemSelectModal) return [];
     const targetSlot = itemSelectModal.slotType.toLowerCase();
@@ -137,13 +149,41 @@ export function BuildEditor({
     return ALBION_ITEMS.filter((item) => {
       const matchSlot = (item.slot || "").toLowerCase() === targetSlot;
       if (!matchSlot) return false;
+
+      // Directiva 4: Limpieza de Monturas
+      // Excluir tiers bajos (T2 al T7) únicamente de los animales genéricos: _HORSE, _OX, y _ARMORED_HORSE
+      if (targetSlot === "mount") {
+        const isGenericLowTier = /^(T[2-7])_MOUNT_(HORSE|OX|ARMORED_HORSE)$/.test(item.id);
+        if (isGenericLowTier) {
+          return false;
+        }
+      }
+
+      // Directiva 3: Filtros Dinámicos en el Selector de Ítems
+      // Si el slot es Cabeza, Pecho o Botas: TODAS | PLACAS | CUERO | TELA
+      if (["head", "armor", "shoes"].includes(targetSlot)) {
+        if (subFilter !== "TODAS") {
+          const cat = (item.category || "").toLowerCase();
+          if (subFilter === "PLACAS" && !cat.includes("placa")) return false;
+          if (subFilter === "CUERO" && !cat.includes("cuero")) return false;
+          if (subFilter === "TELA" && !cat.includes("tela")) return false;
+        }
+      }
+
+      // Si el slot es Arma Principal: Filtro por categoría de arma
+      if (targetSlot === "mainhand") {
+        if (subFilter !== "TODAS") {
+          if (item.category !== subFilter) return false;
+        }
+      }
+
       if (!query) return true;
       return (
         (item.name || "").toLowerCase().includes(query) ||
         (item.id || "").toLowerCase().includes(query)
       );
     });
-  }, [itemSelectModal, itemSearchQuery]);
+  }, [itemSelectModal, itemSearchQuery, subFilter]);
 
   // Selección de ítem desde el modal
   const handleSelectItem = (item: AlbionItemLike) => {
@@ -368,8 +408,8 @@ export function BuildEditor({
             // EQUIPAMIENTO Y HECHIZOS (HAZ CLIC EN UN HUECO PARA ASIGNAR)
           </div>
 
-          {/* Grid de 3x3 para los 9 huecos */}
-          <div className="grid grid-cols-3 gap-4 sm:gap-6 p-4 bg-[#09090b] border border-dragon-border rounded-sm">
+          {/* Grid de 3x3 para los 9 huecos (con espacio vertical amplio para hechizos agrandados) */}
+          <div className="grid grid-cols-3 gap-y-12 sm:gap-y-14 gap-x-6 sm:gap-x-8 p-6 bg-[#09090b] border border-dragon-border rounded-sm max-w-2xl">
             {EQUIP_SLOTS.map((slot) => {
               const currentImageUrl = getRenderUrl(slot.itemId, slot.slotType);
               const equippedSpells = slot.spellsSlot
@@ -377,24 +417,25 @@ export function BuildEditor({
                 : [];
 
               return (
-                <div key={slot.slotKey} className="flex flex-col items-center">
+                <div key={slot.slotKey} className="relative flex flex-col items-center">
                   <span className="font-mono text-[10px] text-zinc-500 uppercase mb-1 tracking-wider">
                     {slot.label}
                   </span>
 
-                  {/* Botón Grande del Hueco */}
+                  {/* Botón Grande del Hueco (w-28 h-28 sm:w-32 sm:h-32) */}
                   <button
                     type="button"
                     disabled={slot.isGhosted}
                     onClick={() => {
                       setItemSearchQuery("");
+                      setSubFilter("TODAS");
                       setItemSelectModal({
                         slotKey: slot.slotKey,
                         slotType: slot.slotType,
                         label: slot.label,
                       });
                     }}
-                    className={`relative w-24 h-24 sm:w-28 sm:h-28 bg-dragon-panel border border-dragon-border rounded-sm flex items-center justify-center p-1 transition-all ${
+                    className={`relative w-28 h-28 sm:w-32 sm:h-32 bg-dragon-panel border border-dragon-border rounded-sm flex items-center justify-center p-1 transition-all ${
                       slot.isGhosted
                         ? "cursor-not-allowed opacity-50"
                         : "hover:border-dragon-ember hover:bg-zinc-900"
@@ -410,60 +451,61 @@ export function BuildEditor({
                       />
                     ) : (
                       <div className="flex flex-col items-center justify-center text-zinc-600 gap-1">
-                        <Plus className="h-5 w-5" />
+                        <Plus className="h-6 w-6" />
                         <span className="font-mono text-[9px] uppercase">
                           EQUIPAR
                         </span>
                       </div>
                     )}
+
+                    {/* Ranuras de Hechizos sobrepuestas mordiendo el borde inferior (-bottom-6 sm:-bottom-7, w-10 h-10 sm:w-12 sm:h-12) */}
+                    {slot.spellsSlot && slot.itemId && !slot.isGhosted && (
+                      <div className="absolute -bottom-6 sm:-bottom-7 left-1/2 -translate-x-1/2 flex gap-1 sm:gap-1.5 z-20">
+                        {slot.spellTypes.map((sType, idx) => {
+                          const spellId = equippedSpells[idx];
+                          const iconUrl = getSpellIcon(spellId);
+                          const labelChar = slot.spellLabels[idx];
+
+                          return (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSpellSelectModal({
+                                  itemBaseId: slot.itemId!,
+                                  itemSlotName: slot.spellsSlot!,
+                                  spellSlotType: sType,
+                                  spellIndex: idx,
+                                  label: `${slot.label} - Slot ${labelChar}`,
+                                });
+                              }}
+                              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-zinc-700 bg-zinc-950 overflow-hidden flex items-center justify-center relative hover:border-dragon-ember hover:scale-110 transition-transform shrink-0 shadow-xl cursor-pointer"
+                              title={`Cambiar hechizo (${labelChar})`}
+                            >
+                              {iconUrl ? (
+                                <img
+                                  src={iconUrl}
+                                  alt=""
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <span className="text-[9px] font-mono text-zinc-500 font-bold">
+                                  {labelChar}
+                                </span>
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {slot.isGhosted && (
+                      <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 font-mono text-[9px] text-zinc-500 uppercase tracking-wider bg-zinc-950/80 px-1 border border-zinc-800">
+                        2 MANOS
+                      </div>
+                    )}
                   </button>
-
-                  {/* Ranuras de Hechizos debajo del ítem (si corresponde) */}
-                  {slot.spellsSlot && slot.itemId && !slot.isGhosted && (
-                    <div className="flex items-center justify-center gap-1.5 mt-2">
-                      {slot.spellTypes.map((sType, idx) => {
-                        const spellId = equippedSpells[idx];
-                        const iconUrl = getSpellIcon(spellId);
-                        const labelChar = slot.spellLabels[idx];
-
-                        return (
-                          <button
-                            key={idx}
-                            type="button"
-                            onClick={() =>
-                              setSpellSelectModal({
-                                itemBaseId: slot.itemId!,
-                                itemSlotName: slot.spellsSlot!,
-                                spellSlotType: sType,
-                                spellIndex: idx,
-                                label: `${slot.label} - Slot ${labelChar}`,
-                              })
-                            }
-                            className="w-6 h-6 rounded-full border border-zinc-700 bg-zinc-900 overflow-hidden flex items-center justify-center relative hover:border-dragon-ember transition-colors shrink-0 shadow-sm"
-                            title={`Cambiar hechizo (${labelChar})`}
-                          >
-                            {iconUrl ? (
-                              <img
-                                src={iconUrl}
-                                alt=""
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <span className="text-[8px] font-mono text-zinc-500 font-bold">
-                                {labelChar}
-                              </span>
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-
-                  {slot.isGhosted && (
-                    <span className="font-mono text-[9px] text-zinc-600 mt-2 uppercase tracking-wider">
-                      [ 2 MANOS ]
-                    </span>
-                  )}
                 </div>
               );
             })}
@@ -616,11 +658,11 @@ export function BuildEditor({
       </div>
 
       {/* ============================================================ */}
-      {/* MODAL DE SELECCIÓN DE ÍTEMS (GRID DENSO A PANTALLA COMPLETA) */}
+      {/* MODAL DE SELECCIÓN DE ÍTEMS (CON FILTROS Y BOTONES GRANDES)  */}
       {/* ============================================================ */}
       {itemSelectModal && (
         <div className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-dragon-bg border border-dragon-border w-full max-w-3xl max-h-[85vh] flex flex-col select-none shadow-2xl">
+          <div className="bg-dragon-bg border border-dragon-border w-full max-w-4xl max-h-[85vh] flex flex-col select-none shadow-2xl">
             {/* Header del Modal */}
             <div className="flex items-center justify-between border-b border-dragon-border px-6 py-3.5 shrink-0">
               <span className="font-mono text-xs text-dragon-ember font-bold uppercase tracking-wider">
@@ -634,6 +676,53 @@ export function BuildEditor({
                 <X className="h-4 w-4" />
               </button>
             </div>
+
+            {/* Barra de Filtros Dinámicos */}
+            {["head", "armor", "shoes"].includes(
+              itemSelectModal.slotType.toLowerCase()
+            ) && (
+              <div className="flex items-center gap-1.5 border-b border-dragon-border px-6 py-2.5 bg-zinc-950/60 overflow-x-auto">
+                <span className="font-mono text-[10px] text-zinc-500 uppercase mr-2 tracking-wider shrink-0">
+                  TIPO:
+                </span>
+                {["TODAS", "PLACAS", "CUERO", "TELA"].map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setSubFilter(cat)}
+                    className={`font-mono text-xs px-3 py-1 uppercase tracking-wider transition-colors duration-150 shrink-0 ${
+                      subFilter === cat
+                        ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
+                        : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {itemSelectModal.slotType.toLowerCase() === "mainhand" && (
+              <div className="flex items-center gap-1.5 border-b border-dragon-border px-6 py-2.5 bg-zinc-950/60 overflow-x-auto">
+                <span className="font-mono text-[10px] text-zinc-500 uppercase mr-2 tracking-wider shrink-0">
+                  CATEGORÍA:
+                </span>
+                {weaponCategories.map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setSubFilter(cat)}
+                    className={`font-mono text-xs px-2.5 py-1 uppercase tracking-wider transition-colors duration-150 shrink-0 ${
+                      subFilter === cat
+                        ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
+                        : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
 
             {/* Barra de Búsqueda */}
             <div className="p-4 border-b border-dragon-border bg-zinc-950/60 flex items-center gap-2">
@@ -657,11 +746,11 @@ export function BuildEditor({
               )}
             </div>
 
-            {/* Grid Denso de Ítems */}
-            <div className="flex-1 overflow-y-auto p-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            {/* Grid de Ítems (Botones grandes con icono w-20 h-20 sm:w-24 sm:h-24 centrado) */}
+            <div className="flex-1 overflow-y-auto p-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {filteredItemsForModal.length === 0 ? (
-                <div className="col-span-full py-12 text-center font-mono text-xs text-zinc-600">
-                  &gt; NO SE ENCONTRARON ÍTEMS COINCIDENTES PARA ESTE HUECO
+                <div className="col-span-full py-16 text-center font-mono text-xs text-zinc-600">
+                  &gt; NO SE ENCONTRARON ÍTEMS COINCIDENTES PARA ESTE HUECO O FILTRO
                 </div>
               ) : (
                 filteredItemsForModal.map((item) => {
@@ -671,21 +760,18 @@ export function BuildEditor({
                       key={item.id}
                       type="button"
                       onClick={() => handleSelectItem(item)}
-                      className="group flex flex-col items-center p-3 bg-dragon-panel border border-dragon-border rounded-sm hover:border-dragon-ember hover:bg-zinc-900 transition-all text-center"
+                      className="group flex flex-col items-center justify-between p-3 bg-dragon-panel border border-dragon-border rounded-sm hover:border-dragon-ember hover:bg-zinc-900 transition-all text-center min-h-[140px]"
                     >
-                      <div className="h-16 w-16 mb-2 flex items-center justify-center p-1">
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center p-1 mb-1">
                         <img
                           src={imgUrl}
                           alt={item.name}
-                          className="h-full w-full object-contain"
+                          className="w-full h-full object-contain filter group-hover:brightness-110 transition-all"
                           loading="lazy"
                         />
                       </div>
-                      <span className="font-mono text-xs text-zinc-200 group-hover:text-dragon-ember font-medium line-clamp-2">
+                      <span className="font-mono text-[11px] text-zinc-300 group-hover:text-dragon-ember font-medium line-clamp-2 leading-tight">
                         {item.name}
-                      </span>
-                      <span className="font-mono text-[9px] text-zinc-600 mt-1 truncate max-w-full">
-                        {item.id}
                       </span>
                     </button>
                   );

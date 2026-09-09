@@ -195,7 +195,7 @@ export function GremioView({
       return (
         <div className="relative flex flex-col items-center">
           <div
-            className="relative w-20 h-20 sm:w-24 sm:h-24 bg-[#08080a] border border-dragon-border/60 rounded-sm flex items-center justify-center p-1 select-none"
+            className="relative w-24 h-24 sm:w-28 sm:h-28 bg-[#08080a] border border-dragon-border/60 rounded-sm flex items-center justify-center p-1 select-none"
             title="Arma a dos manos (mano secundaria ocupada)"
           >
             <img
@@ -220,8 +220,8 @@ export function GremioView({
 
     return (
       <div className="relative flex flex-col items-center">
-        {/* Recuadro visual del ítem (w-20 h-20 sm:w-24 sm:h-24, fondo casi negro, solo el <img> sin texto) */}
-        <div className="relative w-20 h-20 sm:w-24 sm:h-24 bg-[#08080a] border border-dragon-border rounded-sm flex items-center justify-center p-1 hover:border-zinc-500 transition-colors">
+        {/* Recuadro visual del ítem (w-24 h-24 sm:w-28 sm:h-28, fondo casi negro, solo el <img> sin texto) */}
+        <div className="relative w-24 h-24 sm:w-28 sm:h-28 bg-[#08080a] border border-dragon-border rounded-sm flex items-center justify-center p-1 hover:border-zinc-500 transition-colors">
           <img
             src={getItemImageUrl(resolvedId || fallbackId, "T8", 0, isConsumable ? 1 : 4)}
             alt={alt}
@@ -231,9 +231,9 @@ export function GremioView({
             }}
           />
 
-          {/* Hechizos sobrepuestos en el borde inferior: absolute -bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 */}
+          {/* Hechizos sobrepuestos mordiendo el borde inferior: absolute -bottom-6 sm:-bottom-7 w-10 h-10 sm:w-12 sm:h-12 */}
           {skillSlots && skillSlots.length > 0 && (
-            <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 flex gap-1 z-10">
+            <div className="absolute -bottom-6 sm:-bottom-7 left-1/2 -translate-x-1/2 flex gap-1 sm:gap-1.5 z-10">
               {skillSlots.map((spellKey, idx) => {
                 const iconUrl = getSpellIconUrl(spellKey);
                 const slotLetter =
@@ -244,7 +244,7 @@ export function GremioView({
                 return (
                   <div
                     key={idx}
-                    className="w-6 h-6 rounded-full border border-zinc-700 bg-zinc-900 overflow-hidden flex items-center justify-center shrink-0 relative shadow-md"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-zinc-700 bg-zinc-950 overflow-hidden flex items-center justify-center shrink-0 relative shadow-xl"
                     title={`Habilidad: ${spellKey || slotLetter}`}
                   >
                     {iconUrl ? (
@@ -258,7 +258,7 @@ export function GremioView({
                         }}
                       />
                     ) : null}
-                    <span className="absolute text-[8px] font-mono text-zinc-500 font-bold -z-0 select-none">
+                    <span className="absolute text-[9px] font-mono text-zinc-500 font-bold -z-0 select-none">
                       {slotLetter}
                     </span>
                   </div>
@@ -273,9 +273,10 @@ export function GremioView({
 
   return (
     <div className="flex h-full w-full bg-dragon-bg overflow-hidden select-none">
-      {/* SIDEBAR IZQUIERDO: Actividades / Contenido (w-64, border-r) */}
-      <aside className="w-64 shrink-0 border-r border-dragon-border bg-dragon-bg flex flex-col h-full">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-dragon-border">
+      {/* SIDEBAR IZQUIERDO: Actividades / Contenido (Oculto en Modo Focus al editar builds) */}
+      {!showBuildEditor && (
+        <aside className="w-64 shrink-0 border-r border-dragon-border bg-dragon-bg flex flex-col h-full">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-dragon-border">
           {onBack && (
             <button
               onClick={onBack}
@@ -348,9 +349,10 @@ export function GremioView({
           })}
         </div>
       </aside>
+      )}
 
-      {/* ÁREA PRINCIPAL: Vistas (Lista de Builds o Editor Táctico Modular) */}
-      <main className="flex-1 h-full flex flex-col overflow-hidden bg-dragon-bg">
+      {/* ÁREA PRINCIPAL: Vistas (Lista de Builds o Editor Táctico Modular en Pantalla Completa) */}
+      <main className="flex-1 h-full flex flex-col overflow-hidden bg-dragon-bg w-full">
         {showBuildEditor ? (
           /* Editor de Builds Profesional a Pantalla Completa */
           <BuildEditor
@@ -596,13 +598,13 @@ export function GremioView({
                           </div>
                         </div>
 
-                        {/* Estado Expandido: Blueprint Albion Denso (gap-2, hechizos absolute -bottom-3) */}
+                        {/* Estado Expandido: Blueprint Albion Táctico (hechizos agrandados biting -bottom-6/7) */}
                         {isExpanded && (
-                          <div className="border-t border-dragon-border bg-[#0a0a0c] px-6 py-6 select-none">
-                            {/* Grid 3x3 Compacto (gap-2, w-20 h-20 sm:w-24 sm:h-24) */}
-                            <div className="grid grid-cols-3 gap-2 max-w-sm sm:max-w-md mx-auto py-2">
+                          <div className="border-t border-dragon-border bg-[#0a0a0c] px-6 py-8 select-none">
+                            {/* Grid 3x3 Amplio con espacio vertical para hechizos w-12 h-12 */}
+                            <div className="grid grid-cols-3 gap-x-6 sm:gap-x-10 max-w-lg sm:max-w-xl mx-auto py-4">
                               {/* Columna Izquierda: Bolsa, Arma Principal (4 skills), Poción */}
-                              <div className="flex flex-col items-center gap-2">
+                              <div className="flex flex-col items-center gap-y-12 sm:gap-y-14">
                                 {renderVisualGridCell(
                                   eq.bolsa,
                                   "BAG",
@@ -622,7 +624,7 @@ export function GremioView({
                               </div>
 
                               {/* Columna Central: Casco (2 skills), Pecho (2 skills), Botas (2 skills) */}
-                              <div className="flex flex-col items-center gap-2">
+                              <div className="flex flex-col items-center gap-y-12 sm:gap-y-14">
                                 {renderVisualGridCell(
                                   eq.cabeza,
                                   "HEAD_PLATE_SET2",
@@ -644,7 +646,7 @@ export function GremioView({
                               </div>
 
                               {/* Columna Derecha: Capa, Arma Secundaria (o Réplica 2 Manos), Comida */}
-                              <div className="flex flex-col items-center gap-2">
+                              <div className="flex flex-col items-center gap-y-12 sm:gap-y-14">
                                 {renderVisualGridCell(
                                   eq.capa,
                                   "CAPEITEM_FW_FORTSTERLING",
