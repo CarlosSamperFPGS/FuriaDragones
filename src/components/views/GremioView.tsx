@@ -7,14 +7,15 @@ import {
   type TacticalBuild,
 } from "@/lib/firebase-sync";
 import { getItemImageUrl } from "@/lib/items";
-import { ArrowLeft } from "lucide-react";
+import { ALBION_SPELLS } from "@/lib/spells.js";
+import { ArrowLeft, Pencil, Trash2 } from "lucide-react";
 
 interface GremioViewProps {
   onBack?: () => void;
   isSindicatoAuthenticated?: boolean;
 }
 
-// Roles tácticos ordenados estrictamente según especificación
+// Roles tácticos ordenados estrictamente según directiva
 const ROLES_TACTICOS = [
   "CLAPPER",
   "HEALER",
@@ -34,7 +35,7 @@ export function GremioView({
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  // Estados de filtro
+  // Filtros tácticos
   const [selectedActivity, setSelectedActivity] = useState<string>("TODAS");
   const [selectedRole, setSelectedRole] = useState<string>("TODOS");
 
@@ -93,10 +94,27 @@ export function GremioView({
   };
 
   const handleEditBuild = (build: TacticalBuild) => {
-    alert(`[SINDICATO_ROOT] Módulo de edición táctica para: ${build.nombre}`);
+    alert(`[SINDICATO_ROOT] Módulo de edición para: ${build.nombre}`);
   };
 
-  // Filtrado de builds
+  const handleEditActivity = (act: string) => {
+    const newName = prompt(`// EDITAR ACTIVIDAD: Renombrar "${act}":`, act);
+    if (newName && newName.trim() && newName.trim() !== act) {
+      setActivities((prev) =>
+        prev.map((item) => (item === act ? newName.trim() : item))
+      );
+      if (selectedActivity === act) setSelectedActivity(newName.trim());
+    }
+  };
+
+  const handleDeleteActivity = (act: string) => {
+    if (confirm(`// CONFIRMAR: ¿Eliminar actividad "${act}" de los registros?`)) {
+      setActivities((prev) => prev.filter((item) => item !== act));
+      if (selectedActivity === act) setSelectedActivity("TODAS");
+    }
+  };
+
+  // Filtrado reactivo
   const filteredBuilds = builds.filter((build) => {
     const actUpper = selectedActivity.toUpperCase();
     const buildActUpper = (build.actividad || "").toUpperCase();
@@ -113,7 +131,7 @@ export function GremioView({
     return matchActivity && matchRole;
   });
 
-  // Color de rol táctico
+  // Color técnico por rol
   const getRoleColor = (rol?: string) => {
     const r = (rol || "").toUpperCase();
     if (r.includes("CLAPPER")) return "text-orange-400";
@@ -125,7 +143,18 @@ export function GremioView({
     return "text-zinc-400";
   };
 
-  // Renderizador de celda visual del Grid 3x3 usando getItemImageUrl
+  // Helper para obtener URL de spell desde ALBION_SPELLS
+  const getSpellIconUrl = (spellId?: string) => {
+    if (!spellId) return "";
+    if (spellId.startsWith("http://") || spellId.startsWith("https://")) {
+      return spellId;
+    }
+    const spell = ALBION_SPELLS?.[spellId];
+    if (spell?.icon) return spell.icon;
+    return `https://render.albiononline.com/v1/spell/${spellId}.png`;
+  };
+
+  // Renderizador de cada celda del Grid 3x3 compacto e imponente
   const renderVisualGridCell = (
     itemSource: any,
     fallbackId: string,
@@ -136,10 +165,10 @@ export function GremioView({
     if (isTwoHandedDisabled) {
       return (
         <div className="flex flex-col items-center">
-          <div className="relative h-20 w-20 sm:h-24 sm:w-24 bg-zinc-950/80 border border-dragon-border/60 rounded-sm flex items-center justify-center select-none">
+          <div className="relative h-20 w-20 sm:h-24 sm:w-24 bg-[#08080a]/80 border border-dragon-border/60 rounded-sm flex items-center justify-center select-none">
             <span className="font-mono text-zinc-700 text-2xl">✕</span>
           </div>
-          <span className="font-mono text-[9px] text-zinc-600 mt-2 uppercase tracking-wider">
+          <span className="font-mono text-[9px] text-zinc-600 mt-1 uppercase tracking-wider">
             [ 2 MANOS ]
           </span>
         </div>
@@ -153,8 +182,8 @@ export function GremioView({
 
     return (
       <div className="flex flex-col items-center">
-        {/* Recuadro visual del ítem de Albion Online */}
-        <div className="relative h-20 w-20 sm:h-24 sm:w-24 bg-dragon-bg border border-dragon-border rounded-sm flex items-center justify-center p-2 hover:border-zinc-500 transition-colors">
+        {/* Recuadro visual del ítem de Albion Online (fondo casi negro imponente) */}
+        <div className="relative h-20 w-20 sm:h-24 sm:w-24 bg-[#08080a] border border-dragon-border rounded-sm flex items-center justify-center p-2 hover:border-zinc-500 transition-colors">
           <img
             src={getItemImageUrl(resolvedId || fallbackId)}
             alt={alt}
@@ -165,18 +194,39 @@ export function GremioView({
           />
         </div>
 
-        {/* Habilidades (Spells): Contenedores circulares técnicos */}
+        {/* Habilidades (Spells): Círculos con imágenes de ALBION_SPELLS */}
         {skillSlots && skillSlots.length > 0 && (
-          <div className="flex items-center justify-center gap-1.5 mt-2">
-            {skillSlots.map((slot, idx) => (
-              <div
-                key={idx}
-                className="w-5 h-5 rounded-full border border-zinc-700 bg-zinc-900 flex items-center justify-center text-[8px] font-mono text-zinc-500 font-bold select-none"
-                title={`Slot de habilidad ${slot}`}
-              >
-                {slot}
-              </div>
-            ))}
+          <div className="flex items-center justify-center gap-1 mt-1.5">
+            {skillSlots.map((spellKey, idx) => {
+              const iconUrl = getSpellIconUrl(spellKey);
+              const slotLetter =
+                ["Q", "W", "E", "P"][idx] ||
+                ["1", "2"][idx] ||
+                `${idx + 1}`;
+
+              return (
+                <div
+                  key={idx}
+                  className="w-5 h-5 rounded-full border border-zinc-700 bg-zinc-900 overflow-hidden flex items-center justify-center shrink-0 relative"
+                  title={`Habilidad: ${spellKey || slotLetter}`}
+                >
+                  {iconUrl ? (
+                    <img
+                      src={iconUrl}
+                      alt=""
+                      className="w-full h-full object-cover select-none"
+                      onError={(e) => {
+                        const target = e.target as HTMLElement;
+                        target.style.display = "none";
+                      }}
+                    />
+                  ) : null}
+                  <span className="absolute text-[8px] font-mono text-zinc-500 font-bold -z-0 select-none">
+                    {slotLetter}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
@@ -185,7 +235,7 @@ export function GremioView({
 
   return (
     <div className="flex h-full w-full bg-dragon-bg overflow-hidden select-none">
-      {/* Sidebar Izquierdo: Actividades / Contenido (w-64, border-r) */}
+      {/* 1. SIDEBAR IZQUIERDO: Actividades / Contenido (w-64, border-r) */}
       <aside className="w-64 shrink-0 border-r border-dragon-border bg-dragon-bg flex flex-col h-full">
         <div className="flex items-center justify-between px-4 py-3 border-b border-dragon-border">
           {onBack && (
@@ -206,29 +256,58 @@ export function GremioView({
           // ACTIVIDADES
         </div>
 
+        {/* Lista de Actividades con soporte de gestión Sindicato en hover */}
         <div className="flex-1 overflow-y-auto py-2 divide-y divide-dragon-border/20">
           {activities.map((act) => {
             const isSelected =
               selectedActivity.toUpperCase() === act.toUpperCase();
 
             return (
-              <button
+              <div
                 key={act}
                 onClick={() => setSelectedActivity(act)}
-                className={`w-full text-left px-4 py-3 font-mono text-sm transition-all duration-150 block ${
+                className={`group relative flex items-center justify-between w-full px-4 py-3 font-mono text-sm transition-all duration-150 cursor-pointer ${
                   isSelected
                     ? "border-l-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
                     : "border-l-2 border-transparent text-zinc-400 hover:text-zinc-200 hover:bg-dragon-panel/20 hover:border-dragon-crimson"
                 }`}
               >
-                {act}
-              </button>
+                <span className="truncate">{act}</span>
+
+                {/* Controles de Sindicato en Hover */}
+                {isSindicatoAuthenticated && act !== "TODAS" && (
+                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-150 shrink-0 ml-2">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEditActivity(act);
+                      }}
+                      className="p-1 text-zinc-500 hover:text-dragon-ember transition-colors"
+                      title="Editar actividad"
+                    >
+                      <Pencil className="h-3 w-3" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteActivity(act);
+                      }}
+                      className="p-1 text-zinc-500 hover:text-dragon-crimson transition-colors"
+                      title="Eliminar actividad"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </button>
+                  </div>
+                )}
+              </div>
             );
           })}
         </div>
       </aside>
 
-      {/* Área Principal: Filtros de Rol y Lista de Builds */}
+      {/* 2. ÁREA PRINCIPAL: Filtros de Rol y Lista de Builds */}
       <main className="flex-1 h-full flex flex-col overflow-hidden bg-dragon-bg">
         {/* Barra Superior: Filtros de Rol */}
         <div className="sticky top-0 z-20 flex items-center justify-between border-b border-dragon-border bg-dragon-bg px-6 py-3 shrink-0">
@@ -312,13 +391,27 @@ export function GremioView({
                   eq.mainhand ||
                   "2H_AXE_AVALON";
 
+                // Hechizos verificados de ALBION_SPELLS
+                const spells = build.spells || {};
+                const mainhandSpells =
+                  spells.mainhand || ["CLEAVE", "SWORD_SPIN", "MIGHTYBLOW", "PASSIVE_BLEEDCHANCE"];
+                const headSpells =
+                  spells.head || ["DEFENSERUN", "PASSIVE_BLEEDCHANCE"];
+                const armorSpells =
+                  spells.armor || ["PARRY", "PASSIVE_BLEEDCHANCE"];
+                const shoesSpells =
+                  spells.shoes || ["INTERRUPT2", "PASSIVE_BLEEDCHANCE"];
+
                 return (
                   <div key={build.id} className="w-full">
-                    {/* Fila Colapsada (Data Row Rico en Información Visual) */}
-                    <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 px-6 py-3.5 transition-colors duration-150 hover:bg-dragon-panel/50">
-                      {/* Izquierda: Icono Grande de Arma Principal + Metadata */}
+                    {/* Fila Colapsada: 100% Clickeable para expandir/colapsar */}
+                    <div
+                      onClick={() => toggleExpand(build.id)}
+                      className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-6 py-4 cursor-pointer transition-colors duration-150 hover:bg-dragon-panel/50 select-none"
+                    >
+                      {/* Izquierda: Icono Arma Principal Grande + Nombre + Tier + Rol + Arma */}
                       <div className="flex items-center gap-4 min-w-0">
-                        <div className="h-14 w-14 shrink-0 bg-dragon-bg border border-dragon-border rounded-sm flex items-center justify-center p-1">
+                        <div className="h-14 w-14 sm:h-16 sm:w-16 shrink-0 bg-zinc-950 border border-dragon-border rounded-sm flex items-center justify-center p-1">
                           <img
                             src={getItemImageUrl(weaponId)}
                             alt={build.nombre}
@@ -329,9 +422,9 @@ export function GremioView({
                           />
                         </div>
 
-                        <div className="flex flex-col truncate">
+                        <div className="flex flex-col min-w-0 truncate">
                           <div className="flex items-center gap-2.5">
-                            <span className="font-display text-lg font-bold uppercase tracking-wider text-zinc-100 truncate">
+                            <span className="font-display text-lg sm:text-xl font-bold uppercase tracking-wider text-zinc-100 truncate">
                               {build.nombre}
                             </span>
                             <span className="border border-amber-500/40 text-amber-400 text-[10px] font-mono px-1.5 py-0.5 tracking-wider shrink-0">
@@ -349,116 +442,77 @@ export function GremioView({
                             </span>
                             <span className="text-zinc-600">•</span>
                             <span className="text-zinc-400 font-sans text-xs truncate">
-                              {build.armaPrincipalNombre ||
-                                build.armaPrincipalId ||
-                                "Arma Táctica"}
+                              Arma Principal:{" "}
+                              <span className="text-zinc-300 font-mono">
+                                {build.armaPrincipalNombre ||
+                                  build.armaPrincipalId ||
+                                  "Arma Táctica"}
+                              </span>
                             </span>
                           </div>
                         </div>
                       </div>
 
-                      {/* Centro: Fila compacta de iconos pequeños (w-10 h-10) de equipamiento */}
-                      <div className="hidden lg:flex items-center gap-2 shrink-0">
-                        {[
-                          {
-                            label: "Cabeza",
-                            source: eq.cabeza,
-                            fallback: "HEAD_PLATE_SET2",
-                          },
-                          {
-                            label: "Pecho",
-                            source: eq.pecho,
-                            fallback: "ARMOR_PLATE_SET3",
-                          },
-                          {
-                            label: "Botas",
-                            source: eq.zapatos,
-                            fallback: "SHOES_LEATHER_SET2",
-                          },
-                          {
-                            label: "Capa",
-                            source: eq.capa,
-                            fallback: "CAPEITEM_FW_FORTSTERLING",
-                          },
-                          {
-                            label: "Poción",
-                            source: eq.pocion,
-                            fallback: "POTION_REVIVE",
-                          },
-                          {
-                            label: "Comida",
-                            source: eq.comida,
-                            fallback: "MEAL_STEW",
-                          },
-                        ].map((item, idx) => (
-                          <div
-                            key={idx}
-                            className="h-10 w-10 shrink-0 bg-dragon-bg border border-dragon-border rounded-sm flex items-center justify-center p-1"
-                            title={item.label}
-                          >
-                            <img
-                              src={getItemImageUrl(
-                                item.source?.id || item.source || item.fallback
-                              )}
-                              alt={item.label}
-                              className="h-full w-full object-contain"
-                              onError={(e) => {
-                                (e.target as HTMLElement).style.opacity = "0.2";
-                              }}
-                            />
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Derecha: Botones de Acción Estilo Terminal */}
-                      <div className="flex items-center gap-2 shrink-0 font-mono text-xs">
-                        {/* Botón Ver Build (borde rojo sutil) */}
+                      {/* Derecha: Botones Modernos y Estéticos (text-[10px], SIN corchetes, hover sólido) */}
+                      <div className="flex items-center gap-2 shrink-0 font-mono text-[10px]">
                         <button
-                          onClick={() => toggleExpand(build.id)}
-                          className="px-3 py-1.5 border border-dragon-crimson/50 text-dragon-crimson hover:bg-dragon-crimson hover:text-white transition-colors duration-150"
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleExpand(build.id);
+                          }}
+                          className="px-2.5 py-1 border border-dragon-crimson/60 text-dragon-crimson hover:bg-dragon-crimson hover:text-white transition-colors duration-150 tracking-wider uppercase font-semibold"
                         >
-                          {isExpanded ? "[ Ocultar ]" : "[ Ver Build ]"}
+                          {isExpanded ? "OCULTAR" : "VER BUILD"}
                         </button>
 
-                        {/* Botón Copiar Discord (borde gris) */}
                         <button
-                          onClick={() => handleCopyDiscord(build)}
-                          className="px-3 py-1.5 border border-zinc-700 text-zinc-400 hover:text-zinc-200 hover:border-zinc-500 transition-colors duration-150"
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCopyDiscord(build);
+                          }}
+                          className="px-2.5 py-1 border border-zinc-700 text-zinc-400 hover:text-zinc-200 hover:border-zinc-500 hover:bg-zinc-900 transition-colors duration-150 tracking-wider uppercase"
                         >
-                          {copiedId === build.id
-                            ? "[ ¡Copiado! ]"
-                            : "[ Copiar Discord ]"}
+                          {copiedId === build.id ? "¡COPIADO!" : "COPIAR DISCORD"}
                         </button>
 
-                        {/* Controles de Sindicato (Editar / Eliminar en rojo mate) */}
                         {isSindicatoAuthenticated && (
                           <>
                             <button
-                              onClick={() => handleEditBuild(build)}
-                              className="px-2.5 py-1.5 bg-dragon-crimsonDark hover:bg-dragon-crimson text-white transition-colors duration-150"
-                              title="Editar build (Sindicato)"
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleEditBuild(build);
+                              }}
+                              className="px-2.5 py-1 bg-dragon-crimsonDark hover:bg-dragon-crimson text-white transition-colors duration-150 tracking-wider uppercase"
+                              title="Editar build"
                             >
-                              [ Editar ]
+                              EDITAR
                             </button>
                             <button
-                              onClick={() => handleDeleteBuild(build.id)}
-                              className="px-2.5 py-1.5 bg-dragon-crimsonDark hover:bg-dragon-crimson text-white transition-colors duration-150"
-                              title="Eliminar build (Sindicato)"
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteBuild(build.id);
+                              }}
+                              className="px-2.5 py-1 bg-dragon-crimsonDark hover:bg-dragon-crimson text-white transition-colors duration-150 tracking-wider uppercase"
+                              title="Eliminar build"
                             >
-                              [ Eliminar ]
+                              ELIMINAR
                             </button>
                           </>
                         )}
                       </div>
                     </div>
 
-                    {/* Estado Expandido: Blueprint Albion Puramente Visual (Grid 3x3) */}
+                    {/* Estado Expandido: Blueprint Albion Compacto e Imponente (Grid 3x3 gap-2/gap-3) */}
                     {isExpanded && (
-                      <div className="border-t border-dragon-border bg-dragon-panel/40 px-6 py-6 select-none">
-                        {/* Grid 3x3 Replicando Inventario de Albion */}
-                        <div className="grid grid-cols-3 gap-6 max-w-xl mx-auto py-2">
+                      <div className="border-t border-dragon-border bg-[#0a0a0c] px-6 py-6 select-none">
+                        {/* Grid 3x3 Compacto (gap-2 sm:gap-3, w-20 h-20 o w-24 h-24) */}
+                        <div className="grid grid-cols-3 gap-2 sm:gap-3 max-w-sm sm:max-w-md mx-auto py-2">
                           {/* Columna Izquierda: Bolsa, Arma Principal (4 skills), Poción */}
-                          <div className="flex flex-col items-center gap-6">
+                          <div className="flex flex-col items-center gap-2 sm:gap-3">
                             {renderVisualGridCell(
                               eq.bolsa,
                               "BAG",
@@ -468,7 +522,7 @@ export function GremioView({
                               weaponId,
                               "2H_AXE_AVALON",
                               "Arma Principal",
-                              ["Q", "W", "E", "P"]
+                              mainhandSpells
                             )}
                             {renderVisualGridCell(
                               eq.pocion,
@@ -478,29 +532,29 @@ export function GremioView({
                           </div>
 
                           {/* Columna Central: Casco (2 skills), Pecho (2 skills), Botas (2 skills) */}
-                          <div className="flex flex-col items-center gap-6">
+                          <div className="flex flex-col items-center gap-2 sm:gap-3">
                             {renderVisualGridCell(
                               eq.cabeza,
                               "HEAD_PLATE_SET2",
                               "Casco",
-                              ["D", "P"]
+                              headSpells
                             )}
                             {renderVisualGridCell(
                               eq.pecho,
                               "ARMOR_PLATE_SET3",
                               "Pecho",
-                              ["R", "P"]
+                              armorSpells
                             )}
                             {renderVisualGridCell(
                               eq.zapatos,
                               "SHOES_LEATHER_SET2",
                               "Botas",
-                              ["F", "P"]
+                              shoesSpells
                             )}
                           </div>
 
                           {/* Columna Derecha: Capa, Arma Secundaria (o X si 2 manos), Comida */}
-                          <div className="flex flex-col items-center gap-6">
+                          <div className="flex flex-col items-center gap-2 sm:gap-3">
                             {renderVisualGridCell(
                               eq.capa,
                               "CAPEITEM_FW_FORTSTERLING",
@@ -521,9 +575,9 @@ export function GremioView({
                           </div>
                         </div>
 
-                        {/* Notas Tácticas (si existen) */}
+                        {/* Notas Tácticas con borde izquierdo carmesí */}
                         {build.notas && (
-                          <div className="mt-6 max-w-xl mx-auto border-l-2 border-dragon-crimson pl-4 py-1 text-left">
+                          <div className="mt-6 max-w-md mx-auto border-l-2 border-dragon-crimson pl-4 py-1 text-left">
                             <div className="font-mono text-[10px] uppercase tracking-wider text-dragon-crimson">
                               DIRECTIVAS DE COMBATE // NOTAS
                             </div>

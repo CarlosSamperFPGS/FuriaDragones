@@ -61,6 +61,7 @@ declare module "lucide-react" {
   export const HeartPulse: any;
   export const Crosshair: any;
   export const Sparkles: any;
+  export const Pencil: any;
   const LucideIcons: Record<string, any>;
   export default LucideIcons;
 }
@@ -85,3 +86,16 @@ declare module "next/font/google" {
   export function Inter(options: any): any;
   export function VT323(options: any): any;
 }
+
+declare module "@/lib/spells" {
+  export const ALBION_SPELLS: Record<string, any>;
+  export const ITEM_SPELLS_MAP: Record<string, any>;
+  export function getItemSpells(itemId: string): any;
+}
+
+declare module "@/lib/spells.js" {
+  export const ALBION_SPELLS: Record<string, any>;
+  export const ITEM_SPELLS_MAP: Record<string, any>;
+  export function getItemSpells(itemId: string): any;
+}
+

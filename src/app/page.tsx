@@ -32,6 +32,10 @@ export default function Home() {
     <>
       <AppShell
         onOpenSindicatoLogin={handleOpenLogin}
+        onLogout={() => {
+          setIsSindicatoAuth(false);
+          setCurrentView("gateway");
+        }}
         isSindicatoAuthenticated={isSindicatoAuth}
       >
         {currentView === "gateway" && (

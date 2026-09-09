@@ -6,12 +6,14 @@ import { Shield, Lock } from "lucide-react";
 interface AppShellProps {
   children?: ReactNode;
   onOpenSindicatoLogin: () => void;
+  onLogout?: () => void;
   isSindicatoAuthenticated?: boolean;
 }
 
 export function AppShell({
   children,
   onOpenSindicatoLogin,
+  onLogout,
   isSindicatoAuthenticated = false,
 }: AppShellProps) {
   const currentYear = new Date().getFullYear();
@@ -28,18 +30,31 @@ export function AppShell({
           </span>
         </div>
 
-        {/* Acceso Indicator */}
-        <div className="hidden md:flex items-center gap-2 font-mono text-[11px]">
-          <span className="text-zinc-500">ACCESO:</span>
-          <span
-            className={
-              isSindicatoAuthenticated
-                ? "text-dragon-ember font-semibold tracking-wider"
-                : "text-zinc-400 font-semibold tracking-wider"
-            }
-          >
-            {isSindicatoAuthenticated ? "SINDICATO" : "MIEMBRO"}
-          </span>
+        {/* Acceso Indicator & Cerrar Sesión */}
+        <div className="hidden md:flex items-center gap-3 font-mono text-[11px]">
+          <div className="flex items-center gap-2">
+            <span className="text-zinc-500">ACCESO:</span>
+            <span
+              className={
+                isSindicatoAuthenticated
+                  ? "text-dragon-ember font-semibold tracking-wider"
+                  : "text-zinc-400 font-semibold tracking-wider"
+              }
+            >
+              {isSindicatoAuthenticated ? "OFFICER // ROOT" : "MIEMBRO"}
+            </span>
+          </div>
+
+          {isSindicatoAuthenticated && onLogout && (
+            <button
+              onClick={onLogout}
+              className="flex items-center gap-1.5 border border-dragon-crimsonDark px-2 py-0.5 text-[10px] text-zinc-400 hover:border-dragon-crimson hover:bg-dragon-crimsonDark hover:text-white transition-colors duration-150 uppercase tracking-wider"
+              title="Cerrar sesión de oficial"
+            >
+              <span className="h-1.5 w-1.5 bg-dragon-crimson rounded-full" />
+              <span>CERRAR SESIÓN</span>
+            </button>
+          )}
         </div>
 
         {/* Botón Sindicato (Sin tarjetas, borde fino mate) */}
