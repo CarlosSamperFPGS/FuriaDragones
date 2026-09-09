@@ -121,15 +121,7 @@ export default function Home() {
                   </button>
                 </nav>
 
-                <div className="font-mono text-xs text-zinc-500 hidden md:flex items-center gap-2">
-                  <span
-                    className={`h-1.5 w-1.5 rounded-full ${isSindicatoAuth ? "bg-dragon-ember animate-pulse" : "bg-zinc-600"
-                      }`}
-                  />
-                  <span className="tracking-wider">
-                    {isSindicatoAuth ? "MODO OPERATIVO: PRIVILEGIADO" : "MODO CONSULTA: SOLO-LECTURA"}
-                  </span>
-                </div>
+
               </div>
 
               {/* Vistas Persistentes según Pestaña (No se desmontan al cambiar de tab) */}
