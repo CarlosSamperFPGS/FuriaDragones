@@ -51,7 +51,7 @@ export function AppShell({
                 className="px-2.5 py-1 border border-zinc-700 text-zinc-400 hover:text-white hover:border-dragon-crimson hover:bg-dragon-crimsonDark transition-colors uppercase tracking-wider"
                 title="Cerrar sesión y volver a la pantalla de acceso"
               >
-                [ CERRAR SESIÓN ]
+                CERRAR SESIÓN
               </button>
             )}
           </div>
