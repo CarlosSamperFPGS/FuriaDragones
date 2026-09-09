@@ -4,6 +4,13 @@ declare namespace React {
   type ReactNode = any;
   type ReactElement = any;
   type FC<P = {}> = (props: P) => ReactElement | null;
+  type ComponentType<P = {}> = any;
+  type FormEvent<T = any> = any;
+  type ChangeEvent<T = any> = any;
+  type MouseEvent<T = any> = any;
+  type KeyboardEvent<T = any> = any;
+  type SyntheticEvent<T = any> = any;
+  type PropsWithChildren<P = {}> = P & { children?: any };
   function useState<T>(initial: T | (() => T)): [T, (val: T | ((prev: T) => T)) => void];
   function useEffect(effect: () => void | (() => void), deps?: any[]): void;
   function useRef<T>(initial?: T): { current: T };
@@ -62,6 +69,14 @@ declare module "lucide-react" {
   export const Crosshair: any;
   export const Sparkles: any;
   export const Pencil: any;
+  export const Calendar: any;
+  export const Clock: any;
+  export const UserCheck: any;
+  export const UserPlus: any;
+  export const Eye: any;
+  export const EyeOff: any;
+  export const AlertCircle: any;
+  export const Info: any;
   const LucideIcons: Record<string, any>;
   export default LucideIcons;
 }

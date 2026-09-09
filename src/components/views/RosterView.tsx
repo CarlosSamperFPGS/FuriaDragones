@@ -94,8 +94,8 @@ export function RosterView({
     setSubTab("register");
   };
 
-  const handleSubmitMember = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmitMember = async (e: any) => {
+    if (e && e.preventDefault) e.preventDefault();
     const ignClean = formIgn.trim();
     if (!ignClean) return;
 

@@ -9,7 +9,7 @@ import {
   type GuildContent,
   type RosterMember,
 } from "@/lib/firebase-sync";
-import { Search, Calendar, UserCheck, ChevronDown, ChevronUp, Pencil, Trash2, Check, Clock } from "lucide-react";
+import { Search, UserCheck, ChevronDown, ChevronUp, Pencil, Trash2, Check, Clock } from "lucide-react";
 
 interface ContenidosViewProps {
   onBack?: () => void;
@@ -85,8 +85,8 @@ export function ContenidosView({
     setSubTab("register");
   };
 
-  const handleSubmitContent = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmitContent = async (e: any) => {
+    if (e && e.preventDefault) e.preventDefault();
     const nombreClean = formNombre.trim();
     if (!nombreClean) return;
 
