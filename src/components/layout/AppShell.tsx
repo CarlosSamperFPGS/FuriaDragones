@@ -34,13 +34,12 @@ export function AppShell({
           <div className="flex items-center gap-3 font-mono text-xs">
             {/* Indicador Único de Nivel de Acceso */}
             <div
-              className={`px-2.5 py-1 border tracking-wider uppercase font-semibold ${
-                isSindicatoAuthenticated
-                  ? "border-dragon-ember/50 text-dragon-ember bg-dragon-ember/10"
-                  : "border-zinc-800 text-zinc-400 bg-zinc-900/50"
-              }`}
+              className={`px-2.5 py-1 border tracking-wider uppercase font-semibold ${isSindicatoAuthenticated
+                ? "border-dragon-ember/50 text-dragon-ember bg-dragon-ember/10"
+                : "border-zinc-800 text-zinc-400 bg-zinc-900/50"
+                }`}
             >
-              <span>ACCESO: {isSindicatoAuthenticated ? "SINDICATO" : "MIEMBRO"}</span>
+              <span>{isSindicatoAuthenticated ? "SINDICATO" : "MIEMBRO"}</span>
             </div>
 
             {/* Único botón de Cerrar Sesión */}
