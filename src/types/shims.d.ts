@@ -1,0 +1,77 @@
+// Type declarations for offline IDE support when node_modules are built in cloud (Vercel)
+
+declare module "react" {
+  export type ReactNode = any;
+  export type ReactElement = any;
+  export type FC<P = {}> = (props: P) => ReactElement | null;
+  export function useState<T>(initial: T | (() => T)): [T, (val: T | ((prev: T) => T)) => void];
+  export function useEffect(effect: () => void | (() => void), deps?: any[]): void;
+  export function useRef<T>(initial?: T): { current: T };
+  export function useMemo<T>(factory: () => T, deps?: any[]): T;
+  export function useCallback<T extends (...args: any[]) => any>(callback: T, deps?: any[]): T;
+  const React: any;
+  export default React;
+}
+
+declare module "react-dom" {
+  const ReactDOM: any;
+  export default ReactDOM;
+}
+
+declare module "react/jsx-runtime" {
+  export const jsx: any;
+  export const jsxs: any;
+  export const Fragment: any;
+}
+
+declare namespace JSX {
+  interface IntrinsicElements {
+    [elemName: string]: any;
+  }
+}
+
+declare module "lucide-react" {
+  export const Shield: any;
+  export const Lock: any;
+  export const Terminal: any;
+  export const Activity: any;
+  export const ArrowUpRight: any;
+  export const Flame: any;
+  export const ShieldAlert: any;
+  export const Users: any;
+  export const Swords: any;
+  export const ChevronDown: any;
+  export const ChevronUp: any;
+  export const Filter: any;
+  export const Search: any;
+  export const Check: any;
+  export const X: any;
+  export const Plus: any;
+  export const Edit: any;
+  export const Trash2: any;
+  export const Copy: any;
+  export const Share2: any;
+  export const ExternalLink: any;
+  const LucideIcons: Record<string, any>;
+  export default LucideIcons;
+}
+
+declare module "tailwindcss" {
+  export interface Config {
+    [key: string]: any;
+  }
+  const config: Config;
+  export default config;
+}
+
+declare module "next" {
+  export interface Metadata {
+    [key: string]: any;
+  }
+}
+
+declare module "next/font/google" {
+  export function Rajdhani(options: any): any;
+  export function JetBrains_Mono(options: any): any;
+  export function Inter(options: any): any;
+}

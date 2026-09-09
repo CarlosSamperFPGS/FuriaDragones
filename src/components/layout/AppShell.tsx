@@ -4,7 +4,7 @@ import React from "react";
 import { Shield, Lock, Terminal, Activity } from "lucide-react";
 
 interface AppShellProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   onOpenSindicatoLogin: () => void;
   isSindicatoAuthenticated?: boolean;
 }
