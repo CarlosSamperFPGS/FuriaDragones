@@ -8,58 +8,93 @@ import { RosterView } from "@/components/views/RosterView";
 import { ContenidosView } from "@/components/views/ContenidosView";
 
 export default function Home() {
-  const [currentView, setCurrentView] = useState<"gateway" | "gremio">("gateway");
+  const [currentView, setCurrentView] = useState<"gateway" | "app">("gateway");
   const [isSindicatoAuth, setIsSindicatoAuth] = useState(false);
-  const [sindicatoTab, setSindicatoTab] = useState<"builds" | "roster" | "contenidos">("builds");
+  const [activeTab, setActiveTab] = useState<"builds" | "roster" | "contenidos">("builds");
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Modal Sindicato
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
   const [loginError, setLoginError] = useState(false);
 
-  const handleOpenLogin = () => {
+  // Flujo Miembro: Fade rápido a negro -> entra directo solo lectura
+  const handleEnterMember = () => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setIsSindicatoAuth(false);
+      setCurrentView("app");
+      setActiveTab("builds");
+      setTimeout(() => setIsTransitioning(false), 50);
+    }, 200);
+  };
+
+  // Flujo Sindicato: Abrir modal
+  const handleOpenSindicatoModal = () => {
     setPasswordInput("");
     setLoginError(false);
     setShowLoginModal(true);
   };
 
-  const handleAuthorize = () => {
+  // Autorización Sindicato: Fade rápido a negro -> entra con privilegios
+  const handleAuthorizeSindicato = () => {
     if (passwordInput === "furiadragones2026") {
-      setIsSindicatoAuth(true);
-      setCurrentView("gremio");
-      setSindicatoTab("builds");
       setShowLoginModal(false);
       setLoginError(false);
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setIsSindicatoAuth(true);
+        setCurrentView("app");
+        setActiveTab("builds");
+        setTimeout(() => setIsTransitioning(false), 50);
+      }, 200);
     } else {
       setLoginError(true);
     }
   };
 
+  // Cerrar Sesión: Fundido a negro -> retorno al Gateway inicial
+  const handleLogout = () => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setIsSindicatoAuth(false);
+      setCurrentView("gateway");
+      setActiveTab("builds");
+      setTimeout(() => setIsTransitioning(false), 50);
+    }, 200);
+  };
+
   return (
     <>
       <AppShell
-        onOpenSindicatoLogin={handleOpenLogin}
-        onLogout={() => {
-          setIsSindicatoAuth(false);
-          setCurrentView("gateway");
-        }}
+        isInApp={currentView === "app"}
         isSindicatoAuthenticated={isSindicatoAuth}
+        onLogout={handleLogout}
       >
-        {isSindicatoAuth ? (
-          /* ============================================================ */
-          /* DASHBOARD DEL SINDICATO: PESTAÑAS TÁCTICAS SUPERIORES       */
-          /* ============================================================ */
-          <div className="flex flex-col h-full w-full overflow-hidden">
-            {/* Menú de Pestañas Superior estilo Terminal */}
-            <div className="flex items-center justify-between border-b border-dragon-border bg-dragon-bg px-6 py-2.5 shrink-0 select-none z-30">
-              <div className="flex items-center gap-4 sm:gap-6">
-                <span className="font-mono text-xs text-dragon-ember font-bold uppercase tracking-widest hidden md:inline">
-                  // SINDICATO // DASHBOARD:
-                </span>
-                <nav className="flex items-center gap-2 sm:gap-3">
+        {/* Contenedor con animación de fundido a negro (fade-out / fade-in) */}
+        <div
+          className={`h-full w-full bg-dragon-bg transition-opacity duration-200 ease-in-out ${
+            isTransitioning ? "opacity-0" : "opacity-100"
+          }`}
+        >
+          {currentView === "gateway" ? (
+            <GatewayView
+              onEnterMember={handleEnterMember}
+              onEnterSindicato={handleOpenSindicatoModal}
+            />
+          ) : (
+            /* ============================================================ */
+            /* INTERFAZ PRINCIPAL CON TABS UNIVERSALES                      */
+            /* ============================================================ */
+            <div className="flex flex-col h-full w-full overflow-hidden">
+              {/* Barra de Tabs Universales (Miembro y Sindicato) */}
+              <div className="flex items-center justify-between border-b border-dragon-border bg-dragon-bg px-6 py-2 shrink-0 select-none z-30">
+                <nav className="flex items-center gap-2 sm:gap-4">
                   <button
                     type="button"
-                    onClick={() => setSindicatoTab("builds")}
-                    className={`font-mono text-sm tracking-widest px-3 py-1.5 uppercase transition-all ${
-                      sindicatoTab === "builds"
+                    onClick={() => setActiveTab("builds")}
+                    className={`font-mono text-xs sm:text-sm tracking-widest px-4 py-1.5 uppercase transition-all ${
+                      activeTab === "builds"
                         ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
                         : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
                     }`}
@@ -68,9 +103,9 @@ export default function Home() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setSindicatoTab("roster")}
-                    className={`font-mono text-sm tracking-widest px-3 py-1.5 uppercase transition-all ${
-                      sindicatoTab === "roster"
+                    onClick={() => setActiveTab("roster")}
+                    className={`font-mono text-xs sm:text-sm tracking-widest px-4 py-1.5 uppercase transition-all ${
+                      activeTab === "roster"
                         ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
                         : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
                     }`}
@@ -79,9 +114,9 @@ export default function Home() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setSindicatoTab("contenidos")}
-                    className={`font-mono text-sm tracking-widest px-3 py-1.5 uppercase transition-all ${
-                      sindicatoTab === "contenidos"
+                    onClick={() => setActiveTab("contenidos")}
+                    className={`font-mono text-xs sm:text-sm tracking-widest px-4 py-1.5 uppercase transition-all ${
+                      activeTab === "contenidos"
                         ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
                         : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
                     }`}
@@ -89,75 +124,62 @@ export default function Home() {
                     [ CONTENIDOS ]
                   </button>
                 </nav>
+
+                <div className="font-mono text-xs text-zinc-500 hidden md:flex items-center gap-2">
+                  <span
+                    className={`h-1.5 w-1.5 rounded-full ${
+                      isSindicatoAuth ? "bg-dragon-ember animate-pulse" : "bg-zinc-600"
+                    }`}
+                  />
+                  <span className="tracking-wider">
+                    {isSindicatoAuth ? "MODO OPERATIVO: PRIVILEGIADO" : "MODO CONSULTA: SOLO-LECTURA"}
+                  </span>
+                </div>
               </div>
 
-              <div className="font-mono text-xs text-zinc-500 hidden sm:flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-dragon-ember animate-pulse" />
-                <span className="tracking-wider">ACCESO_SINDICATO: ACTIVO</span>
+              {/* Vista según Pestaña Activa */}
+              <div className="flex-1 h-full overflow-hidden">
+                {activeTab === "builds" && (
+                  <GremioView
+                    onBack={handleLogout}
+                    isSindicatoAuthenticated={isSindicatoAuth}
+                  />
+                )}
+
+                {activeTab === "roster" && (
+                  <RosterView
+                    onBack={() => setActiveTab("builds")}
+                    isSindicatoAuthenticated={isSindicatoAuth}
+                  />
+                )}
+
+                {activeTab === "contenidos" && (
+                  <ContenidosView
+                    onBack={() => setActiveTab("builds")}
+                    isSindicatoAuthenticated={isSindicatoAuth}
+                  />
+                )}
               </div>
             </div>
-
-            {/* Vista según Pestaña Activa */}
-            <div className="flex-1 h-full overflow-hidden">
-              {sindicatoTab === "builds" && (
-                <GremioView
-                  onBack={() => {
-                    setIsSindicatoAuth(false);
-                    setCurrentView("gateway");
-                  }}
-                  isSindicatoAuthenticated={true}
-                />
-              )}
-
-              {sindicatoTab === "roster" && (
-                <RosterView
-                  onBack={() => setSindicatoTab("builds")}
-                  isSindicatoAuthenticated={true}
-                />
-              )}
-
-              {sindicatoTab === "contenidos" && (
-                <ContenidosView
-                  onBack={() => setSindicatoTab("builds")}
-                  isSindicatoAuthenticated={true}
-                />
-              )}
-            </div>
-          </div>
-        ) : (
-          /* ============================================================ */
-          /* MODO PÚBLICO / MIEMBRO (GATEWAY O CONSULTA DE BUILDS)        */
-          /* ============================================================ */
-          <>
-            {currentView === "gateway" && (
-              <GatewayView onSelectGremio={() => setCurrentView("gremio")} />
-            )}
-
-            {currentView === "gremio" && (
-              <GremioView
-                onBack={() => setCurrentView("gateway")}
-                isSindicatoAuthenticated={false}
-              />
-            )}
-          </>
-        )}
+          )}
+        </div>
       </AppShell>
 
-      {/* Modal Integrado de Login Sindicato (Anti-Cards, Matte) */}
+      {/* Modal Integrado de Autenticación Sindicato */}
       {showLoginModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-dragon-bg border border-dragon-border w-80 p-6 select-none shadow-none">
-            <h3 className="font-display text-base font-bold tracking-wider text-zinc-100 uppercase mb-2">
+        <div className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-dragon-bg border border-dragon-border w-88 max-w-sm p-6 select-none shadow-none">
+            <h3 className="font-display text-base font-bold tracking-wider text-zinc-100 uppercase mb-1">
               AUTENTICACIÓN SINDICATO
             </h3>
             <p className="font-mono text-[11px] text-zinc-500 mb-4">
-              // INTRODUCE LA CLAVE OPERATIVA ROOT
+              // INTRODUCE LA CLAVE OPERATIVA DE OFICIAL
             </p>
 
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                handleAuthorize();
+                handleAuthorizeSindicato();
               }}
             >
               <input
@@ -174,7 +196,7 @@ export default function Home() {
 
               {loginError && (
                 <div className="mt-2 font-mono text-[11px] text-dragon-crimson tracking-wider">
-                  &gt; ERROR: CLAVE NO AUTORIZADA
+                  &gt; ERROR: CLAVE INCORRECTA
                 </div>
               )}
 
@@ -182,13 +204,13 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={() => setShowLoginModal(false)}
-                  className="px-3 py-1.5 border border-dragon-border text-zinc-400 hover:text-white hover:border-zinc-500 transition-colors"
+                  className="px-3 py-1.5 border border-dragon-border text-zinc-400 hover:text-white hover:border-zinc-500 transition-colors uppercase"
                 >
                   CANCELAR
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 border border-dragon-ember text-dragon-ember font-bold hover:bg-dragon-ember hover:text-black transition-colors"
+                  className="px-3 py-1.5 border border-dragon-ember text-dragon-ember font-bold hover:bg-dragon-ember hover:text-black transition-colors uppercase"
                 >
                   AUTORIZAR
                 </button>

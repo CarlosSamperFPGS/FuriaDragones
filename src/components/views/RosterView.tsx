@@ -188,41 +188,52 @@ export function RosterView({
 
   return (
     <div className="flex flex-col h-full overflow-hidden bg-dragon-bg select-none">
-      {/* Barra de Sub-Navegación Táctica */}
+      {/* Barra Superior Táctica Alineada */}
       <div className="flex items-center justify-between border-b border-dragon-border bg-dragon-bg px-6 py-3 shrink-0">
-        <div className="flex items-center gap-3 font-mono text-xs">
-          <button
-            type="button"
-            onClick={() => {
-              resetForm();
-              setSubTab("list");
-            }}
-            className={`px-3 py-1.5 uppercase tracking-wider transition-colors ${
-              subTab === "list"
-                ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
-                : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
-            }`}
-          >
-            [ VER MIEMBROS ({members.length}) ]
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              if (subTab !== "register") resetForm();
-              setSubTab("register");
-            }}
-            className={`px-3 py-1.5 uppercase tracking-wider transition-colors ${
-              subTab === "register"
-                ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
-                : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
-            }`}
-          >
-            [ {editingId ? "EDITAR MIEMBRO" : "+ REGISTRAR MIEMBRO"} ]
-          </button>
+        <div className="flex items-center gap-3 font-mono text-xs text-zinc-400">
+          <span className="text-dragon-ember font-bold">&gt;</span>
+          <span className="tracking-widest uppercase">
+            {subTab === "list"
+              ? "EXPEDIENTES // ROSTER OFICIAL"
+              : editingId
+              ? `EDITANDO EXPEDIENTE: ${formIgn || "MIEMBRO"}`
+              : "REGISTRO DE NUEVO MIEMBRO"}
+          </span>
         </div>
 
-        <div className="font-mono text-xs text-zinc-500 tracking-widest hidden sm:block">
-          // ROSTER // FURIA_X
+        <div className="flex items-center gap-4 shrink-0 font-mono text-xs">
+          <div className="flex items-center gap-1 text-zinc-500">
+            <span>ROSTER:</span>
+            <span className="text-dragon-ember font-semibold">
+              [{members.length}]
+            </span>
+          </div>
+
+          {isSindicatoAuthenticated && subTab === "list" && (
+            <button
+              type="button"
+              onClick={() => {
+                resetForm();
+                setSubTab("register");
+              }}
+              className="px-4 py-1.5 border border-dragon-ember text-dragon-ember hover:bg-dragon-ember hover:text-black font-mono text-xs uppercase tracking-wider font-bold transition-colors shrink-0"
+            >
+              + REGISTRAR MIEMBRO
+            </button>
+          )}
+
+          {subTab === "register" && (
+            <button
+              type="button"
+              onClick={() => {
+                resetForm();
+                setSubTab("list");
+              }}
+              className="px-3 py-1 border border-zinc-700 text-zinc-400 hover:text-white transition-colors uppercase"
+            >
+              ← VOLVER
+            </button>
+          )}
         </div>
       </div>
 
@@ -286,13 +297,23 @@ export function RosterView({
               </div>
             ) : (
               <div className="divide-y divide-dragon-border border border-dragon-border bg-[#08080a]">
-                {/* Header de la Tabla */}
+                {/* Header de la Tabla: Nombre, Rango, Roles, Avisos, y Acciones */}
                 <div className="grid grid-cols-12 gap-4 px-4 py-2.5 bg-zinc-950 font-mono text-[10px] text-zinc-500 uppercase tracking-widest">
-                  <div className="col-span-4 sm:col-span-3">IGN // NOMBRE</div>
-                  <div className="col-span-3 sm:col-span-2">RANGO / STATUS</div>
-                  <div className="hidden sm:block col-span-3">ROLES TÁCTICOS</div>
-                  <div className="col-span-3 sm:col-span-2">AVISOS / STRIKES</div>
-                  <div className="col-span-2 text-right">ACCIONES</div>
+                  <div className={isSindicatoAuthenticated ? "col-span-4 sm:col-span-3" : "col-span-5 sm:col-span-4"}>
+                    NOMBRE
+                  </div>
+                  <div className={isSindicatoAuthenticated ? "col-span-3 sm:col-span-2" : "col-span-3 sm:col-span-3"}>
+                    RANGO
+                  </div>
+                  <div className="hidden sm:block col-span-3">
+                    ROLES
+                  </div>
+                  <div className={isSindicatoAuthenticated ? "col-span-3 sm:col-span-2" : "col-span-4 sm:col-span-2"}>
+                    AVISOS
+                  </div>
+                  {isSindicatoAuthenticated && (
+                    <div className="col-span-2 text-right">ACCIONES</div>
+                  )}
                 </div>
 
                 {/* Filas */}
@@ -303,10 +324,10 @@ export function RosterView({
                   return (
                     <div
                       key={m.id}
-                      className="grid grid-cols-12 gap-4 items-center px-4 py-3 hover:bg-dragon-panel/30 transition-colors font-mono"
+                      className="group grid grid-cols-12 gap-4 items-center px-4 py-3 hover:bg-dragon-panel/30 transition-colors font-mono"
                     >
-                      {/* IGN & Nombre */}
-                      <div className="col-span-4 sm:col-span-3 flex items-center gap-2.5 min-w-0">
+                      {/* Nombre: IGN & Nombre */}
+                      <div className={`${isSindicatoAuthenticated ? "col-span-4 sm:col-span-3" : "col-span-5 sm:col-span-4"} flex items-center gap-2.5 min-w-0`}>
                         <span
                           className={`w-2 h-2 rounded-full shrink-0 ${getActivityColor(
                             m.estadoActividad
@@ -325,8 +346,8 @@ export function RosterView({
                         </div>
                       </div>
 
-                      {/* Status */}
-                      <div className="col-span-3 sm:col-span-2">
+                      {/* Rango */}
+                      <div className={isSindicatoAuthenticated ? "col-span-3 sm:col-span-2" : "col-span-3 sm:col-span-3"}>
                         <span
                           className={`inline-block px-2 py-0.5 text-[10px] uppercase tracking-wider border rounded-none ${getStatusColor(
                             m.status
@@ -349,7 +370,7 @@ export function RosterView({
                       </div>
 
                       {/* Avisos / Strikes */}
-                      <div className="col-span-3 sm:col-span-2 flex flex-col justify-center">
+                      <div className={`${isSindicatoAuthenticated ? "col-span-3 sm:col-span-2" : "col-span-4 sm:col-span-2"} flex flex-col justify-center`}>
                         <div className="flex items-center gap-1.5">
                           {[1, 2, 3].map((st) => (
                             <span
@@ -373,25 +394,27 @@ export function RosterView({
                         )}
                       </div>
 
-                      {/* Acciones */}
-                      <div className="col-span-2 flex items-center justify-end gap-2">
-                        <button
-                          type="button"
-                          onClick={() => handleEditMember(m)}
-                          className="p-1.5 text-zinc-400 hover:text-dragon-ember hover:bg-zinc-800 transition-colors"
-                          title="Editar expediente"
-                        >
-                          <Pencil className="h-3.5 w-3.5" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setDeleteModal({ id: m.id, ign: m.ign })}
-                          className="p-1.5 text-zinc-400 hover:text-dragon-crimson hover:bg-zinc-800 transition-colors"
-                          title="Eliminar del roster"
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </button>
-                      </div>
+                      {/* Acciones: Ocultas por defecto, visibles al hacer hover (SOLO SINDICATO) */}
+                      {isSindicatoAuthenticated && (
+                        <div className="col-span-2 flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button
+                            type="button"
+                            onClick={() => handleEditMember(m)}
+                            className="p-1.5 text-zinc-400 hover:text-dragon-ember hover:bg-zinc-800 transition-colors"
+                            title="Editar expediente"
+                          >
+                            <Pencil className="h-3.5 w-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setDeleteModal({ id: m.id, ign: m.ign })}
+                            className="p-1.5 text-zinc-400 hover:text-dragon-crimson hover:bg-zinc-800 transition-colors"
+                            title="Eliminar del roster"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      )}
                     </div>
                   );
                 })}

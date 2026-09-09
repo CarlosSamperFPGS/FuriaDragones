@@ -171,41 +171,52 @@ export function ContenidosView({
 
   return (
     <div className="flex flex-col h-full overflow-hidden bg-dragon-bg select-none">
-      {/* Barra de Sub-Navegación Táctica */}
+      {/* Barra Superior Táctica Alineada */}
       <div className="flex items-center justify-between border-b border-dragon-border bg-dragon-bg px-6 py-3 shrink-0">
-        <div className="flex items-center gap-3 font-mono text-xs">
-          <button
-            type="button"
-            onClick={() => {
-              resetForm();
-              setSubTab("list");
-            }}
-            className={`px-3 py-1.5 uppercase tracking-wider transition-colors ${
-              subTab === "list"
-                ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
-                : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
-            }`}
-          >
-            [ VER CONTENIDOS ({contents.length}) ]
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              if (subTab !== "register") resetForm();
-              setSubTab("register");
-            }}
-            className={`px-3 py-1.5 uppercase tracking-wider transition-colors ${
-              subTab === "register"
-                ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
-                : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
-            }`}
-          >
-            [ {editingId ? "EDITAR CONTENIDO" : "+ REGISTRAR CONTENIDO"} ]
-          </button>
+        <div className="flex items-center gap-3 font-mono text-xs text-zinc-400">
+          <span className="text-dragon-ember font-bold">&gt;</span>
+          <span className="tracking-widest uppercase">
+            {subTab === "list"
+              ? "HISTORIAL // CONTENIDOS Y CTAS"
+              : editingId
+              ? `EDITANDO ACTIVIDAD: ${formNombre || "CONTENIDO"}`
+              : "REGISTRO DE NUEVA ACTIVIDAD"}
+          </span>
         </div>
 
-        <div className="font-mono text-xs text-zinc-500 tracking-widest hidden sm:block">
-          // ACTIVIDADES // FURIA_X
+        <div className="flex items-center gap-4 shrink-0 font-mono text-xs">
+          <div className="flex items-center gap-1 text-zinc-500">
+            <span>CONTENIDOS:</span>
+            <span className="text-dragon-ember font-semibold">
+              [{contents.length}]
+            </span>
+          </div>
+
+          {isSindicatoAuthenticated && subTab === "list" && (
+            <button
+              type="button"
+              onClick={() => {
+                resetForm();
+                setSubTab("register");
+              }}
+              className="px-4 py-1.5 border border-dragon-ember text-dragon-ember hover:bg-dragon-ember hover:text-black font-mono text-xs uppercase tracking-wider font-bold transition-colors shrink-0"
+            >
+              + REGISTRAR CONTENIDO
+            </button>
+          )}
+
+          {subTab === "register" && (
+            <button
+              type="button"
+              onClick={() => {
+                resetForm();
+                setSubTab("list");
+              }}
+              className="px-3 py-1 border border-zinc-700 text-zinc-400 hover:text-white transition-colors uppercase"
+            >
+              ← VOLVER
+            </button>
+          )}
         </div>
       </div>
 
@@ -239,77 +250,95 @@ export function ContenidosView({
               </div>
             ) : (
               <div className="divide-y divide-dragon-border border border-dragon-border bg-[#08080a]">
+                {/* Header de la Tabla: Nombre, Organizador, Fecha/Hora, Asistentes, y Acciones */}
+                <div className="grid grid-cols-12 gap-4 px-4 py-2.5 bg-zinc-950 font-mono text-[10px] text-zinc-500 uppercase tracking-widest">
+                  <div className={isSindicatoAuthenticated ? "col-span-4 sm:col-span-3" : "col-span-5 sm:col-span-4"}>
+                    NOMBRE
+                  </div>
+                  <div className={isSindicatoAuthenticated ? "col-span-3 sm:col-span-2" : "col-span-3 sm:col-span-3"}>
+                    ORGANIZADOR
+                  </div>
+                  <div className={isSindicatoAuthenticated ? "col-span-3 sm:col-span-3" : "col-span-4 sm:col-span-3"}>
+                    FECHA / HORA
+                  </div>
+                  <div className={isSindicatoAuthenticated ? "col-span-2 sm:col-span-2" : "col-span-2 sm:col-span-2"}>
+                    ASISTENTES
+                  </div>
+                  {isSindicatoAuthenticated && (
+                    <div className="col-span-2 text-right">ACCIONES</div>
+                  )}
+                </div>
+
                 {filteredContents.map((c) => {
                   const isExpanded = expandedContentId === c.id;
                   const attendeeCount = (c.asistentes || []).length;
 
                   return (
-                    <div key={c.id} className="flex flex-col transition-colors">
+                    <div key={c.id} className="group flex flex-col transition-colors">
                       {/* Fila Horizontal de la Actividad */}
                       <div
                         onClick={() => toggleExpand(c.id)}
-                        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 hover:bg-dragon-panel/30 cursor-pointer font-mono select-none"
+                        className="grid grid-cols-12 gap-4 items-center p-4 hover:bg-dragon-panel/30 cursor-pointer font-mono select-none"
                       >
-                        {/* Info Principal */}
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 min-w-0">
-                          <div className="min-w-0">
-                            <div className="font-display text-base text-zinc-100 font-bold uppercase tracking-wide">
-                              {c.nombre}
-                            </div>
-                            <div className="flex items-center gap-3 text-xs text-zinc-500 mt-1">
-                              <span className="text-dragon-ember">
-                                ORG: @{c.organizador}
-                              </span>
-                              <span>•</span>
-                              <span className="flex items-center gap-1 text-zinc-400">
-                                <Clock className="h-3 w-3 text-zinc-500" />
-                                {formatDateTime(c.fechaHora)}
-                              </span>
-                            </div>
+                        {/* Nombre */}
+                        <div className={`${isSindicatoAuthenticated ? "col-span-4 sm:col-span-3" : "col-span-5 sm:col-span-4"} min-w-0`}>
+                          <div className="font-display text-sm sm:text-base text-zinc-100 font-bold uppercase truncate">
+                            {c.nombre}
                           </div>
                         </div>
 
-                        {/* Asistentes & Acciones */}
-                        <div className="flex items-center gap-3 self-end sm:self-center shrink-0">
-                          <span className="px-2.5 py-1 text-xs border border-zinc-700 bg-zinc-900 text-zinc-300">
-                            [ {attendeeCount} ASISTENTE{attendeeCount !== 1 ? "S" : ""} ]
+                        {/* Organizador */}
+                        <div className={`${isSindicatoAuthenticated ? "col-span-3 sm:col-span-2" : "col-span-3 sm:col-span-3"} min-w-0 truncate text-xs text-dragon-ember font-semibold`}>
+                          @{c.organizador}
+                        </div>
+
+                        {/* Fecha / Hora */}
+                        <div className={`${isSindicatoAuthenticated ? "col-span-3 sm:col-span-3" : "col-span-4 sm:col-span-3"} min-w-0 truncate flex items-center gap-1.5 text-xs text-zinc-400`}>
+                          <Clock className="h-3 w-3 text-zinc-500 shrink-0" />
+                          <span className="truncate">{formatDateTime(c.fechaHora)}</span>
+                        </div>
+
+                        {/* Asistentes */}
+                        <div className={`${isSindicatoAuthenticated ? "col-span-2 sm:col-span-2" : "col-span-2 sm:col-span-2"} flex items-center gap-2`}>
+                          <span className="px-2 py-0.5 text-[10px] border border-zinc-700 bg-zinc-900 text-zinc-300">
+                            {attendeeCount} ASIST.
                           </span>
-
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleEditContent(c);
-                            }}
-                            className="p-1.5 text-zinc-400 hover:text-dragon-ember hover:bg-zinc-800 transition-colors"
-                            title="Editar actividad"
-                          >
-                            <Pencil className="h-3.5 w-3.5" />
-                          </button>
-
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setDeleteModal({ id: c.id, nombre: c.nombre });
-                            }}
-                            className="p-1.5 text-zinc-400 hover:text-dragon-crimson hover:bg-zinc-800 transition-colors"
-                            title="Eliminar actividad"
-                          >
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </button>
-
-                          <button
-                            type="button"
-                            className="p-1.5 text-zinc-500 hover:text-white"
-                          >
+                          <button type="button" className="p-1 text-zinc-500 hover:text-white">
                             {isExpanded ? (
-                              <ChevronUp className="h-4 w-4 text-dragon-ember" />
+                              <ChevronUp className="h-3.5 w-3.5 text-dragon-ember" />
                             ) : (
-                              <ChevronDown className="h-4 w-4" />
+                              <ChevronDown className="h-3.5 w-3.5" />
                             )}
                           </button>
                         </div>
+
+                        {/* Acciones: Ocultas por defecto, reveladas en hover (SOLO SINDICATO) */}
+                        {isSindicatoAuthenticated && (
+                          <div className="col-span-2 flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleEditContent(c);
+                              }}
+                              className="p-1.5 text-zinc-400 hover:text-dragon-ember hover:bg-zinc-800 transition-colors"
+                              title="Editar actividad"
+                            >
+                              <Pencil className="h-3.5 w-3.5" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setDeleteModal({ id: c.id, nombre: c.nombre });
+                              }}
+                              className="p-1.5 text-zinc-400 hover:text-dragon-crimson hover:bg-zinc-800 transition-colors"
+                              title="Eliminar actividad"
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </button>
+                          </div>
+                        )}
                       </div>
 
                       {/* Estado Expandido: Grid Tipográfico Limpio de Asistentes */}

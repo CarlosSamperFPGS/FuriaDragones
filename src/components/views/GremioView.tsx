@@ -6,6 +6,8 @@ import {
   getActivities,
   saveTacticalBuild,
   saveActivity,
+  deleteTacticalBuild,
+  deleteActivity,
   type TacticalBuild,
 } from "@/lib/firebase-sync";
 import { getItemImageUrl } from "@/lib/items";
@@ -117,14 +119,18 @@ export function GremioView({
   };
 
   // Modales de eliminación y edición
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (!deleteModal) return;
     if (deleteModal.type === "build") {
-      setBuilds((prev) => prev.filter((b) => b.id !== deleteModal.id));
-      if (expandedId === deleteModal.id) setExpandedId(null);
+      const buildId = deleteModal.id;
+      setBuilds((prev) => prev.filter((b) => b.id !== buildId));
+      if (expandedId === buildId) setExpandedId(null);
+      await deleteTacticalBuild(buildId);
     } else if (deleteModal.type === "activity") {
-      setActivities((prev) => prev.filter((item) => item !== deleteModal.id));
-      if (selectedActivity === deleteModal.id) setSelectedActivity("TODAS");
+      const actName = deleteModal.id;
+      setActivities((prev) => prev.filter((item) => item !== actName));
+      if (selectedActivity === actName) setSelectedActivity("TODAS");
+      await deleteActivity(actName);
     }
     setDeleteModal(null);
   };
@@ -283,7 +289,7 @@ export function GremioView({
               className="flex items-center gap-2 font-mono text-xs text-zinc-400 transition-colors duration-150 hover:text-white"
             >
               <ArrowLeft className="h-3.5 w-3.5 text-dragon-crimson" />
-              <span>[ GATEWAY ]</span>
+              <span>VOLVER</span>
             </button>
           )}
           <span className="font-mono text-[10px] text-zinc-600 tracking-wider">
@@ -292,7 +298,7 @@ export function GremioView({
         </div>
 
         <div className="px-4 py-2.5 font-mono text-[11px] text-zinc-500 tracking-widest uppercase border-b border-dragon-border/50">
-          // ACTIVIDADES
+          CONTENIDOS
         </div>
 
         {/* Lista de Actividades con soporte de gestión Sindicato en hover */}
@@ -420,24 +426,24 @@ export function GremioView({
                 })}
               </div>
 
-              <div className="flex items-center gap-3 shrink-0">
-                {/* Botón Nueva Build para Sindicato */}
-                {isSindicatoAuthenticated && (
-                  <button
-                    type="button"
-                    onClick={handleOpenNewBuild}
-                    className="px-3 py-1 border border-dragon-ember text-dragon-ember hover:bg-dragon-ember hover:text-black font-mono text-xs uppercase tracking-wider font-bold transition-colors shrink-0"
-                  >
-                    + NUEVA BUILD
-                  </button>
-                )}
-
-                <div className="hidden sm:flex items-center gap-1 font-mono text-xs text-zinc-500">
+              <div className="flex items-center gap-4 shrink-0">
+                <div className="flex items-center gap-1 font-mono text-xs text-zinc-500">
                   <span>BUILDS:</span>
                   <span className="text-dragon-ember font-semibold">
                     [{filteredBuilds.length}]
                   </span>
                 </div>
+
+                {/* Botón Nueva Build para Sindicato */}
+                {isSindicatoAuthenticated && (
+                  <button
+                    type="button"
+                    onClick={handleOpenNewBuild}
+                    className="px-4 py-1.5 border border-dragon-ember text-dragon-ember hover:bg-dragon-ember hover:text-black font-mono text-xs uppercase tracking-wider font-bold transition-colors shrink-0"
+                  >
+                    + NUEVA BUILD
+                  </button>
+                )}
               </div>
             </div>
 
@@ -495,7 +501,7 @@ export function GremioView({
                         {/* Fila Colapsada: 100% Clickeable para abrir el acordeón */}
                         <div
                           onClick={() => toggleExpand(build.id)}
-                          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-6 py-4 cursor-pointer transition-colors duration-150 hover:bg-dragon-panel/50 select-none"
+                          className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-6 py-4 cursor-pointer transition-colors duration-150 hover:bg-dragon-panel/50 select-none"
                         >
                           {/* Izquierda: Icono Arma Principal Grande + Nombre + Tier + Rol + Arma */}
                           <div className="flex items-center gap-4 min-w-0">
@@ -541,7 +547,7 @@ export function GremioView({
                             </div>
                           </div>
 
-                          {/* Derecha: Botones Modernos y Estéticos (text-[10px], SIN corchetes, hover sólido) */}
+                          {/* Derecha: Botones Modernos y Estéticos */}
                           <div className="flex items-center gap-2 shrink-0 font-mono text-[10px]">
                             <button
                               type="button"
@@ -566,7 +572,7 @@ export function GremioView({
                             </button>
 
                             {isSindicatoAuthenticated && (
-                              <>
+                              <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                                 <button
                                   type="button"
                                   onClick={(e) => {
@@ -593,7 +599,7 @@ export function GremioView({
                                 >
                                   ELIMINAR
                                 </button>
-                              </>
+                              </div>
                             )}
                           </div>
                         </div>

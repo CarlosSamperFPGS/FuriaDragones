@@ -50,189 +50,11 @@ export const DEFAULT_ACTIVITIES = [
   "HELLGATES (5v5)",
 ];
 
-// Builds tácticas predeterminadas con IDs verificados de la API de Albion Online
-export const FALLBACK_BUILDS: TacticalBuild[] = [
-  {
-    id: "furia_zvz_clapper_01",
-    nombre: "CLAPPER - Romperreinos",
-    rol: "CLAPPER",
-    actividad: "ZVZ (50v50)",
-    armaPrincipalId: "2H_AXE_AVALON",
-    armaPrincipalNombre: "Hacha Romperreinos",
-    armaSecundariaId: null,
-    armaSecundariaNombre: null,
-    esDosManos: true,
-    equipamiento: {
-      bolsa: "BAG",
-      cabeza: "HEAD_CLOTH_SET2",
-      pecho: "ARMOR_LEATHER_HELL",
-      zapatos: "SHOES_CLOTH_SET1",
-      capa: "CAPEITEM_FW_FORTSTERLING",
-      armaPrincipal: "2H_AXE_AVALON",
-      armaSecundaria: null,
-      pocion: "POTION_REVIVE",
-      comida: "MEAL_STEW",
-    },
-    spells: {
-      mainhand: ["RENDINGSPIN", "AXEBOOST", "LETHAL_CLEAVER", "PASSIVE_BLEEDCHANCE"],
-      head: ["ICEBLOCK2", "PASSIVE_INCREASED_DAMAGE"],
-      armor: ["LIFESTEALAURA", "PASSIVE_ARMOR_BALANCE"],
-      shoes: ["CHANNELED_RUN", "PASSIVE_INCREASED_DAMAGE"],
-    },
-    notas: "Enganche coordinado tras llamada de caller. Activar Chaqueta de Vándalo antes de impactar la E.",
-  },
-  {
-    id: "furia_zvz_healer_01",
-    nombre: "HEALER - Caída Sagrada",
-    rol: "HEALER",
-    actividad: "ZVZ (50v50)",
-    armaPrincipalId: "MAIN_HOLYSTAFF_AVALON",
-    armaPrincipalNombre: "Bastón de Caída Sagrada",
-    armaSecundariaId: "OFF_BOOK",
-    armaSecundariaNombre: "Tomo de Hechizos",
-    esDosManos: false,
-    equipamiento: {
-      bolsa: "BAG",
-      cabeza: "HEAD_CLOTH_SET1",
-      pecho: "ARMOR_CLOTH_SET2",
-      zapatos: "SHOES_CLOTH_SET2",
-      capa: "CAPEITEM_FW_LYMHURST",
-      armaPrincipal: "MAIN_HOLYSTAFF_AVALON",
-      armaSecundaria: "OFF_BOOK",
-      pocion: "POTION_ENERGY",
-      comida: "MEAL_OMELETTE",
-    },
-    spells: {
-      mainhand: ["HOLY_FLASH", "HOLY_BEAM", "HOLY_HEAVENLYFALL", "PASSIVE_ENERGY_REGEN"],
-      head: ["FORCEFIELD", "PASSIVE_INCREASED_HEALING"],
-      armor: ["ENERGYSHIELD", "PASSIVE_ARMOR_MAGIC"],
-      shoes: ["RUN", "PASSIVE_INCREASED_SPEED"],
-    },
-    notas: "Priorizar rescate de tanques principales y mantener distancia de las líneas de contra-engage.",
-  },
-  {
-    id: "furia_zvz_stoper_01",
-    nombre: "STOPER - Maza Pesada",
-    rol: "STOPER",
-    actividad: "ZVZ (50v50)",
-    armaPrincipalId: "2H_MACE",
-    armaPrincipalNombre: "Maza Pesada",
-    armaSecundariaId: null,
-    armaSecundariaNombre: null,
-    esDosManos: true,
-    equipamiento: {
-      bolsa: "BAG",
-      cabeza: "HEAD_PLATE_SET2",
-      pecho: "ARMOR_PLATE_SET3",
-      zapatos: "SHOES_LEATHER_SET2",
-      capa: "CAPEITEM_FW_MARTLOCK",
-      armaPrincipal: "2H_MACE",
-      armaSecundaria: null,
-      pocion: "POTION_STONESKIN",
-      comida: "MEAL_OMELETTE",
-    },
-    spells: {
-      mainhand: ["DEFENSIVESLAM", "GROUNDSHAKER", "SHRIEKMACE", "PASSIVE_STUNCHANCE"],
-      head: ["DISRUPTIONIMMUNITY", "PASSIVE_MR_AR"],
-      armor: ["TAUNT", "PASSIVE_ARMOR_MR_AR"],
-      shoes: ["OVERSPRINT", "PASSIVE_MAXLOAD_SHOES"],
-    },
-    notas: "Purgar y silenciar contra-ataques enemigos en chokes estrechos.",
-  },
-  {
-    id: "furia_zvz_dps_01",
-    nombre: "DPS - Creador de Niebla",
-    rol: "DPS",
-    actividad: "ZVZ (50v50)",
-    armaPrincipalId: "2H_CURSEDSTAFF_MORGANA",
-    armaPrincipalNombre: "Llamador de Sombras",
-    armaSecundariaId: null,
-    armaSecundariaNombre: null,
-    esDosManos: true,
-    equipamiento: {
-      bolsa: "BAG",
-      cabeza: "HEAD_LEATHER_SET1",
-      pecho: "ARMOR_CLOTH_SET3",
-      zapatos: "SHOES_CLOTH_SET1",
-      capa: "CAPEITEM_FW_CAERLEON",
-      armaPrincipal: "2H_CURSEDSTAFF_MORGANA",
-      armaSecundaria: null,
-      pocion: "POTION_COOLDOWN",
-      comida: "MEAL_STEW",
-    },
-    spells: {
-      mainhand: ["SICKLE", "CURSED_ARMOR", "SHADOW_CALL", "PASSIVE_DAMAGE_INCREASE"],
-      head: ["MEDITATION", "PASSIVE_INCREASED_DAMAGE"],
-      armor: ["MAGIC_CIRCLE", "PASSIVE_ARMOR_BALANCE"],
-      shoes: ["CHANNELED_RUN", "PASSIVE_INCREASED_DAMAGE"],
-    },
-    notas: "Descarga continua de burst en formaciones enemigas agrupadas.",
-  },
-  {
-    id: "furia_zvz_pierce_01",
-    nombre: "PIERCE - Espada Sombría",
-    rol: "PIERCE",
-    actividad: "ZVZ (50v50)",
-    armaPrincipalId: "2H_CLEAVER_HELL",
-    armaPrincipalNombre: "Espada Tallada",
-    armaSecundariaId: null,
-    armaSecundariaNombre: null,
-    esDosManos: true,
-    equipamiento: {
-      bolsa: "BAG",
-      cabeza: "HEAD_LEATHER_ROYAL",
-      pecho: "ARMOR_CLOTH_ROYAL",
-      zapatos: "SHOES_CLOTH_SET2",
-      capa: "CAPEITEM_FW_MORGANA",
-      armaPrincipal: "2H_CLEAVER_HELL",
-      armaSecundaria: null,
-      pocion: "POTION_SLOW",
-      comida: "MEAL_OMELETTE",
-    },
-    spells: {
-      mainhand: ["CLEAVE", "SPLITTINGSLASH", "FEAR_SLASH", "PASSIVE_BLEEDCHANCE"],
-      head: ["ENERGY_AURA", "PASSIVE_INCREASED_DAMAGE"],
-      armor: ["MAGIC_CIRCLE", "PASSIVE_ARMOR_BALANCE"],
-      shoes: ["RUN", "PASSIVE_INCREASED_SPEED"],
-    },
-    notas: "Aplicar perforación de defensas 1 segundo antes de la caída del clapper principal.",
-  },
-  {
-    id: "furia_zvz_support_01",
-    nombre: "SUPPORT - Locus Arcano",
-    rol: "SUPPORT",
-    actividad: "ZVZ (50v50)",
-    armaPrincipalId: "2H_ENIGMATICORB_MORGANA",
-    armaPrincipalNombre: "Locus Maléfico",
-    armaSecundariaId: null,
-    armaSecundariaNombre: null,
-    esDosManos: true,
-    equipamiento: {
-      bolsa: "BAG",
-      cabeza: "HEAD_PLATE_SET1",
-      pecho: "ARMOR_PLATE_SET1",
-      zapatos: "SHOES_LEATHER_SET1",
-      capa: "CAPEITEM_FW_MARTLOCK",
-      armaPrincipal: "2H_ENIGMATICORB_MORGANA",
-      armaSecundaria: null,
-      pocion: "POTION_STONESKIN",
-      comida: "MEAL_OMELETTE",
-    },
-    spells: {
-      mainhand: ["ARCANE_ORB", "ENERGY_BEAM", "TIME_VOID", "PASSIVE_ENERGY_REGEN"],
-      head: ["WINDWALL", "PASSIVE_MR_AR"],
-      armor: ["ENFEEBLE_AURA", "PASSIVE_ARMOR_MR_AR"],
-      shoes: ["DODGE", "PASSIVE_MAXLOAD_SHOES"],
-    },
-    notas: "Limpieza masiva de CC y purga de auras enemigas en el choke central.",
-  },
-];
-
 export async function getTacticalBuilds(): Promise<TacticalBuild[]> {
   try {
     const querySnapshot = await getDocs(collection(db, "builds"));
     if (querySnapshot.empty) {
-      return FALLBACK_BUILDS;
+      return [];
     }
 
     const builds: TacticalBuild[] = [];
@@ -275,10 +97,10 @@ export async function getTacticalBuilds(): Promise<TacticalBuild[]> {
       });
     });
 
-    return builds.length > 0 ? builds : FALLBACK_BUILDS;
+    return builds;
   } catch (error) {
-    console.warn("[FirebaseSync] Using fallback builds:", error);
-    return FALLBACK_BUILDS;
+    console.warn("[FirebaseSync] Error fetching builds from Firestore:", error);
+    return [];
   }
 }
 
@@ -317,6 +139,17 @@ export async function saveTacticalBuild(build: TacticalBuild): Promise<boolean> 
   }
 }
 
+export async function deleteTacticalBuild(buildId: string): Promise<boolean> {
+  try {
+    const buildRef = doc(db, "builds", buildId);
+    await deleteDoc(buildRef);
+    return true;
+  } catch (error) {
+    console.warn("[FirebaseSync] Error deleting build from Firestore:", error);
+    return false;
+  }
+}
+
 export async function saveActivity(name: string): Promise<boolean> {
   try {
     const actId = name.toLowerCase().replace(/[^a-z0-9]/g, "_");
@@ -336,94 +169,20 @@ export async function saveActivity(name: string): Promise<boolean> {
   }
 }
 
-// Datos iniciales de Roster
-export const FALLBACK_ROSTER: RosterMember[] = [
-  {
-    id: "member_01",
-    nombre: "Viper",
-    ign: "ViperDragon",
-    status: "Lider",
-    roles: ["Clapper", "DPS"],
-    estadoActividad: "Activo",
-    avisos: 0,
-    notas: "Caller principal en ZvZ y shotcaller oficial.",
-  },
-  {
-    id: "member_02",
-    nombre: "Carlos Samper",
-    ign: "SamperX",
-    status: "Sindicato",
-    roles: ["Stoper", "Support"],
-    estadoActividad: "Activo",
-    avisos: 1,
-    notas: "Oficial de logística, defensivas y gestión de alijo.",
-  },
-  {
-    id: "member_03",
-    nombre: "Kaelen",
-    ign: "KaelenHoly",
-    status: "Veterano",
-    roles: ["Healer"],
-    estadoActividad: "Activo",
-    avisos: 0,
-    notas: "Healer de línea principal en Caída Sagrada.",
-  },
-  {
-    id: "member_04",
-    nombre: "Sombra",
-    ign: "ShadowFang",
-    status: "Miembro Oficial",
-    roles: ["Pierce", "DPS"],
-    estadoActividad: "Ausente",
-    avisos: 4,
-    notas: "Falta a 2 CTAs sin justificar con previo aviso.",
-  },
-  {
-    id: "member_05",
-    nombre: "Thorin",
-    ign: "ThorinHammer",
-    status: "Nuevo",
-    roles: ["Stoper"],
-    estadoActividad: "Inactivo",
-    avisos: 7,
-    notas: "Amonestado por romper formación reiteradamente.",
-  },
-];
-
-// Datos iniciales de Contenidos / Actividades
-export const FALLBACK_CONTENTS: GuildContent[] = [
-  {
-    id: "content_01",
-    nombre: "ZvZ Reset Day - Martlock Castle",
-    organizador: "ViperDragon",
-    fechaHora: "2026-09-12T18:00",
-    asistentes: ["ViperDragon", "SamperX", "KaelenHoly"],
-    notas: "Obligatorio T8 equivalente. Salida desde portal de Caerleon.",
-  },
-  {
-    id: "content_02",
-    nombre: "Raid Avaloniana T8.3",
-    organizador: "SamperX",
-    fechaHora: "2026-09-13T21:30",
-    asistentes: ["SamperX", "KaelenHoly", "ShadowFang"],
-    notas: "Traer comida T8 y pociones de veneno. Respetar llamadas de pulls.",
-  },
-];
-
 export async function getRosterMembers(): Promise<RosterMember[]> {
   try {
     const docSnap = await getDocs(collection(db, "roster"));
     if (docSnap.empty) {
-      return FALLBACK_ROSTER;
+      return [];
     }
     const members: RosterMember[] = [];
     docSnap.forEach((d) => {
       members.push({ id: d.id, ...d.data() } as RosterMember);
     });
-    return members.length > 0 ? members : FALLBACK_ROSTER;
+    return members;
   } catch (error) {
-    console.warn("[FirebaseSync] Using fallback roster:", error);
-    return FALLBACK_ROSTER;
+    console.warn("[FirebaseSync] Error fetching roster from Firestore:", error);
+    return [];
   }
 }
 
@@ -460,16 +219,16 @@ export async function getGuildContents(): Promise<GuildContent[]> {
   try {
     const docSnap = await getDocs(collection(db, "contents"));
     if (docSnap.empty) {
-      return FALLBACK_CONTENTS;
+      return [];
     }
     const contents: GuildContent[] = [];
     docSnap.forEach((d) => {
       contents.push({ id: d.id, ...d.data() } as GuildContent);
     });
-    return contents.length > 0 ? contents : FALLBACK_CONTENTS;
+    return contents;
   } catch (error) {
-    console.warn("[FirebaseSync] Using fallback contents:", error);
-    return FALLBACK_CONTENTS;
+    console.warn("[FirebaseSync] Error fetching contents from Firestore:", error);
+    return [];
   }
 }
 

@@ -1,109 +1,113 @@
 "use client";
 
 import React from "react";
-import { ArrowUpRight, Flame, ShieldAlert, Users, Swords } from "lucide-react";
+import { Users, Shield, ArrowRight } from "lucide-react";
 
 interface GatewayViewProps {
-  onSelectGremio: () => void;
+  onEnterMember: () => void;
+  onEnterSindicato: () => void;
 }
 
-export function GatewayView({ onSelectGremio }: GatewayViewProps) {
+export function GatewayView({ onEnterMember, onEnterSindicato }: GatewayViewProps) {
   return (
-    <div className="grid h-full w-full grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-dragon-border">
-      {/* 01. NODO GREMIO: FURIA DE DRAGONES (ACTIVO) */}
-      <div
-        onClick={onSelectGremio}
-        className="group relative flex flex-col justify-between p-8 md:p-14 cursor-pointer bg-dragon-bg transition-colors duration-200 hover:bg-dragon-panel"
-      >
-        {/* Línea de acento interactiva izquierda */}
-        <div className="absolute left-0 top-0 h-full w-1 bg-dragon-crimson opacity-0 transition-opacity duration-150 group-hover:opacity-100" />
+    <div className="relative flex h-full w-full flex-col justify-center items-center bg-dragon-bg px-4 sm:px-8 py-10 select-none overflow-y-auto">
+      {/* Background Subtle Tech Grid Decor */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f1f2315_1px,transparent_1px),linear-gradient(to_bottom,#1f1f2315_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
 
-        {/* Encabezado del Cuadrante */}
-        <div className="flex items-start justify-between">
-          <div className="space-y-1">
-            <span className="font-mono text-xs tracking-widest text-dragon-crimson">
-              // 01_GREMIO
-            </span>
-            <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-500">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              STATUS: ACTUALIZADO
-            </div>
-          </div>
-
-          <div className="flex h-10 w-10 items-center justify-center border border-dragon-border text-zinc-500 transition-all duration-150 group-hover:border-dragon-crimson group-hover:text-zinc-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-            <ArrowUpRight className="h-5 w-5" />
-          </div>
+      {/* Header Central */}
+      <div className="relative z-10 text-center max-w-2xl mb-10 sm:mb-14">
+        <div className="inline-flex items-center gap-2 border border-dragon-border px-3 py-1 font-mono text-xs text-zinc-400 bg-dragon-panel/40 mb-4 tracking-widest uppercase">
+          <span className="h-1.5 w-1.5 rounded-full bg-dragon-ember animate-pulse" />
+          <span>PORTAL DE ACCESO TÁCTICO // ALBION ONLINE</span>
         </div>
 
-        {/* Título & Manifiesto Central */}
-        <div className="my-auto py-10">
-          <h2 className="font-display text-4xl md:text-6xl font-bold tracking-tight text-zinc-100 uppercase transition-colors duration-150 group-hover:text-white">
-            FURIA DE DRAGONES
-          </h2>
-          <p className="mt-3 max-w-md font-sans text-sm leading-relaxed text-zinc-400">
-            Repositorio de Builds, Guías y Gestión de miembros. (Guías en desarrollo)
-          </p>
+        <h1 className="font-display text-4xl sm:text-6xl font-extrabold tracking-tight text-zinc-100 uppercase">
+          FURIA DE DRAGONES
+        </h1>
 
-          {/* Estadísticas en Fila Técnica (Sin Cards) */}
-          <div className="mt-8 flex items-center gap-8 border-t border-dragon-border pt-6 font-mono text-xs">
-            <div className="flex items-center gap-2 text-zinc-400">
-              <Swords className="h-4 w-4 text-dragon-crimson" />
-              <span>BUILDS_ACTUALIZADAS</span>
-            </div>
-            <div className="flex items-center gap-2 text-zinc-400">
-              <Users className="h-4 w-4 text-zinc-500" />
-              <span>ROSTER_OFICIAL</span>
-            </div>
-          </div>
-        </div>
-
-        {/* CTA en Fila Inferior */}
-        <div className="flex items-center justify-between font-mono text-xs tracking-widest text-zinc-500 group-hover:text-zinc-200">
-          <span>[ PULSAR PARA ENTRAR AL PANEL ]</span>
-          <span className="text-dragon-crimson">→</span>
-        </div>
+        <p className="mt-3 font-sans text-sm sm:text-base text-zinc-400 max-w-lg mx-auto leading-relaxed">
+          Selecciona tu nivel de credencial para acceder a las composiciones tácticas, expediente de miembros y gestión de contenidos.
+        </p>
       </div>
 
-      {/* 02. NODO ALIANZA: LLAMAS ETERNAS (DESHABILITADO // MANTENIMIENTO) */}
-      <div className="relative flex flex-col justify-between p-8 md:p-14 bg-dragon-bg/40 opacity-75 cursor-not-allowed">
-        {/* Encabezado del Cuadrante */}
-        <div className="flex items-start justify-between">
-          <div className="space-y-1">
-            <span className="font-mono text-xs tracking-widest text-zinc-500">
-              // 02_SECTOR
-            </span>
-            <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-500">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-dragon-ember" />
-              OFFLINE // MANTENIMIENTO
+      {/* Opciones de Acceso: 2 Grandes y Estilizadas */}
+      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+        {/* 01. ENTRAR COMO MIEMBRO */}
+        <button
+          type="button"
+          onClick={onEnterMember}
+          className="group relative flex flex-col justify-between p-8 sm:p-10 text-left bg-[#09090c] border border-dragon-border hover:border-zinc-500 transition-all duration-200 cursor-pointer overflow-hidden"
+        >
+          {/* Acento lateral en hover */}
+          <div className="absolute top-0 left-0 h-full w-1 bg-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+
+          <div>
+            <div className="flex items-center justify-between mb-6">
+              <span className="font-mono text-xs text-zinc-500 tracking-widest uppercase">
+                // 01_ACCESO PÚBLICO
+              </span>
+              <div className="h-10 w-10 border border-dragon-border flex items-center justify-center text-zinc-400 group-hover:text-zinc-100 group-hover:border-zinc-500 transition-colors">
+                <Users className="h-5 w-5" />
+              </div>
             </div>
+
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-zinc-100 uppercase tracking-wider group-hover:text-white transition-colors">
+              ENTRAR COMO MIEMBRO
+            </h2>
+
+            <p className="mt-3 font-sans text-xs sm:text-sm text-zinc-400 leading-relaxed">
+              Modo consulta de solo-lectura. Accede al catálogo de builds tácticas del gremio, visualización del roster activo y calendario de actividades.
+            </p>
           </div>
 
-          <div className="flex h-10 w-10 items-center justify-center border border-dragon-border text-zinc-600">
-            <ShieldAlert className="h-5 w-5" />
+          <div className="mt-8 pt-6 border-t border-dragon-border/60 flex items-center justify-between font-mono text-xs tracking-wider text-zinc-400 group-hover:text-zinc-200 transition-colors">
+            <span>[ ACCESO DIRECTO ]</span>
+            <span className="flex items-center gap-1 text-zinc-300 group-hover:translate-x-1 transition-transform">
+              CONTINUAR <ArrowRight className="h-3.5 w-3.5" />
+            </span>
           </div>
-        </div>
+        </button>
 
-        {/* Título & Manifiesto Central */}
-        <div className="my-auto py-10">
-          <h2 className="font-display text-4xl md:text-6xl font-bold tracking-tight text-zinc-500 uppercase">
-            LLAMAS ETERNAS
-          </h2>
-          <p className="mt-3 max-w-md font-sans text-sm leading-relaxed text-zinc-500">
-            Infraestructura táctica inter-gremios. Espacio reservado para
-            estrategias y composiciones conjuntas de la coalición.
-          </p>
+        {/* 02. ENTRAR COMO SINDICATO */}
+        <button
+          type="button"
+          onClick={onEnterSindicato}
+          className="group relative flex flex-col justify-between p-8 sm:p-10 text-left bg-[#09090c] border border-dragon-border hover:border-dragon-ember transition-all duration-200 cursor-pointer overflow-hidden"
+        >
+          {/* Acento lateral en hover */}
+          <div className="absolute top-0 left-0 h-full w-1 bg-dragon-ember opacity-0 group-hover:opacity-100 transition-opacity" />
 
-          <div className="mt-8 inline-flex items-center gap-2 border border-dragon-border px-3 py-1 font-mono text-[11px] text-dragon-ember">
-            <Flame className="h-3.5 w-3.5" />
-            <span>MÓDULO EN DESPLIEGUE</span>
+          <div>
+            <div className="flex items-center justify-between mb-6">
+              <span className="font-mono text-xs text-dragon-ember tracking-widest uppercase">
+                // 02_OFICIALES // ROOT
+              </span>
+              <div className="h-10 w-10 border border-dragon-ember/40 bg-dragon-ember/5 flex items-center justify-center text-dragon-ember group-hover:border-dragon-ember transition-colors">
+                <Shield className="h-5 w-5" />
+              </div>
+            </div>
+
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-zinc-100 uppercase tracking-wider group-hover:text-dragon-ember transition-colors">
+              ENTRAR COMO SINDICATO
+            </h2>
+
+            <p className="mt-3 font-sans text-xs sm:text-sm text-zinc-400 leading-relaxed">
+              Autenticación con clave de oficial. Control total para crear o modificar builds, gestionar miembros y avisos, y organizar contenidos.
+            </p>
           </div>
-        </div>
 
-        {/* Estado Inferior */}
-        <div className="flex items-center justify-between font-mono text-xs tracking-widest text-zinc-600">
-          <span>[ ACCESO TEMPORALMENTE BLOQUEADO ]</span>
-          <span>// 403</span>
-        </div>
+          <div className="mt-8 pt-6 border-t border-dragon-border/60 flex items-center justify-between font-mono text-xs tracking-wider text-dragon-ember group-hover:text-dragon-ember transition-colors">
+            <span>[ REQUIERE CONTRASEÑA ]</span>
+            <span className="flex items-center gap-1 text-dragon-ember group-hover:translate-x-1 transition-transform font-bold">
+              AUTORIZAR <ArrowRight className="h-3.5 w-3.5" />
+            </span>
+          </div>
+        </button>
+      </div>
+
+      {/* Footer Info */}
+      <div className="relative z-10 mt-10 font-mono text-[11px] text-zinc-600 tracking-wider">
+        <span>SECURITY_NODE: ACTIVE // SECURE GATEWAY V2.0</span>
       </div>
     </div>
   );

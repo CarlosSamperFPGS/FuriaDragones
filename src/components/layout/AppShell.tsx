@@ -1,27 +1,26 @@
 "use client";
 
 import React, { type ReactNode } from "react";
-import { Shield, Lock } from "lucide-react";
 
 interface AppShellProps {
   children?: ReactNode;
-  onOpenSindicatoLogin: () => void;
-  onLogout?: () => void;
+  isInApp?: boolean;
   isSindicatoAuthenticated?: boolean;
+  onLogout?: () => void;
 }
 
 export function AppShell({
   children,
-  onOpenSindicatoLogin,
-  onLogout,
+  isInApp = false,
   isSindicatoAuthenticated = false,
+  onLogout,
 }: AppShellProps) {
   const currentYear = new Date().getFullYear();
 
   return (
     <div className="flex h-screen w-screen flex-col bg-dragon-bg">
-      {/* Top Bar: Telemetría Técnica y Acceso Sindicato */}
-      <header className="flex h-12 w-full shrink-0 items-center justify-between border-b border-dragon-border px-6 bg-dragon-bg">
+      {/* Top Bar: Telemetría Técnica y Acceso Limpio */}
+      <header className="flex h-12 w-full shrink-0 items-center justify-between border-b border-dragon-border px-6 bg-dragon-bg select-none">
         {/* Identificador de Nodo */}
         <div className="flex items-center gap-3 font-mono text-xs tracking-wider">
           <span className="h-2 w-2 bg-dragon-crimson" />
@@ -30,59 +29,40 @@ export function AppShell({
           </span>
         </div>
 
-        {/* Acceso Indicator & Cerrar Sesión */}
-        <div className="hidden md:flex items-center gap-3 font-mono text-[11px]">
-          <div className="flex items-center gap-2">
-            <span className="text-zinc-500">ACCESO:</span>
-            <span
-              className={
+        {/* Top Bar Derecha: Únicamente indicador sutil y botón de CERRAR SESIÓN */}
+        {isInApp && (
+          <div className="flex items-center gap-3 font-mono text-xs">
+            {/* Indicador Único de Nivel de Acceso */}
+            <div
+              className={`px-2.5 py-1 border tracking-wider uppercase font-semibold ${
                 isSindicatoAuthenticated
-                  ? "text-dragon-ember font-semibold tracking-wider"
-                  : "text-zinc-400 font-semibold tracking-wider"
-              }
+                  ? "border-dragon-ember/50 text-dragon-ember bg-dragon-ember/10"
+                  : "border-zinc-800 text-zinc-400 bg-zinc-900/50"
+              }`}
             >
-              {isSindicatoAuthenticated ? "OFFICER // ROOT" : "MIEMBRO"}
-            </span>
-          </div>
+              <span>ACCESO: {isSindicatoAuthenticated ? "SINDICATO" : "MIEMBRO"}</span>
+            </div>
 
-          {isSindicatoAuthenticated && onLogout && (
-            <button
-              onClick={onLogout}
-              className="flex items-center gap-1.5 border border-dragon-crimsonDark px-2 py-0.5 text-[10px] text-zinc-400 hover:border-dragon-crimson hover:bg-dragon-crimsonDark hover:text-white transition-colors duration-150 uppercase tracking-wider"
-              title="Cerrar sesión de oficial"
-            >
-              <span className="h-1.5 w-1.5 bg-dragon-crimson rounded-full" />
-              <span>CERRAR SESIÓN</span>
-            </button>
-          )}
-        </div>
-
-        {/* Botón Sindicato (Sin tarjetas, borde fino mate) */}
-        <div className="flex items-center">
-          <button
-            onClick={onOpenSindicatoLogin}
-            className="group flex items-center gap-2 border border-dragon-border px-3 py-1.5 font-mono text-[11px] tracking-wider text-zinc-400 transition-colors duration-150 hover:border-dragon-crimson hover:bg-dragon-panel hover:text-zinc-100"
-          >
-            {isSindicatoAuthenticated ? (
-              <>
-                <Shield className="h-3 w-3 text-dragon-crimson" />
-                <span>SINDICATO_ACTIVE</span>
-              </>
-            ) : (
-              <>
-                <Lock className="h-3 w-3 text-zinc-500 transition-colors duration-150 group-hover:text-dragon-crimson" />
-                <span>ACCESO_SINDICATO</span>
-              </>
+            {/* Único botón de Cerrar Sesión */}
+            {onLogout && (
+              <button
+                type="button"
+                onClick={onLogout}
+                className="px-2.5 py-1 border border-zinc-700 text-zinc-400 hover:text-white hover:border-dragon-crimson hover:bg-dragon-crimsonDark transition-colors uppercase tracking-wider"
+                title="Cerrar sesión y volver a la pantalla de acceso"
+              >
+                [ CERRAR SESIÓN ]
+              </button>
             )}
-          </button>
-        </div>
+          </div>
+        )}
       </header>
 
       {/* Main Workspace: Altura Completa Sin Scroll de Página */}
       <main className="relative flex-1 overflow-hidden">{children}</main>
 
-      {/* Footer Moderno con Fuente Hacker */}
-      <footer className="flex h-8 w-full shrink-0 items-center justify-center border-t border-dragon-border px-6 font-mono text-[11px] text-zinc-500 bg-dragon-bg">
+      {/* Footer Moderno */}
+      <footer className="flex h-8 w-full shrink-0 items-center justify-center border-t border-dragon-border px-6 font-mono text-[11px] text-zinc-500 bg-dragon-bg select-none">
         <p className="flex items-center gap-1.5">
           <span>&copy; {currentYear}</span>
           <span className="font-hacker text-dragon-crimson text-sm tracking-widest">HAZARD</span>
