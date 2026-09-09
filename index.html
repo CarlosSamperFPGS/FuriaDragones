@@ -1,841 +1,1006 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Furia de Dragones - Gestor de Builds Albion Online</title>
-  <meta name="description" content="Gestor de builds de Albion Online para el gremio Furia de Dragones. Organizado por carpetas de contenido.">
+  <title>FURIA DE DRAGONES // TACTICAL OPS</title>
+  <meta name="description" content="Terminal de Operaciones Tácticas, Roster y Builds - Albion Online">
+  
+  <!-- Google Fonts: Rajdhani (Display/Titulares) + JetBrains Mono (Datos/Métricas) + Inter (UI General) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Rajdhani', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            dragon: {
+              bg: '#09090b',
+              panel: '#121215',
+              hover: '#18181b',
+              border: '#27272a',
+              crimson: '#dc2626',
+              crimsonDark: '#991b1b',
+              ember: '#f97316',
+              muted: '#71717a',
+            }
+          },
+          borderRadius: {
+            DEFAULT: '2px',
+            sm: '1px',
+          },
+          transitionDuration: {
+            DEFAULT: '150ms',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Estilos Tácticos Específicos de Ranuras de Albion -->
   <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
+<body class="h-screen w-screen overflow-hidden flex flex-col bg-dragon-bg font-sans text-zinc-200 antialiased select-none">
 
-  <!-- Encabezado Principal -->
-  <header class="app-header">
-    <div class="header-content">
-      <div class="brand">
-        <h1 class="brand-title">Furia de Dragones</h1>
-        <span class="brand-tag">Gestor de Builds & Equipamiento - Albion Online</span>
+  <!-- ========================================================================== -->
+  <!-- TOP APP SHELL BAR: Telemetría Técnica y Acceso Sindicato -->
+  <!-- ========================================================================== -->
+  <header class="h-12 w-full shrink-0 border-b border-dragon-border px-4 md:px-6 flex items-center justify-between bg-dragon-bg z-30">
+    <!-- Identificador de Nodo & Navegación -->
+    <div class="flex items-center gap-3">
+      <span class="h-2.5 w-2.5 bg-dragon-crimson" title="Nodo Operacional Activo"></span>
+      <span class="font-display text-base font-bold tracking-widest text-zinc-100 uppercase cursor-pointer" id="brand-logo-btn">
+        FURIA // OPS
+      </span>
+      <span class="text-zinc-700 font-mono">/</span>
+      <span id="header-active-view-label" class="font-mono text-xs tracking-wider text-zinc-400 uppercase">
+        GATEWAY
+      </span>
+      <button type="button" id="btn-nav-gateway" class="hidden items-center gap-1.5 border border-dragon-border px-2.5 py-1 font-mono text-[11px] text-zinc-400 hover:border-dragon-crimson hover:bg-dragon-panel hover:text-zinc-100 transition-colors duration-150">
+        ← GATEWAY
+      </button>
+    </div>
+
+    <!-- Telemetría Central Silenciosa (Esports Style) -->
+    <div class="hidden lg:flex items-center gap-6 font-mono text-[11px] text-zinc-500">
+      <div class="flex items-center gap-2">
+        <i data-lucide="activity" class="h-3 w-3 text-zinc-400"></i>
+        <span>NET: 24MS</span>
+      </div>
+      <span>•</span>
+      <div class="flex items-center gap-2">
+        <span>SERVER:</span>
+        <span class="text-zinc-300 font-semibold">ALBION [EU]</span>
+      </div>
+      <span>•</span>
+      <div class="flex items-center gap-2">
+        <span>SEC_LEVEL:</span>
+        <span id="header-sec-level" class="text-zinc-400">GUEST // READ_ONLY</span>
+      </div>
+    </div>
+
+    <!-- Controles de Autenticación & Rol -->
+    <div class="flex items-center gap-3">
+      <!-- Elementos de compatibilidad con backend JS -->
+      <div id="user-role-badge" class="hidden">
+        <span id="user-role-icon"></span>
+        <span id="user-role-label"></span>
+      </div>
+      <div class="hidden">
+        <span id="saved-count">0</span>
+        <button id="tab-btn-saved-builds" data-tab="saved-builds"></button>
+        <button id="tab-btn-builder" data-tab="builder"></button>
+        <button id="tab-btn-members" data-tab="members"></button>
+        <button id="tab-btn-attendance" data-tab="attendance"></button>
+        <button id="tab-btn-alliance" data-tab="alliance"></button>
       </div>
 
-      <nav class="nav-tabs">
-        <button type="button" class="tab-btn active" data-tab="saved-builds">Builds Furia (<span id="saved-count">0</span>)</button>
-        <button type="button" class="tab-btn officer-only" data-tab="builder" id="tab-btn-builder">Creador</button>
-        <button type="button" class="tab-btn officer-only" data-tab="members" id="tab-btn-members">Miembros</button>
-        <button type="button" class="tab-btn officer-only" data-tab="attendance" id="tab-btn-attendance">Asistencias</button>
-        <button type="button" class="tab-btn" data-tab="alliance" id="tab-btn-alliance">Llamas Eternas</button>
-      </nav>
-
-      <!-- Control de Rol / Usuario -->
-      <div class="user-role-container">
-        <div id="user-role-badge" class="role-badge role-badge-member">
-          <span id="user-role-icon"></span>
-          <span id="user-role-label">Modo Miembro (Solo Lectura)</span>
-        </div>
-        <button type="button" id="btn-open-login-modal" class="btn btn-secondary btn-sm">Acceso Oficial</button>
-        <button type="button" id="btn-logout-officer" class="btn btn-outline btn-sm officer-only" style="display: none;">Cerrar Sesión</button>
-      </div>
+      <button type="button" id="btn-open-login-modal" class="flex items-center gap-2 border border-dragon-border px-3 py-1.5 font-mono text-[11px] tracking-wider text-zinc-400 transition-colors duration-150 hover:border-dragon-crimson hover:bg-dragon-panel hover:text-zinc-100">
+        <i data-lucide="lock" class="h-3 w-3 text-zinc-500"></i>
+        <span>ACCESO_SINDICATO</span>
+      </button>
+      <button type="button" id="btn-logout-officer" class="hidden items-center gap-2 border border-dragon-crimson px-3 py-1.5 font-mono text-[11px] tracking-wider text-dragon-crimson transition-colors duration-150 hover:bg-dragon-crimson hover:text-white">
+        <i data-lucide="shield" class="h-3 w-3"></i>
+        <span>SALIR_SINDICATO</span>
+      </button>
     </div>
   </header>
 
-  <!-- Contenedor Principal -->
-  <main class="main-content">
+  <!-- ========================================================================== -->
+  <!-- MAIN WORKSPACE: Viewport Rígido a Pantalla Completa (Anti-Scroll de Página) -->
+  <!-- ========================================================================== -->
+  <main class="relative flex-1 overflow-hidden">
 
-    <!-- SECCIÓN 1: CONSULTAR BUILDS POR CARPETAS (VISTA PRINCIPAL) -->
-    <section id="tab-saved-builds" class="tab-section active">
-      <div class="folders-layout">
-        
-        <!-- Barra lateral de Carpetas -->
-        <aside class="folders-sidebar">
-          <div class="folders-sidebar-header">
-            <h3>Carpetas</h3>
-            <div style="display: flex; gap: 4px;">
-              <button type="button" id="btn-create-new-folder" class="btn btn-secondary btn-sm" title="Crear nueva carpeta">+ Nueva</button>
-              <button type="button" id="btn-manage-folders" class="btn btn-secondary btn-sm" title="Administrar carpetas">Gestionar</button>
+    <!-- ======================================================================== -->
+    <!-- VISTA 1: GATEWAY (Pantalla de Entrada Dividida 50/50 - Anti-Cards) -->
+    <!-- ======================================================================== -->
+    <section id="view-gateway" class="h-full w-full grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-dragon-border">
+      
+      <!-- CUADRANTE 01: GREMIO FURIA DE DRAGONES (ACTIVO) -->
+      <div id="gateway-gremio-card" class="group relative flex flex-col justify-between p-8 md:p-14 cursor-pointer bg-dragon-bg transition-colors duration-200 hover:bg-dragon-panel">
+        <!-- Línea de acento interactiva izquierda -->
+        <div class="absolute left-0 top-0 h-full w-1 bg-dragon-crimson opacity-0 transition-opacity duration-150 group-hover:opacity-100"></div>
+
+        <!-- Encabezado del Cuadrante -->
+        <div class="flex items-start justify-between">
+          <div class="space-y-1">
+            <span class="font-mono text-xs tracking-widest text-dragon-crimson">// 01_SECTOR</span>
+            <div class="flex items-center gap-2 font-mono text-[11px] text-zinc-500">
+              <span class="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+              STATUS: ACCESO_DISPONIBLE
             </div>
           </div>
-          <ul class="folders-list" id="folders-nav-list">
-            <!-- Renderizado dinámicamente -->
-          </ul>
-        </aside>
-
-        <!-- Contenedor de Builds de la Carpeta Activa -->
-        <div class="folders-content-area">
-          <div class="panel-header">
-            <div>
-              <h2 id="current-folder-title">Todas las Builds</h2>
-              <span id="current-folder-count" style="font-size: 12px; color: var(--text-muted);">0 builds</span>
-            </div>
-            <div class="filter-controls" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-              <input type="text" id="search-saved-builds" class="form-control form-control-sm" placeholder="Buscar build por nombre o rol...">
-              <button type="button" id="btn-create-build-from-list" class="btn btn-primary btn-sm officer-only">Crear Nueva Build</button>
-            </div>
-          </div>
-          
-          <!-- Filtro rápido por rol -->
-          <div class="role-filter-bar" id="role-filter-bar">
-            <button type="button" class="role-filter-chip active" data-role="ALL">Todos los Roles</button>
-            <button type="button" class="role-filter-chip" data-role="DPS Melee">DPS Melee</button>
-            <button type="button" class="role-filter-chip" data-role="DPS Ranged">DPS Ranged</button>
-            <button type="button" class="role-filter-chip" data-role="Tank">Tank</button>
-            <button type="button" class="role-filter-chip" data-role="Healer">Healer</button>
-            <button type="button" class="role-filter-chip" data-role="Soporte">Soporte</button>
-          </div>
-
-          <div class="saved-builds-grid" id="saved-builds-container">
-            <!-- Renderizado dinámicamente -->
+          <div class="flex h-10 w-10 items-center justify-center border border-dragon-border text-zinc-500 transition-all duration-150 group-hover:border-dragon-crimson group-hover:text-zinc-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+            <i data-lucide="arrow-up-right" class="h-5 w-5"></i>
           </div>
         </div>
 
-      </div>
-    </section>
-
-    <!-- SECCIÓN 2: CREADOR / EDITOR DE BUILD -->
-    <section id="tab-builder" class="tab-section">
-      <div class="builder-layout">
-
-        <!-- Columna Izquierda: Ranuras de Equipamiento -->
-        <div class="equipment-column">
-          <div class="panel-header">
-            <h2 id="editor-title">Editor de Equipamiento</h2>
-            <button type="button" id="btn-clear-build" class="btn btn-secondary btn-sm">Limpiar Ranuras</button>
-          </div>
-
-          <div class="slots-grid">
-
-            <!-- CASCO (HEAD) -->
-            <div class="slot-card" id="slot-card-head">
-              <div class="slot-header">
-                <span class="slot-title">Casco / Cabeza</span>
-                <span class="slot-tier-badge" id="badge-head">T8.0</span>
-              </div>
-              <div class="slot-body">
-                <div class="slot-icon-wrapper" data-slot="head" title="Clic para seleccionar Casco">
-                  <img id="img-head" class="slot-img" src="" alt="Casco" style="display: none;">
-                  <span class="slot-empty-text" id="empty-head">+ Equipar</span>
-                </div>
-                <div class="slot-details">
-                  <span class="item-name" id="name-head">Ninguno</span>
-                  <div class="spells-bar" id="spells-head">
-                    <button type="button" class="spell-btn" data-slot="head" data-spell-type="active" title="Habilidad Activa (D)">
-                      <img id="spell-img-head-active" class="spell-img" src="" alt="D" style="display:none;">
-                      <span id="spell-txt-head-active">D</span>
-                    </button>
-                    <button type="button" class="spell-btn" data-slot="head" data-spell-type="passive" title="Pasiva">
-                      <img id="spell-img-head-passive" class="spell-img" src="" alt="P" style="display:none;">
-                      <span id="spell-txt-head-passive">P</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- CAPA (CAPE) -->
-            <div class="slot-card" id="slot-card-cape">
-              <div class="slot-header">
-                <span class="slot-title">Capa</span>
-                <span class="slot-tier-badge" id="badge-cape">T8.0</span>
-              </div>
-              <div class="slot-body">
-                <div class="slot-icon-wrapper" data-slot="cape" title="Clic para seleccionar Capa">
-                  <img id="img-cape" class="slot-img" src="" alt="Capa" style="display: none;">
-                  <span class="slot-empty-text" id="empty-cape">+ Equipar</span>
-                </div>
-                <div class="slot-details">
-                  <span class="item-name" id="name-cape">Ninguno</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- ARMA PRINCIPAL (MAIN HAND) -->
-            <div class="slot-card" id="slot-card-mainhand">
-              <div class="slot-header">
-                <span class="slot-title">Arma Principal</span>
-                <span class="slot-tier-badge" id="badge-mainhand">T8.0</span>
-              </div>
-              <div class="slot-body">
-                <div class="slot-icon-wrapper" data-slot="mainhand" title="Clic para seleccionar Arma">
-                  <img id="img-mainhand" class="slot-img" src="" alt="Arma" style="display: none;">
-                  <span class="slot-empty-text" id="empty-mainhand">+ Equipar</span>
-                </div>
-                <div class="slot-details">
-                  <span class="item-name" id="name-mainhand">Ninguno</span>
-                  <div class="spells-bar" id="spells-mainhand">
-                    <button type="button" class="spell-btn" data-slot="mainhand" data-spell-type="q" title="Habilidad Q">
-                      <img id="spell-img-mainhand-q" class="spell-img" src="" alt="Q" style="display:none;">
-                      <span id="spell-txt-mainhand-q">Q</span>
-                    </button>
-                    <button type="button" class="spell-btn" data-slot="mainhand" data-spell-type="w" title="Habilidad W">
-                      <img id="spell-img-mainhand-w" class="spell-img" src="" alt="W" style="display:none;">
-                      <span id="spell-txt-mainhand-w">W</span>
-                    </button>
-                    <button type="button" class="spell-btn" data-slot="mainhand" data-spell-type="e" title="Habilidad E">
-                      <img id="spell-img-mainhand-e" class="spell-img" src="" alt="E" style="display:none;">
-                      <span id="spell-txt-mainhand-e">E</span>
-                    </button>
-                    <button type="button" class="spell-btn" data-slot="mainhand" data-spell-type="passive" title="Pasiva">
-                      <img id="spell-img-mainhand-passive" class="spell-img" src="" alt="P" style="display:none;">
-                      <span id="spell-txt-mainhand-passive">P</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- MANO SECUNDARIA (OFF-HAND) -->
-            <div class="slot-card" id="slot-card-offhand">
-              <div class="slot-header">
-                <span class="slot-title">Mano Secundaria</span>
-                <span class="slot-tier-badge" id="badge-offhand">T8.0</span>
-              </div>
-              <div class="slot-body">
-                <div class="slot-icon-wrapper" data-slot="offhand" title="Clic para seleccionar Mano Secundaria">
-                  <img id="img-offhand" class="slot-img" src="" alt="Mano Secundaria" style="display: none;">
-                  <span class="slot-empty-text" id="empty-offhand">+ Equipar</span>
-                </div>
-                <div class="slot-details">
-                  <span class="item-name" id="name-offhand">Ninguno</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- ARMADURA / PECHO (ARMOR) -->
-            <div class="slot-card" id="slot-card-armor">
-              <div class="slot-header">
-                <span class="slot-title">Armadura / Pecho</span>
-                <span class="slot-tier-badge" id="badge-armor">T8.0</span>
-              </div>
-              <div class="slot-body">
-                <div class="slot-icon-wrapper" data-slot="armor" title="Clic para seleccionar Armadura">
-                  <img id="img-armor" class="slot-img" src="" alt="Armadura" style="display: none;">
-                  <span class="slot-empty-text" id="empty-armor">+ Equipar</span>
-                </div>
-                <div class="slot-details">
-                  <span class="item-name" id="name-armor">Ninguno</span>
-                  <div class="spells-bar" id="spells-armor">
-                    <button type="button" class="spell-btn" data-slot="armor" data-spell-type="active" title="Habilidad Activa (R)">
-                      <img id="spell-img-armor-active" class="spell-img" src="" alt="R" style="display:none;">
-                      <span id="spell-txt-armor-active">R</span>
-                    </button>
-                    <button type="button" class="spell-btn" data-slot="armor" data-spell-type="passive" title="Pasiva">
-                      <img id="spell-img-armor-passive" class="spell-img" src="" alt="P" style="display:none;">
-                      <span id="spell-txt-armor-passive">P</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- BOTAS / CALZADO (SHOES) -->
-            <div class="slot-card" id="slot-card-shoes">
-              <div class="slot-header">
-                <span class="slot-title">Botas / Calzado</span>
-                <span class="slot-tier-badge" id="badge-shoes">T8.0</span>
-              </div>
-              <div class="slot-body">
-                <div class="slot-icon-wrapper" data-slot="shoes" title="Clic para seleccionar Botas">
-                  <img id="img-shoes" class="slot-img" src="" alt="Botas" style="display: none;">
-                  <span class="slot-empty-text" id="empty-shoes">+ Equipar</span>
-                </div>
-                <div class="slot-details">
-                  <span class="item-name" id="name-shoes">Ninguno</span>
-                  <div class="spells-bar" id="spells-shoes">
-                    <button type="button" class="spell-btn" data-slot="shoes" data-spell-type="active" title="Habilidad Activa (F)">
-                      <img id="spell-img-shoes-active" class="spell-img" src="" alt="F" style="display:none;">
-                      <span id="spell-txt-shoes-active">F</span>
-                    </button>
-                    <button type="button" class="spell-btn" data-slot="shoes" data-spell-type="passive" title="Pasiva">
-                      <img id="spell-img-shoes-passive" class="spell-img" src="" alt="P" style="display:none;">
-                      <span id="spell-txt-shoes-passive">P</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- COMIDA (FOOD) -->
-            <div class="slot-card" id="slot-card-food">
-              <div class="slot-header">
-                <span class="slot-title">Comida</span>
-                <span class="slot-tier-badge" id="badge-food">T8</span>
-              </div>
-              <div class="slot-body">
-                <div class="slot-icon-wrapper" data-slot="food" title="Clic para seleccionar Comida">
-                  <img id="img-food" class="slot-img" src="" alt="Comida" style="display: none;">
-                  <span class="slot-empty-text" id="empty-food">+ Equipar</span>
-                </div>
-                <div class="slot-details">
-                  <span class="item-name" id="name-food">Ninguno</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- POCIÓN (POTION) -->
-            <div class="slot-card" id="slot-card-potion">
-              <div class="slot-header">
-                <span class="slot-title">Poción</span>
-                <span class="slot-tier-badge" id="badge-potion">T7</span>
-              </div>
-              <div class="slot-body">
-                <div class="slot-icon-wrapper" data-slot="potion" title="Clic para seleccionar Poción">
-                  <img id="img-potion" class="slot-img" src="" alt="Poción" style="display: none;">
-                  <span class="slot-empty-text" id="empty-potion">+ Equipar</span>
-                </div>
-                <div class="slot-details">
-                  <span class="item-name" id="name-potion">Ninguno</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- MONTURA (MOUNT) -->
-            <div class="slot-card" id="slot-card-mount">
-              <div class="slot-header">
-                <span class="slot-title">Montura</span>
-                <span class="slot-tier-badge" id="badge-mount">T6</span>
-              </div>
-              <div class="slot-body">
-                <div class="slot-icon-wrapper" data-slot="mount" title="Clic para seleccionar Montura">
-                  <img id="img-mount" class="slot-img" src="" alt="Montura" style="display: none;">
-                  <span class="slot-empty-text" id="empty-mount">+ Equipar</span>
-                </div>
-                <div class="slot-details">
-                  <span class="item-name" id="name-mount">Ninguno</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Columna Derecha: Información y Acciones de la Build -->
-        <div class="info-column">
-          <div class="panel-card">
-            <h2>Configuración de la Build</h2>
-            
-            <div class="form-group">
-              <label for="build-name-input">Nombre de la Build:</label>
-              <input type="text" id="build-name-input" class="form-control" placeholder="Ej: Bruiser - Romperreinos">
-            </div>
-
-            <div class="form-row">
-              <div class="form-group flex-1">
-                <label for="build-role-input">Rol / Función:</label>
-                <input type="text" id="build-role-input" class="form-control" placeholder="Ej: DPS, Healer, Tanque">
-              </div>
-              <div class="form-group flex-1">
-                <label for="build-tier-equiv-select">Tier Equivalente Recomendado:</label>
-                <select id="build-tier-equiv-select" class="form-control">
-                  <option value="6">Tier 6 Equivalente (6.0 / 5.1 / 4.2)</option>
-                  <option value="7">Tier 7 Equivalente (7.0 / 6.1 / 5.2 / 4.3)</option>
-                  <option value="8" selected>Tier 8 Equivalente (8.0 / 7.1 / 6.2 / 5.3 / 4.4)</option>
-                  <option value="9">Tier 9 Equivalente (8.1 / 7.2 / 6.3 / 5.4)</option>
-                  <option value="10">Tier 10 Equivalente (8.2 / 7.3 / 6.4)</option>
-                  <option value="11">Tier 11 Equivalente (8.3 / 7.4)</option>
-                  <option value="12">Tier 12 Equivalente (8.4)</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="build-folder-select">Carpeta / Contenido:</label>
-              <div style="display: flex; gap: 4px;">
-                <select id="build-folder-select" class="form-control">
-                  <!-- Opciones de carpetas -->
-                </select>
-                <button type="button" id="btn-add-folder-inline" class="btn btn-secondary btn-sm" title="Crear nueva carpeta">+</button>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="build-notes-input">Notas / Comentarios:</label>
-              <textarea id="build-notes-input" class="form-control" rows="3" placeholder="Notas sobre el combo o uso..."></textarea>
-            </div>
-
-            <div class="actions-group">
-              <button type="button" id="btn-save-build" class="btn btn-primary">Guardar Build</button>
-              <button type="button" id="btn-cancel-builder" class="btn btn-outline">Volver a Builds</button>
-              <button type="button" id="btn-copy-discord" class="btn btn-secondary">Copiar Formato Discord</button>
-              <button type="button" id="btn-share-link" class="btn btn-secondary">Copiar Enlace</button>
-            </div>
-
-            <div class="import-export-row">
-              <button type="button" id="btn-export-json" class="btn btn-outline btn-sm">Exportar JSON</button>
-              <button type="button" id="btn-import-json" class="btn btn-outline btn-sm">Importar JSON</button>
-              <button type="button" id="btn-restore-defaults" class="btn btn-outline btn-sm" title="Restaurar las guías de builds iniciales del gremio">Restaurar Builds por Defecto</button>
-              <input type="file" id="file-import-json" accept=".json" style="display: none;">
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- SECCIÓN 3: GESTOR DE MIEMBROS (EXCLUSIVO OFICIALES / SINDICATO) -->
-    <section id="tab-members" class="tab-section officer-only">
-      <div class="panel-box">
-        <div class="panel-header">
-          <div>
-            <h2>Roster del Gremio - Furia de Dragones</h2>
-            <span id="members-count-summary" style="font-size: 12px; color: var(--text-muted);">0 miembros registrados</span>
-          </div>
-          <div class="panel-header-actions">
-            <button type="button" id="btn-open-add-member" class="btn btn-primary btn-sm">+ Registrar Miembro</button>
-          </div>
-        </div>
-
-        <!-- Filtros del Roster -->
-        <div class="roster-filters-bar">
-          <div class="roster-search-box">
-            <input type="text" id="search-members-input" class="form-control form-control-sm" placeholder="Buscar por nick en Albion...">
-          </div>
-          <div class="roster-chips-group">
-            <button type="button" class="roster-status-chip active" data-status="ALL">Todos</button>
-            <button type="button" class="roster-status-chip" data-status="ACTIVE">Activos</button>
-            <button type="button" class="roster-status-chip" data-status="INACTIVE">Inactivos</button>
-            <button type="button" class="roster-status-chip" data-status="STRIKES">Con Amonestaciones</button>
-          </div>
-          <div class="roster-role-select-box">
-            <select id="filter-member-role-select" class="form-control form-control-sm">
-              <option value="ALL">Todos los Roles de Combate</option>
-              <option value="Tank">Tank</option>
-              <option value="Healer">Healer</option>
-              <option value="DPS Melee">DPS Melee</option>
-              <option value="DPS Ranged">DPS Ranged</option>
-              <option value="Soporte">Soporte</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Tabla de Miembros -->
-        <div class="members-table-wrapper">
-          <table class="members-table" id="members-table">
-            <thead>
-              <tr>
-                <th>Nick Ingame</th>
-                <th>Rango Gremio</th>
-                <th>Rol de Combate</th>
-                <th>Estado</th>
-                <th>Amonestaciones</th>
-                <th>Notas de Oficial</th>
-                <th style="text-align: right;">Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="members-table-body">
-              <!-- Renderizado dinámicamente -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECCIÓN 4: GESTOR DE ASISTENCIAS (EXCLUSIVO OFICIALES / SINDICATO) -->
-    <section id="tab-attendance" class="tab-section officer-only">
-      <div class="attendance-layout">
-        
-        <!-- Barra Lateral: Actividades / Eventos -->
-        <aside class="attendance-sidebar">
-          <div class="panel-header">
-            <div>
-              <h3>Actividades & CTAs</h3>
-              <span id="activities-count" style="font-size: 12px; color: var(--text-muted);">0 registradas</span>
-            </div>
-            <button type="button" id="btn-open-create-activity" class="btn btn-primary btn-sm">+ Nueva</button>
-          </div>
-          <div class="activities-list" id="activities-nav-list">
-            <!-- Renderizado dinámicamente -->
-          </div>
-        </aside>
-
-        <!-- Área de Detalle y Toma de Asistencia -->
-        <div class="attendance-content-area">
-          <div id="attendance-active-panel">
-            <!-- Renderizado dinámicamente según la actividad seleccionada -->
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- SECCIÓN 5: ALIANZA "LLAMAS ETERNAS" (PÚBLICA) -->
-    <section id="tab-alliance" class="tab-section">
-      <div class="alliance-container">
-        <div class="alliance-hero-banner">
-          <div class="alliance-crest">
-            <svg viewBox="0 0 24 24" width="60" height="60" fill="none" stroke="#c99c37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2c-4 4-7 8-7 13a7 7 0 0 0 14 0c0-5-3-9-7-13z"></path>
-              <path d="M12 9c-2 2-3.5 4-3.5 6.5a3.5 3.5 0 0 0 7 0C15.5 13 14 11 12 9z" fill="rgba(201, 156, 55, 0.18)"></path>
-            </svg>
-          </div>
-          <h2 class="alliance-title">ALIANZA: LLAMAS ETERNAS</h2>
-          <span class="alliance-subtitle">Coalición Táctica y Estratégica - Albion Online</span>
-        </div>
-
-        <div class="alliance-maintenance-card">
-          <div class="maintenance-badge">Sección en Mantenimiento</div>
-          <h3>Repositorio de Builds Compartidas</h3>
-          <p>
-            Estamos preparando la infraestructura de intercambio táctico para los gremios que conforman 
-            <strong>Llamas Eternas</strong>. Próximamente, cada gremio dispondrá de acceso para publicar y consultar 
-            builds de ZvZ, escaladas y composiciones conjuntas para dominar las tierras lejanas.
+        <!-- Manifiesto Central -->
+        <div class="my-auto py-8">
+          <h2 class="font-display text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-zinc-100 uppercase transition-colors duration-150 group-hover:text-white">
+            FURIA DE DRAGONES
+          </h2>
+          <p class="mt-3 max-w-md font-sans text-sm leading-relaxed text-zinc-400">
+            Repositorio de builds tácticas, equipamiento ZvZ estandarizado, escaladas de contenido y asignación de roles de combate del gremio.
           </p>
-          <div class="alliance-tags-row">
-            <span class="alliance-tag">Furia de Dragones</span>
-            <span class="alliance-tag">Llamas Eternas</span>
-            <span class="alliance-tag">ZvZ Conjunta</span>
-            <span class="alliance-tag">Composiciones de Alianza</span>
+
+          <!-- Telemetría en Fila Técnica -->
+          <div class="mt-8 flex items-center gap-8 border-t border-dragon-border pt-6 font-mono text-xs">
+            <div class="flex items-center gap-2 text-zinc-400">
+              <i data-lucide="swords" class="h-4 w-4 text-dragon-crimson"></i>
+              <span id="gateway-builds-count-tag">BUILDS_ACTUALIZADAS</span>
+            </div>
+            <div class="flex items-center gap-2 text-zinc-400">
+              <i data-lucide="users" class="h-4 w-4 text-zinc-500"></i>
+              <span id="gateway-members-count-tag">ROSTER_OFICIAL</span>
+            </div>
           </div>
         </div>
+
+        <!-- CTA Inferior -->
+        <div class="flex items-center justify-between font-mono text-xs tracking-widest text-zinc-500 group-hover:text-zinc-200">
+          <span>[ PULSAR PARA ENTRAR AL PANEL DE BUILDS ]</span>
+          <span class="text-dragon-crimson">→</span>
+        </div>
+      </div>
+
+      <!-- CUADRANTE 02: ALIANZA LLAMAS ETERNAS (OFFLINE / MANTENIMIENTO) -->
+      <div class="relative flex flex-col justify-between p-8 md:p-14 bg-dragon-bg/40 opacity-70 cursor-not-allowed">
+        <!-- Encabezado del Cuadrante -->
+        <div class="flex items-start justify-between">
+          <div class="space-y-1">
+            <span class="font-mono text-xs tracking-widest text-zinc-500">// 02_SECTOR</span>
+            <div class="flex items-center gap-2 font-mono text-[11px] text-zinc-500">
+              <span class="inline-block h-1.5 w-1.5 rounded-full bg-dragon-ember"></span>
+              OFFLINE // MANTENIMIENTO
+            </div>
+          </div>
+          <div class="flex h-10 w-10 items-center justify-center border border-dragon-border text-zinc-600">
+            <i data-lucide="shield-alert" class="h-5 w-5"></i>
+          </div>
+        </div>
+
+        <!-- Manifiesto Central -->
+        <div class="my-auto py-8">
+          <h2 class="font-display text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-zinc-500 uppercase">
+            LLAMAS ETERNAS
+          </h2>
+          <p class="mt-3 max-w-md font-sans text-sm leading-relaxed text-zinc-500">
+            Infraestructura táctica inter-gremios. Espacio reservado para compartir builds conjuntas de alianza, composiciones de castillo y coordinación de tierras lejanas.
+          </p>
+
+          <div class="mt-8 inline-flex items-center gap-2 border border-dragon-border px-3 py-1 font-mono text-[11px] text-dragon-ember">
+            <i data-lucide="flame" class="h-3.5 w-3.5"></i>
+            <span>MÓDULO EN DESPLIEGUE</span>
+          </div>
+        </div>
+
+        <!-- Estado Inferior -->
+        <div class="flex items-center justify-between font-mono text-xs tracking-widest text-zinc-600">
+          <span>[ ACCESO TEMPORALMENTE BLOQUEADO ]</span>
+          <span>// 403</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================== -->
+    <!-- VISTA 2: VISTA DE MIEMBRO BASE (Panel de Control de Esports - Anti-Cards) -->
+    <!-- ======================================================================== -->
+    <section id="view-gremio" class="hidden h-full w-full flex-col overflow-hidden bg-dragon-bg">
+      <!-- Barra Superior de Herramientas & Filtros -->
+      <div class="shrink-0 border-b border-dragon-border bg-dragon-panel/50 px-6 py-3">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+          
+          <!-- Búsqueda Técnica -->
+          <div class="flex items-center gap-3">
+            <div class="relative w-64 md:w-80">
+              <input type="text" id="search-saved-builds" class="w-full bg-dragon-bg border border-dragon-border px-3 py-1.5 text-xs font-mono text-zinc-200 placeholder:text-zinc-600 focus:border-dragon-crimson outline-none transition-colors duration-150" placeholder="BUSCAR POR NOMBRE O ROL...">
+            </div>
+            <span id="current-folder-count" class="font-mono text-[11px] text-zinc-500">0 BUILDS</span>
+            <span id="current-folder-title" class="hidden">Todas las Builds</span>
+          </div>
+
+          <!-- Filtros de Roles de Combate (Horizontal Text Tags) -->
+          <div class="flex items-center gap-1 font-mono text-xs flex-wrap" id="role-filter-bar">
+            <button type="button" class="role-filter-chip active border border-dragon-crimson bg-dragon-crimson/10 px-2.5 py-1 text-zinc-100 hover:text-white" data-role="ALL">TODOS</button>
+            <button type="button" class="role-filter-chip border border-dragon-border px-2.5 py-1 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200" data-role="Tank">TANK</button>
+            <button type="button" class="role-filter-chip border border-dragon-border px-2.5 py-1 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200" data-role="Healer">HEALER</button>
+            <button type="button" class="role-filter-chip border border-dragon-border px-2.5 py-1 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200" data-role="DPS Melee">DPS MELEE</button>
+            <button type="button" class="role-filter-chip border border-dragon-border px-2.5 py-1 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200" data-role="DPS Ranged">DPS RANGED</button>
+            <button type="button" class="role-filter-chip border border-dragon-border px-2.5 py-1 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200" data-role="Soporte">SOPORTE</button>
+          </div>
+        </div>
+
+        <!-- Filtros Rápidos de Carpetas (Fila Horizontal Técnica) -->
+        <div class="mt-2.5 pt-2.5 border-t border-dragon-border flex items-center gap-2 overflow-x-auto text-[11px] font-mono scrollbar-thin">
+          <span class="text-zinc-600 uppercase">CARPETAS:</span>
+          <div id="folders-nav-list" class="flex items-center gap-1.5">
+            <!-- Renderizado dinámicamente como botones técnicos horizontales -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenedor Principal: Lista de Datos Interactiva (Data Rows a Ancho Completo) -->
+      <div class="flex-1 overflow-y-auto" id="gremio-table-scroll">
+        <!-- Encabezado de Columnas (Fijo) -->
+        <div class="sticky top-0 z-10 grid grid-cols-12 gap-2 border-b border-dragon-border bg-dragon-bg px-6 py-2.5 font-mono text-[11px] tracking-wider text-zinc-500 uppercase">
+          <div class="col-span-1">ARMA</div>
+          <div class="col-span-4 md:col-span-3">IDENTIFICADOR / NOMBRE</div>
+          <div class="col-span-2">ROL</div>
+          <div class="col-span-2">TIER EQUIV</div>
+          <div class="col-span-2 hidden md:block">CONTENIDO</div>
+          <div class="col-span-3 md:col-span-2 text-right">ACCIONES</div>
+        </div>
+
+        <!-- Filas de Builds (Renderizado dinámicamente) -->
+        <div id="saved-builds-container" class="divide-y divide-dragon-border">
+          <!-- Renderizado dinámico como data rows horizontales sin cards -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================== -->
+    <!-- VISTA 3: DASHBOARD DEL SINDICATO (Centro de Mando Técnico Privado) -->
+    <!-- ======================================================================== -->
+    <section id="view-sindicato" class="hidden h-full w-full flex-col overflow-hidden bg-dragon-bg">
+      
+      <!-- Sub-Navegación por Pestañas del Sindicato (Tabs Técnicas) -->
+      <nav class="shrink-0 border-b border-dragon-border bg-dragon-panel/70 px-6 flex items-center justify-between">
+        <div class="flex items-center gap-1" id="sindicato-nav-tabs">
+          <button type="button" class="sindicato-tab-btn active border-b-2 border-dragon-crimson px-4 py-3 font-mono text-xs font-semibold tracking-wider text-zinc-100" data-subview="builds">
+            // 01_ADMIN_BUILDS
+          </button>
+          <button type="button" class="sindicato-tab-btn border-b-2 border-transparent px-4 py-3 font-mono text-xs font-semibold tracking-wider text-zinc-400 hover:text-zinc-200" data-subview="builder">
+            // 02_CREADOR_PASOS
+          </button>
+          <button type="button" class="sindicato-tab-btn border-b-2 border-transparent px-4 py-3 font-mono text-xs font-semibold tracking-wider text-zinc-400 hover:text-zinc-200" data-subview="members">
+            // 03_ROSTER_MIEMBROS
+          </button>
+          <button type="button" class="sindicato-tab-btn border-b-2 border-transparent px-4 py-3 font-mono text-xs font-semibold tracking-wider text-zinc-400 hover:text-zinc-200" data-subview="attendance">
+            // 04_ASISTENCIAS_SPREADSHEET
+          </button>
+        </div>
+
+        <div class="hidden sm:flex items-center gap-2 font-mono text-[11px] text-zinc-500">
+          <span class="inline-block h-2 w-2 rounded-full bg-dragon-crimson"></span>
+          <span>SINDICATO_SESSION_ONLINE</span>
+        </div>
+      </nav>
+
+      <!-- Contenido Modular de las Sub-Pestañas -->
+      <div class="flex-1 overflow-hidden relative" id="sindicato-subviews-container">
+
+        <!-- SUBPESTAÑA 1: ADMINISTRAR BUILDS -->
+        <div id="subview-sindicato-builds" class="sindicato-subview h-full w-full flex flex-col overflow-hidden">
+          <div class="border-b border-dragon-border px-6 py-3 flex items-center justify-between bg-dragon-panel/30">
+            <div class="flex items-center gap-3">
+              <button type="button" id="btn-create-build-from-list" class="flex items-center gap-2 bg-dragon-crimson text-white px-3 py-1.5 font-mono text-xs font-semibold tracking-wider hover:bg-dragon-crimsonDark transition-colors">
+                + CREAR NUEVA BUILD
+              </button>
+              <button type="button" id="btn-manage-folders" class="border border-dragon-border px-3 py-1.5 font-mono text-xs text-zinc-300 hover:border-zinc-700 transition-colors">
+                GESTIONAR CARPETAS
+              </button>
+              <button type="button" id="btn-create-new-folder" class="hidden">+ Nueva</button>
+            </div>
+            <span class="font-mono text-xs text-zinc-500">MODO EDICIÓN TOTAL ACTIVADO</span>
+          </div>
+
+          <!-- Contenedor de Builds de Administración -->
+          <div class="flex-1 overflow-y-auto" id="sindicato-builds-list-container">
+            <!-- Renderizado dinámicamente reutilizando data rows con botones de edición y borrado -->
+          </div>
+        </div>
+
+        <!-- SUBPESTAÑA 2: CREADOR DE BUILDS EN FORMATO PASOS -->
+        <div id="subview-sindicato-builder" class="sindicato-subview hidden h-full w-full overflow-y-auto p-6">
+          <div class="max-w-6xl mx-auto space-y-6">
+            
+            <!-- Encabezado del Formulario -->
+            <div class="border-b border-dragon-border pb-4 flex items-center justify-between">
+              <div>
+                <h2 id="editor-title" class="font-display text-2xl font-bold tracking-tight text-zinc-100 uppercase">
+                  CREADOR DE BUILD // FORMULARIO TÁCTICO
+                </h2>
+                <p class="font-mono text-xs text-zinc-500">Configura ranuras, tier equivalente y modo de combate.</p>
+              </div>
+              <button type="button" id="btn-clear-build" class="border border-dragon-border px-3 py-1 font-mono text-xs text-zinc-400 hover:border-red-600 hover:text-white">
+                LIMPIAR RANURAS
+              </button>
+            </div>
+
+            <!-- Paso 1: Configuración de Metadatos -->
+            <div class="border border-dragon-border bg-dragon-panel/40 p-5">
+              <span class="font-mono text-xs tracking-widest text-dragon-crimson uppercase">// PASO_01: METADATOS TÁCTICOS</span>
+              <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-3">
+                <div>
+                  <label for="build-name-input" class="block font-mono text-[11px] text-zinc-400 mb-1 uppercase">NOMBRE DE LA BUILD:</label>
+                  <input type="text" id="build-name-input" class="w-full bg-dragon-bg border border-dragon-border px-3 py-1.5 font-mono text-xs text-zinc-100 focus:border-dragon-crimson outline-none" placeholder="Ej: Bruiser - Romperreinos">
+                </div>
+                <div>
+                  <label for="build-role-input" class="block font-mono text-[11px] text-zinc-400 mb-1 uppercase">ROL DE COMBATE:</label>
+                  <input type="text" id="build-role-input" class="w-full bg-dragon-bg border border-dragon-border px-3 py-1.5 font-mono text-xs text-zinc-100 focus:border-dragon-crimson outline-none" placeholder="DPS Melee, Tank, Healer...">
+                </div>
+                <div>
+                  <label for="build-tier-equiv-select" class="block font-mono text-[11px] text-zinc-400 mb-1 uppercase">TIER EQUIVALENTE:</label>
+                  <select id="build-tier-equiv-select" class="w-full bg-dragon-bg border border-dragon-border px-3 py-1.5 font-mono text-xs text-zinc-100 focus:border-dragon-crimson outline-none">
+                    <option value="6">Tier 6 Equiv (6.0 / 5.1 / 4.2)</option>
+                    <option value="7">Tier 7 Equiv (7.0 / 6.1 / 5.2 / 4.3)</option>
+                    <option value="8" selected>Tier 8 Equiv (8.0 / 7.1 / 6.2 / 5.3 / 4.4)</option>
+                    <option value="9">Tier 9 Equiv (8.1 / 7.2 / 6.3 / 5.4)</option>
+                    <option value="10">Tier 10 Equiv (8.2 / 7.3 / 6.4)</option>
+                    <option value="11">Tier 11 Equiv (8.3 / 7.4)</option>
+                    <option value="12">Tier 12 Equiv (8.4)</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="build-folder-select" class="block font-mono text-[11px] text-zinc-400 mb-1 uppercase">CARPETA / CONTENIDO:</label>
+                  <div class="flex gap-1">
+                    <select id="build-folder-select" class="flex-1 bg-dragon-bg border border-dragon-border px-3 py-1.5 font-mono text-xs text-zinc-100 focus:border-dragon-crimson outline-none"></select>
+                    <button type="button" id="btn-add-folder-inline" class="border border-dragon-border px-2.5 text-zinc-400 hover:text-white">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Paso 2: Equipamiento (Las 9 Ranuras Oficiales de Albion) -->
+            <div class="border border-dragon-border bg-dragon-panel/40 p-5">
+              <span class="font-mono text-xs tracking-widest text-dragon-crimson uppercase">// PASO_02: EQUIPAMIENTO TÁCTICO (9 RANURAS)</span>
+              
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                
+                <!-- Columna 1: Equipo Primario (Cabeza, Pecho, Botas) -->
+                <div class="space-y-3">
+                  <!-- Cabeza -->
+                  <div class="slot-card border border-dragon-border p-3 bg-dragon-bg hover:border-zinc-600 transition-colors" id="slot-card-head" data-slot="head">
+                    <div class="flex items-center gap-3">
+                      <div class="slot-icon-box h-12 w-12 shrink-0 border border-dragon-border bg-zinc-900 flex items-center justify-center relative">
+                        <img id="img-head" class="h-full w-full object-contain hidden" alt="Cabeza">
+                        <span id="empty-head" class="font-mono text-[10px] text-zinc-600">HELM</span>
+                        <span id="badge-head" class="hidden"></span>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <span class="font-mono text-[10px] text-zinc-500 uppercase">CABEZA (D)</span>
+                        <div id="name-head" class="font-semibold text-xs text-zinc-200 truncate">Ninguno</div>
+                      </div>
+                    </div>
+                    <!-- Hechizos de Cabeza -->
+                    <div class="spells-selector-row mt-2 pt-2 border-t border-dragon-border/60 flex items-center gap-2" id="spells-head">
+                      <div class="spell-slot-btn border border-dragon-border px-2 py-0.5 font-mono text-[10px] text-zinc-400 hover:border-zinc-500 cursor-pointer" data-spell-slot="head" data-spell-type="active">
+                        <img id="spell-img-head-active" class="hidden h-3 w-3 inline mr-1">
+                        <span id="spell-txt-head-active">D: Hechizo</span>
+                      </div>
+                      <div class="spell-slot-btn border border-dragon-border px-2 py-0.5 font-mono text-[10px] text-zinc-400 hover:border-zinc-500 cursor-pointer" data-spell-slot="head" data-spell-type="passive">
+                        <img id="spell-img-head-passive" class="hidden h-3 w-3 inline mr-1">
+                        <span id="spell-txt-head-passive">P: Pasiva</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Pecho / Armadura -->
+                  <div class="slot-card border border-dragon-border p-3 bg-dragon-bg hover:border-zinc-600 transition-colors" id="slot-card-armor" data-slot="armor">
+                    <div class="flex items-center gap-3">
+                      <div class="slot-icon-box h-12 w-12 shrink-0 border border-dragon-border bg-zinc-900 flex items-center justify-center relative">
+                        <img id="img-armor" class="h-full w-full object-contain hidden" alt="Pecho">
+                        <span id="empty-armor" class="font-mono text-[10px] text-zinc-600">CHEST</span>
+                        <span id="badge-armor" class="hidden"></span>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <span class="font-mono text-[10px] text-zinc-500 uppercase">PECHO (R)</span>
+                        <div id="name-armor" class="font-semibold text-xs text-zinc-200 truncate">Ninguno</div>
+                      </div>
+                    </div>
+                    <!-- Hechizos de Pecho -->
+                    <div class="spells-selector-row mt-2 pt-2 border-t border-dragon-border/60 flex items-center gap-2" id="spells-armor">
+                      <div class="spell-slot-btn border border-dragon-border px-2 py-0.5 font-mono text-[10px] text-zinc-400 hover:border-zinc-500 cursor-pointer" data-spell-slot="armor" data-spell-type="active">
+                        <img id="spell-img-armor-active" class="hidden h-3 w-3 inline mr-1">
+                        <span id="spell-txt-armor-active">R: Hechizo</span>
+                      </div>
+                      <div class="spell-slot-btn border border-dragon-border px-2 py-0.5 font-mono text-[10px] text-zinc-400 hover:border-zinc-500 cursor-pointer" data-spell-slot="armor" data-spell-type="passive">
+                        <img id="spell-img-armor-passive" class="hidden h-3 w-3 inline mr-1">
+                        <span id="spell-txt-armor-passive">P: Pasiva</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Botas -->
+                  <div class="slot-card border border-dragon-border p-3 bg-dragon-bg hover:border-zinc-600 transition-colors" id="slot-card-shoes" data-slot="shoes">
+                    <div class="flex items-center gap-3">
+                      <div class="slot-icon-box h-12 w-12 shrink-0 border border-dragon-border bg-zinc-900 flex items-center justify-center relative">
+                        <img id="img-shoes" class="h-full w-full object-contain hidden" alt="Botas">
+                        <span id="empty-shoes" class="font-mono text-[10px] text-zinc-600">BOOTS</span>
+                        <span id="badge-shoes" class="hidden"></span>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <span class="font-mono text-[10px] text-zinc-500 uppercase">BOTAS (F)</span>
+                        <div id="name-shoes" class="font-semibold text-xs text-zinc-200 truncate">Ninguno</div>
+                      </div>
+                    </div>
+                    <!-- Hechizos de Botas -->
+                    <div class="spells-selector-row mt-2 pt-2 border-t border-dragon-border/60 flex items-center gap-2" id="spells-shoes">
+                      <div class="spell-slot-btn border border-dragon-border px-2 py-0.5 font-mono text-[10px] text-zinc-400 hover:border-zinc-500 cursor-pointer" data-spell-slot="shoes" data-spell-type="active">
+                        <img id="spell-img-shoes-active" class="hidden h-3 w-3 inline mr-1">
+                        <span id="spell-txt-shoes-active">F: Hechizo</span>
+                      </div>
+                      <div class="spell-slot-btn border border-dragon-border px-2 py-0.5 font-mono text-[10px] text-zinc-400 hover:border-zinc-500 cursor-pointer" data-spell-slot="shoes" data-spell-type="passive">
+                        <img id="spell-img-shoes-passive" class="hidden h-3 w-3 inline mr-1">
+                        <span id="spell-txt-shoes-passive">P: Pasiva</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Columna 2: Armas (Principal y Secundaria) -->
+                <div class="space-y-3">
+                  <!-- Arma Principal -->
+                  <div class="slot-card border border-dragon-border p-3 bg-dragon-bg hover:border-zinc-600 transition-colors" id="slot-card-mainhand" data-slot="mainhand">
+                    <div class="flex items-center gap-3">
+                      <div class="slot-icon-box h-12 w-12 shrink-0 border border-dragon-border bg-zinc-900 flex items-center justify-center relative">
+                        <img id="img-mainhand" class="h-full w-full object-contain hidden" alt="Arma Principal">
+                        <span id="empty-mainhand" class="font-mono text-[10px] text-zinc-600">WEAPON</span>
+                        <span id="badge-mainhand" class="hidden"></span>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <span class="font-mono text-[10px] text-zinc-500 uppercase">ARMA PRINCIPAL (Q/W/E)</span>
+                        <div id="name-mainhand" class="font-semibold text-xs text-zinc-200 truncate">Ninguno</div>
+                      </div>
+                    </div>
+                    <!-- Hechizos de Arma Principal -->
+                    <div class="spells-selector-row mt-2 pt-2 border-t border-dragon-border/60 grid grid-cols-2 gap-1.5" id="spells-mainhand">
+                      <div class="spell-slot-btn border border-dragon-border px-2 py-0.5 font-mono text-[10px] text-zinc-400 hover:border-zinc-500 cursor-pointer truncate" data-spell-slot="mainhand" data-spell-type="q">
+                        <img id="spell-img-mainhand-q" class="hidden h-3 w-3 inline mr-1">
+                        <span id="spell-txt-mainhand-q">Q: Hechizo</span>
+                      </div>
+                      <div class="spell-slot-btn border border-dragon-border px-2 py-0.5 font-mono text-[10px] text-zinc-400 hover:border-zinc-500 cursor-pointer truncate" data-spell-slot="mainhand" data-spell-type="w">
+                        <img id="spell-img-mainhand-w" class="hidden h-3 w-3 inline mr-1">
+                        <span id="spell-txt-mainhand-w">W: Hechizo</span>
+                      </div>
+                      <div class="spell-slot-btn border border-dragon-border px-2 py-0.5 font-mono text-[10px] text-zinc-400 hover:border-zinc-500 cursor-pointer truncate" data-spell-slot="mainhand" data-spell-type="e">
+                        <img id="spell-img-mainhand-e" class="hidden h-3 w-3 inline mr-1">
+                        <span id="spell-txt-mainhand-e">E: Hechizo</span>
+                      </div>
+                      <div class="spell-slot-btn border border-dragon-border px-2 py-0.5 font-mono text-[10px] text-zinc-400 hover:border-zinc-500 cursor-pointer truncate" data-spell-slot="mainhand" data-spell-type="passive">
+                        <img id="spell-img-mainhand-passive" class="hidden h-3 w-3 inline mr-1">
+                        <span id="spell-txt-mainhand-passive">P: Pasiva</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Mano Secundaria -->
+                  <div class="slot-card border border-dragon-border p-3 bg-dragon-bg hover:border-zinc-600 transition-colors" id="slot-card-offhand" data-slot="offhand">
+                    <div class="flex items-center gap-3">
+                      <div class="slot-icon-box h-12 w-12 shrink-0 border border-dragon-border bg-zinc-900 flex items-center justify-center relative">
+                        <img id="img-offhand" class="h-full w-full object-contain hidden" alt="Mano Secundaria">
+                        <span id="empty-offhand" class="font-mono text-[10px] text-zinc-600">OFFHAND</span>
+                        <span id="badge-offhand" class="hidden"></span>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <span class="font-mono text-[10px] text-zinc-500 uppercase">MANO SECUNDARIA</span>
+                        <div id="name-offhand" class="font-semibold text-xs text-zinc-200 truncate">Ninguno</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Capa -->
+                  <div class="slot-card border border-dragon-border p-3 bg-dragon-bg hover:border-zinc-600 transition-colors" id="slot-card-cape" data-slot="cape">
+                    <div class="flex items-center gap-3">
+                      <div class="slot-icon-box h-12 w-12 shrink-0 border border-dragon-border bg-zinc-900 flex items-center justify-center relative">
+                        <img id="img-cape" class="h-full w-full object-contain hidden" alt="Capa">
+                        <span id="empty-cape" class="font-mono text-[10px] text-zinc-600">CAPE</span>
+                        <span id="badge-cape" class="hidden"></span>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <span class="font-mono text-[10px] text-zinc-500 uppercase">CAPA DE FACCIÓN</span>
+                        <div id="name-cape" class="font-semibold text-xs text-zinc-200 truncate">Ninguno</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Columna 3: Consumibles & Montura -->
+                <div class="space-y-3">
+                  <!-- Comida -->
+                  <div class="slot-card border border-dragon-border p-3 bg-dragon-bg hover:border-zinc-600 transition-colors" id="slot-card-food" data-slot="food">
+                    <div class="flex items-center gap-3">
+                      <div class="slot-icon-box h-12 w-12 shrink-0 border border-dragon-border bg-zinc-900 flex items-center justify-center relative">
+                        <img id="img-food" class="h-full w-full object-contain hidden" alt="Comida">
+                        <span id="empty-food" class="font-mono text-[10px] text-zinc-600">FOOD</span>
+                        <span id="badge-food" class="hidden"></span>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <span class="font-mono text-[10px] text-zinc-500 uppercase">COMIDA</span>
+                        <div id="name-food" class="font-semibold text-xs text-zinc-200 truncate">Ninguno</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Poción -->
+                  <div class="slot-card border border-dragon-border p-3 bg-dragon-bg hover:border-zinc-600 transition-colors" id="slot-card-potion" data-slot="potion">
+                    <div class="flex items-center gap-3">
+                      <div class="slot-icon-box h-12 w-12 shrink-0 border border-dragon-border bg-zinc-900 flex items-center justify-center relative">
+                        <img id="img-potion" class="h-full w-full object-contain hidden" alt="Poción">
+                        <span id="empty-potion" class="font-mono text-[10px] text-zinc-600">POTION</span>
+                        <span id="badge-potion" class="hidden"></span>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <span class="font-mono text-[10px] text-zinc-500 uppercase">POCIÓN</span>
+                        <div id="name-potion" class="font-semibold text-xs text-zinc-200 truncate">Ninguno</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Montura -->
+                  <div class="slot-card border border-dragon-border p-3 bg-dragon-bg hover:border-zinc-600 transition-colors" id="slot-card-mount" data-slot="mount">
+                    <div class="flex items-center gap-3">
+                      <div class="slot-icon-box h-12 w-12 shrink-0 border border-dragon-border bg-zinc-900 flex items-center justify-center relative">
+                        <img id="img-mount" class="h-full w-full object-contain hidden" alt="Montura">
+                        <span id="empty-mount" class="font-mono text-[10px] text-zinc-600">MOUNT</span>
+                        <span id="badge-mount" class="hidden"></span>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <span class="font-mono text-[10px] text-zinc-500 uppercase">MONTURA DE BATALLA</span>
+                        <div id="name-mount" class="font-semibold text-xs text-zinc-200 truncate">Ninguno</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Paso 3: Notas de Combate y Guardado -->
+            <div class="border border-dragon-border bg-dragon-panel/40 p-5">
+              <span class="font-mono text-xs tracking-widest text-dragon-crimson uppercase">// PASO_03: NOTAS DE COMBATE Y COMBO</span>
+              <div class="mt-3">
+                <textarea id="build-notes-input" class="w-full bg-dragon-bg border border-dragon-border p-3 font-mono text-xs text-zinc-200 focus:border-dragon-crimson outline-none" rows="3" placeholder="Instrucciones tácticas para el miembro, rotación de cooldowns, target prioritario..."></textarea>
+              </div>
+
+              <!-- Acciones de Guardado -->
+              <div class="mt-5 flex items-center justify-between border-t border-dragon-border pt-4 flex-wrap gap-3">
+                <div class="flex items-center gap-3">
+                  <button type="button" id="btn-save-build" class="bg-dragon-crimson text-white px-5 py-2 font-mono text-xs font-bold tracking-wider hover:bg-dragon-crimsonDark transition-colors">
+                    GUARDAR BUILD Y PUBLICAR
+                  </button>
+                  <button type="button" id="btn-cancel-builder" class="border border-dragon-border px-4 py-2 font-mono text-xs text-zinc-400 hover:text-white transition-colors">
+                    CANCELAR
+                  </button>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button type="button" id="btn-copy-discord" class="border border-dragon-border px-3 py-2 font-mono text-xs text-zinc-400 hover:text-white transition-colors">
+                    COPIAR DISCORD
+                  </button>
+                  <button type="button" id="btn-share-link" class="border border-dragon-border px-3 py-2 font-mono text-xs text-zinc-400 hover:text-white transition-colors">
+                    ENLACE
+                  </button>
+                  <button type="button" id="btn-restore-defaults" class="hidden">Restaurar</button>
+                  <button type="button" id="btn-export-json" class="hidden">Export</button>
+                  <button type="button" id="btn-import-json" class="hidden">Import</button>
+                  <input type="file" id="file-import-json" class="hidden">
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- SUBPESTAÑA 3: ROSTER DE MIEMBROS -->
+        <div id="subview-sindicato-members" class="sindicato-subview hidden h-full w-full flex flex-col overflow-hidden">
+          <!-- Barra Superior de Control de Roster -->
+          <div class="shrink-0 border-b border-dragon-border bg-dragon-panel/40 px-6 py-3 flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div class="flex items-center gap-3 flex-wrap">
+              <button type="button" id="btn-open-add-member" class="bg-dragon-crimson text-white px-3 py-1.5 font-mono text-xs font-semibold tracking-wider hover:bg-dragon-crimsonDark transition-colors">
+                + REGISTRAR MIEMBRO
+              </button>
+              <input type="text" id="search-members-input" class="bg-dragon-bg border border-dragon-border px-3 py-1.5 font-mono text-xs text-zinc-200 placeholder:text-zinc-600 focus:border-dragon-crimson outline-none w-56" placeholder="BUSCAR NICK...">
+              
+              <!-- Filtros de Estado -->
+              <div class="flex items-center gap-1 font-mono text-xs">
+                <button type="button" class="roster-status-chip active border border-dragon-crimson bg-dragon-crimson/10 px-2 py-1 text-zinc-200" data-status="ALL">TODOS</button>
+                <button type="button" class="roster-status-chip border border-dragon-border px-2 py-1 text-zinc-400 hover:text-white" data-status="ACTIVE">ACTIVOS</button>
+                <button type="button" class="roster-status-chip border border-dragon-border px-2 py-1 text-zinc-400 hover:text-white" data-status="INACTIVE">INACTIVOS</button>
+                <button type="button" class="roster-status-chip border border-dragon-border px-2 py-1 text-zinc-400 hover:text-white" data-status="STRIKES">STRIKES</button>
+              </div>
+
+              <select id="filter-member-role-select" class="bg-dragon-bg border border-dragon-border px-2 py-1 font-mono text-xs text-zinc-400 focus:border-dragon-crimson outline-none">
+                <option value="ALL">TODOS LOS ROLES</option>
+                <option value="Tank">Tank</option>
+                <option value="Healer">Healer</option>
+                <option value="DPS Melee">DPS Melee</option>
+                <option value="DPS Ranged">DPS Ranged</option>
+                <option value="Soporte">Soporte</option>
+              </select>
+            </div>
+
+            <span id="members-count-summary" class="font-mono text-xs text-zinc-500">0 MIEMBROS</span>
+          </div>
+
+          <!-- Tabla de Datos del Roster (Full-width Data Table) -->
+          <div class="flex-1 overflow-y-auto">
+            <table class="w-full text-left font-mono text-xs border-collapse" id="members-table">
+              <thead class="sticky top-0 z-10 border-b border-dragon-border bg-dragon-bg text-zinc-500 uppercase tracking-wider text-[11px]">
+                <tr>
+                  <th class="px-6 py-3">NICK INGAME</th>
+                  <th class="px-4 py-3">RANGO</th>
+                  <th class="px-4 py-3">ROL COMBATE</th>
+                  <th class="px-4 py-3">ESTADO</th>
+                  <th class="px-4 py-3">AMONESTACIONES</th>
+                  <th class="px-4 py-3">NOTAS INTERNAS</th>
+                  <th class="px-6 py-3 text-right">ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody id="members-table-body" class="divide-y divide-dragon-border text-zinc-300">
+                <!-- Renderizado dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SUBPESTAÑA 4: ASISTENCIAS & CTAS (Spreadsheet Style) -->
+        <div id="subview-sindicato-attendance" class="sindicato-subview hidden h-full w-full flex overflow-hidden">
+          
+          <!-- Barra Lateral Izquierda: Actividades Registradas -->
+          <aside class="w-72 md:w-80 shrink-0 border-r border-dragon-border flex flex-col overflow-hidden bg-dragon-panel/20">
+            <div class="p-4 border-b border-dragon-border flex items-center justify-between">
+              <div>
+                <h3 class="font-display text-sm font-bold text-zinc-100 uppercase tracking-wider">ACTIVIDADES & CTAS</h3>
+                <span id="activities-count" class="font-mono text-[10px] text-zinc-500">0 REGISTRADAS</span>
+              </div>
+              <button type="button" id="btn-open-create-activity" class="bg-dragon-crimson text-white px-2.5 py-1 font-mono text-xs font-semibold hover:bg-dragon-crimsonDark transition-colors">
+                + NUEVA
+              </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto divide-y divide-dragon-border" id="activities-nav-list">
+              <!-- Renderizado dinámicamente -->
+            </div>
+          </aside>
+
+          <!-- Panel Central: Hoja de Control de Asistencia -->
+          <div class="flex-1 flex flex-col overflow-hidden bg-dragon-bg" id="attendance-active-panel">
+            <!-- Renderizado dinámicamente -->
+          </div>
+        </div>
+
       </div>
     </section>
 
   </main>
 
-  <!-- MODAL: VISOR DE BUILD (ESTILO OFICIAL ALBION ONLINE IN-GAME) -->
-  <div id="modal-build-viewer" class="modal-backdrop" style="display: none;">
-    <div class="modal-dialog modal-dialog-albion">
-      
-      <!-- Encabezado Superior: FURIA DE DRAGONES -->
-      <div class="albion-modal-header">
-        <div class="albion-guild-badge">
-          <div class="albion-guild-text">
-            <h2 class="albion-guild-name">FURIA DE DRAGONES</h2>
-            <span class="albion-guild-sub">Build de Gremio</span>
-          </div>
+  <!-- ========================================================================== -->
+  <!-- FOOTER TICKER (Estilo Terminal Esports) -->
+  <!-- ========================================================================== -->
+  <footer class="h-7 w-full shrink-0 border-t border-dragon-border px-4 md:px-6 flex items-center justify-between font-mono text-[10px] text-zinc-600 bg-dragon-bg z-20">
+    <div class="flex items-center gap-2">
+      <i data-lucide="terminal" class="h-3 w-3 text-zinc-600"></i>
+      <span>PORTAL_STATUS: READY // CLOUD_SYNC: ACTIVE</span>
+    </div>
+    <div class="tracking-widest uppercase hidden sm:block">
+      GUILD: [FURIA DE DRAGONES] • SEASON 2026
+    </div>
+  </footer>
+
+  <!-- ========================================================================== -->
+  <!-- MODALES TÉCNICOS (Bordes rectos, fondo obsidiana sólida, sin cards ni neón) -->
+  <!-- ========================================================================== -->
+
+  <!-- MODAL: VISOR DE BUILD EXPANDIDO (RUEDA ALBION 3X3 + NOTAS) -->
+  <div id="modal-build-viewer" class="fixed inset-0 bg-black/85 backdrop-blur-none z-50 flex items-center justify-center p-4" style="display: none;">
+    <div class="bg-dragon-bg border border-dragon-border w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden">
+      <!-- Barra Superior -->
+      <div class="border-b border-dragon-border px-6 py-3 flex items-center justify-between bg-dragon-panel">
+        <div class="flex items-center gap-3 font-mono text-xs">
+          <span class="h-2 w-2 bg-dragon-crimson"></span>
+          <span class="text-zinc-400">INSPECCIÓN TÁCTICA //</span>
+          <span id="viewer-build-title" class="font-bold text-zinc-100 uppercase">NOMBRE BUILD</span>
         </div>
-        <button type="button" class="modal-close" id="btn-close-viewer-modal">&times;</button>
+        <button type="button" id="btn-close-viewer-modal" class="text-zinc-500 hover:text-white font-mono text-sm">&times;</button>
       </div>
 
-      <!-- Barra de Metadatos de la Build -->
-      <div class="albion-build-metabar">
-        <div class="albion-build-name" id="viewer-build-title">Nombre de la Build</div>
-        <div class="albion-build-tags">
-          <span id="viewer-build-role" class="albion-tag albion-tag-role">DPS Melee</span>
-          <span id="viewer-build-tier" class="albion-tag albion-tag-tier">Tier 8 Equivalente</span>
-          <span id="viewer-build-folder" class="albion-tag albion-tag-folder">ZvZ</span>
+      <!-- Metadatos de la Build -->
+      <div class="border-b border-dragon-border px-6 py-2.5 flex items-center gap-3 font-mono text-[11px] bg-dragon-bg">
+        <span id="viewer-build-role" class="border border-dragon-border px-2 py-0.5 text-zinc-300">DPS Melee</span>
+        <span id="viewer-build-tier" class="border border-dragon-border px-2 py-0.5 text-zinc-300">Tier 8 Equiv</span>
+        <span id="viewer-build-folder" class="border border-dragon-border px-2 py-0.5 text-dragon-ember">ZvZ</span>
+      </div>
+
+      <!-- Cuerpo del Visor: Rueda 3x3 Albion a la izquierda y Notas a la derecha -->
+      <div class="flex-1 overflow-y-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+        <div class="albion-wheel-wrapper flex justify-center">
+          <div class="albion-character-wheel" id="viewer-albion-wheel"></div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="border-b border-dragon-border pb-2 font-mono text-xs text-dragon-crimson uppercase tracking-wider">
+            // NOTAS DE COMBATE & COMBO
+          </div>
+          <div id="viewer-build-notes" class="font-mono text-xs text-zinc-300 bg-dragon-panel/50 border border-dragon-border p-4 leading-relaxed whitespace-pre-wrap min-h-[160px]">
+            Sin notas.
+          </div>
         </div>
       </div>
 
-      <div class="modal-body albion-viewer-body">
-        
-        <!-- Rueda / Grid 3x3 de Equipamiento con Spells Superpuestos -->
-        <div class="albion-wheel-wrapper">
-          <div class="albion-character-wheel" id="viewer-albion-wheel">
-            <!-- Renderizado dinámicamente con 9 slots idénticos a la interfaz de Albion -->
-          </div>
+      <!-- Footer del Visor -->
+      <div class="border-t border-dragon-border px-6 py-3 flex items-center justify-between bg-dragon-panel">
+        <div class="flex items-center gap-2">
+          <button type="button" id="btn-viewer-copy-discord" class="border border-dragon-border px-3 py-1 font-mono text-xs text-zinc-300 hover:text-white">COPIAR DISCORD</button>
+          <button type="button" id="btn-viewer-share-link" class="border border-dragon-border px-3 py-1 font-mono text-xs text-zinc-300 hover:text-white">ENLACE</button>
         </div>
-
-        <!-- Panel de Notas y Combo (Sin descripciones innecesarias de habilidades) -->
-        <div class="albion-details-panel">
-          <div class="viewer-notes-header">Notas y Modo de Combate</div>
-          <div id="viewer-build-notes" class="viewer-notes-box">
-            Sin notas adicionales para esta build.
-          </div>
-        </div>
-
-      </div>
-
-      <div class="modal-footer albion-modal-footer">
-        <div class="albion-footer-left">
-          <button type="button" id="btn-viewer-copy-discord" class="btn btn-secondary btn-sm">Copiar Discord</button>
-          <button type="button" id="btn-viewer-share-link" class="btn btn-secondary btn-sm">Compartir Enlace</button>
-        </div>
-        <div class="albion-footer-right">
-          <button type="button" id="btn-viewer-edit-build" class="btn btn-primary btn-sm officer-only">Modificar Build</button>
-          <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-viewer-modal">Cerrar</button>
+        <div class="flex items-center gap-2">
+          <button type="button" id="btn-viewer-edit-build" class="bg-dragon-crimson text-white px-3 py-1 font-mono text-xs font-semibold hover:bg-dragon-crimsonDark">MODIFICAR BUILD</button>
+          <button type="button" id="btn-cancel-viewer-modal" class="border border-dragon-border px-3 py-1 font-mono text-xs text-zinc-400 hover:text-white">CERRAR</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: INICIO DE SESIÓN DE OFICIAL -->
-  <div id="modal-officer-login" class="modal-backdrop" style="display: none;">
-    <div class="modal-dialog modal-dialog-sm">
-      <div class="modal-header">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <h3>Acceso de Oficial / Editor</h3>
+  <!-- MODAL: LOGIN SINDICATO -->
+  <div id="modal-officer-login" class="fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4" style="display: none;">
+    <div class="bg-dragon-bg border border-dragon-border w-full max-w-sm p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-dragon-border pb-3">
+        <div class="flex items-center gap-2 font-mono text-xs text-dragon-crimson tracking-wider">
+          <i data-lucide="lock" class="h-3.5 w-3.5"></i>
+          <span>AUTENTICACIÓN // SINDICATO</span>
         </div>
-        <button type="button" class="modal-close" id="btn-close-login-modal">&times;</button>
+        <button type="button" id="btn-close-login-modal" class="text-zinc-500 hover:text-white font-mono">&times;</button>
       </div>
 
-      <div class="modal-body" style="padding: 20px;">
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.4;">
-          Introduce la contraseña de oficial para crear, editar o eliminar builds.
-        </p>
-
-        <form id="form-officer-login">
-          <div class="form-group">
-            <label for="officer-password-input">Contraseña de Oficial:</label>
-            <div style="position: relative; display: flex; align-items: center;">
-              <input type="password" id="officer-password-input" class="form-control" placeholder="Introduce la clave de oficial..." autocomplete="current-password" required style="padding-right: 50px;">
-              <button type="button" id="btn-toggle-password" style="position: absolute; right: 10px; background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 13px; font-weight: 500;" title="Mostrar u ocultar contraseña">Ver</button>
-            </div>
-            <div id="login-error-msg" style="display: none; color: #ff5555; font-size: 12px; margin-top: 6px; font-weight: 600;">
-              Contraseña incorrecta. Contacta con un oficial del gremio.
-            </div>
+      <form id="form-officer-login" class="space-y-4">
+        <div>
+          <label for="officer-password-input" class="block font-mono text-[11px] text-zinc-400 mb-1">CLAVE DE ACCESO ROOT:</label>
+          <div class="flex">
+            <input type="password" id="officer-password-input" class="w-full bg-dragon-panel border border-dragon-border px-3 py-2 font-mono text-xs text-zinc-100 focus:border-dragon-crimson outline-none" required placeholder="Introduce clave...">
+            <button type="button" id="btn-toggle-password" class="border border-l-0 border-dragon-border px-3 font-mono text-[10px] text-zinc-500 hover:text-zinc-200">Ver</button>
           </div>
+        </div>
 
-          <div style="margin-top: 20px; display: flex; gap: 8px; justify-content: flex-end;">
-            <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-login-modal">Cancelar</button>
-            <button type="submit" class="btn btn-primary btn-sm">Iniciar Sesión</button>
-          </div>
-        </form>
+        <div id="login-error-msg" class="hidden font-mono text-[11px] text-red-500 bg-red-950/40 border border-red-900 px-3 py-1.5">
+          Clave incorrecta. Acceso denegado.
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" id="btn-cancel-login-modal" class="border border-dragon-border px-3 py-1.5 font-mono text-xs text-zinc-400 hover:text-white">CANCELAR</button>
+          <button type="submit" class="bg-dragon-crimson text-white px-4 py-1.5 font-mono text-xs font-semibold hover:bg-dragon-crimsonDark">DESBLOQUEAR</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: SELECTOR DE ITEM -->
+  <div id="modal-item-picker" class="fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4" style="display: none;">
+    <div class="bg-dragon-bg border border-dragon-border w-full max-w-2xl max-h-[85vh] flex flex-col">
+      <div class="border-b border-dragon-border px-5 py-3 flex items-center justify-between bg-dragon-panel">
+        <h3 id="modal-item-title" class="font-mono text-xs font-bold text-zinc-100 uppercase">SELECCIONAR EQUIPAMIENTO</h3>
+        <button type="button" id="btn-close-item-modal" class="text-zinc-500 hover:text-white font-mono">&times;</button>
+      </div>
+
+      <div class="p-4 border-b border-dragon-border grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <input type="text" id="item-search-input" class="w-full bg-dragon-panel border border-dragon-border px-3 py-1.5 font-mono text-xs text-zinc-100 focus:border-dragon-crimson outline-none" placeholder="Buscar por nombre de item...">
+        <select id="item-category-select" class="w-full bg-dragon-panel border border-dragon-border px-3 py-1.5 font-mono text-xs text-zinc-300 focus:border-dragon-crimson outline-none">
+          <option value="ALL">Todas las Categorías</option>
+        </select>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-4" id="items-list-container">
+        <!-- Renderizado dinámicamente -->
+      </div>
+
+      <div class="border-t border-dragon-border px-5 py-2.5 flex justify-between items-center bg-dragon-panel">
+        <button type="button" id="btn-remove-item" class="border border-red-900 text-red-400 px-3 py-1 font-mono text-xs hover:bg-red-950">DESEQUIPAR</button>
+        <button type="button" id="btn-cancel-item-modal" class="border border-dragon-border px-3 py-1 font-mono text-xs text-zinc-400 hover:text-white">CERRAR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SELECTOR DE SPELL -->
+  <div id="modal-spell-picker" class="fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4" style="display: none;">
+    <div class="bg-dragon-bg border border-dragon-border w-full max-w-xl max-h-[85vh] flex flex-col">
+      <div class="border-b border-dragon-border px-5 py-3 flex items-center justify-between bg-dragon-panel">
+        <h3 id="modal-spell-title" class="font-mono text-xs font-bold text-zinc-100 uppercase">SELECCIONAR HABILIDAD</h3>
+        <button type="button" id="btn-close-spell-modal" class="text-zinc-500 hover:text-white font-mono">&times;</button>
+      </div>
+      <div class="flex-1 overflow-y-auto p-4 space-y-2" id="spells-list-container"></div>
+      <div class="border-t border-dragon-border px-5 py-2.5 flex justify-end bg-dragon-panel">
+        <button type="button" id="btn-cancel-spell-modal" class="border border-dragon-border px-3 py-1 font-mono text-xs text-zinc-400 hover:text-white">CERRAR</button>
       </div>
     </div>
   </div>
 
   <!-- MODAL: GESTIÓN DE CARPETAS -->
-  <div id="modal-manage-folders" class="modal-backdrop" style="display: none;">
-    <div class="modal-dialog modal-dialog-sm">
-      <div class="modal-header">
-        <h3>Administrar Carpetas</h3>
-        <button type="button" class="modal-close" id="btn-close-manage-folders-modal">&times;</button>
+  <div id="modal-manage-folders" class="fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4" style="display: none;">
+    <div class="bg-dragon-bg border border-dragon-border w-full max-w-md p-5 space-y-4">
+      <div class="flex items-center justify-between border-b border-dragon-border pb-3">
+        <h3 class="font-mono text-xs font-bold text-zinc-100 uppercase">ADMINISTRAR CARPETAS</h3>
+        <button type="button" id="btn-close-manage-folders-modal" class="text-zinc-500 hover:text-white font-mono">&times;</button>
       </div>
-
-      <div class="modal-body" style="padding: 20px;">
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.4;">
-          Crea nuevas carpetas o elimina las existentes. Al eliminar una carpeta, sus builds se reubican automáticamente en otra carpeta.
-        </p>
-
-        <div id="manage-folders-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto; margin-bottom: 16px; padding-right: 4px;">
-          <!-- Lista de carpetas -->
-        </div>
-
-        <div style="border-top: 1px solid var(--border-color); padding-top: 14px;">
-          <label style="font-size: 12px; color: var(--text-gold); font-weight: bold; margin-bottom: 6px; display: block;">+ Crear Nueva Carpeta:</label>
-          <div style="display: flex; gap: 6px;">
-            <input type="text" id="manage-new-folder-input" class="form-control form-control-sm" placeholder="Nombre (ej: Hellgates, Roaming)...">
-            <button type="button" id="btn-manage-add-folder" class="btn btn-primary btn-sm">Añadir</button>
-          </div>
-        </div>
+      <div class="flex gap-2">
+        <input type="text" id="manage-new-folder-input" class="flex-1 bg-dragon-panel border border-dragon-border px-3 py-1.5 font-mono text-xs text-zinc-100 outline-none" placeholder="Nueva carpeta...">
+        <button type="button" id="btn-manage-add-folder" class="bg-dragon-crimson text-white px-3 font-mono text-xs hover:bg-dragon-crimsonDark">Añadir</button>
       </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-manage-folders-modal">Cerrar</button>
+      <ul id="manage-folders-list" class="divide-y divide-dragon-border max-h-56 overflow-y-auto font-mono text-xs"></ul>
+      <div class="flex justify-end pt-2">
+        <button type="button" id="btn-cancel-manage-folders-modal" class="border border-dragon-border px-3 py-1 font-mono text-xs text-zinc-400 hover:text-white">Cerrar</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: SELECTOR DE ITEMS -->
-  <div id="modal-item-picker" class="modal-backdrop" style="display: none;">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <h3 id="modal-item-title">Seleccionar Item</h3>
-        <button type="button" class="modal-close" id="btn-close-item-modal">&times;</button>
+  <!-- MODAL: MIEMBRO (ALTA / EDICIÓN) -->
+  <div id="modal-member-form" class="fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4" style="display: none;">
+    <div class="bg-dragon-bg border border-dragon-border w-full max-w-lg p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-dragon-border pb-3">
+        <h3 id="modal-member-title" class="font-mono text-xs font-bold text-zinc-100 uppercase">FICHA DE MIEMBRO</h3>
+        <button type="button" id="btn-close-member-modal" class="text-zinc-500 hover:text-white font-mono">&times;</button>
       </div>
-
-      <div class="modal-body">
-        <div class="modal-filters">
-          <div class="form-row">
-            <input type="text" id="item-search-input" class="form-control" placeholder="Buscar por nombre (ej: Clarent, Vándalo, etc.)...">
-            <select id="item-category-select" class="form-control">
-              <option value="ALL">Todas las categorías</option>
+      <form id="form-member" class="space-y-3 font-mono text-xs">
+        <div>
+          <label for="member-name-input" class="block text-zinc-400 mb-1">NICK EN ALBION ONLINE:</label>
+          <input type="text" id="member-name-input" class="w-full bg-dragon-panel border border-dragon-border px-3 py-1.5 text-zinc-100 outline-none focus:border-dragon-crimson" required placeholder="Nick exacto ingame">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="member-rank-select" class="block text-zinc-400 mb-1">RANGO EN EL GREMIO:</label>
+            <select id="member-rank-select" class="w-full bg-dragon-panel border border-dragon-border px-3 py-1.5 text-zinc-100 outline-none">
+              <option value="Sindicato">Sindicato</option>
+              <option value="Oficial">Oficial</option>
+              <option value="Caller">Caller</option>
+              <option value="Veterano">Veterano</option>
+              <option value="Miembro" selected>Miembro</option>
+              <option value="Recluta">Recluta</option>
+            </select>
+          </div>
+          <div>
+            <label for="member-status-select" class="block text-zinc-400 mb-1">ESTADO:</label>
+            <select id="member-status-select" class="w-full bg-dragon-panel border border-dragon-border px-3 py-1.5 text-zinc-100 outline-none">
+              <option value="ACTIVE" selected>Activo</option>
+              <option value="INACTIVE">Inactivo</option>
+              <option value="LEAVE">Permiso / Ausencia</option>
             </select>
           </div>
         </div>
-
-        <div class="items-list-grid" id="items-list-container">
-          <!-- Renderizado dinámicamente -->
-        </div>
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" id="btn-remove-item" class="btn btn-danger btn-sm">Quitar Item Actual</button>
-        <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-item-modal">Cancelar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: SELECTOR DE HABILIDADES (SPELLS) -->
-  <div id="modal-spell-picker" class="modal-backdrop" style="display: none;">
-    <div class="modal-dialog modal-dialog-sm">
-      <div class="modal-header">
-        <h3 id="modal-spell-title">Seleccionar Habilidad</h3>
-        <button type="button" class="modal-close" id="btn-close-spell-modal">&times;</button>
-      </div>
-
-      <div class="modal-body">
-        <div class="spells-list-grid" id="spells-list-container">
-          <!-- Renderizado dinámicamente -->
-        </div>
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-spell-modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: REGISTRAR / EDITAR MIEMBRO -->
-  <div id="modal-member-form" class="modal-backdrop" style="display: none;">
-    <div class="modal-dialog modal-dialog-sm">
-      <div class="modal-header">
-        <h3 id="modal-member-title">Registrar Miembro</h3>
-        <button type="button" class="modal-close" id="btn-close-member-modal">&times;</button>
-      </div>
-      <form id="form-member">
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="member-name-input">Nick Ingame (Albion Online):</label>
-            <input type="text" id="member-name-input" class="form-control" required placeholder="Ej: DragonRiderX">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="member-role-select" class="block text-zinc-400 mb-1">ROL DE COMBATE:</label>
+            <select id="member-role-select" class="w-full bg-dragon-panel border border-dragon-border px-3 py-1.5 text-zinc-100 outline-none">
+              <option value="DPS Melee">DPS Melee</option>
+              <option value="DPS Ranged">DPS Ranged</option>
+              <option value="Tank">Tank</option>
+              <option value="Healer">Healer</option>
+              <option value="Soporte">Soporte</option>
+            </select>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="member-rank-select">Rango en Gremio:</label>
-              <select id="member-rank-select" class="form-control">
-                <option value="Miembro">Miembro</option>
-                <option value="Veterano">Veterano</option>
-                <option value="Caller">Caller</option>
-                <option value="Oficial">Oficial</option>
-                <option value="Sindicato">Sindicato</option>
-                <option value="Líder">Líder</option>
-                <option value="Recluta">Recluta</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="member-status-select">Estado:</label>
-              <select id="member-status-select" class="form-control">
-                <option value="ACTIVE">Activo</option>
-                <option value="INACTIVE">Inactivo</option>
-                <option value="LEAVE">Ausente Temporal</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="member-role-select">Rol de Combate Principal:</label>
-              <select id="member-role-select" class="form-control">
-                <option value="DPS Melee">DPS Melee</option>
-                <option value="DPS Ranged">DPS Ranged</option>
-                <option value="Tank">Tank</option>
-                <option value="Healer">Healer</option>
-                <option value="Soporte">Soporte</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="member-secondary-role-input">Rol Secundario (Opcional):</label>
-              <input type="text" id="member-secondary-role-input" class="form-control" placeholder="Ej: Tank Off / Battleaxe">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="member-notes-input">Notas de Oficial (Privadas):</label>
-            <textarea id="member-notes-input" class="form-control" rows="2" placeholder="Observaciones, disponibilidad, etc..."></textarea>
+          <div>
+            <label for="member-secondary-role-input" class="block text-zinc-400 mb-1">ROL SECUNDARIO (OPCIONAL):</label>
+            <input type="text" id="member-secondary-role-input" class="w-full bg-dragon-panel border border-dragon-border px-3 py-1.5 text-zinc-100 outline-none" placeholder="Ej: Tank Off / Bruiser">
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary btn-sm" id="btn-save-member">Guardar Miembro</button>
-          <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-member-modal">Cancelar</button>
+        <div>
+          <label for="member-notes-input" class="block text-zinc-400 mb-1">NOTAS DE OFICIAL (PRIVADAS):</label>
+          <textarea id="member-notes-input" class="w-full bg-dragon-panel border border-dragon-border p-2.5 text-zinc-200 outline-none" rows="2" placeholder="Disponibilidad, advertencias..."></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t border-dragon-border">
+          <button type="button" id="btn-cancel-member-modal" class="border border-dragon-border px-3 py-1.5 text-zinc-400 hover:text-white">CANCELAR</button>
+          <button type="submit" id="btn-save-member" class="bg-dragon-crimson text-white px-4 py-1.5 font-semibold hover:bg-dragon-crimsonDark">GUARDAR MIEMBRO</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL: GESTIÓN DE AMONESTACIONES (STRIKES) -->
-  <div id="modal-strikes" class="modal-backdrop" style="display: none;">
-    <div class="modal-dialog modal-dialog-sm">
-      <div class="modal-header">
-        <h3 id="modal-strikes-title">Amonestaciones</h3>
-        <button type="button" class="modal-close" id="btn-close-strikes-modal">&times;</button>
+  <!-- MODAL: AMONESTACIONES (STRIKES) -->
+  <div id="modal-strikes" class="fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4" style="display: none;">
+    <div class="bg-dragon-bg border border-dragon-border w-full max-w-md p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-dragon-border pb-3">
+        <h3 id="modal-strikes-title" class="font-mono text-xs font-bold text-zinc-100 uppercase">EXPEDIENTE DISCIPLINARIO</h3>
+        <button type="button" id="btn-close-strikes-modal" class="text-zinc-500 hover:text-white font-mono">&times;</button>
       </div>
-      <div class="modal-body">
-        <div id="strikes-member-summary" style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;"></div>
-        
-        <!-- Historial de Strikes -->
-        <div class="strikes-history-box" id="strikes-history-list" style="margin-bottom: 16px;">
-          <!-- Renderizado dinámicamente -->
-        </div>
-
-        <!-- Formulario para Añadir Strike -->
-        <div class="add-strike-section">
-          <h4 style="font-size: 13px; font-weight: 600; color: var(--text-gold); margin-bottom: 8px;">Añadir Nueva Amonestación</h4>
-          <form id="form-add-strike">
-            <div class="form-group">
-              <label for="strike-reason-input">Motivo de la sanción:</label>
-              <textarea id="strike-reason-input" class="form-control" rows="2" required placeholder="Ej: Falta injustificada a CTA obligatoria de las 18:00 UTC..."></textarea>
-            </div>
-            <button type="submit" class="btn btn-danger btn-sm" id="btn-apply-strike">Aplicar Amonestación (+1)</button>
-          </form>
-        </div>
+      <div id="strikes-member-summary" class="font-mono text-xs text-zinc-400 pb-2 border-b border-dragon-border/60"></div>
+      <div id="strikes-history-list" class="max-h-52 overflow-y-auto space-y-2"></div>
+      <div class="border-t border-dragon-border pt-3">
+        <span class="font-mono text-[11px] text-dragon-crimson uppercase tracking-wider block mb-2">// APLICAR NUEVA AMONESTACIÓN (+1)</span>
+        <form id="form-add-strike" class="space-y-2">
+          <textarea id="strike-reason-input" class="w-full bg-dragon-panel border border-dragon-border p-2 font-mono text-xs text-zinc-200 outline-none" rows="2" required placeholder="Motivo de la falta (ej: No show en CTA 18:00 UTC)..."></textarea>
+          <button type="submit" id="btn-apply-strike" class="w-full bg-dragon-crimson text-white py-1.5 font-mono text-xs font-bold hover:bg-dragon-crimsonDark">REGISTRAR STRIKE (+1)</button>
+        </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-strikes-modal">Cerrar</button>
+      <div class="flex justify-end pt-1">
+        <button type="button" id="btn-cancel-strikes-modal" class="border border-dragon-border px-3 py-1 font-mono text-xs text-zinc-400 hover:text-white">CERRAR</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: CREAR / EDITAR ACTIVIDAD -->
-  <div id="modal-activity-form" class="modal-backdrop" style="display: none;">
-    <div class="modal-dialog modal-dialog-sm">
-      <div class="modal-header">
-        <h3 id="modal-activity-title">Nueva Actividad / Evento</h3>
-        <button type="button" class="modal-close" id="btn-close-activity-modal">&times;</button>
+  <!-- MODAL: ACTIVIDAD / EVENTO -->
+  <div id="modal-activity-form" class="fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4" style="display: none;">
+    <div class="bg-dragon-bg border border-dragon-border w-full max-w-md p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-dragon-border pb-3">
+        <h3 id="modal-activity-title" class="font-mono text-xs font-bold text-zinc-100 uppercase">NUEVA ACTIVIDAD / EVENTO</h3>
+        <button type="button" id="btn-close-activity-modal" class="text-zinc-500 hover:text-white font-mono">&times;</button>
       </div>
-      <form id="form-activity">
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="activity-title-input">Nombre del Evento / Objetivo:</label>
-            <input type="text" id="activity-title-input" class="form-control" required placeholder="Ej: CTA ZvZ Castillos Tierras Lejanas">
+      <form id="form-activity" class="space-y-3 font-mono text-xs">
+        <div>
+          <label for="activity-title-input" class="block text-zinc-400 mb-1">OBJETIVO / NOMBRE DEL EVENTO:</label>
+          <input type="text" id="activity-title-input" class="w-full bg-dragon-panel border border-dragon-border px-3 py-1.5 text-zinc-100 outline-none" required placeholder="Ej: CTA ZvZ Castillos 18:00 UTC">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="activity-type-select" class="block text-zinc-400 mb-1">TIPO DE ACTIVIDAD:</label>
+            <select id="activity-type-select" class="w-full bg-dragon-panel border border-dragon-border px-3 py-1.5 text-zinc-100 outline-none">
+              <option value="zvz_cta">CTA ZvZ (Obligatoria)</option>
+              <option value="zvz_casual">ZvZ Casual / Práctica</option>
+              <option value="roaming">Roaming / Ganking</option>
+              <option value="avalonian">Mazmorra Ava</option>
+              <option value="pve">PvE & Fama</option>
+            </select>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="activity-type-select">Tipo de Actividad:</label>
-              <select id="activity-type-select" class="form-control">
-                <option value="zvz_cta">CTA ZvZ (Obligatoria)</option>
-                <option value="zvz_casual">ZvZ Casual / Práctica</option>
-                <option value="roaming">Roaming / Ganking</option>
-                <option value="avalonian">Mazmorra Avaloniana</option>
-                <option value="pve">PvE & Fama de Gremio</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="activity-caller-input">Caller / Organizador:</label>
-              <input type="text" id="activity-caller-input" class="form-control" placeholder="Nick del Caller">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="activity-notes-input">Notas / Indicaciones del Evento:</label>
-            <textarea id="activity-notes-input" class="form-control" rows="2" placeholder="Portal de salida, IP mínimo, etc..."></textarea>
+          <div>
+            <label for="activity-caller-input" class="block text-zinc-400 mb-1">CALLER / LÍDER:</label>
+            <input type="text" id="activity-caller-input" class="w-full bg-dragon-panel border border-dragon-border px-3 py-1.5 text-zinc-100 outline-none" placeholder="Nick del Caller">
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary btn-sm" id="btn-save-activity">Guardar Actividad</button>
-          <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-activity-modal">Cancelar</button>
+        <div>
+          <label for="activity-notes-input" class="block text-zinc-400 mb-1">NOTAS / SALIDA:</label>
+          <textarea id="activity-notes-input" class="w-full bg-dragon-panel border border-dragon-border p-2 text-zinc-200 outline-none" rows="2" placeholder="Portal de salida, requisitos..."></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t border-dragon-border">
+          <button type="button" id="btn-cancel-activity-modal" class="border border-dragon-border px-3 py-1.5 text-zinc-400 hover:text-white">CANCELAR</button>
+          <button type="submit" id="btn-save-activity" class="bg-dragon-crimson text-white px-4 py-1.5 font-semibold hover:bg-dragon-crimsonDark">GUARDAR EVENTO</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL: PEGADO RÁPIDO DESDE DISCORD -->
-  <div id="modal-discord-attendance" class="modal-backdrop" style="display: none;">
-    <div class="modal-dialog modal-dialog-sm">
-      <div class="modal-header">
-        <h3>Pegado Rápido de Asistencia (Discord)</h3>
-        <button type="button" class="modal-close" id="btn-close-discord-modal">&times;</button>
+  <!-- MODAL: PEGADO RÁPIDO DISCORD -->
+  <div id="modal-discord-attendance" class="fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4" style="display: none;">
+    <div class="bg-dragon-bg border border-dragon-border w-full max-w-md p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-dragon-border pb-3">
+        <h3 class="font-mono text-xs font-bold text-zinc-100 uppercase">PEGADO RÁPIDO DE ASISTENCIA (DISCORD)</h3>
+        <button type="button" id="btn-close-discord-modal" class="text-zinc-500 hover:text-white font-mono">&times;</button>
       </div>
-      <div class="modal-body">
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">
-          Copia la lista de nombres del chat de party o canal de voz de Discord y pégala a continuación. 
-          El sistema detectará automáticamente los miembros registrados y los marcará como <strong>Presentes</strong>.
-        </p>
-        <textarea id="discord-attendance-textarea" class="form-control" rows="7" placeholder="Pega aquí los nicks (separados por líneas, comas o espacios)..."></textarea>
-        <div id="discord-parsed-summary" style="font-size: 12px; color: var(--text-gold); margin-top: 8px;"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary btn-sm" id="btn-process-discord-attendance">Marcar Presentes</button>
-        <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-discord-modal">Cancelar</button>
+      <p class="font-mono text-[11px] text-zinc-400 leading-relaxed">
+        Pega la lista de nicks copiada directamente del canal de Discord. El sistema marcará como <strong>Presentes</strong> a todos los miembros coincidentes.
+      </p>
+      <textarea id="discord-attendance-textarea" class="w-full bg-dragon-panel border border-dragon-border p-3 font-mono text-xs text-zinc-100 outline-none focus:border-dragon-crimson" rows="6" placeholder="Pega los nicks aquí..."></textarea>
+      <div id="discord-parsed-summary" class="font-mono text-xs text-dragon-ember"></div>
+      <div class="flex justify-end gap-2 pt-2 border-t border-dragon-border">
+        <button type="button" id="btn-cancel-discord-modal" class="border border-dragon-border px-3 py-1.5 font-mono text-xs text-zinc-400 hover:text-white">CANCELAR</button>
+        <button type="button" id="btn-process-discord-attendance" class="bg-dragon-crimson text-white px-4 py-1.5 font-mono text-xs font-semibold hover:bg-dragon-crimsonDark">MARCAR PRESENTES</button>
       </div>
     </div>
   </div>
 
-  <!-- NOTIFICACIÓN TOAST -->
-  <div id="toast-message" class="toast" style="display: none;"></div>
+  <!-- NOTIFICACIÓN TOAST (Técnica Esports) -->
+  <div id="toast-message" class="fixed bottom-10 right-6 z-50 bg-dragon-panel border border-dragon-border px-4 py-2 font-mono text-xs text-zinc-100 shadow-none" style="display: none;"></div>
 
-  <!-- Pie de Página -->
-  <footer class="app-footer">
-    <div class="footer-content">
-      <p>HazardCharlyX &copy; 2026 - Todos los derechos reservados.</p>
-    </div>
-  </footer>
-
+  <!-- Scripts -->
   <script type="module" src="js/app.js"></script>
 </body>
 </html>

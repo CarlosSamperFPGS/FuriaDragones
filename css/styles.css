@@ -1,1741 +1,129 @@
 /* ==========================================================================
-   Furia de Dragones - Estilos Generales
+   FURIA DE DRAGONES // TACTICAL OPS - ESPORTS MATTE DESIGN SYSTEM
    ========================================================================== */
 
 :root {
-  --bg-main: #121417;
-  --bg-header: #0a0b0d;
-  --bg-card: #181b20;
-  --bg-slot: #20242a;
-  --bg-input: #0e1012;
-  --border-color: #2f363d;
-  --border-highlight: #c99738;
-  --text-main: #e6edf3;
-  --text-muted: #8b949e;
-  --text-gold: #e2b755;
-  --btn-primary: #a6301f;
-  --btn-primary-hover: #8c2415;
-  --btn-secondary: #272d34;
-  --btn-secondary-hover: #38404a;
-  --btn-danger: #8b1e1e;
-  --radius: 4px;
+  --bg-main: #09090b;
+  --bg-panel: #121215;
+  --bg-hover: #18181b;
+  --border-color: #27272a;
+  --border-highlight: #dc2626;
+  --dragon-crimson: #dc2626;
+  --dragon-crimson-dark: #991b1b;
+  --dragon-ember: #f97316;
+  --text-main: #f4f4f5;
+  --text-muted: #71717a;
+  --radius: 2px;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* Scrollbars Técnicos Minimalistas (Esports Style) */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 1px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+/* ==========================================================================
+   Filas de Datos de Builds (Data Rows - 100% Anti-Cards)
+   ========================================================================== */
+.build-data-row {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
   background-color: var(--bg-main);
-  color: var(--text-main);
-  line-height: 1.5;
-  font-size: 14px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* ==========================================================================
-   Encabezado
-   ========================================================================== */
-.app-header {
-  background-color: var(--bg-header);
-  border-bottom: 2px solid var(--border-highlight);
-  padding: 14px 0;
-  width: 100%;
-}
-
-.header-content {
-  max-width: 1600px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.brand-title {
-  font-size: 22px;
-  color: var(--text-gold);
-  font-weight: bold;
-}
-
-.brand-tag {
-  font-size: 12px;
-  color: var(--text-muted);
-  display: block;
-}
-
-.nav-tabs {
-  display: flex;
-  gap: 8px;
-}
-
-.tab-btn {
-  background: var(--btn-secondary);
-  color: var(--text-main);
-  border: 1px solid var(--border-color);
-  padding: 8px 16px;
-  border-radius: var(--radius);
+  transition: background-color 150ms ease;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
 }
 
-.tab-btn:hover {
-  background: var(--btn-secondary-hover);
+.build-data-row:hover {
+  background-color: var(--bg-hover);
 }
 
-.tab-btn.active {
-  background: var(--border-highlight);
-  color: #101214;
-  font-weight: bold;
-  border-color: var(--border-highlight);
-}
-
-/* ==========================================================================
-   Control de Roles y Permisos (Miembro vs Oficial)
-   ========================================================================== */
-.user-role-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.role-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 5px 12px;
-  border-radius: 20px;
-  letter-spacing: 0.3px;
-  transition: all 0.2s ease;
-}
-
-.role-badge-member {
-  background-color: #171f28;
-  color: #84a9cb;
-  border: 1px solid #293849;
-}
-
-.role-badge-officer {
-  background: linear-gradient(135deg, #2f2310 0%, #17120a 100%);
-  color: var(--text-gold);
-  border: 1px solid var(--border-highlight);
-  box-shadow: 0 0 10px rgba(229, 169, 59, 0.25);
-}
-
-/* Ocultar elementos exclusivos de Oficial cuando se está en Modo Miembro */
-body.role-member .officer-only {
-  display: none !important;
-}
-
-body.role-officer .officer-only {
-  display: inline-flex !important;
-}
-
-body.role-officer div.officer-only,
-body.role-officer section.officer-only {
-  display: block !important;
-}
-
-/* ==========================================================================
-   Contenido Principal
-   ========================================================================== */
-.main-content {
-  flex: 1;
-  max-width: 1600px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 20px 24px 40px;
-}
-
-.tab-section {
-  display: none;
-}
-
-.tab-section.active {
-  display: block;
-}
-
-.builder-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
-  gap: 24px;
-  align-items: start;
-}
-
-@media (max-width: 1024px) {
-  .builder-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
-.panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border-color);
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.panel-header h2 {
-  font-size: 18px;
-  color: var(--text-gold);
-}
-
-.panel-card {
-  background-color: var(--bg-card);
+.build-data-row .hero-slot {
+  width: 40px;
+  height: 40px;
   border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 18px;
-}
-
-.panel-card h2, .panel-card h3 {
-  font-size: 15px;
-  color: var(--text-gold);
-  margin-bottom: 12px;
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 6px;
-}
-
-/* ==========================================================================
-   Grid de Ranuras de Equipamiento
-   ========================================================================== */
-.slots-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 14px;
-}
-
-.slot-card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-}
-
-.slot-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #23282f;
-  padding-bottom: 5px;
-}
-
-.slot-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted);
-  text-transform: uppercase;
-}
-
-.slot-tier-badge {
-  font-size: 11px;
-  background-color: #252b32;
-  color: var(--text-gold);
-  padding: 2px 7px;
-  border-radius: 3px;
-  border: 1px solid var(--border-color);
-  font-weight: bold;
-}
-
-.slot-body {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.slot-icon-wrapper {
-  width: 68px;
-  height: 68px;
-  background-color: var(--bg-slot);
-  border: 1px dashed var(--border-color);
-  border-radius: var(--radius);
+  background: #121215;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   flex-shrink: 0;
-  position: relative;
 }
 
-.slot-icon-wrapper:hover {
-  border-color: var(--border-highlight);
-}
-
-.slot-img {
+.build-data-row .hero-slot img {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.slot-empty-text {
-  font-size: 12px;
-  color: var(--text-muted);
-  text-align: center;
-  padding: 2px;
-}
-
-.slot-details {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-  overflow: hidden;
-}
-
-.item-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-main);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: block;
-}
-
-/* Botones de Hechizos */
-.spells-bar {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.spell-btn {
-  width: 30px;
-  height: 30px;
-  background-color: #101215;
-  border: 1px solid var(--border-color);
-  border-radius: 3px;
-  color: var(--text-gold);
-  font-size: 11px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 0;
-  overflow: hidden;
-}
-
-.spell-btn:hover {
-  border-color: var(--border-highlight);
-  background-color: #262c33;
-}
-
-.spell-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 /* ==========================================================================
-   Formularios y Controles
+   Badges y Metadatos Técnicos
    ========================================================================== */
-.form-group {
-  margin-bottom: 14px;
-}
-
-.form-group label {
-  display: block;
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-bottom: 4px;
-  font-weight: 500;
-}
-
-.form-row {
-  display: flex;
-  gap: 10px;
-}
-
-.flex-1 {
-  flex: 1;
-}
-
-.form-control {
-  width: 100%;
-  background-color: var(--bg-input);
-  border: 1px solid var(--border-color);
-  color: var(--text-main);
-  padding: 8px 10px;
-  border-radius: var(--radius);
-  font-size: 13px;
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: var(--border-highlight);
-}
-
-.form-control-sm {
-  padding: 5px 8px;
-  font-size: 12px;
-}
-
-textarea.form-control {
-  resize: vertical;
-}
-
-/* ==========================================================================
-   Botones
-   ========================================================================== */
-.btn {
+.role-badge-pill {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 8px 14px;
-  border-radius: var(--radius);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid transparent;
-  transition: background 0.15s ease;
-  text-decoration: none;
-}
-
-.btn-primary {
-  background-color: var(--btn-primary);
-  color: #ffffff;
-}
-
-.btn-primary:hover {
-  background-color: var(--btn-primary-hover);
-}
-
-.btn-secondary {
-  background-color: var(--btn-secondary);
-  color: var(--text-main);
-  border-color: var(--border-color);
-}
-
-.btn-secondary:hover {
-  background-color: var(--btn-secondary-hover);
-}
-
-.btn-outline {
-  background-color: transparent;
-  border-color: var(--border-color);
-  color: var(--text-muted);
-}
-
-.btn-outline:hover {
-  background-color: var(--btn-secondary);
-  color: var(--text-main);
-}
-
-.btn-danger {
-  background-color: var(--btn-danger);
-  color: #fff;
-}
-
-.btn-danger:hover {
-  background-color: #6b1515;
-}
-
-.btn-sm {
-  padding: 4px 8px;
-  font-size: 12px;
-}
-
-.actions-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 16px;
-}
-
-.import-export-row {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-  padding-top: 10px;
-  border-top: 1px solid var(--border-color);
-}
-
-.summary-list {
-  list-style: none;
-  font-size: 12px;
-  color: var(--text-muted);
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.summary-list li {
-  padding: 2px 0;
-  border-bottom: 1px dotted #2b3137;
-}
-
-.summary-list strong {
-  color: var(--text-main);
-}
-
-/* ==========================================================================
-   Estructura de Carpetas
-   ========================================================================== */
-.folders-layout {
-  display: grid;
-  grid-template-columns: 280px minmax(0, 1fr);
-  gap: 24px;
-  align-items: start;
-}
-
-@media (max-width: 900px) {
-  .folders-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
-.folders-sidebar {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 16px;
-}
-
-.folders-sidebar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.folders-sidebar-header h3 {
-  font-size: 14px;
-  color: var(--text-gold);
-}
-
-.folders-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.folder-nav-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 12px;
-  border-radius: var(--radius);
-  background-color: #14171a;
-  border: 1px solid transparent;
-  color: var(--text-main);
-  cursor: pointer;
-  font-size: 13px;
-}
-
-.folder-nav-item:hover {
-  background-color: #21262c;
-  border-color: var(--border-color);
-}
-
-.folder-nav-item.active {
-  background-color: #2a313a;
-  border-color: var(--border-highlight);
-  color: var(--text-gold);
-  font-weight: bold;
-}
-
-.folder-badge-count {
-  font-size: 11px;
-  background-color: #101215;
-  color: var(--text-muted);
-  padding: 1px 7px;
-  border-radius: 10px;
-}
-
-.folder-nav-right {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.folder-delete-btn {
-  background: rgba(255, 85, 85, 0.15);
-  border: 1px solid rgba(255, 85, 85, 0.3);
-  color: #ff6b6b;
-  cursor: pointer;
-  padding: 3px 6px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: bold;
-  line-height: 1;
-  transition: all 0.15s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.folder-delete-btn:hover {
-  color: #ffffff;
-  background-color: #e03131;
-  border-color: #e03131;
-  box-shadow: 0 0 8px rgba(224, 49, 49, 0.6);
-  transform: scale(1.1);
-}
-
-.manage-folder-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #161b22;
-  padding: 10px 14px;
-  border-radius: var(--radius);
-  border: 1px solid var(--border-color);
-  transition: border-color 0.2s ease;
-}
-
-.manage-folder-row:hover {
-  border-color: var(--border-highlight);
-}
-
-.folders-content-area {
-  display: flex;
-  flex-direction: column;
-}
-
-/* ==========================================================================
-   Modales
-   ========================================================================== */
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-  padding: 16px;
-}
-
-.modal-dialog {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  width: 100%;
-  max-width: 760px;
-  max-height: 85vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.modal-dialog-sm {
-  max-width: 520px;
-}
-
-.modal-dialog-lg {
-  max-width: 880px;
-}
-
-.modal-dialog-albion {
-  max-width: 680px;
-  background-color: #16191f;
-  border: 1px solid #333b47;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9), 0 0 20px rgba(229, 169, 59, 0.15);
-}
-
-/* ==========================================================================
-   Visor de Build (Estilo Oficial Albion Online In-Game)
-   ========================================================================== */
-.albion-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 20px;
-  background: linear-gradient(180deg, #1f232b 0%, #121418 100%);
-  border-bottom: 2px solid #3d3320;
-}
-
-.albion-guild-badge {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.albion-guild-logo {
-  font-size: 30px;
-  line-height: 1;
-  filter: drop-shadow(0 2px 6px rgba(229, 169, 59, 0.5));
-}
-
-.albion-guild-name {
-  font-size: 18px;
-  font-weight: 900;
-  letter-spacing: 1.5px;
-  color: var(--text-gold);
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9), 0 0 14px rgba(229, 169, 59, 0.35);
-  margin: 0;
-  text-transform: uppercase;
-}
-
-.albion-guild-sub {
-  font-size: 11px;
-  color: #9aa4b2;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  display: block;
-}
-
-.albion-build-metabar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 10px 20px;
-  background-color: #121418;
-  border-bottom: 1px solid #282f3a;
-}
-
-.albion-build-name {
-  font-size: 16px;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.albion-build-tags {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.albion-tag {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 4px;
-}
-
-.albion-tag-role {
-  background-color: #1c232d;
-  color: #8bb2db;
-  border: 1px solid #2c394a;
-}
-
-.albion-tag-tier {
-  background-color: #2b2210;
-  color: var(--text-gold);
-  border: 1px solid #634b21;
-}
-
-.albion-tag-folder {
-  background-color: #162217;
-  color: #72d681;
-  border: 1px solid #2b452e;
-}
-
-.albion-viewer-body {
-  padding: 16px 20px;
-  overflow-y: auto;
-  max-height: calc(85vh - 170px);
-}
-
-.albion-wheel-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 16px;
-}
-
-.albion-character-wheel {
-  display: grid;
-  grid-template-columns: repeat(3, 118px);
-  grid-template-rows: repeat(3, 118px);
-  gap: 22px 26px;
-  justify-content: center;
-  align-items: center;
-  padding: 18px 18px 26px;
-  background: radial-gradient(circle at center, #252b34 0%, #16191f 70%, #0e1014 100%);
-  border: 1px solid #2d3542;
-  border-radius: 8px;
-  box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.7), 0 4px 15px rgba(0, 0, 0, 0.5);
-}
-
-@media (max-width: 500px) {
-  .albion-character-wheel {
-    grid-template-columns: repeat(3, 90px);
-    grid-template-rows: repeat(3, 90px);
-    gap: 16px 14px;
-    padding: 14px 10px 22px;
-  }
-}
-
-.albion-slot-card {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background-color: #121417;
-  border-radius: 8px;
-  border: 1px solid #2c333f;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
-  transition: transform 0.15s ease, border-color 0.15s ease;
-}
-
-.albion-slot-card:hover {
-  border-color: var(--border-highlight);
-}
-
-.albion-slot-card.albion-slot-blocked {
-  background-color: #0f1114;
-  border-color: #21252d;
-}
-
-.albion-slot-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.6));
-}
-
-.albion-empty-slot-icon {
-  font-size: 11px;
-  color: var(--text-muted);
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.albion-twohanded-cross {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  opacity: 0.6;
-}
-
-.albion-mini-mount-badge {
-  position: absolute;
-  bottom: -4px;
-  right: -4px;
-  width: 48px;
-  height: 48px;
-  background-color: #15181e;
-  border: 1px solid #3d4655;
-  border-radius: 6px;
-  padding: 1px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.85);
-  z-index: 6;
-  transition: transform 0.15s ease;
-}
-
-.albion-mini-mount-badge:hover {
-  transform: scale(1.15);
-  border-color: var(--text-gold);
-}
-
-.albion-mini-mount-badge img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
-
-.albion-spells-overlay {
-  position: absolute;
-  bottom: -13px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   gap: 4px;
-  z-index: 10;
-  pointer-events: auto;
-  white-space: nowrap;
-}
-
-.albion-spells-overlay.spells-4 {
-  gap: 1px;
-}
-
-.albion-spell-circle {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #46505e, #1a1e26 85%);
-  border: 2px solid #8e9ca8;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.95), inset 0 1px 2px rgba(255, 255, 255, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  position: relative;
-  transition: transform 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.15s ease, box-shadow 0.15s ease;
-  flex-shrink: 0;
-}
-
-@media (max-width: 500px) {
-  .albion-spell-circle {
-    width: 28px;
-    height: 28px;
-    border-width: 1.5px;
-  }
-  .albion-spells-overlay {
-    bottom: -10px;
-    gap: 2px;
-  }
-}
-
-.albion-spell-circle:hover {
-  transform: scale(1.25);
-  border-color: #f3c258;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 1), 0 0 12px rgba(243, 194, 88, 0.6);
-  z-index: 25;
-}
-
-.albion-spell-circle img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  display: block;
-}
-
-.albion-details-panel {
-  background-color: #121418;
-  border: 1px solid #282f3a;
-  border-radius: var(--radius);
-  padding: 12px 14px;
-}
-
-.albion-subtabs-nav {
-  display: flex;
-  gap: 6px;
-  border-bottom: 1px solid #262c36;
-  padding-bottom: 8px;
-  margin-bottom: 12px;
-}
-
-.albion-subtab-btn {
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-muted);
-  padding: 5px 12px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.albion-subtab-btn:hover {
-  color: var(--text-main);
-  background-color: #1c2129;
-}
-
-.albion-subtab-btn.active {
-  background-color: #242b36;
-  color: var(--text-gold);
-  border-color: #424e61;
-}
-
-.albion-subtab-pane {
-  display: none;
-}
-
-.albion-subtab-pane.active {
-  display: block;
-}
-
-.albion-modal-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 20px;
-  border-top: 1px solid #282f3a;
-  background-color: #121418;
-}
-
-.albion-footer-left,
-.albion-footer-right {
-  display: flex;
-  gap: 6px;
-}
-
-.viewer-spells-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 8px;
-}
-
-.viewer-spell-row {
-  background-color: var(--bg-slot);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 8px 10px;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-
-.viewer-spell-icon {
-  width: 38px;
-  height: 38px;
-  background-color: #101215;
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-gold);
-  font-weight: bold;
-  font-size: 12px;
-}
-
-.viewer-spell-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 3px;
-}
-
-.viewer-spell-details {
-  flex: 1;
-  font-size: 12px;
-}
-
-.viewer-spell-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2px;
-}
-
-.viewer-spell-title {
-  font-weight: bold;
-  color: var(--text-gold);
-}
-
-.viewer-spell-slotkey {
-  font-size: 10px;
-  background: #101215;
-  color: var(--text-muted);
-  padding: 1px 5px;
-  border-radius: 2px;
-  font-weight: bold;
-}
-
-.viewer-spell-meta {
-  font-size: 11px;
-  color: #c99738;
-  margin-bottom: 3px;
-}
-
-.viewer-spell-desc {
-  font-size: 11px;
-  color: var(--text-muted);
-  line-height: 1.3;
-}
-
-.viewer-notes-box {
-  background-color: #101215;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 12px 14px;
-  font-size: 13px;
-  color: var(--text-main);
-  line-height: 1.4;
-  white-space: pre-wrap;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--border-color);
-  background-color: #101215;
-}
-
-.modal-header h3 {
-  font-size: 16px;
-  color: var(--text-gold);
-}
-
-.modal-close {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  font-size: 22px;
-  cursor: pointer;
-  line-height: 1;
-}
-
-.modal-close:hover {
-  color: #fff;
-}
-
-.modal-body {
-  padding: 16px 18px;
-  overflow-y: auto;
-  flex: 1;
-}
-
-.modal-filters {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-
-.item-config-bar {
-  display: flex;
-  gap: 10px;
-  background-color: #111316;
-  padding: 10px 12px;
-  border-radius: var(--radius);
-  border: 1px solid var(--border-color);
-}
-
-.config-item {
-  flex: 1;
-}
-
-.config-item label {
-  display: block;
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-bottom: 3px;
-}
-
-.items-list-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 10px;
-  max-height: 400px;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-
-.item-option-card {
-  background-color: var(--bg-slot);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 8px 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-}
-
-.item-option-card:hover {
-  border-color: var(--border-highlight);
-  background-color: #272d34;
-}
-
-.item-option-img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-  flex-shrink: 0;
-  background: #0f1114;
-  border-radius: 3px;
-}
-
-.item-option-info {
-  overflow: hidden;
-}
-
-.item-option-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-main);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.item-option-cat {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.modal-footer {
-  padding: 12px 18px;
-  border-top: 1px solid var(--border-color);
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  background-color: #101215;
-}
-
-/* Lista de Hechizos en Modal */
-.spells-list-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.spell-option-card {
-  background-color: var(--bg-slot);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 10px 14px;
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  cursor: pointer;
-}
-
-.spell-option-card:hover {
-  border-color: var(--border-highlight);
-  background-color: #272d34;
-}
-
-.spell-option-card.active-spell {
-  border-color: var(--border-highlight);
-  background-color: #312b1d;
-}
-
-.spell-option-icon {
-  width: 42px;
-  height: 42px;
-  background-color: #101215;
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-gold);
-  font-weight: bold;
-}
-
-.spell-option-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 3px;
-}
-
-.spell-option-name {
-  font-size: 13px;
-  font-weight: bold;
-  color: var(--text-gold);
-}
-
-/* ==========================================================================
-   Sección: Builds Guardadas
-   ========================================================================== */
-.saved-builds-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.saved-build-row {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  padding: 14px 18px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  position: relative;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-.saved-build-row:hover {
-  border-color: #3e4858;
-  background-color: #171c23;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
-  transform: translateY(-1px);
-}
-
-/* Badge de Carpeta estilo imagen (Verde esmeralda en la esquina superior derecha) */
-.build-folder-pill {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: #00874e;
-  color: #ffffff;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 3px 12px;
-  border-radius: 0 5px 0 8px;
-  letter-spacing: 0.4px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
-  z-index: 2;
-}
-
-/* Contenido Principal de la Fila */
-.build-row-main {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex: 1;
-  min-width: 0;
-}
-
-/* Hero Weapon Slot (Arma principal destacada en la izquierda) */
-.build-hero-slot {
-  width: 62px;
-  height: 62px;
-  background: radial-gradient(circle, #222933 0%, #111419 100%);
-  border: 1.5px solid #3d4656;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.7), 0 2px 8px rgba(0, 0, 0, 0.3);
-  transition: border-color 0.2s ease, transform 0.15s ease;
-}
-
-.saved-build-row:hover .build-hero-slot {
-  border-color: var(--border-highlight);
-  transform: scale(1.04);
-}
-
-.build-hero-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.build-hero-empty {
-  font-size: 10px;
-  color: var(--text-muted);
-  text-align: center;
-  padding: 4px;
-  font-weight: 600;
-}
-
-/* Información y Fila de Equipo */
-.build-row-content {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-width: 0;
-  flex: 1;
-}
-
-.build-row-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.build-row-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #ffffff;
-  margin: 0;
-  letter-spacing: 0.2px;
-}
-
-.build-row-tags {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.build-tag-role {
-  background: #1c222b;
-  color: #9cb1c9;
-  border: 1px solid #2d3744;
+  font-family: "JetBrains Mono", monospace;
   font-size: 11px;
   font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 3px;
-}
-
-.build-tag-tier {
-  background: rgba(226, 183, 85, 0.12);
-  color: var(--text-gold);
-  border: 1px solid rgba(226, 183, 85, 0.3);
-  font-size: 11px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 3px;
-}
-
-.build-row-notes {
-  font-size: 12px;
-  color: var(--text-muted);
-  line-height: 1.3;
-  font-style: italic;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 580px;
-}
-
-/* Fila de Items Secundarios (sin barras de desplazamiento) */
-.build-row-equipment {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.build-equip-slot {
-  width: 44px;
-  height: 44px;
-  background: #13161c;
-  border: 1px solid #282f3a;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: transform 0.12s ease, border-color 0.15s ease;
-}
-
-.build-equip-slot:hover {
-  transform: scale(1.08);
-  border-color: var(--border-highlight);
-}
-
-.build-equip-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* Columna de Acciones a la Derecha */
-.build-row-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
-  flex-shrink: 0;
-  padding-top: 10px;
-}
-
-.build-move-box {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.build-move-box label {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.build-move-box select {
-  font-size: 11px;
-  padding: 2px 6px;
-  height: 26px;
-}
-
-.build-btn-group {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-@media (max-width: 960px) {
-  .saved-build-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .build-row-actions {
-    align-items: flex-start;
-    width: 100%;
-    border-top: 1px solid #222730;
-    padding-top: 10px;
-  }
-}
-
-/* ==========================================================================
-   Filtros Rápidos por Rol (Chips)
-   ========================================================================== */
-.role-filter-bar {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-  padding-bottom: 4px;
-}
-
-.role-filter-chip {
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  background-color: #121820;
-  border: 1px solid #293849;
-  color: #84a9cb;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  user-select: none;
-}
-
-.role-filter-chip:hover {
-  border-color: #3d526b;
-  color: #ffffff;
-  background-color: #18202b;
-}
-
-.role-filter-chip.active {
-  background: linear-gradient(135deg, rgba(229,169,59,0.2) 0%, rgba(184,115,51,0.2) 100%);
-  border-color: var(--border-highlight);
-  color: var(--text-gold);
-  box-shadow: 0 0 8px rgba(229, 169, 59, 0.25);
-}
-
-/* Ranura Bloqueada por Arma a 2 Manos */
-.slot-card.slot-card-blocked {
-  opacity: 0.4;
-  filter: grayscale(0.8);
-  pointer-events: none;
-  border-style: dashed;
-  position: relative;
-}
-
-.slot-card.slot-card-blocked .slot-empty-text {
-  color: #8c9ba5;
-  font-style: italic;
-  font-size: 11px;
-}
-
-/* Efecto de Destello al Guardar Build */
-@keyframes build-saved-flash {
-  0% {
-    border-color: var(--border-highlight);
-    box-shadow: 0 0 16px rgba(229, 169, 59, 0.7);
-    background: rgba(229, 169, 59, 0.12);
-  }
-  100% {
-    border-color: rgba(255, 255, 255, 0.07);
-    box-shadow: none;
-    background: #13171d;
-  }
-}
-
-.saved-build-row.flash-highlight {
-  animation: build-saved-flash 2.5s ease-out;
-}
-
-/* ==========================================================================
-   Notificaciones Toast
-   ========================================================================== */
-.toast {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  background-color: #1a1e24;
-  border: 1px solid var(--border-highlight);
-  color: #fff;
-  padding: 12px 20px;
-  border-radius: var(--radius);
-  font-size: 13px;
-  z-index: 10000;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-}
-
-/* ==========================================================================
-   Gestor de Miembros (Roster del Gremio)
-   ========================================================================== */
-.panel-box {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 20px;
-}
-
-.panel-subtitle {
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-.roster-filters-bar {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
-  margin: 16px 0;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.roster-search-box {
-  flex: 1;
-  min-width: 220px;
-}
-
-.roster-chips-group {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.roster-status-chip {
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  background-color: #12151a;
-  border: 1px solid #232a35;
-  color: #84a9cb;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.roster-status-chip:hover {
-  border-color: #3b4658;
-  color: #fff;
-}
-
-.roster-status-chip.active {
-  background: #252013;
-  border-color: var(--border-highlight);
-  color: var(--text-gold);
-}
-
-.roster-role-select-box select {
-  height: 32px;
-  font-size: 12px;
-}
-
-/* Tabla de Miembros */
-.members-table-wrapper {
-  overflow-x: auto;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  background: #0f1217;
-}
-
-.members-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  text-align: left;
-}
-
-.members-table th {
-  background: #141922;
-  padding: 10px 14px;
-  color: var(--text-muted);
-  font-weight: 600;
-  border-bottom: 1px solid var(--border-color);
-  white-space: nowrap;
-}
-
-.members-table td {
-  padding: 10px 14px;
-  border-bottom: 1px solid #1c222b;
-  vertical-align: middle;
-}
-
-.members-table tr:hover {
-  background: #151b24;
-}
-
-.member-nick {
-  font-weight: 700;
-  color: var(--text-main);
-  letter-spacing: 0.2px;
-}
-
-/* Badges de Rango */
-.rank-badge {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 3px;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
 }
-.rank-sindicato, .rank-lider {
-  background: rgba(226, 183, 85, 0.15);
-  color: #e5a93b;
-  border: 1px solid rgba(229, 169, 59, 0.35);
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid var(--border-color);
+  background: #18181b;
+  color: #a1a1aa;
+}
+.rank-sindicato {
+  border-color: rgba(220, 38, 38, 0.4);
+  color: #f87171;
+  background: rgba(220, 38, 38, 0.1);
 }
 .rank-oficial, .rank-caller {
-  background: rgba(166, 48, 31, 0.15);
-  color: #e66752;
-  border: 1px solid rgba(166, 48, 31, 0.35);
+  border-color: rgba(249, 115, 22, 0.4);
+  color: #fb923c;
+  background: rgba(249, 115, 22, 0.1);
 }
 .rank-veterano {
-  background: rgba(88, 166, 255, 0.12);
-  color: #79c0ff;
-  border: 1px solid rgba(88, 166, 255, 0.3);
-}
-.rank-miembro {
-  background: #161b22;
-  color: #c9d1d9;
-  border: 1px solid #30363d;
-}
-.rank-recluta {
-  background: #161b22;
-  color: #8b949e;
-  border: 1px dashed #30363d;
+  border-color: rgba(59, 130, 246, 0.4);
+  color: #60a5fa;
+  background: rgba(59, 130, 246, 0.1);
 }
 
-/* Badges de Rol de Combate */
-.combat-role-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  color: #9ab4cc;
-}
-
-/* Badges de Estado */
 .status-pill {
   display: inline-flex;
   align-items: center;
   gap: 5px;
   font-size: 11px;
   font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 12px;
 }
 .status-pill.active {
-  background: rgba(46, 160, 67, 0.15);
-  color: #3fb950;
-  border: 1px solid rgba(46, 160, 67, 0.3);
+  color: #34d399;
 }
 .status-pill.inactive {
-  background: rgba(110, 118, 129, 0.15);
-  color: #8b949e;
-  border: 1px solid rgba(110, 118, 129, 0.3);
+  color: #71717a;
 }
 .status-pill.leave {
-  background: rgba(210, 153, 34, 0.15);
-  color: #d29922;
-  border: 1px solid rgba(210, 153, 34, 0.3);
+  color: #fbbf24;
 }
 
 /* Strikes / Amonestaciones */
@@ -1746,301 +134,152 @@ textarea.form-control {
   cursor: pointer;
 }
 .strike-dot {
-  width: 9px;
-  height: 9px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: #272e38;
-  border: 1px solid #3d4756;
+  background: #27272a;
+  border: 1px solid #3f3f46;
 }
 .strike-dot.active-1 {
-  background: #e5a93b;
-  border-color: #f0c058;
+  background: #f59e0b;
+  border-color: #fbbf24;
 }
 .strike-dot.active-2 {
-  background: #ea6c26;
-  border-color: #f7813a;
+  background: #ea580c;
+  border-color: #f97316;
 }
 .strike-dot.active-3 {
-  background: #da3633;
-  border-color: #f85149;
-  box-shadow: 0 0 6px rgba(218, 54, 51, 0.5);
+  background: #dc2626;
+  border-color: #ef4444;
 }
 
 /* ==========================================================================
-   Gestor de Asistencias (Eventos & CTAs)
+   Botones de Asistencia (Spreadsheet Style)
    ========================================================================== */
-.attendance-layout {
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 20px;
-  align-items: flex-start;
-}
-
-@media (max-width: 960px) {
-  .attendance-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
-.attendance-sidebar {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 16px;
-}
-
-.activities-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 14px;
-  max-height: 560px;
-  overflow-y: auto;
-}
-
-.activity-card-item {
-  background: #11141a;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.activity-card-item:hover {
-  background: #161b23;
-  border-color: #3b4657;
-}
-
-.activity-card-item.active {
-  background: #191c1f;
-  border-color: var(--border-highlight);
-  box-shadow: inset 3px 0 0 var(--border-highlight);
-}
-
-.activity-item-title {
-  font-weight: 700;
-  font-size: 13px;
-  color: var(--text-main);
-  margin-bottom: 4px;
-}
-
-.activity-item-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.attendance-content-area {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 20px;
-  min-height: 480px;
-}
-
-.attendance-event-header {
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 16px;
-  margin-bottom: 16px;
-}
-
-.attendance-summary-stats {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 10px;
-}
-
-.stat-box {
-  background: #10141a;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 6px 12px;
-  font-size: 12px;
-}
-
-.stat-number {
-  font-weight: 700;
-  color: var(--text-gold);
-}
-
-.attendance-roster-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  max-height: 500px;
-  overflow-y: auto;
-  margin-top: 12px;
-}
-
 .attendance-row-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 12px;
-  background: #101419;
-  border: 1px solid #1c222c;
-  border-radius: var(--radius);
-  transition: background 0.15s;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-main);
+  transition: background-color 150ms ease;
 }
-
 .attendance-row-item:hover {
-  background: #141920;
+  background: var(--bg-hover);
 }
 
 .attendance-status-btns {
   display: flex;
   gap: 4px;
 }
-
 .att-btn {
-  font-size: 11px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
   font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 3px;
-  border: 1px solid transparent;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border: 1px solid var(--border-color);
+  background: #121215;
+  color: #71717a;
   cursor: pointer;
-  background: #1a2028;
-  color: var(--text-muted);
+  transition: all 150ms ease;
 }
 .att-btn:hover {
-  color: #fff;
+  color: #e4e4e7;
+  border-color: #52525b;
 }
 .att-btn.active-present {
-  background: #238636;
-  color: #fff;
-  border-color: #2ea043;
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border-color: #059669;
 }
 .att-btn.active-absent {
-  background: #a6301f;
-  color: #fff;
-  border-color: #cf3c26;
+  background: rgba(220, 38, 38, 0.15);
+  color: #f87171;
+  border-color: #dc2626;
 }
 .att-btn.active-excused {
-  background: #9e6a03;
-  color: #fff;
-  border-color: #bb8009;
+  background: rgba(217, 119, 6, 0.15);
+  color: #fbbf24;
+  border-color: #d97706;
 }
 .att-btn.active-late {
-  background: #1f6feb;
-  color: #fff;
-  border-color: #388bfd;
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border-color: #2563eb;
 }
 
 /* ==========================================================================
-   Alianza: Llamas Eternas
+   Rueda Oficial 3x3 de Albion Online (Visor Técnico)
    ========================================================================== */
-.alliance-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px 0;
-}
-
-.alliance-hero-banner {
-  text-align: center;
-  padding: 40px 20px 30px;
-  background: linear-gradient(180deg, #181d26 0%, #101318 100%);
-  border: 1px solid #283344;
-  border-radius: var(--radius);
-  margin-bottom: 24px;
-}
-
-.alliance-crest {
-  margin-bottom: 12px;
-}
-
-.alliance-title {
-  font-size: 24px;
-  font-weight: 800;
-  color: var(--text-gold);
-  letter-spacing: 1px;
-  margin-bottom: 6px;
-}
-
-.alliance-subtitle {
-  font-size: 13px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.alliance-maintenance-card {
-  background: #12161d;
+.albion-character-wheel {
+  display: grid;
+  grid-template-columns: repeat(3, 84px);
+  grid-template-rows: repeat(3, 84px);
+  gap: 12px;
+  padding: 12px;
+  background: #09090b;
   border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 30px;
-  text-align: center;
 }
 
-.maintenance-badge {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  padding: 4px 12px;
-  background: rgba(229, 169, 59, 0.12);
-  color: var(--text-gold);
-  border: 1px solid rgba(229, 169, 59, 0.3);
-  border-radius: 20px;
-  margin-bottom: 16px;
-}
-
-.alliance-maintenance-card h3 {
-  font-size: 18px;
-  color: var(--text-main);
-  margin-bottom: 12px;
-}
-
-.alliance-maintenance-card p {
-  font-size: 14px;
-  color: var(--text-muted);
-  max-width: 600px;
-  margin: 0 auto 20px;
-  line-height: 1.6;
-}
-
-.alliance-tags-row {
+.albion-wheel-slot {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  background: #121215;
+  border: 1px solid #27272a;
   display: flex;
-  gap: 8px;
+  align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
 }
 
-.alliance-tag {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 10px;
-  background: #19202a;
-  border: 1px solid #263140;
-  color: #8da4be;
-  border-radius: 3px;
+.albion-wheel-slot.two-handed-locked {
+  opacity: 0.35;
+  border-style: dashed;
+}
+
+.albion-slot-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.albion-slot-empty {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: #52525b;
+  text-transform: uppercase;
+}
+
+.albion-spells-badge-row {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  display: flex;
+  gap: 2px;
+}
+
+.albion-spell-icon-tiny {
+  width: 18px;
+  height: 18px;
+  background: #000;
+  border: 1px solid #3f3f46;
+  border-radius: 1px;
+  overflow: hidden;
+}
+.albion-spell-icon-tiny img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* ==========================================================================
-   Visor de Build Simplificado (Notas de Combate)
+   Micro-interacciones Tácticas
    ========================================================================== */
-.viewer-notes-header {
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--text-gold);
-  letter-spacing: 0.5px;
-  margin-bottom: 10px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--border-color);
+.arrow-slide-right {
+  transition: transform 150ms ease;
 }
-
-.viewer-notes-box {
-  background: #0d1015;
-  border: 1px solid #1c222c;
-  border-radius: var(--radius);
-  padding: 14px;
-  font-size: 13px;
-  color: #c9d1d9;
-  line-height: 1.6;
-  white-space: pre-wrap;
-  min-height: 140px;
+.group:hover .arrow-slide-right {
+  transform: translateX(3px);
 }
-
