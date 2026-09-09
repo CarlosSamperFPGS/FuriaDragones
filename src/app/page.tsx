@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { AppShell } from "@/components/layout/AppShell";
 import { GatewayView } from "@/components/views/GatewayView";
+import { GremioView } from "@/components/views/GremioView";
 
 export default function Home() {
   const [currentView, setCurrentView] = useState<"gateway" | "gremio" | "sindicato">("gateway");
@@ -26,15 +27,7 @@ export default function Home() {
       )}
 
       {currentView === "gremio" && (
-        <div className="flex h-full flex-col items-center justify-center font-mono text-zinc-500 gap-4">
-          <div className="text-zinc-300 font-bold text-lg">[ VISTA_GREMIO: REPOSITORIO DE BUILDS ]</div>
-          <button
-            onClick={() => setCurrentView("gateway")}
-            className="border border-dragon-border px-4 py-1.5 text-xs text-zinc-400 hover:border-dragon-crimson hover:text-white"
-          >
-            ← VOLVER AL GATEWAY
-          </button>
-        </div>
+        <GremioView onBack={() => setCurrentView("gateway")} />
       )}
 
       {currentView === "sindicato" && (
