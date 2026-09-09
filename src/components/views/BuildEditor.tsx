@@ -529,7 +529,7 @@ export function BuildEditor({
                 setFormData({ ...formData, nombre: e.target.value })
               }
               className="w-full bg-dragon-panel border border-dragon-border text-zinc-200 font-mono text-sm p-2 focus:border-dragon-ember outline-none"
-              placeholder="Ej. Bruiser - Romperreinos"
+              placeholder="Nombre de la build (ej. Bruiser - Romperreinos)"
             />
           </div>
 
@@ -650,7 +650,7 @@ export function BuildEditor({
               onChange={(e) =>
                 setFormData({ ...formData, notas: e.target.value })
               }
-              placeholder="Instrucciones de posicionamiento, combinaciones de habilidades..."
+              placeholder="Directivas y notas de la build: posicionamiento, combos de habilidades, requisitos de IP..."
               className="w-full flex-1 min-h-[140px] bg-dragon-panel border border-dragon-border text-zinc-200 font-mono text-xs p-3 focus:border-dragon-ember outline-none resize-none leading-relaxed"
             />
           </div>
@@ -747,7 +747,7 @@ export function BuildEditor({
                 type="text"
                 value={itemSearchQuery}
                 onChange={(e) => setItemSearchQuery(e.target.value)}
-                placeholder="BUSCAR POR NOMBRE O IDENTIFICADOR..."
+                placeholder="Buscar objeto por nombre o identificación en Albion..."
                 className="w-full bg-transparent font-mono text-xs text-zinc-200 focus:outline-none placeholder-zinc-600"
                 autoFocus
               />
@@ -866,7 +866,7 @@ export function BuildEditor({
               type="text"
               value={newActivityName}
               onChange={(e) => setNewActivityName(e.target.value)}
-              placeholder="Ej. Ganking Avaloniano"
+              placeholder="Nombre de la nueva sección de contenido (ej. Ganking Avaloniano)"
               className="w-full bg-dragon-panel border border-dragon-border px-3 py-2 text-sm font-mono text-zinc-200 focus:border-dragon-ember focus:outline-none mb-6"
               autoFocus
               onKeyDown={(e) => {

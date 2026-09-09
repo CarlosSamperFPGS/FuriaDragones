@@ -137,28 +137,40 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Vista según Pestaña Activa */}
-              <div className="flex-1 h-full overflow-hidden">
-                {activeTab === "builds" && (
+              {/* Vistas Persistentes según Pestaña (No se desmontan al cambiar de tab) */}
+              <div className="relative flex-1 h-full overflow-hidden">
+                <div
+                  className={`h-full w-full transition-opacity duration-200 ${
+                    activeTab === "builds" ? "block opacity-100" : "hidden opacity-0 pointer-events-none"
+                  }`}
+                >
                   <GremioView
                     onBack={handleLogout}
                     isSindicatoAuthenticated={isSindicatoAuth}
                   />
-                )}
+                </div>
 
-                {activeTab === "roster" && (
+                <div
+                  className={`h-full w-full transition-opacity duration-200 ${
+                    activeTab === "roster" ? "block opacity-100" : "hidden opacity-0 pointer-events-none"
+                  }`}
+                >
                   <RosterView
                     onBack={() => setActiveTab("builds")}
                     isSindicatoAuthenticated={isSindicatoAuth}
                   />
-                )}
+                </div>
 
-                {activeTab === "contenidos" && (
+                <div
+                  className={`h-full w-full transition-opacity duration-200 ${
+                    activeTab === "contenidos" ? "block opacity-100" : "hidden opacity-0 pointer-events-none"
+                  }`}
+                >
                   <ContenidosView
                     onBack={() => setActiveTab("builds")}
                     isSindicatoAuthenticated={isSindicatoAuth}
                   />
-                )}
+                </div>
               </div>
             </div>
           )}
@@ -167,8 +179,8 @@ export default function Home() {
 
       {/* Modal Integrado de Autenticación Sindicato */}
       {showLoginModal && (
-        <div className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-dragon-bg border border-dragon-border w-88 max-w-sm p-6 select-none shadow-none">
+        <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 transition-all duration-200">
+          <div className="bg-dragon-bg border border-dragon-border w-88 max-w-sm p-6 select-none shadow-2xl transition-all duration-200 scale-100">
             <h3 className="font-display text-base font-bold tracking-wider text-zinc-100 uppercase mb-1">
               AUTENTICACIÓN SINDICATO
             </h3>
@@ -189,9 +201,9 @@ export default function Home() {
                   setPasswordInput(e.target.value);
                   setLoginError(false);
                 }}
-                placeholder="CLAVE_DE_ACCESO"
+                placeholder="Clave de acceso de oficial..."
                 autoFocus
-                className="w-full bg-dragon-panel border border-dragon-border px-3 py-2 text-sm font-mono text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-dragon-ember transition-colors"
+                className="w-full bg-dragon-panel border border-dragon-border px-3 py-2 text-sm font-mono text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-dragon-ember transition-colors"
               />
 
               {loginError && (

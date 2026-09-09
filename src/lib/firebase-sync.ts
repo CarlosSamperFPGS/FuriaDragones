@@ -1,7 +1,14 @@
 // src/lib/firebase-sync.ts
-// Sincronización en la nube con Firestore para Builds y Actividades de Furia de Dragones
+// Sincronización en la nube con Firestore para Builds, Roster y Contenidos de Furia de Dragones
 
-import { collection, getDocs, doc, setDoc, deleteDoc, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  setDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "./firebase";
 
 export interface TacticalBuild {
@@ -17,6 +24,7 @@ export interface TacticalBuild {
   equipamiento: Record<string, any>;
   spells?: Record<string, any>;
   notas?: string;
+  updatedAt?: string;
 }
 
 export interface RosterMember {
@@ -41,15 +49,7 @@ export interface GuildContent {
   updatedAt?: string;
 }
 
-export const DEFAULT_ACTIVITIES = [
-  "TODAS",
-  "ZVZ (50v50)",
-  "ROAMING (GANK)",
-  "PVE / DUNGEONS",
-  "AVALONIAN RAIDS",
-  "HELLGATES (5v5)",
-];
-
+// BUILDS CRUD
 export async function getTacticalBuilds(): Promise<TacticalBuild[]> {
   try {
     const querySnapshot = await getDocs(collection(db, "builds"));
@@ -70,7 +70,7 @@ export async function getTacticalBuilds(): Promise<TacticalBuild[]> {
         id: docSnap.id,
         nombre: data.nombre || data.name || "TACTICAL_BUILD",
         rol: (data.rol || data.role || "DPS").toUpperCase(),
-        actividad: data.actividad || data.folder || "ZVZ (50v50)",
+        actividad: data.actividad || data.folder || "ZVZ",
         armaPrincipalId: mainhandId,
         armaPrincipalNombre: data.armaPrincipal || data.armaPrincipalNombre || "Arma Principal",
         armaSecundariaId: offhandId,
@@ -94,6 +94,7 @@ export async function getTacticalBuilds(): Promise<TacticalBuild[]> {
           shoes: ["CHANNELED_RUN", "PASSIVE_INCREASED_DAMAGE"],
         },
         notas: data.notas || data.notes || "",
+        updatedAt: data.updatedAt,
       });
     });
 
@@ -101,23 +102,6 @@ export async function getTacticalBuilds(): Promise<TacticalBuild[]> {
   } catch (error) {
     console.warn("[FirebaseSync] Error fetching builds from Firestore:", error);
     return [];
-  }
-}
-
-export async function getActivities(): Promise<string[]> {
-  try {
-    const docSnap = await getDocs(collection(db, "activities"));
-    if (docSnap.empty) {
-      return DEFAULT_ACTIVITIES;
-    }
-    const list: string[] = ["TODAS"];
-    docSnap.forEach((d) => {
-      const name = d.data().name || d.data().nombre;
-      if (name && !list.includes(name)) list.push(name);
-    });
-    return list.length > 1 ? list : DEFAULT_ACTIVITIES;
-  } catch (error) {
-    return DEFAULT_ACTIVITIES;
   }
 }
 
@@ -150,25 +134,107 @@ export async function deleteTacticalBuild(buildId: string): Promise<boolean> {
   }
 }
 
+// ACTIVIDADES / CONTENIDOS DE LA IZQUIERDA (Persistencia Real y Permanente)
+export async function getActivities(): Promise<string[]> {
+  try {
+    // 1. Consultar documento central de configuración de actividades
+    const configRef = doc(db, "config", "activities");
+    const configSnap = await getDoc(configRef);
+
+    if (configSnap.exists()) {
+      const data = configSnap.data();
+      const rawList: string[] = data.list || [];
+      const cleanList = rawList.filter((a) => a && a.toUpperCase() !== "TODAS");
+      return ["TODAS", ...cleanList];
+    }
+
+    // 2. Si no hay documento en config, verificar si hay colección individual
+    const colSnap = await getDocs(collection(db, "activities"));
+    if (!colSnap.empty) {
+      const list: string[] = ["TODAS"];
+      colSnap.forEach((d) => {
+        const name = d.data().name || d.data().nombre;
+        if (name && name.toUpperCase() !== "TODAS" && !list.includes(name)) {
+          list.push(name);
+        }
+      });
+      return list;
+    }
+
+    // Cero datos falsos: solo la opción global
+    return ["TODAS"];
+  } catch (error) {
+    console.warn("[FirebaseSync] Error fetching activities:", error);
+    return ["TODAS"];
+  }
+}
+
 export async function saveActivity(name: string): Promise<boolean> {
   try {
-    const actId = name.toLowerCase().replace(/[^a-z0-9]/g, "_");
-    const actRef = doc(db, "activities", actId);
+    const cleanName = name.trim();
+    if (!cleanName || cleanName.toUpperCase() === "TODAS") return false;
+
+    // Obtener actividades existentes
+    const currentActivities = await getActivities();
+    const updatedList = Array.from(
+      new Set([...currentActivities.filter((a) => a !== "TODAS"), cleanName])
+    );
+
+    // Guardar en documento central
+    const configRef = doc(db, "config", "activities");
     await setDoc(
-      actRef,
+      configRef,
       {
-        name,
+        list: updatedList,
         updatedAt: new Date().toISOString(),
       },
       { merge: true }
     );
+
+    // Guardar también en colección individual para redundancia
+    const actId = cleanName.toLowerCase().replace(/[^a-z0-9]/g, "_");
+    const actRef = doc(db, "activities", actId);
+    await setDoc(actRef, { name: cleanName, updatedAt: new Date().toISOString() }, { merge: true });
+
     return true;
   } catch (error) {
-    console.warn("[FirebaseSync] Error saving activity to Firestore:", error);
+    console.warn("[FirebaseSync] Error saving activity:", error);
     return false;
   }
 }
 
+export async function deleteActivity(name: string): Promise<boolean> {
+  try {
+    const cleanName = name.trim();
+    const currentActivities = await getActivities();
+    const updatedList = currentActivities.filter(
+      (a) => a !== "TODAS" && a.toLowerCase() !== cleanName.toLowerCase()
+    );
+
+    // Actualizar documento central
+    const configRef = doc(db, "config", "activities");
+    await setDoc(
+      configRef,
+      {
+        list: updatedList,
+        updatedAt: new Date().toISOString(),
+      },
+      { merge: true }
+    );
+
+    // Eliminar también de colección individual
+    const actId = cleanName.toLowerCase().replace(/[^a-z0-9]/g, "_");
+    const actRef = doc(db, "activities", actId);
+    await deleteDoc(actRef);
+
+    return true;
+  } catch (error) {
+    console.warn("[FirebaseSync] Error deleting activity:", error);
+    return false;
+  }
+}
+
+// ROSTER CRUD
 export async function getRosterMembers(): Promise<RosterMember[]> {
   try {
     const docSnap = await getDocs(collection(db, "roster"));
@@ -215,6 +281,7 @@ export async function deleteRosterMember(memberId: string): Promise<boolean> {
   }
 }
 
+// GUILD CONTENTS CRUD
 export async function getGuildContents(): Promise<GuildContent[]> {
   try {
     const docSnap = await getDocs(collection(db, "contents"));
@@ -260,5 +327,3 @@ export async function deleteGuildContent(contentId: string): Promise<boolean> {
     return false;
   }
 }
-
-

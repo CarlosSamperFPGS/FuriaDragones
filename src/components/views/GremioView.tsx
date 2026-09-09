@@ -135,14 +135,17 @@ export function GremioView({
     setDeleteModal(null);
   };
 
-  const confirmEditActivity = () => {
+  const confirmEditActivity = async () => {
     if (!activityEditModal) return;
     const { original, current } = activityEditModal;
-    if (current.trim() && current.trim() !== original) {
+    const cleanCurrent = current.trim();
+    if (cleanCurrent && cleanCurrent !== original) {
       setActivities((prev) =>
-        prev.map((item) => (item === original ? current.trim() : item))
+        prev.map((item) => (item === original ? cleanCurrent : item))
       );
-      if (selectedActivity === original) setSelectedActivity(current.trim());
+      if (selectedActivity === original) setSelectedActivity(cleanCurrent);
+      await deleteActivity(original);
+      await saveActivity(cleanCurrent);
     }
     setActivityEditModal(null);
   };
@@ -753,7 +756,8 @@ export function GremioView({
                   prev ? { ...prev, current: e.target.value } : null
                 )
               }
-              className="w-full bg-dragon-panel border border-dragon-border px-3 py-2 text-sm font-mono text-zinc-200 focus:border-dragon-ember focus:outline-none mb-6"
+              placeholder="Nombre de la sección de contenido (ej. ZvZ, Ganking, Raids...)"
+              className="w-full bg-dragon-panel border border-dragon-border px-3 py-2 text-sm font-mono text-zinc-200 focus:border-dragon-ember focus:outline-none mb-6 placeholder-zinc-500 transition-colors"
               autoFocus
             />
 

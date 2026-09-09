@@ -36,33 +36,33 @@ export function GatewayView({ onEnterMember, onEnterSindicato }: GatewayViewProp
         <button
           type="button"
           onClick={onEnterMember}
-          className="group relative flex flex-col justify-between p-8 sm:p-10 text-left bg-[#09090c] border border-dragon-border hover:border-zinc-500 transition-all duration-200 cursor-pointer overflow-hidden"
+          className="group relative flex flex-col justify-between p-8 sm:p-10 text-left bg-[#09090c] border border-dragon-border hover:border-zinc-400 hover:shadow-[0_0_25px_rgba(255,255,255,0.05)] hover:-translate-y-1 transition-all duration-300 ease-out cursor-pointer overflow-hidden"
         >
           {/* Acento lateral en hover */}
-          <div className="absolute top-0 left-0 h-full w-1 bg-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="absolute top-0 left-0 h-full w-1 bg-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
           <div>
             <div className="flex items-center justify-between mb-6">
-              <span className="font-mono text-xs text-zinc-500 tracking-widest uppercase">
+              <span className="font-mono text-xs text-zinc-500 tracking-widest uppercase group-hover:text-zinc-400 transition-colors">
                 // 01_ACCESO PÚBLICO
               </span>
-              <div className="h-10 w-10 border border-dragon-border flex items-center justify-center text-zinc-400 group-hover:text-zinc-100 group-hover:border-zinc-500 transition-colors">
+              <div className="h-10 w-10 border border-dragon-border flex items-center justify-center text-zinc-400 group-hover:text-zinc-100 group-hover:border-zinc-400 group-hover:scale-105 transition-all duration-300">
                 <Users className="h-5 w-5" />
               </div>
             </div>
 
-            <h2 className="font-display text-2xl sm:text-3xl font-bold text-zinc-100 uppercase tracking-wider group-hover:text-white transition-colors">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-zinc-100 uppercase tracking-wider group-hover:text-white transition-colors duration-200">
               ENTRAR COMO MIEMBRO
             </h2>
 
-            <p className="mt-3 font-sans text-xs sm:text-sm text-zinc-400 leading-relaxed">
+            <p className="mt-3 font-sans text-xs sm:text-sm text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors duration-200">
               Modo consulta de solo-lectura. Accede al catálogo de builds tácticas del gremio, visualización del roster activo y calendario de actividades.
             </p>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-dragon-border/60 flex items-center justify-between font-mono text-xs tracking-wider text-zinc-400 group-hover:text-zinc-200 transition-colors">
+          <div className="mt-8 pt-6 border-t border-dragon-border/60 flex items-center justify-between font-mono text-xs tracking-wider text-zinc-400 group-hover:text-zinc-200 transition-colors duration-200">
             <span>[ ACCESO DIRECTO ]</span>
-            <span className="flex items-center gap-1 text-zinc-300 group-hover:translate-x-1 transition-transform">
+            <span className="flex items-center gap-1 text-zinc-300 group-hover:translate-x-1.5 transition-transform duration-200">
               CONTINUAR <ArrowRight className="h-3.5 w-3.5" />
             </span>
           </div>
@@ -72,33 +72,33 @@ export function GatewayView({ onEnterMember, onEnterSindicato }: GatewayViewProp
         <button
           type="button"
           onClick={onEnterSindicato}
-          className="group relative flex flex-col justify-between p-8 sm:p-10 text-left bg-[#09090c] border border-dragon-border hover:border-dragon-ember transition-all duration-200 cursor-pointer overflow-hidden"
+          className="group relative flex flex-col justify-between p-8 sm:p-10 text-left bg-[#09090c] border border-dragon-border hover:border-dragon-ember hover:shadow-[0_0_30px_rgba(255,102,0,0.18)] hover:-translate-y-1 transition-all duration-300 ease-out cursor-pointer overflow-hidden"
         >
           {/* Acento lateral en hover */}
-          <div className="absolute top-0 left-0 h-full w-1 bg-dragon-ember opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="absolute top-0 left-0 h-full w-1 bg-dragon-ember opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
           <div>
             <div className="flex items-center justify-between mb-6">
               <span className="font-mono text-xs text-dragon-ember tracking-widest uppercase">
                 // 02_OFICIALES // ROOT
               </span>
-              <div className="h-10 w-10 border border-dragon-ember/40 bg-dragon-ember/5 flex items-center justify-center text-dragon-ember group-hover:border-dragon-ember transition-colors">
+              <div className="h-10 w-10 border border-dragon-ember/40 bg-dragon-ember/5 flex items-center justify-center text-dragon-ember group-hover:border-dragon-ember group-hover:scale-105 transition-all duration-300">
                 <Shield className="h-5 w-5" />
               </div>
             </div>
 
-            <h2 className="font-display text-2xl sm:text-3xl font-bold text-zinc-100 uppercase tracking-wider group-hover:text-dragon-ember transition-colors">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-zinc-100 uppercase tracking-wider group-hover:text-dragon-ember transition-colors duration-200">
               ENTRAR COMO SINDICATO
             </h2>
 
-            <p className="mt-3 font-sans text-xs sm:text-sm text-zinc-400 leading-relaxed">
+            <p className="mt-3 font-sans text-xs sm:text-sm text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors duration-200">
               Autenticación con clave de oficial. Control total para crear o modificar builds, gestionar miembros y avisos, y organizar contenidos.
             </p>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-dragon-border/60 flex items-center justify-between font-mono text-xs tracking-wider text-dragon-ember group-hover:text-dragon-ember transition-colors">
+          <div className="mt-8 pt-6 border-t border-dragon-border/60 flex items-center justify-between font-mono text-xs tracking-wider text-dragon-ember group-hover:text-dragon-ember transition-colors duration-200">
             <span>[ REQUIERE CONTRASEÑA ]</span>
-            <span className="flex items-center gap-1 text-dragon-ember group-hover:translate-x-1 transition-transform font-bold">
+            <span className="flex items-center gap-1 text-dragon-ember group-hover:translate-x-1.5 transition-transform duration-200 font-bold">
               AUTORIZAR <ArrowRight className="h-3.5 w-3.5" />
             </span>
           </div>

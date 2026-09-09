@@ -252,8 +252,8 @@ export function RosterView({
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="BUSCAR POR IGN O NOMBRE..."
-                  className="w-full bg-transparent font-mono text-xs text-zinc-200 outline-none placeholder-zinc-600"
+                  placeholder="Buscar por IGN o nombre del miembro en el roster..."
+                  className="w-full bg-transparent font-mono text-xs text-zinc-200 outline-none placeholder-zinc-500"
                 />
               </div>
 
@@ -454,8 +454,8 @@ export function RosterView({
                       required
                       value={formIgn}
                       onChange={(e) => setFormIgn(e.target.value)}
-                      placeholder="Ej. ViperDragon"
-                      className="w-full bg-dragon-panel border border-dragon-border text-zinc-200 p-2.5 focus:border-dragon-ember outline-none"
+                      placeholder="Nombre del miembro en Albion (IGN, ej. ViperDragon)"
+                      className="w-full bg-dragon-panel border border-dragon-border text-zinc-200 p-2.5 focus:border-dragon-ember outline-none placeholder-zinc-500 transition-colors"
                     />
                   </div>
 
@@ -467,8 +467,8 @@ export function RosterView({
                       type="text"
                       value={formNombre}
                       onChange={(e) => setFormNombre(e.target.value)}
-                      placeholder="Ej. Viper / Alex"
-                      className="w-full bg-dragon-panel border border-dragon-border text-zinc-200 p-2.5 focus:border-dragon-ember outline-none"
+                      placeholder="Nombre real o apodo de Discord del miembro (ej. Carlos / Alex)"
+                      className="w-full bg-dragon-panel border border-dragon-border text-zinc-200 p-2.5 focus:border-dragon-ember outline-none placeholder-zinc-500 transition-colors"
                     />
                   </div>
                 </div>
@@ -586,8 +586,8 @@ export function RosterView({
                   <textarea
                     value={formNotas}
                     onChange={(e) => setFormNotas(e.target.value)}
-                    placeholder="Historial de asistencia, compromisos de contenido, advertencias..."
-                    className="w-full h-24 bg-dragon-panel border border-dragon-border text-zinc-200 p-2.5 focus:border-dragon-ember outline-none resize-none"
+                    placeholder="Notas del miembro: historial de asistencia, roles secundarios, avisos..."
+                    className="w-full h-24 bg-dragon-panel border border-dragon-border text-zinc-200 p-2.5 focus:border-dragon-ember outline-none resize-none placeholder-zinc-500 transition-colors"
                   />
                 </div>
 

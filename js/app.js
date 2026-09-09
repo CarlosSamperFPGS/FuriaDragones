@@ -35,59 +35,9 @@ function checkOfficerSession() {
 let currentRole = checkOfficerSession();
 const DEFAULT_OFFICER_PASSWORDS = ["furiadragones2026", "furia2026", "furiadragones", "1234"];
 
-const DEFAULT_MEMBERS = [
-  {
-    id: "mem_1",
-    name: "DragonLeader",
-    rank: "Sindicato",
-    role: "Tank",
-    secondaryRole: "DPS Melee",
-    status: "ACTIVE",
-    strikes: [],
-    notes: "Fundador / Caller principal",
-    updatedAt: Date.now()
-  },
-  {
-    id: "mem_2",
-    name: "FrostBite",
-    rank: "Oficial",
-    role: "DPS Ranged",
-    secondaryRole: "",
-    status: "ACTIVE",
-    strikes: [],
-    notes: "Oficial de reclutamiento",
-    updatedAt: Date.now()
-  },
-  {
-    id: "mem_3",
-    name: "HolyLight",
-    rank: "Caller",
-    role: "Healer",
-    secondaryRole: "Soporte",
-    status: "ACTIVE",
-    strikes: [],
-    notes: "Main healer para CTAs",
-    updatedAt: Date.now()
-  }
-];
+const DEFAULT_MEMBERS = [];
 
-const DEFAULT_ACTIVITIES = [
-  {
-    id: "act_1",
-    title: "CTA ZvZ Castillos 18:00 UTC",
-    type: "zvz_cta",
-    date: new Date().toISOString().slice(0, 16),
-    caller: "DragonLeader",
-    notes: "Obligatorio T8 equiv. Salida por Arthur's Rest.",
-    attendance: {
-      "mem_1": "present",
-      "mem_3": "present",
-      "mem_2": "absent"
-    },
-    createdAt: Date.now(),
-    updatedAt: Date.now()
-  }
-];
+const DEFAULT_ACTIVITIES = [];
 
 let activeFilterMemberStatus = "ALL";
 let activeFilterMemberRole = "ALL";
@@ -123,14 +73,7 @@ let activeModalSlot = null;
 let activeSpellSlot = null;
 let activeSpellType = null;
 
-const DEFAULT_FOLDERS = [
-  "ZvZ",
-  "Ganking & Roaming",
-  "PvE & Dungeons",
-  "Small Scale & 5v5",
-  "Nieblas & 1v1",
-  "Soporte & Healers"
-];
+const DEFAULT_FOLDERS = [];
 
 const STORAGE_VERSION = "v7_furia_albion_full_sobresaliente";
 
@@ -476,9 +419,9 @@ function initStorage() {
 function getMembers() {
   try {
     const raw = localStorage.getItem("furia_saved_members");
-    return raw ? JSON.parse(raw) : DEFAULT_MEMBERS;
+    return raw ? JSON.parse(raw) : [];
   } catch (e) {
-    return DEFAULT_MEMBERS;
+    return [];
   }
 }
 
@@ -489,9 +432,9 @@ function saveMembersToStorage(list) {
 function getActivities() {
   try {
     const raw = localStorage.getItem("furia_saved_activities");
-    return raw ? JSON.parse(raw) : DEFAULT_ACTIVITIES;
+    return raw ? JSON.parse(raw) : [];
   } catch (e) {
-    return DEFAULT_ACTIVITIES;
+    return [];
   }
 }
 
@@ -502,12 +445,12 @@ function saveActivitiesToStorage(list) {
 function getSavedBuilds() {
   try {
     const raw = localStorage.getItem("furia_saved_builds");
-    if (raw === null) return DEFAULT_BUILDS;
+    if (raw === null) return [];
     const parsed = JSON.parse(raw);
     if (Array.isArray(parsed)) {
       return parsed;
     }
-    return DEFAULT_BUILDS;
+    return [];
   } catch (e) {
     return [];
   }
@@ -523,14 +466,14 @@ function saveBuildsToStorage(builds) {
 function getAllFolders() {
   try {
     const stored = localStorage.getItem("furia_custom_folders");
-    if (!stored) return DEFAULT_FOLDERS;
+    if (!stored) return [];
     const parsed = JSON.parse(stored);
-    if (Array.isArray(parsed) && parsed.length > 0) {
+    if (Array.isArray(parsed)) {
       return parsed;
     }
-    return DEFAULT_FOLDERS;
+    return [];
   } catch (e) {
-    return DEFAULT_FOLDERS;
+    return [];
   }
 }
 
