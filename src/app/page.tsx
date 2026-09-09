@@ -4,10 +4,13 @@ import React, { useState } from "react";
 import { AppShell } from "@/components/layout/AppShell";
 import { GatewayView } from "@/components/views/GatewayView";
 import { GremioView } from "@/components/views/GremioView";
+import { RosterView } from "@/components/views/RosterView";
+import { ContenidosView } from "@/components/views/ContenidosView";
 
 export default function Home() {
-  const [currentView, setCurrentView] = useState<"gateway" | "gremio" | "sindicato">("gateway");
+  const [currentView, setCurrentView] = useState<"gateway" | "gremio">("gateway");
   const [isSindicatoAuth, setIsSindicatoAuth] = useState(false);
+  const [sindicatoTab, setSindicatoTab] = useState<"builds" | "roster" | "contenidos">("builds");
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
   const [loginError, setLoginError] = useState(false);
@@ -21,6 +24,8 @@ export default function Home() {
   const handleAuthorize = () => {
     if (passwordInput === "furiadragones2026") {
       setIsSindicatoAuth(true);
+      setCurrentView("gremio");
+      setSindicatoTab("builds");
       setShowLoginModal(false);
       setLoginError(false);
     } else {
@@ -38,27 +43,103 @@ export default function Home() {
         }}
         isSindicatoAuthenticated={isSindicatoAuth}
       >
-        {currentView === "gateway" && (
-          <GatewayView onSelectGremio={() => setCurrentView("gremio")} />
-        )}
+        {isSindicatoAuth ? (
+          /* ============================================================ */
+          /* DASHBOARD DEL SINDICATO: PESTAÑAS TÁCTICAS SUPERIORES       */
+          /* ============================================================ */
+          <div className="flex flex-col h-full w-full overflow-hidden">
+            {/* Menú de Pestañas Superior estilo Terminal */}
+            <div className="flex items-center justify-between border-b border-dragon-border bg-dragon-bg px-6 py-2.5 shrink-0 select-none z-30">
+              <div className="flex items-center gap-4 sm:gap-6">
+                <span className="font-mono text-xs text-dragon-ember font-bold uppercase tracking-widest hidden md:inline">
+                  // SINDICATO // DASHBOARD:
+                </span>
+                <nav className="flex items-center gap-2 sm:gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setSindicatoTab("builds")}
+                    className={`font-mono text-sm tracking-widest px-3 py-1.5 uppercase transition-all ${
+                      sindicatoTab === "builds"
+                        ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
+                        : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
+                    }`}
+                  >
+                    [ BUILDS ]
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSindicatoTab("roster")}
+                    className={`font-mono text-sm tracking-widest px-3 py-1.5 uppercase transition-all ${
+                      sindicatoTab === "roster"
+                        ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
+                        : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
+                    }`}
+                  >
+                    [ ROSTER ]
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSindicatoTab("contenidos")}
+                    className={`font-mono text-sm tracking-widest px-3 py-1.5 uppercase transition-all ${
+                      sindicatoTab === "contenidos"
+                        ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
+                        : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
+                    }`}
+                  >
+                    [ CONTENIDOS ]
+                  </button>
+                </nav>
+              </div>
 
-        {currentView === "gremio" && (
-          <GremioView
-            onBack={() => setCurrentView("gateway")}
-            isSindicatoAuthenticated={isSindicatoAuth}
-          />
-        )}
+              <div className="font-mono text-xs text-zinc-500 hidden sm:flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-dragon-ember animate-pulse" />
+                <span className="tracking-wider">ACCESO_SINDICATO: ACTIVO</span>
+              </div>
+            </div>
 
-        {currentView === "sindicato" && (
-          <div className="flex h-full flex-col items-center justify-center font-mono text-zinc-500 gap-4">
-            <div className="text-dragon-ember font-bold text-lg">[ VISTA_SINDICATO: DASHBOARD TÁCTICO ]</div>
-            <button
-              onClick={() => setCurrentView("gateway")}
-              className="border border-dragon-border px-4 py-1.5 text-xs text-zinc-400 hover:border-dragon-crimson hover:text-white"
-            >
-              ← VOLVER AL GATEWAY
-            </button>
+            {/* Vista según Pestaña Activa */}
+            <div className="flex-1 h-full overflow-hidden">
+              {sindicatoTab === "builds" && (
+                <GremioView
+                  onBack={() => {
+                    setIsSindicatoAuth(false);
+                    setCurrentView("gateway");
+                  }}
+                  isSindicatoAuthenticated={true}
+                />
+              )}
+
+              {sindicatoTab === "roster" && (
+                <RosterView
+                  onBack={() => setSindicatoTab("builds")}
+                  isSindicatoAuthenticated={true}
+                />
+              )}
+
+              {sindicatoTab === "contenidos" && (
+                <ContenidosView
+                  onBack={() => setSindicatoTab("builds")}
+                  isSindicatoAuthenticated={true}
+                />
+              )}
+            </div>
           </div>
+        ) : (
+          /* ============================================================ */
+          /* MODO PÚBLICO / MIEMBRO (GATEWAY O CONSULTA DE BUILDS)        */
+          /* ============================================================ */
+          <>
+            {currentView === "gateway" && (
+              <GatewayView onSelectGremio={() => setCurrentView("gremio")} />
+            )}
+
+            {currentView === "gremio" && (
+              <GremioView
+                onBack={() => setCurrentView("gateway")}
+                isSindicatoAuthenticated={false}
+              />
+            )}
+          </>
         )}
       </AppShell>
 

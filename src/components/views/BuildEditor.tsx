@@ -703,24 +703,40 @@ export function BuildEditor({
             )}
 
             {itemSelectModal.slotType.toLowerCase() === "mainhand" && (
-              <div className="flex items-center gap-1.5 border-b border-dragon-border px-6 py-2.5 bg-zinc-950/60 overflow-x-auto">
-                <span className="font-mono text-[10px] text-zinc-500 uppercase mr-2 tracking-wider shrink-0">
-                  CATEGORÍA:
-                </span>
-                {weaponCategories.map((cat) => (
-                  <button
-                    key={cat}
-                    type="button"
-                    onClick={() => setSubFilter(cat)}
-                    className={`font-mono text-xs px-2.5 py-1 uppercase tracking-wider transition-colors duration-150 shrink-0 ${
-                      subFilter === cat
-                        ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
-                        : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
-                    }`}
+              <div className="border-b border-dragon-border px-6 py-3 bg-zinc-950/70">
+                <div className="flex items-center justify-between gap-4 mb-2">
+                  <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-wider">
+                    // CATEGORÍAS DE ARMAS ({weaponCategories.length - 1} TIPOS):
+                  </span>
+                  <select
+                    value={subFilter}
+                    onChange={(e) => setSubFilter(e.target.value)}
+                    className="bg-dragon-panel border border-dragon-border text-zinc-200 font-mono text-xs px-2 py-1 focus:border-dragon-ember outline-none"
                   >
-                    {cat}
-                  </button>
-                ))}
+                    {weaponCategories.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat === "TODAS" ? "TODAS LAS CATEGORÍAS" : cat}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-1.5">
+                  {weaponCategories.map((cat) => (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() => setSubFilter(cat)}
+                      className={`font-mono text-xs px-2.5 py-1 uppercase tracking-wider transition-colors duration-150 rounded-none ${
+                        subFilter === cat
+                          ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel"
+                          : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
 

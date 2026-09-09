@@ -1,7 +1,7 @@
 // src/lib/firebase-sync.ts
 // Sincronización en la nube con Firestore para Builds y Actividades de Furia de Dragones
 
-import { collection, getDocs, doc, setDoc, onSnapshot } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc, deleteDoc, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
 
 export interface TacticalBuild {
@@ -17,6 +17,28 @@ export interface TacticalBuild {
   equipamiento: Record<string, any>;
   spells?: Record<string, any>;
   notas?: string;
+}
+
+export interface RosterMember {
+  id: string;
+  nombre: string;
+  ign: string;
+  status: "Nuevo" | "Miembro" | "Miembro Oficial" | "Veterano" | "Sindicato" | "Lider";
+  roles: string[];
+  estadoActividad: "Activo" | "Inactivo" | "Ausente";
+  avisos: number;
+  notas?: string;
+  updatedAt?: string;
+}
+
+export interface GuildContent {
+  id: string;
+  nombre: string;
+  organizador: string;
+  fechaHora: string;
+  asistentes: string[];
+  notas?: string;
+  updatedAt?: string;
 }
 
 export const DEFAULT_ACTIVITIES = [
@@ -313,4 +335,171 @@ export async function saveActivity(name: string): Promise<boolean> {
     return false;
   }
 }
+
+// Datos iniciales de Roster
+export const FALLBACK_ROSTER: RosterMember[] = [
+  {
+    id: "member_01",
+    nombre: "Viper",
+    ign: "ViperDragon",
+    status: "Lider",
+    roles: ["Clapper", "DPS"],
+    estadoActividad: "Activo",
+    avisos: 0,
+    notas: "Caller principal en ZvZ y shotcaller oficial.",
+  },
+  {
+    id: "member_02",
+    nombre: "Carlos Samper",
+    ign: "SamperX",
+    status: "Sindicato",
+    roles: ["Stoper", "Support"],
+    estadoActividad: "Activo",
+    avisos: 1,
+    notas: "Oficial de logística, defensivas y gestión de alijo.",
+  },
+  {
+    id: "member_03",
+    nombre: "Kaelen",
+    ign: "KaelenHoly",
+    status: "Veterano",
+    roles: ["Healer"],
+    estadoActividad: "Activo",
+    avisos: 0,
+    notas: "Healer de línea principal en Caída Sagrada.",
+  },
+  {
+    id: "member_04",
+    nombre: "Sombra",
+    ign: "ShadowFang",
+    status: "Miembro Oficial",
+    roles: ["Pierce", "DPS"],
+    estadoActividad: "Ausente",
+    avisos: 4,
+    notas: "Falta a 2 CTAs sin justificar con previo aviso.",
+  },
+  {
+    id: "member_05",
+    nombre: "Thorin",
+    ign: "ThorinHammer",
+    status: "Nuevo",
+    roles: ["Stoper"],
+    estadoActividad: "Inactivo",
+    avisos: 7,
+    notas: "Amonestado por romper formación reiteradamente.",
+  },
+];
+
+// Datos iniciales de Contenidos / Actividades
+export const FALLBACK_CONTENTS: GuildContent[] = [
+  {
+    id: "content_01",
+    nombre: "ZvZ Reset Day - Martlock Castle",
+    organizador: "ViperDragon",
+    fechaHora: "2026-09-12T18:00",
+    asistentes: ["ViperDragon", "SamperX", "KaelenHoly"],
+    notas: "Obligatorio T8 equivalente. Salida desde portal de Caerleon.",
+  },
+  {
+    id: "content_02",
+    nombre: "Raid Avaloniana T8.3",
+    organizador: "SamperX",
+    fechaHora: "2026-09-13T21:30",
+    asistentes: ["SamperX", "KaelenHoly", "ShadowFang"],
+    notas: "Traer comida T8 y pociones de veneno. Respetar llamadas de pulls.",
+  },
+];
+
+export async function getRosterMembers(): Promise<RosterMember[]> {
+  try {
+    const docSnap = await getDocs(collection(db, "roster"));
+    if (docSnap.empty) {
+      return FALLBACK_ROSTER;
+    }
+    const members: RosterMember[] = [];
+    docSnap.forEach((d) => {
+      members.push({ id: d.id, ...d.data() } as RosterMember);
+    });
+    return members.length > 0 ? members : FALLBACK_ROSTER;
+  } catch (error) {
+    console.warn("[FirebaseSync] Using fallback roster:", error);
+    return FALLBACK_ROSTER;
+  }
+}
+
+export async function saveRosterMember(member: RosterMember): Promise<boolean> {
+  try {
+    const memberRef = doc(db, "roster", member.id);
+    await setDoc(
+      memberRef,
+      {
+        ...member,
+        updatedAt: new Date().toISOString(),
+      },
+      { merge: true }
+    );
+    return true;
+  } catch (error) {
+    console.warn("[FirebaseSync] Error saving roster member:", error);
+    return false;
+  }
+}
+
+export async function deleteRosterMember(memberId: string): Promise<boolean> {
+  try {
+    const memberRef = doc(db, "roster", memberId);
+    await deleteDoc(memberRef);
+    return true;
+  } catch (error) {
+    console.warn("[FirebaseSync] Error deleting roster member:", error);
+    return false;
+  }
+}
+
+export async function getGuildContents(): Promise<GuildContent[]> {
+  try {
+    const docSnap = await getDocs(collection(db, "contents"));
+    if (docSnap.empty) {
+      return FALLBACK_CONTENTS;
+    }
+    const contents: GuildContent[] = [];
+    docSnap.forEach((d) => {
+      contents.push({ id: d.id, ...d.data() } as GuildContent);
+    });
+    return contents.length > 0 ? contents : FALLBACK_CONTENTS;
+  } catch (error) {
+    console.warn("[FirebaseSync] Using fallback contents:", error);
+    return FALLBACK_CONTENTS;
+  }
+}
+
+export async function saveGuildContent(content: GuildContent): Promise<boolean> {
+  try {
+    const contentRef = doc(db, "contents", content.id);
+    await setDoc(
+      contentRef,
+      {
+        ...content,
+        updatedAt: new Date().toISOString(),
+      },
+      { merge: true }
+    );
+    return true;
+  } catch (error) {
+    console.warn("[FirebaseSync] Error saving guild content:", error);
+    return false;
+  }
+}
+
+export async function deleteGuildContent(contentId: string): Promise<boolean> {
+  try {
+    const contentRef = doc(db, "contents", contentId);
+    await deleteDoc(contentRef);
+    return true;
+  } catch (error) {
+    console.warn("[FirebaseSync] Error deleting guild content:", error);
+    return false;
+  }
+}
+
 
