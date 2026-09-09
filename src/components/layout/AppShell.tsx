@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { type ReactNode } from "react";
 import { Shield, Lock, Terminal, Activity } from "lucide-react";
 
 interface AppShellProps {
-  children?: React.ReactNode;
+  children?: ReactNode;
   onOpenSindicatoLogin: () => void;
   isSindicatoAuthenticated?: boolean;
 }

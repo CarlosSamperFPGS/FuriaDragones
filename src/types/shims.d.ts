@@ -1,16 +1,19 @@
 // Type declarations for offline IDE support when node_modules are built in cloud (Vercel)
 
+declare namespace React {
+  type ReactNode = any;
+  type ReactElement = any;
+  type FC<P = {}> = (props: P) => ReactElement | null;
+  function useState<T>(initial: T | (() => T)): [T, (val: T | ((prev: T) => T)) => void];
+  function useEffect(effect: () => void | (() => void), deps?: any[]): void;
+  function useRef<T>(initial?: T): { current: T };
+  function useMemo<T>(factory: () => T, deps?: any[]): T;
+  function useCallback<T extends (...args: any[]) => any>(callback: T, deps?: any[]): T;
+}
+
 declare module "react" {
-  export type ReactNode = any;
-  export type ReactElement = any;
-  export type FC<P = {}> = (props: P) => ReactElement | null;
-  export function useState<T>(initial: T | (() => T)): [T, (val: T | ((prev: T) => T)) => void];
-  export function useEffect(effect: () => void | (() => void), deps?: any[]): void;
-  export function useRef<T>(initial?: T): { current: T };
-  export function useMemo<T>(factory: () => T, deps?: any[]): T;
-  export function useCallback<T extends (...args: any[]) => any>(callback: T, deps?: any[]): T;
-  const React: any;
-  export default React;
+  export = React;
+  export as namespace React;
 }
 
 declare module "react-dom" {
