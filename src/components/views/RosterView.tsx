@@ -137,6 +137,23 @@ export function RosterView({
     }
   };
 
+  // Ajuste rápido de avisos mediante click directo con persistencia
+  const handleQuickAvisos = async (
+    member: RosterMember,
+    delta: number,
+    e: React.MouseEvent
+  ) => {
+    e.stopPropagation();
+    const newAvisos = Math.max(0, (member.avisos || 0) + delta);
+    const updatedMember: RosterMember = { ...member, avisos: newAvisos };
+
+    setMembers((prev) =>
+      prev.map((m) => (m.id === member.id ? updatedMember : m))
+    );
+
+    await saveRosterMember(updatedMember);
+  };
+
   // Cálculo de strikes para el formulario
   const formStrikes = Math.floor(formAvisos / 3);
   const formAvisosRestantes = formAvisos % 3;
@@ -369,25 +386,67 @@ export function RosterView({
                         ))}
                       </div>
 
-                      {/* Avisos / Strikes */}
+                      {/* Avisos / Strikes (Interactivos mediante Click para Sindicato) */}
                       <div className={`${isSindicatoAuthenticated ? "col-span-3 sm:col-span-2" : "col-span-4 sm:col-span-2"} flex flex-col justify-center`}>
-                        <div className="flex items-center gap-1.5">
-                          {[1, 2, 3].map((st) => (
-                            <span
-                              key={st}
-                              className={`w-2.5 h-2.5 rounded-full ${strikes >= st
-                                ? "bg-dragon-crimson shadow-[0_0_6px_rgba(220,38,38,0.8)]"
-                                : "border border-zinc-700 bg-zinc-900"
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <div
+                            onClick={(e) => {
+                              if (isSindicatoAuthenticated) {
+                                handleQuickAvisos(m, 1, e);
+                              }
+                            }}
+                            className={`flex items-center gap-1.5 py-0.5 px-1.5 -ml-1.5 rounded transition-all ${
+                              isSindicatoAuthenticated
+                                ? "cursor-pointer hover:bg-zinc-800/80 hover:ring-1 hover:ring-dragon-ember/50 active:scale-95"
+                                : ""
+                            }`}
+                            title={
+                              isSindicatoAuthenticated
+                                ? "Click para sumar +1 aviso directo a este miembro"
+                                : undefined
+                            }
+                          >
+                            {[1, 2, 3].map((st) => (
+                              <span
+                                key={st}
+                                className={`w-2.5 h-2.5 rounded-full transition-all ${
+                                  strikes >= st
+                                    ? "bg-dragon-crimson shadow-[0_0_6px_rgba(220,38,38,0.8)]"
+                                    : "border border-zinc-700 bg-zinc-900"
                                 }`}
-                              title={`Strike ${st}`}
-                            />
-                          ))}
-                          <span className="text-[11px] text-zinc-400 ml-1">
-                            {m.avisos || 0} Av.
-                          </span>
+                                title={`Strike ${st}`}
+                              />
+                            ))}
+                            <span className="text-[11px] text-zinc-300 font-semibold ml-0.5">
+                              {m.avisos || 0} Av.
+                            </span>
+                          </div>
+
+                          {/* Controles rápidos de +/- con hover en la fila (Solo Sindicato) */}
+                          {isSindicatoAuthenticated && (
+                            <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity ml-1">
+                              <button
+                                type="button"
+                                onClick={(e) => handleQuickAvisos(m, -1, e)}
+                                disabled={!m.avisos}
+                                className="w-5 h-5 flex items-center justify-center text-[11px] border border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-white hover:border-zinc-600 disabled:opacity-20 disabled:pointer-events-none transition-colors"
+                                title="Restar 1 aviso"
+                              >
+                                -
+                              </button>
+                              <button
+                                type="button"
+                                onClick={(e) => handleQuickAvisos(m, 1, e)}
+                                className="w-5 h-5 flex items-center justify-center text-[11px] border border-dragon-ember/50 bg-dragon-ember/10 text-dragon-ember hover:bg-dragon-ember hover:text-black font-bold transition-colors"
+                                title="Sumar 1 aviso"
+                              >
+                                +
+                              </button>
+                            </div>
+                          )}
                         </div>
                         {isExpulsion && (
-                          <span className="text-[9px] text-dragon-crimson font-bold tracking-wider uppercase mt-0.5">
+                          <span className="text-[9px] text-dragon-crimson font-bold tracking-wider uppercase mt-0.5 animate-pulse">
                             [ EXPULSIÓN ]
                           </span>
                         )}
@@ -543,35 +602,221 @@ export function RosterView({
                   </div>
                 </div>
 
-                {/* Avisos y Strikes (Cálculo Automático) */}
+                {/* Avisos y Strikes Interactivos (Click Directo en los Avisos) */}
                 <div>
-                  <label className="block text-zinc-400 uppercase mb-1">
-                    AVISOS DISCIPLINARIOS:
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    max="20"
-                    value={formAvisos}
-                    onChange={(e) => setFormAvisos(Math.max(0, parseInt(e.target.value) || 0))}
-                    className="w-full sm:w-48 bg-dragon-panel border border-dragon-border text-zinc-200 p-2.5 focus:border-dragon-ember outline-none"
-                  />
-                  {/* Cálculo en vivo de Strikes y Expulsión */}
-                  <div
-                    className={`mt-2 font-mono text-xs flex items-center gap-2 ${formIsExpulsion
-                      ? "text-dragon-crimson font-bold animate-pulse"
-                      : formStrikes > 0
-                        ? "text-amber-400"
-                        : "text-zinc-500"
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-zinc-400 uppercase font-mono text-xs">
+                      AVISOS DISCIPLINARIOS (CLICK DIRECTO):
+                    </label>
+                    <div className="flex items-center gap-1.5 font-mono text-xs">
+                      <button
+                        type="button"
+                        onClick={() => setFormAvisos((prev) => Math.max(0, prev - 1))}
+                        disabled={formAvisos === 0}
+                        className="px-2 py-0.5 border border-zinc-700 bg-zinc-900 text-zinc-300 hover:text-white hover:border-zinc-500 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                        title="Restar 1 aviso"
+                      >
+                        -1 AVISO
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setFormAvisos((prev) => prev + 1)}
+                        className="px-2 py-0.5 border border-dragon-ember/60 bg-dragon-ember/10 text-dragon-ember hover:bg-dragon-ember hover:text-black font-bold transition-colors"
+                        title="Sumar 1 aviso"
+                      >
+                        +1 AVISO
+                      </button>
+                      {formAvisos > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => setFormAvisos(0)}
+                          className="px-2 py-0.5 border border-zinc-800 text-zinc-500 hover:text-dragon-crimson hover:border-dragon-crimson/50 transition-colors"
+                          title="Limpiar todos los avisos"
+                        >
+                          RESET
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Panel de 3 Strikes con Avisos Clicables */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {/* STRIKE 1: Avisos 1, 2, 3 */}
+                    <div
+                      className={`p-3 border transition-all ${
+                        formStrikes >= 1
+                          ? "border-amber-500/60 bg-amber-500/10 shadow-[0_0_12px_rgba(245,158,11,0.15)]"
+                          : "border-dragon-border bg-dragon-panel/40"
                       }`}
+                    >
+                      <div className="flex items-center justify-between mb-2 font-mono text-[11px]">
+                        <span className={formStrikes >= 1 ? "text-amber-400 font-bold" : "text-zinc-400"}>
+                          STRIKE 1
+                        </span>
+                        <span className="text-[10px] text-zinc-500">
+                          {Math.min(3, formAvisos)} / 3
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-3 gap-1.5">
+                        {[1, 2, 3].map((avisoNum) => {
+                          const isActive = formAvisos >= avisoNum;
+                          return (
+                            <button
+                              key={avisoNum}
+                              type="button"
+                              onClick={() => {
+                                if (formAvisos === avisoNum) {
+                                  setFormAvisos(avisoNum - 1);
+                                } else {
+                                  setFormAvisos(avisoNum);
+                                }
+                              }}
+                              className={`h-10 flex flex-col items-center justify-center border font-mono text-xs transition-all cursor-pointer select-none ${
+                                isActive
+                                  ? "border-amber-500 bg-amber-500/30 text-amber-300 font-bold shadow-[0_0_10px_rgba(245,158,11,0.4)] scale-[1.03]"
+                                  : "border-zinc-800 bg-zinc-950/80 text-zinc-600 hover:border-zinc-600 hover:text-zinc-300 active:scale-95"
+                              }`}
+                              title={`Aviso ${avisoNum} (Click para alternar)`}
+                            >
+                              <span className="text-[10px] opacity-70">AVISO</span>
+                              <span className="text-sm font-bold">{avisoNum}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* STRIKE 2: Avisos 4, 5, 6 */}
+                    <div
+                      className={`p-3 border transition-all ${
+                        formStrikes >= 2
+                          ? "border-orange-500/60 bg-orange-500/10 shadow-[0_0_12px_rgba(249,115,22,0.15)]"
+                          : "border-dragon-border bg-dragon-panel/40"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-2 font-mono text-[11px]">
+                        <span className={formStrikes >= 2 ? "text-orange-400 font-bold" : "text-zinc-400"}>
+                          STRIKE 2
+                        </span>
+                        <span className="text-[10px] text-zinc-500">
+                          {Math.max(0, Math.min(3, formAvisos - 3))} / 3
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-3 gap-1.5">
+                        {[4, 5, 6].map((avisoNum) => {
+                          const isActive = formAvisos >= avisoNum;
+                          return (
+                            <button
+                              key={avisoNum}
+                              type="button"
+                              onClick={() => {
+                                if (formAvisos === avisoNum) {
+                                  setFormAvisos(avisoNum - 1);
+                                } else {
+                                  setFormAvisos(avisoNum);
+                                }
+                              }}
+                              className={`h-10 flex flex-col items-center justify-center border font-mono text-xs transition-all cursor-pointer select-none ${
+                                isActive
+                                  ? "border-orange-500 bg-orange-500/30 text-orange-300 font-bold shadow-[0_0_10px_rgba(249,115,22,0.4)] scale-[1.03]"
+                                  : "border-zinc-800 bg-zinc-950/80 text-zinc-600 hover:border-zinc-600 hover:text-zinc-300 active:scale-95"
+                              }`}
+                              title={`Aviso ${avisoNum} (Click para alternar)`}
+                            >
+                              <span className="text-[10px] opacity-70">AVISO</span>
+                              <span className="text-sm font-bold">{avisoNum}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* STRIKE 3: Avisos 7, 8, 9 (EXPULSIÓN) */}
+                    <div
+                      className={`p-3 border transition-all ${
+                        formStrikes >= 3
+                          ? "border-dragon-crimson bg-dragon-crimson/20 shadow-[0_0_20px_rgba(220,38,38,0.3)]"
+                          : "border-dragon-border bg-dragon-panel/40"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-2 font-mono text-[11px]">
+                        <span
+                          className={
+                            formStrikes >= 3
+                              ? "text-dragon-crimson font-bold animate-pulse"
+                              : "text-zinc-400"
+                          }
+                        >
+                          STRIKE 3 {formStrikes >= 3 ? "// EXPULSIÓN" : ""}
+                        </span>
+                        <span className="text-[10px] text-zinc-500">
+                          {Math.max(0, Math.min(3, formAvisos - 6))} / 3
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-3 gap-1.5">
+                        {[7, 8, 9].map((avisoNum) => {
+                          const isActive = formAvisos >= avisoNum;
+                          return (
+                            <button
+                              key={avisoNum}
+                              type="button"
+                              onClick={() => {
+                                if (formAvisos === avisoNum) {
+                                  setFormAvisos(avisoNum - 1);
+                                } else {
+                                  setFormAvisos(avisoNum);
+                                }
+                              }}
+                              className={`h-10 flex flex-col items-center justify-center border font-mono text-xs transition-all cursor-pointer select-none ${
+                                isActive
+                                  ? "border-dragon-crimson bg-dragon-crimson/40 text-red-200 font-bold shadow-[0_0_12px_rgba(220,38,38,0.6)] scale-[1.03]"
+                                  : "border-zinc-800 bg-zinc-950/80 text-zinc-600 hover:border-zinc-600 hover:text-zinc-300 active:scale-95"
+                              }`}
+                              title={`Aviso ${avisoNum} (Click para alternar)`}
+                            >
+                              <span className="text-[10px] opacity-70">AVISO</span>
+                              <span className="text-sm font-bold">{avisoNum}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Telemetría y estado en vivo */}
+                  <div
+                    className={`mt-3 font-mono text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 border ${
+                      formIsExpulsion
+                        ? "border-dragon-crimson bg-dragon-crimson/15 text-dragon-crimson font-bold"
+                        : formStrikes > 0
+                        ? "border-amber-500/40 bg-amber-500/5 text-amber-400"
+                        : "border-zinc-800 bg-zinc-950/40 text-zinc-500"
+                    }`}
                   >
-                    <ShieldAlert className="h-4 w-4 shrink-0" />
-                    <span>
-                      &gt; TELEMETRÍA: {formStrikes} / 3 Strikes ({formAvisos} avisos acumulados).{" "}
-                      {formIsExpulsion
-                        ? "¡EXPULSIÓN INMEDIATA!"
-                        : `Faltan ${3 - formAvisosRestantes} aviso(s) para el siguiente Strike.`}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <ShieldAlert className="h-4 w-4 shrink-0" />
+                      <span>
+                        {formStrikes} / 3 STRIKES ({formAvisos} aviso{formAvisos !== 1 ? "s" : ""})
+                        {formIsExpulsion
+                          ? " — LÍMITE ALCANZADO: EXPULSIÓN INMEDIATA"
+                          : formAvisos > 0
+                          ? ` — Faltan ${3 - formAvisosRestantes} aviso(s) para el siguiente Strike`
+                          : " — Sin sanciones disciplinarias"}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
+                      <span className="text-[10px] text-zinc-500 uppercase">AJUSTE MANUAL:</span>
+                      <input
+                        type="number"
+                        min="0"
+                        max="99"
+                        value={formAvisos}
+                        onChange={(e) =>
+                          setFormAvisos(Math.max(0, parseInt(e.target.value) || 0))
+                        }
+                        className="w-16 bg-zinc-900 border border-zinc-700 text-center text-zinc-200 py-1 px-1.5 text-xs focus:border-dragon-ember outline-none"
+                      />
+                    </div>
                   </div>
                 </div>
 
