@@ -22,11 +22,11 @@ export function GatewayView({ onSelectGremio }: GatewayViewProps) {
         <div className="flex items-start justify-between">
           <div className="space-y-1">
             <span className="font-mono text-xs tracking-widest text-dragon-crimson">
-              // 01_SECTOR
+              // 01_GREMIO
             </span>
             <div className="flex items-center gap-2 font-mono text-[11px] text-zinc-500">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              STATUS: ACCESO_DISPONIBLE
+              STATUS: ACTUALIZADO
             </div>
           </div>
 
@@ -41,8 +41,7 @@ export function GatewayView({ onSelectGremio }: GatewayViewProps) {
             FURIA DE DRAGONES
           </h2>
           <p className="mt-3 max-w-md font-sans text-sm leading-relaxed text-zinc-400">
-            Repositorio de builds tácticas, equipamiento ZvZ estandarizado,
-            escaladas y asignación de roles de combate para el gremio.
+            Repositorio de Builds, Guías y Gestión de miembros. (Guías en desarrollo)
           </p>
 
           {/* Estadísticas en Fila Técnica (Sin Cards) */}

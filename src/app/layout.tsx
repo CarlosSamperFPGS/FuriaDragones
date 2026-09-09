@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
-import { Rajdhani, JetBrains_Mono, Inter } from "next/font/google";
+import { Rajdhani, JetBrains_Mono, Inter, VT323 } from "next/font/google";
 import "./globals.css";
 
 const rajdhani = Rajdhani({
@@ -21,6 +21,12 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+const vt323 = VT323({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-hacker",
+});
+
 export const metadata: Metadata = {
   title: "FURIA DE DRAGONES // TACTICAL OPS",
   description: "Terminal de Operaciones Tácticas y Builds - Albion Online",
@@ -34,7 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`dark ${rajdhani.variable} ${jetbrainsMono.variable} ${inter.variable}`}
+      className={`dark ${rajdhani.variable} ${jetbrainsMono.variable} ${inter.variable} ${vt323.variable}`}
     >
       <body className="h-screen w-screen overflow-hidden bg-dragon-bg text-zinc-200 antialiased font-sans select-none">
         {children}

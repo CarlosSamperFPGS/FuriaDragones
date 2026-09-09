@@ -1,7 +1,7 @@
 "use client";
 
 import React, { type ReactNode } from "react";
-import { Shield, Lock, Terminal, Activity } from "lucide-react";
+import { Shield, Lock } from "lucide-react";
 
 interface AppShellProps {
   children?: ReactNode;
@@ -14,6 +14,8 @@ export function AppShell({
   onOpenSindicatoLogin,
   isSindicatoAuthenticated = false,
 }: AppShellProps) {
+  const currentYear = new Date().getFullYear();
+
   return (
     <div className="flex h-screen w-screen flex-col bg-dragon-bg">
       {/* Top Bar: Telemetría Técnica y Acceso Sindicato */}
@@ -21,26 +23,23 @@ export function AppShell({
         {/* Identificador de Nodo */}
         <div className="flex items-center gap-3 font-mono text-xs tracking-wider">
           <span className="h-2 w-2 bg-dragon-crimson" />
-          <span className="font-display text-sm font-bold tracking-widest text-zinc-100 uppercase">
-            FURIA // OS
+          <span className="font-display text-base font-bold tracking-widest text-zinc-100 uppercase">
+            FuriaX
           </span>
-          <span className="text-zinc-600">/</span>
-          <span className="text-zinc-400">ALBION SERVER [EU]</span>
         </div>
 
-        {/* Telemetría Central Silenciosa */}
-        <div className="hidden md:flex items-center gap-6 font-mono text-[11px] text-zinc-500">
-          <div className="flex items-center gap-2">
-            <Activity className="h-3 w-3 text-zinc-400" />
-            <span>NET: 24MS</span>
-          </div>
-          <span>•</span>
-          <div className="flex items-center gap-2">
-            <span>SEC_LEVEL:</span>
-            <span className={isSindicatoAuthenticated ? "text-dragon-ember font-semibold" : "text-zinc-400"}>
-              {isSindicatoAuthenticated ? "OFFICER // ROOT" : "GUEST // READ_ONLY"}
-            </span>
-          </div>
+        {/* Acceso Indicator */}
+        <div className="hidden md:flex items-center gap-2 font-mono text-[11px]">
+          <span className="text-zinc-500">ACCESO:</span>
+          <span
+            className={
+              isSindicatoAuthenticated
+                ? "text-dragon-ember font-semibold tracking-wider"
+                : "text-zinc-400 font-semibold tracking-wider"
+            }
+          >
+            {isSindicatoAuthenticated ? "SINDICATO" : "MIEMBRO"}
+          </span>
         </div>
 
         {/* Botón Sindicato (Sin tarjetas, borde fino mate) */}
@@ -67,15 +66,13 @@ export function AppShell({
       {/* Main Workspace: Altura Completa Sin Scroll de Página */}
       <main className="relative flex-1 overflow-hidden">{children}</main>
 
-      {/* Bottom Status Ticker */}
-      <footer className="flex h-7 w-full shrink-0 items-center justify-between border-t border-dragon-border px-6 font-mono text-[10px] text-zinc-600 bg-dragon-bg">
-        <div className="flex items-center gap-2">
-          <Terminal className="h-3 w-3 text-zinc-600" />
-          <span>PORTAL_STATUS: READY</span>
-        </div>
-        <div className="tracking-widest uppercase">
-          GUILD_CODE: [FD] • SEASON: ACTIVE
-        </div>
+      {/* Footer Moderno con Fuente Hacker */}
+      <footer className="flex h-8 w-full shrink-0 items-center justify-center border-t border-dragon-border px-6 font-mono text-[11px] text-zinc-500 bg-dragon-bg">
+        <p className="flex items-center gap-1.5">
+          <span>&copy; {currentYear}</span>
+          <span className="font-hacker text-dragon-crimson text-sm tracking-widest">HAZARD</span>
+          <span>Carlos Samper. Todos los derechos reservados.</span>
+        </p>
       </footer>
     </div>
   );

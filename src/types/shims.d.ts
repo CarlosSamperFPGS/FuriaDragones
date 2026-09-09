@@ -77,4 +77,5 @@ declare module "next/font/google" {
   export function Rajdhani(options: any): any;
   export function JetBrains_Mono(options: any): any;
   export function Inter(options: any): any;
+  export function VT323(options: any): any;
 }
