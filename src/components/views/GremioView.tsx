@@ -286,78 +286,77 @@ export function GremioView({
       {!showBuildEditor && (
         <aside className="w-64 shrink-0 border-r border-dragon-border bg-dragon-bg flex flex-col h-full">
           <div className="flex items-center justify-between px-4 py-3 border-b border-dragon-border">
-          {onBack && (
-            <button
-              onClick={onBack}
-              className="flex items-center gap-2 font-mono text-xs text-zinc-400 transition-colors duration-150 hover:text-white"
-            >
-              <ArrowLeft className="h-3.5 w-3.5 text-dragon-crimson" />
-              <span>VOLVER</span>
-            </button>
-          )}
-          <span className="font-mono text-[10px] text-zinc-600 tracking-wider">
-            FD // 01
-          </span>
-        </div>
+            {onBack && (
+              <button
+                onClick={onBack}
+                className="flex items-center gap-2 font-mono text-xs text-zinc-400 transition-colors duration-150 hover:text-white"
+              >
+                <ArrowLeft className="h-3.5 w-3.5 text-dragon-crimson" />
+                <span>VOLVER</span>
+              </button>
+            )}
+            <span className="font-mono text-[10px] text-zinc-600 tracking-wider">
+              FD // 01
+            </span>
+          </div>
 
-        <div className="px-4 py-2.5 font-mono text-[11px] text-zinc-500 tracking-widest uppercase border-b border-dragon-border/50">
-          CONTENIDOS
-        </div>
+          <div className="px-4 py-2.5 font-mono text-[11px] text-zinc-500 tracking-widest uppercase border-b border-dragon-border/50">
+            CONTENIDOS
+          </div>
 
-        {/* Lista de Actividades con soporte de gestión Sindicato en hover */}
-        <div className="flex-1 overflow-y-auto py-2 divide-y divide-dragon-border/20">
-          {activities.map((act) => {
-            const isSelected =
-              selectedActivity.toUpperCase() === act.toUpperCase();
+          {/* Lista de Actividades con soporte de gestión Sindicato en hover */}
+          <div className="flex-1 overflow-y-auto py-2 divide-y divide-dragon-border/20">
+            {activities.map((act) => {
+              const isSelected =
+                selectedActivity.toUpperCase() === act.toUpperCase();
 
-            return (
-              <div
-                key={act}
-                onClick={() => setSelectedActivity(act)}
-                className={`group relative flex items-center justify-between w-full px-4 py-3 font-mono text-sm transition-all duration-150 cursor-pointer ${
-                  isSelected
+              return (
+                <div
+                  key={act}
+                  onClick={() => setSelectedActivity(act)}
+                  className={`group relative flex items-center justify-between w-full px-4 py-3 font-mono text-sm transition-all duration-150 cursor-pointer ${isSelected
                     ? "border-l-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
                     : "border-l-2 border-transparent text-zinc-400 hover:text-zinc-200 hover:bg-dragon-panel/20 hover:border-dragon-crimson"
-                }`}
-              >
-                <span className="truncate">{act}</span>
+                    }`}
+                >
+                  <span className="truncate">{act}</span>
 
-                {/* Controles de Sindicato en Hover */}
-                {isSindicatoAuthenticated && act !== "TODAS" && (
-                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-150 shrink-0 ml-2">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActivityEditModal({ original: act, current: act });
-                      }}
-                      className="p-1 text-zinc-500 hover:text-dragon-ember transition-colors"
-                      title="Editar actividad"
-                    >
-                      <Pencil className="h-3 w-3" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setDeleteModal({
-                          type: "activity",
-                          id: act,
-                          name: act,
-                        });
-                      }}
-                      className="p-1 text-zinc-500 hover:text-dragon-crimson transition-colors"
-                      title="Eliminar actividad"
-                    >
-                      <Trash2 className="h-3 w-3" />
-                    </button>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </aside>
+                  {/* Controles de Sindicato en Hover */}
+                  {isSindicatoAuthenticated && act !== "TODAS" && (
+                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-150 shrink-0 ml-2">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActivityEditModal({ original: act, current: act });
+                        }}
+                        className="p-1 text-zinc-500 hover:text-dragon-ember transition-colors"
+                        title="Editar actividad"
+                      >
+                        <Pencil className="h-3 w-3" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDeleteModal({
+                            type: "activity",
+                            id: act,
+                            name: act,
+                          });
+                        }}
+                        className="p-1 text-zinc-500 hover:text-dragon-crimson transition-colors"
+                        title="Eliminar actividad"
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </aside>
       )}
 
       {/* ÁREA PRINCIPAL: Vistas (Lista de Builds o Editor Táctico Modular en Pantalla Completa) */}
@@ -402,11 +401,10 @@ export function GremioView({
 
                 <button
                   onClick={() => setSelectedRole("TODOS")}
-                  className={`px-2.5 py-1 font-mono text-xs uppercase transition-colors duration-150 shrink-0 ${
-                    selectedRole === "TODOS"
-                      ? "border-b-2 border-dragon-ember text-dragon-ember font-bold"
-                      : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
-                  }`}
+                  className={`px-2.5 py-1 font-mono text-xs uppercase transition-colors duration-150 shrink-0 ${selectedRole === "TODOS"
+                    ? "border-b-2 border-dragon-ember text-dragon-ember font-bold"
+                    : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
+                    }`}
                 >
                   TODOS
                 </button>
@@ -417,11 +415,10 @@ export function GremioView({
                     <button
                       key={rol}
                       onClick={() => setSelectedRole(rol)}
-                      className={`px-2.5 py-1 font-mono text-xs uppercase transition-colors duration-150 shrink-0 ${
-                        isActive
-                          ? "border-b-2 border-dragon-ember text-dragon-ember font-bold"
-                          : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
-                      }`}
+                      className={`px-2.5 py-1 font-mono text-xs uppercase transition-colors duration-150 shrink-0 ${isActive
+                        ? "border-b-2 border-dragon-ember text-dragon-ember font-bold"
+                        : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
+                        }`}
                     >
                       {rol}
                     </button>
@@ -462,7 +459,7 @@ export function GremioView({
               ) : filteredBuilds.length === 0 ? (
                 <div className="flex h-full min-h-[350px] flex-col items-center justify-center font-mono text-zinc-600 gap-2">
                   <div className="text-xs tracking-widest">
-                    &gt; // NO SE ENCONTRARON BUILDS PARA EL CRITERIO ACTUAL
+                    &gt; NO SE ENCONTRARON BUILDS PARA EL CRITERIO ACTUAL
                   </div>
                   <span className="text-[11px] text-zinc-500">
                     Selecciona otra actividad en el panel lateral o cambia de rol.
@@ -475,9 +472,9 @@ export function GremioView({
                     const eq: Record<string, any> = build.equipamiento || {};
                     const isTwoHanded = Boolean(
                       build.esDosManos ||
-                        (!build.armaSecundariaId &&
-                          !eq.armaSecundaria &&
-                          !eq.offhand)
+                      (!build.armaSecundariaId &&
+                        !eq.armaSecundaria &&
+                        !eq.offhand)
                     );
 
                     const weaponId =
@@ -707,7 +704,7 @@ export function GremioView({
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-dragon-bg border border-dragon-border p-6 w-96 select-none shadow-none">
             <h3 className="font-display text-base font-bold tracking-wider text-dragon-crimson uppercase mb-2">
-              // CONFIRMAR ELIMINACIÓN
+              CONFIRMAR ELIMINACIÓN
             </h3>
             <p className="font-mono text-sm text-zinc-400 mb-6 leading-relaxed">
               {deleteModal.type === "build"
@@ -742,7 +739,7 @@ export function GremioView({
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-dragon-bg border border-dragon-border p-6 w-96 select-none shadow-none">
             <h3 className="font-display text-base font-bold tracking-wider text-zinc-100 uppercase mb-2">
-              // EDITAR ACTIVIDAD
+              EDITAR ACTIVIDAD
             </h3>
             <p className="font-mono text-[11px] text-zinc-500 mb-4">
               Introduce el nuevo identificador para la actividad:

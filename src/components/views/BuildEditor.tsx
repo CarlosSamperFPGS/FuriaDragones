@@ -388,14 +388,14 @@ export function BuildEditor({
             onClick={onCancel}
             className="px-3 py-1.5 border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition-colors uppercase tracking-wider"
           >
-            CANCELAR // VOLVER
+            CANCELAR
           </button>
           <button
             type="button"
             onClick={() => onSave(formData)}
             className="px-4 py-1.5 bg-dragon-ember hover:bg-orange-500 text-black font-bold transition-colors uppercase tracking-wider"
           >
-            GUARDAR DATOS // SYNC
+            GUARDAR
           </button>
         </div>
       </div>
@@ -405,7 +405,7 @@ export function BuildEditor({
         {/* COLUMNA IZQUIERDA: Cuadrícula de Equipamiento (9 huecos grandes) */}
         <div className="lg:col-span-7 flex flex-col items-center">
           <div className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">
-            // EQUIPAMIENTO Y HECHIZOS (HAZ CLIC EN UN HUECO PARA ASIGNAR)
+            EQUIPAMIENTO Y HECHIZOS
           </div>
 
           {/* Grid de 3x3 para los 9 huecos (con espacio vertical amplio para hechizos agrandados) */}
@@ -435,19 +435,17 @@ export function BuildEditor({
                         label: slot.label,
                       });
                     }}
-                    className={`relative w-28 h-28 sm:w-32 sm:h-32 bg-dragon-panel border border-dragon-border rounded-sm flex items-center justify-center p-1 transition-all ${
-                      slot.isGhosted
-                        ? "cursor-not-allowed opacity-50"
-                        : "hover:border-dragon-ember hover:bg-zinc-900"
-                    }`}
+                    className={`relative w-28 h-28 sm:w-32 sm:h-32 bg-dragon-panel border border-dragon-border rounded-sm flex items-center justify-center p-1 transition-all ${slot.isGhosted
+                      ? "cursor-not-allowed opacity-50"
+                      : "hover:border-dragon-ember hover:bg-zinc-900"
+                      }`}
                   >
                     {slot.itemId ? (
                       <img
                         src={currentImageUrl}
                         alt={slot.label}
-                        className={`w-full h-full object-contain p-1 ${
-                          slot.isGhosted ? "opacity-30 grayscale" : ""
-                        }`}
+                        className={`w-full h-full object-contain p-1 ${slot.isGhosted ? "opacity-30 grayscale" : ""
+                          }`}
                       />
                     ) : (
                       <div className="flex flex-col items-center justify-center text-zinc-600 gap-1">
@@ -515,7 +513,7 @@ export function BuildEditor({
         {/* COLUMNA DERECHA: Configuración Táctica */}
         <div className="lg:col-span-5 flex flex-col space-y-4 font-mono text-xs">
           <div className="font-mono text-xs text-zinc-500 uppercase tracking-widest border-b border-dragon-border pb-2">
-            // CONFIGURACIÓN TÁCTICA DE LA BUILD
+            CONFIGURACIÓN TÁCTICA DE LA BUILD
           </div>
 
           <div>
@@ -536,7 +534,7 @@ export function BuildEditor({
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-zinc-400 uppercase mb-1">
-                ROL TÁCTICO:
+                ROL:
               </label>
               <select
                 value={formData.rol || "DPS"}
@@ -636,14 +634,14 @@ export function BuildEditor({
               htmlFor="editorDosManos"
               className="text-zinc-400 uppercase tracking-wider text-[11px] cursor-pointer"
             >
-              Arma a Dos Manos (Ocupa ambas manos)
+              Arma a Dos Manos
             </label>
           </div>
 
           {/* Textarea de Notas Tácticas */}
           <div className="pt-2 flex-1 flex flex-col">
             <label className="block text-zinc-400 uppercase mb-1">
-              NOTAS // DIRECTIVAS:
+              NOTAS:
             </label>
             <textarea
               value={formData.notas || ""}
@@ -666,7 +664,7 @@ export function BuildEditor({
             {/* Header del Modal */}
             <div className="flex items-center justify-between border-b border-dragon-border px-6 py-3.5 shrink-0">
               <span className="font-mono text-xs text-dragon-ember font-bold uppercase tracking-wider">
-                // SELECCIÓN DE ÍTEM: {itemSelectModal.label}
+                SELECCIÓN DE ÍTEM: {itemSelectModal.label}
               </span>
               <button
                 type="button"
@@ -681,32 +679,31 @@ export function BuildEditor({
             {["head", "armor", "shoes"].includes(
               itemSelectModal.slotType.toLowerCase()
             ) && (
-              <div className="flex items-center gap-1.5 border-b border-dragon-border px-6 py-2.5 bg-zinc-950/60 overflow-x-auto">
-                <span className="font-mono text-[10px] text-zinc-500 uppercase mr-2 tracking-wider shrink-0">
-                  TIPO:
-                </span>
-                {["TODAS", "PLACAS", "CUERO", "TELA"].map((cat) => (
-                  <button
-                    key={cat}
-                    type="button"
-                    onClick={() => setSubFilter(cat)}
-                    className={`font-mono text-xs px-3 py-1 uppercase tracking-wider transition-colors duration-150 shrink-0 ${
-                      subFilter === cat
+                <div className="flex items-center gap-1.5 border-b border-dragon-border px-6 py-2.5 bg-zinc-950/60 overflow-x-auto">
+                  <span className="font-mono text-[10px] text-zinc-500 uppercase mr-2 tracking-wider shrink-0">
+                    TIPO:
+                  </span>
+                  {["TODAS", "PLACAS", "CUERO", "TELA"].map((cat) => (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() => setSubFilter(cat)}
+                      className={`font-mono text-xs px-3 py-1 uppercase tracking-wider transition-colors duration-150 shrink-0 ${subFilter === cat
                         ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
                         : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-            )}
+                        }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              )}
 
             {itemSelectModal.slotType.toLowerCase() === "mainhand" && (
               <div className="border-b border-dragon-border px-6 py-3 bg-zinc-950/70">
                 <div className="flex items-center justify-between gap-4 mb-2">
                   <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-wider">
-                    // CATEGORÍAS DE ARMAS ({weaponCategories.length - 1} TIPOS):
+                    CATEGORÍAS DE ARMAS ({weaponCategories.length - 1} TIPOS):
                   </span>
                   <select
                     value={subFilter}
@@ -727,11 +724,10 @@ export function BuildEditor({
                       key={cat}
                       type="button"
                       onClick={() => setSubFilter(cat)}
-                      className={`font-mono text-xs px-2.5 py-1 uppercase tracking-wider transition-colors duration-150 rounded-none ${
-                        subFilter === cat
-                          ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel"
-                          : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900"
-                      }`}
+                      className={`font-mono text-xs px-2.5 py-1 uppercase tracking-wider transition-colors duration-150 rounded-none ${subFilter === cat
+                        ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel"
+                        : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900"
+                        }`}
                     >
                       {cat}
                     </button>
@@ -856,7 +852,7 @@ export function BuildEditor({
         <div className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-dragon-bg border border-dragon-border w-96 p-6 select-none shadow-2xl">
             <h3 className="font-display text-base font-bold tracking-wider text-zinc-100 uppercase mb-2">
-              // NUEVA ACTIVIDAD / CONTENIDO
+              NUEVA ACTIVIDAD / CONTENIDO
             </h3>
             <p className="font-mono text-[11px] text-zinc-500 mb-4">
               Escribe el nombre de la nueva categoría para organizar las builds:

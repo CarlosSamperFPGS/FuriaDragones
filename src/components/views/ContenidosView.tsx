@@ -179,8 +179,8 @@ export function ContenidosView({
             {subTab === "list" || !isSindicatoAuthenticated
               ? "HISTORIAL // CONTENIDOS Y CTAS"
               : editingId
-              ? `EDITANDO CONTENIDO: ${formNombre || "ACTIVIDAD"}`
-              : "REGISTRO DE NUEVO CONTENIDO"}
+                ? `EDITANDO CONTENIDO: ${formNombre || "ACTIVIDAD"}`
+                : "REGISTRO DE NUEVO CONTENIDO"}
           </span>
         </div>
 
@@ -347,7 +347,7 @@ export function ContenidosView({
                         <div className="border-t border-dragon-border bg-[#050507] p-5">
                           <div className="flex items-center justify-between mb-3 font-mono text-xs text-zinc-500 uppercase tracking-wider">
                             <span>
-                              // REGISTRO DE ASISTENCIA ({attendeeCount} MIEMBROS):
+                              REGISTRO DE ASISTENCIA ({attendeeCount} MIEMBROS):
                             </span>
                           </div>
 
@@ -374,7 +374,7 @@ export function ContenidosView({
                           {c.notas && (
                             <div className="mt-4 pt-3 border-t border-dragon-border/40 font-mono text-xs">
                               <span className="text-zinc-500 uppercase block mb-1">
-                                DIRECTIVAS / NOTAS:
+                                NOTAS:
                               </span>
                               <p className="text-zinc-300 font-sans leading-relaxed">
                                 {c.notas}
@@ -430,7 +430,7 @@ export function ContenidosView({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-zinc-400 uppercase mb-1">
-                      ORGANIZADOR (ROSTER / CALLER):
+                      ORGANIZADOR:
                     </label>
                     <select
                       value={formOrganizador}
@@ -539,7 +539,7 @@ export function ContenidosView({
                 {/* Notas Tácticas */}
                 <div>
                   <label className="block text-zinc-400 uppercase mb-1">
-                    NOTAS // DIRECTIVAS DE COMBATE:
+                    NOTAS:
                   </label>
                   <textarea
                     value={formNotas}
@@ -579,10 +579,10 @@ export function ContenidosView({
         <div className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-dragon-bg border border-dragon-border p-6 w-96 select-none">
             <h3 className="font-display text-base font-bold text-dragon-crimson uppercase mb-2">
-              // CONFIRMAR ELIMINACIÓN
+              CONFIRMAR ELIMINACIÓN
             </h3>
             <p className="font-mono text-xs text-zinc-400 mb-6 leading-relaxed">
-              ¿Eliminar permanentemente el registro del contenido{" "}
+              Eliminar permanentemente el registro del contenido{" "}
               <strong className="text-white uppercase">[{deleteModal.nombre}]</strong>?
             </p>
             <div className="flex items-center justify-end gap-3 font-mono text-xs">

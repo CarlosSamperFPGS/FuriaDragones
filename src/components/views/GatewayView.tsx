@@ -18,7 +18,7 @@ export function GatewayView({ onEnterMember, onEnterSindicato }: GatewayViewProp
       <div className="relative z-10 text-center max-w-2xl mb-10 sm:mb-14">
         <div className="inline-flex items-center gap-2 border border-dragon-border px-3 py-1 font-mono text-xs text-zinc-400 bg-dragon-panel/40 mb-4 tracking-widest uppercase">
           <span className="h-1.5 w-1.5 rounded-full bg-dragon-ember animate-pulse" />
-          <span>PORTAL DE ACCESO TÁCTICO // ALBION ONLINE</span>
+          <span>Portal de Acceso</span>
         </div>
 
         <h1 className="font-display text-4xl sm:text-6xl font-extrabold tracking-tight text-zinc-100 uppercase">
@@ -26,7 +26,7 @@ export function GatewayView({ onEnterMember, onEnterSindicato }: GatewayViewProp
         </h1>
 
         <p className="mt-3 font-sans text-sm sm:text-base text-zinc-400 max-w-lg mx-auto leading-relaxed">
-          Selecciona tu nivel de credencial para acceder a las composiciones tácticas, expediente de miembros y gestión de contenidos.
+          Selecciona tu login para acceder al contenido.
         </p>
       </div>
 
@@ -44,7 +44,7 @@ export function GatewayView({ onEnterMember, onEnterSindicato }: GatewayViewProp
           <div>
             <div className="flex items-center justify-between mb-6">
               <span className="font-mono text-xs text-zinc-500 tracking-widest uppercase group-hover:text-zinc-400 transition-colors">
-                // 01_ACCESO PÚBLICO
+                01_Acceso_Miembro
               </span>
               <div className="h-10 w-10 border border-dragon-border flex items-center justify-center text-zinc-400 group-hover:text-zinc-100 group-hover:border-zinc-400 group-hover:scale-105 transition-all duration-300">
                 <Users className="h-5 w-5" />
@@ -56,12 +56,11 @@ export function GatewayView({ onEnterMember, onEnterSindicato }: GatewayViewProp
             </h2>
 
             <p className="mt-3 font-sans text-xs sm:text-sm text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors duration-200">
-              Modo consulta de solo-lectura. Accede al catálogo de builds tácticas del gremio, visualización del roster activo y calendario de actividades.
+              Acceso al catálogo de builds, visualización del roster y calendario de actividades.
             </p>
           </div>
 
           <div className="mt-8 pt-6 border-t border-dragon-border/60 flex items-center justify-between font-mono text-xs tracking-wider text-zinc-400 group-hover:text-zinc-200 transition-colors duration-200">
-            <span>[ ACCESO DIRECTO ]</span>
             <span className="flex items-center gap-1 text-zinc-300 group-hover:translate-x-1.5 transition-transform duration-200">
               CONTINUAR <ArrowRight className="h-3.5 w-3.5" />
             </span>
@@ -80,7 +79,7 @@ export function GatewayView({ onEnterMember, onEnterSindicato }: GatewayViewProp
           <div>
             <div className="flex items-center justify-between mb-6">
               <span className="font-mono text-xs text-dragon-ember tracking-widest uppercase">
-                // 02_OFICIALES // ROOT
+                02_Acceso_Sindicato
               </span>
               <div className="h-10 w-10 border border-dragon-ember/40 bg-dragon-ember/5 flex items-center justify-center text-dragon-ember group-hover:border-dragon-ember group-hover:scale-105 transition-all duration-300">
                 <Shield className="h-5 w-5" />
@@ -92,14 +91,13 @@ export function GatewayView({ onEnterMember, onEnterSindicato }: GatewayViewProp
             </h2>
 
             <p className="mt-3 font-sans text-xs sm:text-sm text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors duration-200">
-              Autenticación con clave de oficial. Control total para crear o modificar builds, gestionar miembros y avisos, y organizar contenidos.
+              Acceso al creador y editor de builds, gestión del roster y calendario de actividades.
             </p>
           </div>
 
           <div className="mt-8 pt-6 border-t border-dragon-border/60 flex items-center justify-between font-mono text-xs tracking-wider text-dragon-ember group-hover:text-dragon-ember transition-colors duration-200">
-            <span>[ REQUIERE CONTRASEÑA ]</span>
             <span className="flex items-center gap-1 text-dragon-ember group-hover:translate-x-1.5 transition-transform duration-200 font-bold">
-              AUTORIZAR <ArrowRight className="h-3.5 w-3.5" />
+              ACCEDER <ArrowRight className="h-3.5 w-3.5" />
             </span>
           </div>
         </button>
@@ -107,7 +105,7 @@ export function GatewayView({ onEnterMember, onEnterSindicato }: GatewayViewProp
 
       {/* Footer Info */}
       <div className="relative z-10 mt-10 font-mono text-[11px] text-zinc-600 tracking-wider">
-        <span>SECURITY_NODE: ACTIVE // SECURE GATEWAY V2.0</span>
+        <span>SECURITY: Protegido por Firebase auth</span>
       </div>
     </div>
   );

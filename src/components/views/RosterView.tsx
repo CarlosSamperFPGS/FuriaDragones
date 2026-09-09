@@ -196,8 +196,8 @@ export function RosterView({
             {subTab === "list"
               ? "EXPEDIENTES // ROSTER OFICIAL"
               : editingId
-              ? `EDITANDO EXPEDIENTE: ${formIgn || "MIEMBRO"}`
-              : "REGISTRO DE NUEVO MIEMBRO"}
+                ? `EDITANDO EXPEDIENTE: ${formIgn || "MIEMBRO"}`
+                : "REGISTRO DE NUEVO MIEMBRO"}
           </span>
         </div>
 
@@ -375,11 +375,10 @@ export function RosterView({
                           {[1, 2, 3].map((st) => (
                             <span
                               key={st}
-                              className={`w-2.5 h-2.5 rounded-full ${
-                                strikes >= st
-                                  ? "bg-dragon-crimson shadow-[0_0_6px_rgba(220,38,38,0.8)]"
-                                  : "border border-zinc-700 bg-zinc-900"
-                              }`}
+                              className={`w-2.5 h-2.5 rounded-full ${strikes >= st
+                                ? "bg-dragon-crimson shadow-[0_0_6px_rgba(220,38,38,0.8)]"
+                                : "border border-zinc-700 bg-zinc-900"
+                                }`}
                               title={`Strike ${st}`}
                             />
                           ))}
@@ -447,7 +446,7 @@ export function RosterView({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-zinc-400 uppercase mb-1">
-                      IGN (ALBION EN LÍNEA): *
+                      IGN: *
                     </label>
                     <input
                       type="text"
@@ -461,7 +460,7 @@ export function RosterView({
 
                   <div>
                     <label className="block text-zinc-400 uppercase mb-1">
-                      NOMBRE / APODO (DISCORD):
+                      NOMBRE / APODO:
                     </label>
                     <input
                       type="text"
@@ -477,7 +476,7 @@ export function RosterView({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-zinc-400 uppercase mb-1">
-                      STATUS / RANGO:
+                      RANGO:
                     </label>
                     <select
                       value={formStatus}
@@ -519,7 +518,7 @@ export function RosterView({
                 {/* Roles Tácticos (Checkboxes Estilizados) */}
                 <div>
                   <label className="block text-zinc-400 uppercase mb-2">
-                    ROLES ASIGNADOS (SELECCIÓN MÚLTIPLE):
+                    ROLES ASIGNADOS:
                   </label>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     {ROLES_DISPONIBLES.map((r) => {
@@ -529,11 +528,10 @@ export function RosterView({
                           key={r}
                           type="button"
                           onClick={() => toggleRole(r)}
-                          className={`flex items-center justify-between px-3 py-2 border transition-all text-left ${
-                            isChecked
-                              ? "border-dragon-ember text-dragon-ember bg-dragon-panel"
-                              : "border-dragon-border text-zinc-400 bg-zinc-950/60 hover:border-zinc-600"
-                          }`}
+                          className={`flex items-center justify-between px-3 py-2 border transition-all text-left ${isChecked
+                            ? "border-dragon-ember text-dragon-ember bg-dragon-panel"
+                            : "border-dragon-border text-zinc-400 bg-zinc-950/60 hover:border-zinc-600"
+                            }`}
                         >
                           <span className="uppercase tracking-wider text-xs">
                             {r}
@@ -560,13 +558,12 @@ export function RosterView({
                   />
                   {/* Cálculo en vivo de Strikes y Expulsión */}
                   <div
-                    className={`mt-2 font-mono text-xs flex items-center gap-2 ${
-                      formIsExpulsion
-                        ? "text-dragon-crimson font-bold animate-pulse"
-                        : formStrikes > 0
+                    className={`mt-2 font-mono text-xs flex items-center gap-2 ${formIsExpulsion
+                      ? "text-dragon-crimson font-bold animate-pulse"
+                      : formStrikes > 0
                         ? "text-amber-400"
                         : "text-zinc-500"
-                    }`}
+                      }`}
                   >
                     <ShieldAlert className="h-4 w-4 shrink-0" />
                     <span>
@@ -581,7 +578,7 @@ export function RosterView({
                 {/* Notas */}
                 <div>
                   <label className="block text-zinc-400 uppercase mb-1">
-                    NOTAS TÁCTICAS / HISTORIAL:
+                    NOTAS / HISTORIAL:
                   </label>
                   <textarea
                     value={formNotas}
@@ -621,7 +618,7 @@ export function RosterView({
         <div className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-dragon-bg border border-dragon-border p-6 w-96 select-none">
             <h3 className="font-display text-base font-bold text-dragon-crimson uppercase mb-2">
-              // CONFIRMAR ELIMINACIÓN
+              CONFIRMAR ELIMINACIÓN
             </h3>
             <p className="font-mono text-xs text-zinc-400 mb-6 leading-relaxed">
               ¿Eliminar permanentemente del roster al miembro{" "}

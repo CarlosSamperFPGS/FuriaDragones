@@ -73,9 +73,8 @@ export default function Home() {
       >
         {/* Contenedor con animación de fundido a negro (fade-out / fade-in) */}
         <div
-          className={`h-full w-full bg-dragon-bg transition-opacity duration-200 ease-in-out ${
-            isTransitioning ? "opacity-0" : "opacity-100"
-          }`}
+          className={`h-full w-full bg-dragon-bg transition-opacity duration-200 ease-in-out ${isTransitioning ? "opacity-0" : "opacity-100"
+            }`}
         >
           {currentView === "gateway" ? (
             <GatewayView
@@ -93,43 +92,39 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() => setActiveTab("builds")}
-                    className={`font-mono text-xs sm:text-sm tracking-widest px-4 py-1.5 uppercase transition-all ${
-                      activeTab === "builds"
-                        ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
-                        : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
-                    }`}
+                    className={`font-mono text-xs sm:text-sm tracking-widest px-4 py-1.5 uppercase transition-all ${activeTab === "builds"
+                      ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
+                      : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
+                      }`}
                   >
-                    [ BUILDS ]
+                    BUILDS
                   </button>
                   <button
                     type="button"
                     onClick={() => setActiveTab("roster")}
-                    className={`font-mono text-xs sm:text-sm tracking-widest px-4 py-1.5 uppercase transition-all ${
-                      activeTab === "roster"
-                        ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
-                        : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
-                    }`}
+                    className={`font-mono text-xs sm:text-sm tracking-widest px-4 py-1.5 uppercase transition-all ${activeTab === "roster"
+                      ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
+                      : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
+                      }`}
                   >
-                    [ ROSTER ]
+                    ROSTER
                   </button>
                   <button
                     type="button"
                     onClick={() => setActiveTab("contenidos")}
-                    className={`font-mono text-xs sm:text-sm tracking-widest px-4 py-1.5 uppercase transition-all ${
-                      activeTab === "contenidos"
-                        ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
-                        : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
-                    }`}
+                    className={`font-mono text-xs sm:text-sm tracking-widest px-4 py-1.5 uppercase transition-all ${activeTab === "contenidos"
+                      ? "border-b-2 border-dragon-ember text-dragon-ember font-bold bg-dragon-panel/40"
+                      : "border-b-2 border-transparent text-zinc-500 hover:text-zinc-300"
+                      }`}
                   >
-                    [ CONTENIDOS ]
+                    CONTENIDOS
                   </button>
                 </nav>
 
                 <div className="font-mono text-xs text-zinc-500 hidden md:flex items-center gap-2">
                   <span
-                    className={`h-1.5 w-1.5 rounded-full ${
-                      isSindicatoAuth ? "bg-dragon-ember animate-pulse" : "bg-zinc-600"
-                    }`}
+                    className={`h-1.5 w-1.5 rounded-full ${isSindicatoAuth ? "bg-dragon-ember animate-pulse" : "bg-zinc-600"
+                      }`}
                   />
                   <span className="tracking-wider">
                     {isSindicatoAuth ? "MODO OPERATIVO: PRIVILEGIADO" : "MODO CONSULTA: SOLO-LECTURA"}
@@ -140,9 +135,8 @@ export default function Home() {
               {/* Vistas Persistentes según Pestaña (No se desmontan al cambiar de tab) */}
               <div className="relative flex-1 h-full overflow-hidden">
                 <div
-                  className={`h-full w-full transition-opacity duration-200 ${
-                    activeTab === "builds" ? "block opacity-100" : "hidden opacity-0 pointer-events-none"
-                  }`}
+                  className={`h-full w-full transition-opacity duration-200 ${activeTab === "builds" ? "block opacity-100" : "hidden opacity-0 pointer-events-none"
+                    }`}
                 >
                   <GremioView
                     onBack={handleLogout}
@@ -151,9 +145,8 @@ export default function Home() {
                 </div>
 
                 <div
-                  className={`h-full w-full transition-opacity duration-200 ${
-                    activeTab === "roster" ? "block opacity-100" : "hidden opacity-0 pointer-events-none"
-                  }`}
+                  className={`h-full w-full transition-opacity duration-200 ${activeTab === "roster" ? "block opacity-100" : "hidden opacity-0 pointer-events-none"
+                    }`}
                 >
                   <RosterView
                     onBack={() => setActiveTab("builds")}
@@ -162,9 +155,8 @@ export default function Home() {
                 </div>
 
                 <div
-                  className={`h-full w-full transition-opacity duration-200 ${
-                    activeTab === "contenidos" ? "block opacity-100" : "hidden opacity-0 pointer-events-none"
-                  }`}
+                  className={`h-full w-full transition-opacity duration-200 ${activeTab === "contenidos" ? "block opacity-100" : "hidden opacity-0 pointer-events-none"
+                    }`}
                 >
                   <ContenidosView
                     onBack={() => setActiveTab("builds")}
@@ -185,7 +177,7 @@ export default function Home() {
               AUTENTICACIÓN SINDICATO
             </h3>
             <p className="font-mono text-[11px] text-zinc-500 mb-4">
-              // INTRODUCE LA CLAVE OPERATIVA DE OFICIAL
+              INTRODUCE LA CLAVE OPERATIVA DE OFICIAL
             </p>
 
             <form
