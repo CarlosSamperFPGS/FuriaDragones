@@ -4,11 +4,14 @@ import React, { useState, useEffect } from "react";
 import {
   getTacticalBuilds,
   getActivities,
+  saveTacticalBuild,
+  saveActivity,
   type TacticalBuild,
 } from "@/lib/firebase-sync";
-import { getItemImageUrl, ALBION_CATALOG } from "@/lib/items";
+import { getItemImageUrl } from "@/lib/items";
 import { ALBION_SPELLS } from "@/lib/spells.js";
 import { ArrowLeft, Pencil, Trash2 } from "lucide-react";
+import { BuildEditor } from "./BuildEditor";
 
 interface GremioViewProps {
   onBack?: () => void;
@@ -24,37 +27,6 @@ const ROLES_TACTICOS = [
   "PIERCE",
   "SUPPORT",
 ];
-
-// Plantilla inicial para creación de nueva build
-const EMPTY_BUILD: TacticalBuild = {
-  id: "",
-  nombre: "NUEVA BUILD TÁCTICA",
-  rol: "DPS",
-  actividad: "ZVZ (50v50)",
-  armaPrincipalId: "2H_AXE_AVALON",
-  armaPrincipalNombre: "Hacha Romperreinos",
-  armaSecundariaId: null,
-  armaSecundariaNombre: null,
-  esDosManos: true,
-  equipamiento: {
-    bolsa: "BAG",
-    cabeza: "HEAD_CLOTH_SET2",
-    pecho: "ARMOR_LEATHER_HELL",
-    zapatos: "SHOES_CLOTH_SET1",
-    capa: "CAPEITEM_FW_FORTSTERLING",
-    armaPrincipal: "2H_AXE_AVALON",
-    armaSecundaria: null,
-    pocion: "POTION_REVIVE",
-    comida: "MEAL_STEW",
-  },
-  spells: {
-    mainhand: ["CLEAVE", "SWORD_SPIN", "MIGHTYBLOW", "PASSIVE_BLEEDCHANCE"],
-    head: ["DEFENSERUN", "PASSIVE_BLEEDCHANCE"],
-    armor: ["PARRY", "PASSIVE_BLEEDCHANCE"],
-    shoes: ["INTERRUPT2", "PASSIVE_BLEEDCHANCE"],
-  },
-  notas: "",
-};
 
 export function GremioView({
   onBack,
@@ -72,8 +44,7 @@ export function GremioView({
 
   // Estado para el Creador / Editor de Builds
   const [showBuildEditor, setShowBuildEditor] = useState<boolean>(false);
-  const [editingBuildId, setEditingBuildId] = useState<string | null>(null);
-  const [formData, setFormData] = useState<TacticalBuild>(EMPTY_BUILD);
+  const [editingBuild, setEditingBuild] = useState<TacticalBuild | null>(null);
 
   // Modales personalizados (PROHIBIDO window.confirm y window.prompt)
   const [deleteModal, setDeleteModal] = useState<{
@@ -136,38 +107,13 @@ export function GremioView({
 
   // Apertura del Creador / Editor
   const handleOpenNewBuild = () => {
-    setEditingBuildId(null);
-    setFormData({
-      ...EMPTY_BUILD,
-      id: `furia_custom_${Date.now()}`,
-      actividad: selectedActivity !== "TODAS" ? selectedActivity : "ZVZ (50v50)",
-    });
+    setEditingBuild(null);
     setShowBuildEditor(true);
   };
 
   const handleEditBuild = (build: TacticalBuild) => {
-    setEditingBuildId(build.id);
-    setFormData({
-      ...build,
-      equipamiento: { ...build.equipamiento },
-      spells: { ...build.spells },
-    });
+    setEditingBuild(build);
     setShowBuildEditor(true);
-  };
-
-  const handleSaveBuildForm = () => {
-    if (!formData.nombre.trim()) return;
-
-    if (editingBuildId) {
-      setBuilds((prev) =>
-        prev.map((b) => (b.id === editingBuildId ? { ...formData } : b))
-      );
-    } else {
-      setBuilds((prev) => [formData, ...prev]);
-    }
-
-    setShowBuildEditor(false);
-    setEditingBuildId(null);
   };
 
   // Modales de eliminación y edición
@@ -249,11 +195,11 @@ export function GremioView({
       return (
         <div className="relative flex flex-col items-center">
           <div
-            className="relative h-20 w-20 sm:h-24 sm:w-24 bg-[#08080a] border border-dragon-border/60 rounded-sm flex items-center justify-center p-1 select-none"
+            className="relative w-20 h-20 sm:w-24 sm:h-24 bg-[#08080a] border border-dragon-border/60 rounded-sm flex items-center justify-center p-1 select-none"
             title="Arma a dos manos (mano secundaria ocupada)"
           >
             <img
-              src={getItemImageUrl(weaponGhostId || "2H_AXE_AVALON")}
+              src={getItemImageUrl(weaponGhostId || "2H_AXE_AVALON", "T8", 0, 4)}
               alt="Mano secundaria"
               className="w-full h-full object-contain p-1 opacity-30 grayscale"
             />
@@ -267,12 +213,17 @@ export function GremioView({
         ? itemSource
         : itemSource?.id || fallbackId;
 
+    const isConsumable =
+      resolvedId.includes("POTION") ||
+      resolvedId.includes("MEAL") ||
+      resolvedId.includes("MOUNT");
+
     return (
       <div className="relative flex flex-col items-center">
         {/* Recuadro visual del ítem (w-20 h-20 sm:w-24 sm:h-24, fondo casi negro, solo el <img> sin texto) */}
-        <div className="relative h-20 w-20 sm:h-24 sm:w-24 bg-[#08080a] border border-dragon-border rounded-sm flex items-center justify-center p-1 hover:border-zinc-500 transition-colors">
+        <div className="relative w-20 h-20 sm:w-24 sm:h-24 bg-[#08080a] border border-dragon-border rounded-sm flex items-center justify-center p-1 hover:border-zinc-500 transition-colors">
           <img
-            src={getItemImageUrl(resolvedId || fallbackId)}
+            src={getItemImageUrl(resolvedId || fallbackId, "T8", 0, isConsumable ? 1 : 4)}
             alt={alt}
             className="w-full h-full object-contain p-1"
             onError={(e) => {
@@ -398,436 +349,38 @@ export function GremioView({
         </div>
       </aside>
 
-      {/* ÁREA PRINCIPAL: Vistas (Lista de Builds o Formulario de Editor Táctico) */}
+      {/* ÁREA PRINCIPAL: Vistas (Lista de Builds o Editor Táctico Modular) */}
       <main className="flex-1 h-full flex flex-col overflow-hidden bg-dragon-bg">
         {showBuildEditor ? (
-          /* ============================================================ */
-          /* FORMULARIO TÁCTICO A PANTALLA COMPLETA (CREADOR / EDITOR)     */
-          /* ============================================================ */
-          <div className="flex flex-col h-full overflow-hidden bg-dragon-bg">
-            {/* Header del Formulario */}
-            <div className="flex items-center justify-between border-b border-dragon-border bg-dragon-bg px-6 py-3.5 shrink-0">
-              <div className="flex items-center gap-3">
-                <span className="font-mono text-xs text-dragon-ember font-bold tracking-widest uppercase">
-                  {editingBuildId ? "// EDITAR BUILD TÁCTICA" : "// CREADOR DE BUILD TÁCTICA"}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-3 font-mono text-xs">
-                <button
-                  type="button"
-                  onClick={() => setShowBuildEditor(false)}
-                  className="px-3 py-1.5 border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition-colors uppercase tracking-wider"
-                >
-                  CANCELAR // VOLVER
-                </button>
-                <button
-                  type="button"
-                  onClick={handleSaveBuildForm}
-                  className="px-4 py-1.5 bg-dragon-ember hover:bg-orange-500 text-black font-bold transition-colors uppercase tracking-wider shadow-none"
-                >
-                  GUARDAR DATOS // SYNC
-                </button>
-              </div>
-            </div>
-
-            {/* Grid Dividido: Inputs a la izquierda, Blueprint interactivo a la derecha */}
-            <div className="flex-1 overflow-y-auto p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Columna Izquierda: Inputs Tácticos */}
-              <div className="space-y-4 font-mono text-xs">
-                <div>
-                  <label className="block text-zinc-500 uppercase mb-1">
-                    NOMBRE DE LA BUILD:
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.nombre}
-                    onChange={(e) =>
-                      setFormData({ ...formData, nombre: e.target.value })
-                    }
-                    className="w-full bg-dragon-panel border border-dragon-border text-zinc-200 font-mono text-sm p-2 focus:border-dragon-ember outline-none"
-                    placeholder="Ej. Bruiser - Romperreinos"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-zinc-500 uppercase mb-1">
-                      ROL TÁCTICO:
-                    </label>
-                    <select
-                      value={formData.rol}
-                      onChange={(e) =>
-                        setFormData({ ...formData, rol: e.target.value })
-                      }
-                      className="w-full bg-dragon-panel border border-dragon-border text-zinc-200 font-mono text-sm p-2 focus:border-dragon-ember outline-none"
-                    >
-                      {ROLES_TACTICOS.map((r) => (
-                        <option key={r} value={r}>
-                          {r}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-zinc-500 uppercase mb-1">
-                      ACTIVIDAD:
-                    </label>
-                    <select
-                      value={formData.actividad}
-                      onChange={(e) =>
-                        setFormData({ ...formData, actividad: e.target.value })
-                      }
-                      className="w-full bg-dragon-panel border border-dragon-border text-zinc-200 font-mono text-sm p-2 focus:border-dragon-ember outline-none"
-                    >
-                      {activities
-                        .filter((a) => a !== "TODAS")
-                        .map((a) => (
-                          <option key={a} value={a}>
-                            {a}
-                          </option>
-                        ))}
-                    </select>
-                  </div>
-                </div>
-
-                {/* Switch / Checkbox Dos Manos */}
-                <div className="flex items-center gap-2 pt-1">
-                  <input
-                    type="checkbox"
-                    id="esDosManos"
-                    checked={Boolean(formData.esDosManos)}
-                    onChange={(e) => {
-                      const checked = e.target.checked;
-                      setFormData({
-                        ...formData,
-                        esDosManos: checked,
-                        armaSecundariaId: checked ? null : "OFF_BOOK",
-                      });
-                    }}
-                    className="h-4 w-4 bg-dragon-panel border-dragon-border text-dragon-crimson rounded-none focus:ring-0"
-                  />
-                  <label
-                    htmlFor="esDosManos"
-                    className="text-zinc-400 uppercase tracking-wider text-[11px] cursor-pointer"
-                  >
-                    ARMA A DOS MANOS (Deshabilita y replica mano secundaria)
-                  </label>
-                </div>
-
-                {/* Selectores de Equipamiento con nombres oficiales de Albion */}
-                <div className="grid grid-cols-2 gap-4 pt-2">
-                  <div>
-                    <label className="block text-zinc-500 uppercase mb-1">
-                      ARMA PRINCIPAL:
-                    </label>
-                    <select
-                      value={formData.armaPrincipalId || "2H_AXE_AVALON"}
-                      onChange={(e) => {
-                        const sel = ALBION_CATALOG.weapons.find(
-                          (w) => w.id === e.target.value
-                        );
-                        setFormData({
-                          ...formData,
-                          armaPrincipalId: e.target.value,
-                          armaPrincipalNombre: sel?.name || e.target.value,
-                          esDosManos: sel?.twoHanded ?? formData.esDosManos,
-                          armaSecundariaId: sel?.twoHanded
-                            ? null
-                            : formData.armaSecundariaId || "OFF_BOOK",
-                        });
-                      }}
-                      className="w-full bg-dragon-panel border border-dragon-border text-zinc-200 font-mono text-xs p-2 focus:border-dragon-ember outline-none truncate"
-                    >
-                      {ALBION_CATALOG.weapons.map((w) => (
-                        <option key={w.id} value={w.id}>
-                          {w.name} ({w.id})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-zinc-500 uppercase mb-1">
-                      ARMA SECUNDARIA:
-                    </label>
-                    <select
-                      disabled={Boolean(formData.esDosManos)}
-                      value={formData.armaSecundariaId || "OFF_BOOK"}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          armaSecundariaId: e.target.value,
-                        })
-                      }
-                      className="w-full bg-dragon-panel border border-dragon-border text-zinc-200 font-mono text-xs p-2 focus:border-dragon-ember outline-none disabled:opacity-30 truncate"
-                    >
-                      {ALBION_CATALOG.offhands.map((o) => (
-                        <option key={o.id} value={o.id}>
-                          {o.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-zinc-500 uppercase mb-1">
-                      CASCO / CABEZA:
-                    </label>
-                    <select
-                      value={formData.equipamiento?.cabeza || "HEAD_CLOTH_SET2"}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          equipamiento: {
-                            ...formData.equipamiento,
-                            cabeza: e.target.value,
-                          },
-                        })
-                      }
-                      className="w-full bg-dragon-panel border border-dragon-border text-zinc-200 font-mono text-xs p-2 focus:border-dragon-ember outline-none truncate"
-                    >
-                      {ALBION_CATALOG.heads.map((h) => (
-                        <option key={h.id} value={h.id}>
-                          {h.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-zinc-500 uppercase mb-1">
-                      PECHO / ARMADURA:
-                    </label>
-                    <select
-                      value={formData.equipamiento?.pecho || "ARMOR_LEATHER_HELL"}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          equipamiento: {
-                            ...formData.equipamiento,
-                            pecho: e.target.value,
-                          },
-                        })
-                      }
-                      className="w-full bg-dragon-panel border border-dragon-border text-zinc-200 font-mono text-xs p-2 focus:border-dragon-ember outline-none truncate"
-                    >
-                      {ALBION_CATALOG.armors.map((a) => (
-                        <option key={a.id} value={a.id}>
-                          {a.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-zinc-500 uppercase mb-1">
-                      BOTAS / CALZADO:
-                    </label>
-                    <select
-                      value={formData.equipamiento?.zapatos || "SHOES_CLOTH_SET1"}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          equipamiento: {
-                            ...formData.equipamiento,
-                            zapatos: e.target.value,
-                          },
-                        })
-                      }
-                      className="w-full bg-dragon-panel border border-dragon-border text-zinc-200 font-mono text-xs p-2 focus:border-dragon-ember outline-none truncate"
-                    >
-                      {ALBION_CATALOG.shoes.map((s) => (
-                        <option key={s.id} value={s.id}>
-                          {s.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-zinc-500 uppercase mb-1">
-                      CAPA:
-                    </label>
-                    <select
-                      value={formData.equipamiento?.capa || "CAPEITEM_FW_FORTSTERLING"}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          equipamiento: {
-                            ...formData.equipamiento,
-                            capa: e.target.value,
-                          },
-                        })
-                      }
-                      className="w-full bg-dragon-panel border border-dragon-border text-zinc-200 font-mono text-xs p-2 focus:border-dragon-ember outline-none truncate"
-                    >
-                      {ALBION_CATALOG.capes.map((c) => (
-                        <option key={c.id} value={c.id}>
-                          {c.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-zinc-500 uppercase mb-1">
-                      POCIÓN:
-                    </label>
-                    <select
-                      value={formData.equipamiento?.pocion || "POTION_REVIVE"}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          equipamiento: {
-                            ...formData.equipamiento,
-                            pocion: e.target.value,
-                          },
-                        })
-                      }
-                      className="w-full bg-dragon-panel border border-dragon-border text-zinc-200 font-mono text-xs p-2 focus:border-dragon-ember outline-none truncate"
-                    >
-                      {ALBION_CATALOG.potions.map((p) => (
-                        <option key={p.id} value={p.id}>
-                          {p.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-zinc-500 uppercase mb-1">
-                      COMIDA:
-                    </label>
-                    <select
-                      value={formData.equipamiento?.comida || "MEAL_STEW"}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          equipamiento: {
-                            ...formData.equipamiento,
-                            comida: e.target.value,
-                          },
-                        })
-                      }
-                      className="w-full bg-dragon-panel border border-dragon-border text-zinc-200 font-mono text-xs p-2 focus:border-dragon-ember outline-none truncate"
-                    >
-                      {ALBION_CATALOG.foods.map((f) => (
-                        <option key={f.id} value={f.id}>
-                          {f.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                {/* Textarea de Notas */}
-                <div className="pt-2">
-                  <label className="block text-zinc-500 uppercase mb-1">
-                    NOTAS TÁCTICAS:
-                  </label>
-                  <textarea
-                    value={formData.notas || ""}
-                    onChange={(e) =>
-                      setFormData({ ...formData, notas: e.target.value })
-                    }
-                    placeholder="Directivas de combate, orden de casteo de habilidades..."
-                    className="w-full h-24 bg-dragon-panel border border-dragon-border text-zinc-200 font-mono text-xs p-2.5 focus:border-dragon-ember outline-none resize-none"
-                  />
-                </div>
-              </div>
-
-              {/* Columna Derecha: Réplica del Blueprint 3x3 Interactivo en Vivo */}
-              <div className="flex flex-col items-center justify-start border-l border-dragon-border/40 pl-0 lg:pl-8">
-                <div className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-6">
-                  // VISTA PREVIA EN VIVO (BLUEPRINT 3X3)
-                </div>
-
-                <div className="grid grid-cols-3 gap-2 sm:gap-3 max-w-sm sm:max-w-md mx-auto py-2">
-                  {/* Columna Izquierda: Bolsa, Arma Principal, Poción */}
-                  <div className="flex flex-col items-center gap-2 sm:gap-3">
-                    {renderVisualGridCell(
-                      formData.equipamiento?.bolsa,
-                      "BAG",
-                      "Bolsa"
-                    )}
-                    {renderVisualGridCell(
-                      formData.armaPrincipalId,
-                      "2H_AXE_AVALON",
-                      "Arma Principal",
-                      ["CLEAVE", "SWORD_SPIN", "MIGHTYBLOW", "PASSIVE_BLEEDCHANCE"]
-                    )}
-                    {renderVisualGridCell(
-                      formData.equipamiento?.pocion,
-                      "POTION_REVIVE",
-                      "Poción"
-                    )}
-                  </div>
-
-                  {/* Columna Central: Casco, Pecho, Botas */}
-                  <div className="flex flex-col items-center gap-2 sm:gap-3">
-                    {renderVisualGridCell(
-                      formData.equipamiento?.cabeza,
-                      "HEAD_CLOTH_SET2",
-                      "Casco",
-                      ["DEFENSERUN", "PASSIVE_BLEEDCHANCE"]
-                    )}
-                    {renderVisualGridCell(
-                      formData.equipamiento?.pecho,
-                      "ARMOR_LEATHER_HELL",
-                      "Pecho",
-                      ["PARRY", "PASSIVE_BLEEDCHANCE"]
-                    )}
-                    {renderVisualGridCell(
-                      formData.equipamiento?.zapatos,
-                      "SHOES_CLOTH_SET1",
-                      "Botas",
-                      ["INTERRUPT2", "PASSIVE_BLEEDCHANCE"]
-                    )}
-                  </div>
-
-                  {/* Columna Derecha: Capa, Arma Secundaria (o Réplica 2 Manos), Comida */}
-                  <div className="flex flex-col items-center gap-2 sm:gap-3">
-                    {renderVisualGridCell(
-                      formData.equipamiento?.capa,
-                      "CAPEITEM_FW_FORTSTERLING",
-                      "Capa"
-                    )}
-                    {renderVisualGridCell(
-                      formData.armaSecundariaId,
-                      "OFF_BOOK",
-                      "Arma Secundaria",
-                      undefined,
-                      Boolean(formData.esDosManos),
-                      formData.armaPrincipalId || "2H_AXE_AVALON"
-                    )}
-                    {renderVisualGridCell(
-                      formData.equipamiento?.comida,
-                      "MEAL_STEW",
-                      "Comida"
-                    )}
-                  </div>
-                </div>
-
-                {/* Vista previa de Notas */}
-                {formData.notas && (
-                  <div className="w-full max-w-sm sm:max-w-md mx-auto bg-dragon-bg border border-dragon-border rounded-sm p-4 mt-6">
-                    <div className="font-mono text-xs text-zinc-500 mb-2 uppercase tracking-wider">
-                      NOTAS
-                    </div>
-                    <p className="font-sans text-sm text-zinc-300 leading-relaxed">
-                      {formData.notas}
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+          /* Editor de Builds Profesional a Pantalla Completa */
+          <BuildEditor
+            initialBuild={editingBuild}
+            activities={activities}
+            onSave={async (savedBuild) => {
+              if (editingBuild) {
+                setBuilds((prev) =>
+                  prev.map((b) => (b.id === savedBuild.id ? savedBuild : b))
+                );
+              } else {
+                setBuilds((prev) => [savedBuild, ...prev]);
+              }
+              setShowBuildEditor(false);
+              setEditingBuild(null);
+              await saveTacticalBuild(savedBuild);
+            }}
+            onCancel={() => {
+              setShowBuildEditor(false);
+              setEditingBuild(null);
+            }}
+            onAddActivity={async (newAct) => {
+              if (!activities.includes(newAct)) {
+                setActivities((prev) => [...prev, newAct]);
+                await saveActivity(newAct);
+              }
+            }}
+          />
         ) : (
-          /* ============================================================ */
-          /* VISTA PRINCIPAL: BARRA SUPERIOR + LISTA DE BUILDS             */
-          /* ============================================================ */
+          /* VISTA PRINCIPAL: BARRA SUPERIOR + LISTA DE BUILDS */
           <>
             {/* Barra Superior: Filtros de Rol y Botón de Nueva Build */}
             <div className="sticky top-0 z-20 flex items-center justify-between border-b border-dragon-border bg-dragon-bg px-6 py-3 shrink-0">
@@ -946,7 +499,7 @@ export function GremioView({
                           <div className="flex items-center gap-4 min-w-0">
                             <div className="h-14 w-14 sm:h-16 sm:w-16 shrink-0 bg-zinc-950 border border-dragon-border rounded-sm flex items-center justify-center p-1">
                               <img
-                                src={getItemImageUrl(weaponId)}
+                                src={getItemImageUrl(weaponId, "T8", 0, 4)}
                                 alt={build.nombre}
                                 className="h-full w-full object-contain"
                                 onError={(e) => {
@@ -961,7 +514,7 @@ export function GremioView({
                                   {build.nombre}
                                 </span>
                                 <span className="border border-amber-500/40 text-amber-400 text-[10px] font-mono px-1.5 py-0.5 tracking-wider shrink-0">
-                                  Tier 8 Eq.
+                                  Tier {eq.tierEquiv || 8} Eq.
                                 </span>
                               </div>
 

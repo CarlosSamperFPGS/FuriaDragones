@@ -90,12 +90,19 @@ declare module "next/font/google" {
 declare module "@/lib/spells" {
   export const ALBION_SPELLS: Record<string, any>;
   export const ITEM_SPELLS_MAP: Record<string, any>;
-  export function getItemSpells(itemId: string): any;
+  export function getItemSpells(itemId: string, slotType?: string): any[];
 }
 
 declare module "@/lib/spells.js" {
   export const ALBION_SPELLS: Record<string, any>;
   export const ITEM_SPELLS_MAP: Record<string, any>;
-  export function getItemSpells(itemId: string): any;
+  export function getItemSpells(itemId: string, slotType?: string): any[];
 }
+
+declare module "./items-data.js" {
+  export const ALBION_ITEMS: any[];
+  export const QUALITIES: any[];
+  export function getItemImageUrl(itemOrId: any, tier?: string, enchant?: number, quality?: number): string;
+}
+
 

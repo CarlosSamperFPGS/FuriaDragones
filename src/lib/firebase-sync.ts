@@ -1,7 +1,7 @@
 // src/lib/firebase-sync.ts
 // Sincronización en la nube con Firestore para Builds y Actividades de Furia de Dragones
 
-import { collection, getDocs, onSnapshot } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
 
 export interface TacticalBuild {
@@ -276,3 +276,41 @@ export async function getActivities(): Promise<string[]> {
     return DEFAULT_ACTIVITIES;
   }
 }
+
+export async function saveTacticalBuild(build: TacticalBuild): Promise<boolean> {
+  try {
+    const buildRef = doc(db, "builds", build.id);
+    await setDoc(
+      buildRef,
+      {
+        ...build,
+        updatedAt: new Date().toISOString(),
+      },
+      { merge: true }
+    );
+    return true;
+  } catch (error) {
+    console.warn("[FirebaseSync] Error saving build to Firestore:", error);
+    return false;
+  }
+}
+
+export async function saveActivity(name: string): Promise<boolean> {
+  try {
+    const actId = name.toLowerCase().replace(/[^a-z0-9]/g, "_");
+    const actRef = doc(db, "activities", actId);
+    await setDoc(
+      actRef,
+      {
+        name,
+        updatedAt: new Date().toISOString(),
+      },
+      { merge: true }
+    );
+    return true;
+  } catch (error) {
+    console.warn("[FirebaseSync] Error saving activity to Firestore:", error);
+    return false;
+  }
+}
+
