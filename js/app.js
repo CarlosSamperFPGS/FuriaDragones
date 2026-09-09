@@ -9,7 +9,13 @@ import {
   saveBuildToCloud,
   deleteBuildFromCloud,
   saveFoldersToCloud,
-  restoreDefaultsInCloud
+  restoreDefaultsInCloud,
+  initMembersSync,
+  saveMemberToCloud,
+  deleteMemberFromCloud,
+  initActivitiesSync,
+  saveActivityToCloud,
+  deleteActivityFromCloud
 } from './firebase-sync.js';
 
 // ==========================================================================
@@ -28,6 +34,67 @@ function checkOfficerSession() {
 
 let currentRole = checkOfficerSession();
 const DEFAULT_OFFICER_PASSWORDS = ["furiadragones2026", "furia2026", "furiadragones", "1234"];
+
+const DEFAULT_MEMBERS = [
+  {
+    id: "mem_1",
+    name: "DragonLeader",
+    rank: "Sindicato",
+    role: "Tank",
+    secondaryRole: "DPS Melee",
+    status: "ACTIVE",
+    strikes: [],
+    notes: "Fundador / Caller principal",
+    updatedAt: Date.now()
+  },
+  {
+    id: "mem_2",
+    name: "FrostBite",
+    rank: "Oficial",
+    role: "DPS Ranged",
+    secondaryRole: "",
+    status: "ACTIVE",
+    strikes: [],
+    notes: "Oficial de reclutamiento",
+    updatedAt: Date.now()
+  },
+  {
+    id: "mem_3",
+    name: "HolyLight",
+    rank: "Caller",
+    role: "Healer",
+    secondaryRole: "Soporte",
+    status: "ACTIVE",
+    strikes: [],
+    notes: "Main healer para CTAs",
+    updatedAt: Date.now()
+  }
+];
+
+const DEFAULT_ACTIVITIES = [
+  {
+    id: "act_1",
+    title: "CTA ZvZ Castillos 18:00 UTC",
+    type: "zvz_cta",
+    date: new Date().toISOString().slice(0, 16),
+    caller: "DragonLeader",
+    notes: "Obligatorio T8 equiv. Salida por Arthur's Rest.",
+    attendance: {
+      "mem_1": "present",
+      "mem_3": "present",
+      "mem_2": "absent"
+    },
+    createdAt: Date.now(),
+    updatedAt: Date.now()
+  }
+];
+
+let activeFilterMemberStatus = "ALL";
+let activeFilterMemberRole = "ALL";
+let activeFilterMemberSearch = "";
+let activeActivityId = null;
+let currentEditingMemberId = null;
+let currentStrikesMemberId = null;
 
 let currentBuild = {
   id: null,
@@ -109,6 +176,8 @@ function initApp() {
   setupFolderEvents();
   setupRoleFilterEvents();
   setupViewerModalEvents();
+  setupMembersEvents();
+  setupAttendanceEvents();
   
   if (window.location.hash.startsWith("#build=")) {
     loadBuildFromUrlHash();
@@ -167,6 +236,28 @@ function setupCloudSync() {
       }
     }
   });
+
+  initMembersSync({
+    onMembersUpdated: (newMembers) => {
+      if (Array.isArray(newMembers)) {
+        localStorage.setItem("furia_saved_members", JSON.stringify(newMembers));
+        renderMembersTable();
+        if (activeActivityId) {
+          renderActiveActivityAttendance();
+        }
+      }
+    }
+  });
+
+  initActivitiesSync({
+    onActivitiesUpdated: (newActivities) => {
+      if (Array.isArray(newActivities)) {
+        localStorage.setItem("furia_saved_activities", JSON.stringify(newActivities));
+        renderActivitiesList();
+        renderActiveActivityAttendance();
+      }
+    }
+  });
 }
 
 if (document.readyState === "loading") {
@@ -192,15 +283,20 @@ function updateRoleUI() {
   const btnLogout = document.getElementById("btn-logout-officer");
   const builderTabBtn = document.getElementById("tab-btn-builder");
 
+  const membersTabBtn = document.getElementById("tab-btn-members");
+  const attendanceTabBtn = document.getElementById("tab-btn-attendance");
+
   if (isOfficer()) {
     if (badgeEl) {
       badgeEl.className = "role-badge role-badge-officer";
     }
     if (iconEl) iconEl.textContent = "";
-    if (labelEl) labelEl.textContent = "Modo Oficial (Editor)";
+    if (labelEl) labelEl.textContent = "Modo Oficial / Sindicato";
     if (btnLogin) btnLogin.style.display = "none";
     if (btnLogout) btnLogout.style.display = "inline-flex";
     if (builderTabBtn) builderTabBtn.style.display = "inline-flex";
+    if (membersTabBtn) membersTabBtn.style.display = "inline-flex";
+    if (attendanceTabBtn) attendanceTabBtn.style.display = "inline-flex";
   } else {
     if (badgeEl) {
       badgeEl.className = "role-badge role-badge-member";
@@ -210,6 +306,8 @@ function updateRoleUI() {
     if (btnLogin) btnLogin.style.display = "inline-flex";
     if (btnLogout) btnLogout.style.display = "none";
     if (builderTabBtn) builderTabBtn.style.display = "none";
+    if (membersTabBtn) membersTabBtn.style.display = "none";
+    if (attendanceTabBtn) attendanceTabBtn.style.display = "none";
   }
 
   renderFoldersSidebar();
@@ -354,7 +452,6 @@ function initStorage() {
     localStorage.setItem("furia_saved_builds", JSON.stringify(DEFAULT_BUILDS));
     localStorage.setItem("furia_custom_folders", JSON.stringify(DEFAULT_FOLDERS));
     localStorage.setItem("furia_storage_ver", STORAGE_VERSION);
-    return;
   }
 
   const storedBuilds = localStorage.getItem("furia_saved_builds");
@@ -366,6 +463,40 @@ function initStorage() {
   if (storedFolders === null) {
     localStorage.setItem("furia_custom_folders", JSON.stringify(DEFAULT_FOLDERS));
   }
+
+  if (!localStorage.getItem("furia_saved_members")) {
+    localStorage.setItem("furia_saved_members", JSON.stringify(DEFAULT_MEMBERS));
+  }
+
+  if (!localStorage.getItem("furia_saved_activities")) {
+    localStorage.setItem("furia_saved_activities", JSON.stringify(DEFAULT_ACTIVITIES));
+  }
+}
+
+function getMembers() {
+  try {
+    const raw = localStorage.getItem("furia_saved_members");
+    return raw ? JSON.parse(raw) : DEFAULT_MEMBERS;
+  } catch (e) {
+    return DEFAULT_MEMBERS;
+  }
+}
+
+function saveMembersToStorage(list) {
+  localStorage.setItem("furia_saved_members", JSON.stringify(list));
+}
+
+function getActivities() {
+  try {
+    const raw = localStorage.getItem("furia_saved_activities");
+    return raw ? JSON.parse(raw) : DEFAULT_ACTIVITIES;
+  } catch (e) {
+    return DEFAULT_ACTIVITIES;
+  }
+}
+
+function saveActivitiesToStorage(list) {
+  localStorage.setItem("furia_saved_activities", JSON.stringify(list));
 }
 
 function getSavedBuilds() {
@@ -424,9 +555,9 @@ function setupNavigation() {
   tabButtons.forEach(btn => {
     btn.addEventListener("click", () => {
       const tabTarget = btn.getAttribute("data-tab");
-      if (tabTarget === "builder" && !isOfficer()) {
+      if ((tabTarget === "builder" || tabTarget === "members" || tabTarget === "attendance") && !isOfficer()) {
         openOfficerLoginModal();
-        showToast("Solo los oficiales pueden acceder al editor.");
+        showToast("Solo oficiales y sindicato pueden acceder a esta sección.");
         return;
       }
       switchTab(tabTarget);
@@ -435,6 +566,12 @@ function setupNavigation() {
 }
 
 function switchTab(tabTarget) {
+  if ((tabTarget === "builder" || tabTarget === "members" || tabTarget === "attendance") && !isOfficer()) {
+    openOfficerLoginModal();
+    showToast("Se requiere acceso de oficial / sindicato.");
+    tabTarget = "saved-builds";
+  }
+
   const tabButtons = document.querySelectorAll(".tab-btn");
   tabButtons.forEach(b => {
     if (b.getAttribute("data-tab") === tabTarget) {
@@ -456,6 +593,11 @@ function switchTab(tabTarget) {
   if (tabTarget === "saved-builds") {
     renderFoldersSidebar();
     renderSavedBuildsList();
+  } else if (tabTarget === "members") {
+    renderMembersTable();
+  } else if (tabTarget === "attendance") {
+    renderActivitiesList();
+    renderActiveActivityAttendance();
   }
 }
 
@@ -1481,80 +1623,12 @@ function openBuildViewerModal(build) {
     renderAlbionLoadoutWheel(build, wheelContainer);
   }
 
-  // Lista Detallada de Habilidades
-  const spellsContainer = document.getElementById("viewer-spells-container");
+  // Notas y Modo de Combate
   const notesEl = document.getElementById("viewer-build-notes");
-  const eq = build.equipment || {};
-
-  if (spellsContainer) {
-    spellsContainer.innerHTML = "";
-    const spellsToRender = [];
-
-    if (eq.mainhand) {
-      if (eq.mainhand.qSpell) spellsToRender.push({ spellId: eq.mainhand.qSpell, key: "Q (Arma)" });
-      if (eq.mainhand.wSpell) spellsToRender.push({ spellId: eq.mainhand.wSpell, key: "W (Arma)" });
-      if (eq.mainhand.eSpell) spellsToRender.push({ spellId: eq.mainhand.eSpell, key: "E (Especial)" });
-      if (eq.mainhand.passiveSpell) spellsToRender.push({ spellId: eq.mainhand.passiveSpell, key: "Pasiva (Arma)" });
-    }
-
-    if (eq.head) {
-      if (eq.head.activeSpell) spellsToRender.push({ spellId: eq.head.activeSpell, key: "D (Cabeza)" });
-      if (eq.head.passiveSpell) spellsToRender.push({ spellId: eq.head.passiveSpell, key: "Pasiva (Cabeza)" });
-    }
-
-    if (eq.armor) {
-      if (eq.armor.activeSpell) spellsToRender.push({ spellId: eq.armor.activeSpell, key: "R (Pecho)" });
-      if (eq.armor.passiveSpell) spellsToRender.push({ spellId: eq.armor.passiveSpell, key: "Pasiva (Pecho)" });
-    }
-
-    if (eq.shoes) {
-      if (eq.shoes.activeSpell) spellsToRender.push({ spellId: eq.shoes.activeSpell, key: "F (Botas)" });
-      if (eq.shoes.passiveSpell) spellsToRender.push({ spellId: eq.shoes.passiveSpell, key: "Pasiva (Botas)" });
-    }
-
-    if (spellsToRender.length === 0) {
-      spellsContainer.innerHTML = `<div style="grid-column: 1/-1; color: var(--text-muted); font-size: 12px; padding: 10px;">No hay habilidades seleccionadas para esta build.</div>`;
-    } else {
-      spellsToRender.forEach(sObj => {
-        const spell = ALBION_SPELLS[sObj.spellId];
-        if (!spell) return;
-
-        const row = document.createElement("div");
-        row.className = "viewer-spell-row";
-        row.id = `spell-detail-${sObj.spellId}`;
-        const iconUrl = spell.icon || `https://render.albiononline.com/v1/spell/${spell.id}.png`;
-
-        const metaParts = [];
-        if (spell.cooldown) metaParts.push(spell.cooldown);
-        if (spell.energy) metaParts.push(`${spell.energy} energía`);
-        if (spell.castTime) metaParts.push(spell.castTime);
-
-        row.innerHTML = `
-          <div class="viewer-spell-icon">
-            <img src="${iconUrl}" alt="${spell.name}" onerror="this.style.display='none'; this.parentElement.textContent='${sObj.key.split(' ')[0]}';">
-          </div>
-          <div class="viewer-spell-details">
-            <div class="viewer-spell-header">
-              <span class="viewer-spell-title">${spell.name}</span>
-              <span class="viewer-spell-slotkey">${sObj.key}</span>
-            </div>
-            <div class="viewer-spell-meta">
-              ${metaParts.join(" • ")}
-            </div>
-            ${spell.desc ? `<div class="viewer-spell-desc">${spell.desc}</div>` : ''}
-          </div>
-        `;
-        spellsContainer.appendChild(row);
-      });
-    }
-  }
-
-  // Notas
   if (notesEl) {
     notesEl.textContent = build.notes || "Sin notas adicionales para esta build.";
   }
 
-  switchViewerSubtab("spells");
   modal.style.display = "flex";
 }
 
@@ -2169,4 +2243,879 @@ function showToast(message) {
   setTimeout(() => {
     toast.style.display = "none";
   }, 3000);
+}
+
+// ==========================================================================
+// Módulo: Gestor de Miembros (Roster del Gremio) - Exclusivo Oficiales
+// ==========================================================================
+
+function setupMembersEvents() {
+  const btnAddMember = document.getElementById("btn-open-add-member");
+  const btnCloseModal = document.getElementById("btn-close-member-modal");
+  const btnCancelModal = document.getElementById("btn-cancel-member-modal");
+  const formMember = document.getElementById("form-member");
+
+  const searchInput = document.getElementById("search-members-input");
+  const roleSelect = document.getElementById("filter-member-role-select");
+  const statusChips = document.querySelectorAll(".roster-status-chip");
+
+  if (btnAddMember) {
+    btnAddMember.addEventListener("click", () => {
+      if (!isOfficer()) {
+        openOfficerLoginModal();
+        return;
+      }
+      openMemberModal();
+    });
+  }
+
+  if (btnCloseModal) btnCloseModal.addEventListener("click", closeMemberModal);
+  if (btnCancelModal) btnCancelModal.addEventListener("click", closeMemberModal);
+
+  if (formMember) {
+    formMember.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!isOfficer()) {
+        openOfficerLoginModal();
+        return;
+      }
+
+      const nameInput = document.getElementById("member-name-input");
+      const rankSelect = document.getElementById("member-rank-select");
+      const statusSelect = document.getElementById("member-status-select");
+      const roleSelect = document.getElementById("member-role-select");
+      const secRoleInput = document.getElementById("member-secondary-role-input");
+      const notesInput = document.getElementById("member-notes-input");
+
+      const name = (nameInput?.value || "").trim();
+      if (!name) {
+        alert("Introduce el nick del miembro.");
+        return;
+      }
+
+      const members = getMembers();
+      let targetMember = null;
+
+      if (currentEditingMemberId) {
+        targetMember = members.find(m => m.id === currentEditingMemberId);
+        if (targetMember) {
+          targetMember.name = name;
+          targetMember.rank = rankSelect?.value || "Miembro";
+          targetMember.status = statusSelect?.value || "ACTIVE";
+          targetMember.role = roleSelect?.value || "DPS Melee";
+          targetMember.secondaryRole = (secRoleInput?.value || "").trim();
+          targetMember.notes = (notesInput?.value || "").trim();
+          targetMember.updatedAt = Date.now();
+        }
+      } else {
+        targetMember = {
+          id: "mem_" + Date.now(),
+          name,
+          rank: rankSelect?.value || "Miembro",
+          status: statusSelect?.value || "ACTIVE",
+          role: roleSelect?.value || "DPS Melee",
+          secondaryRole: (secRoleInput?.value || "").trim(),
+          notes: (notesInput?.value || "").trim(),
+          strikes: [],
+          updatedAt: Date.now()
+        };
+        members.push(targetMember);
+      }
+
+      saveMembersToStorage(members);
+      if (targetMember) {
+        saveMemberToCloud(targetMember);
+      }
+
+      closeMemberModal();
+      renderMembersTable();
+      showToast(currentEditingMemberId ? "Miembro actualizado." : "Miembro registrado con éxito.");
+    });
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      activeFilterMemberSearch = e.target.value.trim().toLowerCase();
+      renderMembersTable();
+    });
+  }
+
+  if (roleSelect) {
+    roleSelect.addEventListener("change", (e) => {
+      activeFilterMemberRole = e.target.value;
+      renderMembersTable();
+    });
+  }
+
+  statusChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      statusChips.forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      activeFilterMemberStatus = chip.getAttribute("data-status") || "ALL";
+      renderMembersTable();
+    });
+  });
+
+  // Eventos Modal Amonestaciones (Strikes)
+  document.getElementById("btn-close-strikes-modal")?.addEventListener("click", closeStrikesModal);
+  document.getElementById("btn-cancel-strikes-modal")?.addEventListener("click", closeStrikesModal);
+
+  const formAddStrike = document.getElementById("form-add-strike");
+  if (formAddStrike) {
+    formAddStrike.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!isOfficer()) {
+        openOfficerLoginModal();
+        return;
+      }
+      if (!currentStrikesMemberId) return;
+
+      const reasonInput = document.getElementById("strike-reason-input");
+      const reason = (reasonInput?.value || "").trim();
+      if (!reason) return;
+
+      const members = getMembers();
+      const member = members.find(m => m.id === currentStrikesMemberId);
+      if (member) {
+        if (!Array.isArray(member.strikes)) member.strikes = [];
+        member.strikes.push({
+          id: "str_" + Date.now(),
+          date: new Date().toLocaleDateString("es-ES", { day: '2-digit', month: '2-digit', year: 'numeric' }),
+          reason,
+          officer: "Oficial"
+        });
+        member.updatedAt = Date.now();
+        saveMembersToStorage(members);
+        saveMemberToCloud(member);
+
+        if (reasonInput) reasonInput.value = "";
+        renderStrikesModalContent(member);
+        renderMembersTable();
+        showToast(`Amonestación aplicada a ${member.name} (${member.strikes.length}/3).`);
+      }
+    });
+  }
+}
+
+function openMemberModal(member = null) {
+  currentEditingMemberId = member ? member.id : null;
+  const modal = document.getElementById("modal-member-form");
+  const title = document.getElementById("modal-member-title");
+
+  const nameInput = document.getElementById("member-name-input");
+  const rankSelect = document.getElementById("member-rank-select");
+  const statusSelect = document.getElementById("member-status-select");
+  const roleSelect = document.getElementById("member-role-select");
+  const secRoleInput = document.getElementById("member-secondary-role-input");
+  const notesInput = document.getElementById("member-notes-input");
+
+  if (title) title.textContent = member ? "Modificar Ficha de Miembro" : "Registrar Nuevo Miembro";
+
+  if (nameInput) nameInput.value = member ? member.name : "";
+  if (rankSelect) rankSelect.value = member ? member.rank : "Miembro";
+  if (statusSelect) statusSelect.value = member ? member.status : "ACTIVE";
+  if (roleSelect) roleSelect.value = member ? member.role : "DPS Melee";
+  if (secRoleInput) secRoleInput.value = member ? (member.secondaryRole || "") : "";
+  if (notesInput) notesInput.value = member ? (member.notes || "") : "";
+
+  if (modal) modal.style.display = "flex";
+  setTimeout(() => nameInput?.focus(), 100);
+}
+
+function closeMemberModal() {
+  const modal = document.getElementById("modal-member-form");
+  if (modal) modal.style.display = "none";
+  currentEditingMemberId = null;
+}
+
+function openStrikesModal(memberId) {
+  currentStrikesMemberId = memberId;
+  const members = getMembers();
+  const member = members.find(m => m.id === memberId);
+  if (!member) return;
+
+  const modal = document.getElementById("modal-strikes");
+  renderStrikesModalContent(member);
+  if (modal) modal.style.display = "flex";
+}
+
+function closeStrikesModal() {
+  const modal = document.getElementById("modal-strikes");
+  if (modal) modal.style.display = "none";
+  currentStrikesMemberId = null;
+}
+
+function renderStrikesModalContent(member) {
+  const summaryEl = document.getElementById("strikes-member-summary");
+  const listEl = document.getElementById("strikes-history-list");
+  if (summaryEl) {
+    const strikesCount = (member.strikes || []).length;
+    summaryEl.innerHTML = `Miembro: <strong>${escapeHtml(member.name)}</strong> | Rango: <span class="rank-badge rank-${(member.rank || '').toLowerCase()}">${member.rank}</span> | Sanciones acumuladas: <strong>${strikesCount}/3</strong>`;
+  }
+
+  if (listEl) {
+    listEl.innerHTML = "";
+    const strikes = member.strikes || [];
+    if (strikes.length === 0) {
+      listEl.innerHTML = `<div style="font-size: 12px; color: var(--text-muted); padding: 8px 0;">Este miembro no tiene amonestaciones registradas. Expediente limpio.</div>`;
+      return;
+    }
+
+    strikes.forEach((str, index) => {
+      const item = document.createElement("div");
+      item.style.display = "flex";
+      item.style.justifyContent = "space-between";
+      item.style.alignItems = "center";
+      item.style.background = "#141820";
+      item.style.border = "1px solid #222b38";
+      item.style.borderRadius = "4px";
+      item.style.padding = "8px 12px";
+      item.style.marginBottom = "6px";
+
+      item.innerHTML = `
+        <div style="font-size: 12px; line-height: 1.4;">
+          <div style="color: #e5a93b; font-weight: 600;">Strike #${index + 1} • <span style="color: var(--text-muted); font-weight: normal;">${escapeHtml(str.date || '')}</span></div>
+          <div style="color: var(--text-main); margin-top: 2px;">${escapeHtml(str.reason || '')}</div>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm btn-remove-strike" data-index="${index}" style="font-size: 11px; padding: 2px 6px;">Retirar</button>
+      `;
+
+      item.querySelector(".btn-remove-strike")?.addEventListener("click", () => {
+        if (!isOfficer()) {
+          openOfficerLoginModal();
+          return;
+        }
+        if (confirm(`¿Retirar este strike a ${member.name}?`)) {
+          const members = getMembers();
+          const target = members.find(m => m.id === member.id);
+          if (target && target.strikes) {
+            target.strikes.splice(index, 1);
+            target.updatedAt = Date.now();
+            saveMembersToStorage(members);
+            saveMemberToCloud(target);
+            renderStrikesModalContent(target);
+            renderMembersTable();
+            showToast("Amonestación retirada.");
+          }
+        }
+      });
+
+      listEl.appendChild(item);
+    });
+  }
+}
+
+function renderMembersTable() {
+  const tbody = document.getElementById("members-table-body");
+  const summaryEl = document.getElementById("members-count-summary");
+  if (!tbody) return;
+
+  const members = getMembers();
+  const totalCount = members.length;
+  const activeCount = members.filter(m => m.status === "ACTIVE").length;
+
+  if (summaryEl) {
+    summaryEl.textContent = `${activeCount} activos • ${totalCount} miembros totales`;
+  }
+
+  // Filtrado
+  const filtered = members.filter(m => {
+    // Filtro por estado
+    if (activeFilterMemberStatus === "ACTIVE" && m.status !== "ACTIVE") return false;
+    if (activeFilterMemberStatus === "INACTIVE" && m.status !== "INACTIVE" && m.status !== "LEAVE") return false;
+    if (activeFilterMemberStatus === "STRIKES" && (!m.strikes || m.strikes.length === 0)) return false;
+
+    // Filtro por rol
+    if (activeFilterMemberRole !== "ALL" && m.role !== activeFilterMemberRole) return false;
+
+    // Filtro por búsqueda de texto
+    if (activeFilterMemberSearch) {
+      const q = activeFilterMemberSearch;
+      const matchName = (m.name || "").toLowerCase().includes(q);
+      const matchNotes = (m.notes || "").toLowerCase().includes(q);
+      const matchRole = (m.role || "").toLowerCase().includes(q);
+      const matchSecRole = (m.secondaryRole || "").toLowerCase().includes(q);
+      if (!matchName && !matchNotes && !matchRole && !matchSecRole) return false;
+    }
+
+    return true;
+  });
+
+  tbody.innerHTML = "";
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 30px 10px;">
+          No se encontraron miembros con los filtros seleccionados.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  filtered.forEach(m => {
+    const tr = document.createElement("tr");
+
+    const strikesCount = (m.strikes || []).length;
+    const dot1Class = strikesCount >= 1 ? "active-1" : "";
+    const dot2Class = strikesCount >= 2 ? "active-2" : "";
+    const dot3Class = strikesCount >= 3 ? "active-3" : "";
+
+    const rankLower = (m.rank || "miembro").toLowerCase();
+    const statusLower = (m.status || "active").toLowerCase();
+    const statusLabel = m.status === "ACTIVE" ? "Activo" : (m.status === "LEAVE" ? "Permiso" : "Inactivo");
+
+    tr.innerHTML = `
+      <td>
+        <div style="font-weight: 700; color: var(--text-main);">${escapeHtml(m.name)}</div>
+        ${m.secondaryRole ? `<div style="font-size: 11px; color: var(--text-muted);">${escapeHtml(m.secondaryRole)}</div>` : ''}
+      </td>
+      <td>
+        <span class="rank-badge rank-${rankLower}">${escapeHtml(m.rank || 'Miembro')}</span>
+      </td>
+      <td>
+        <span class="combat-role-tag">${escapeHtml(m.role || 'DPS Melee')}</span>
+      </td>
+      <td>
+        <span class="status-pill ${statusLower}">${statusLabel}</span>
+      </td>
+      <td>
+        <div class="strikes-container" title="Gestionar amonestaciones de ${escapeHtml(m.name)}">
+          <span class="strike-dot ${dot1Class}"></span>
+          <span class="strike-dot ${dot2Class}"></span>
+          <span class="strike-dot ${dot3Class}"></span>
+          <span style="font-size: 11px; font-weight: 600; color: ${strikesCount > 0 ? 'var(--text-gold)' : 'var(--text-muted)'}; margin-left: 4px;">
+            ${strikesCount}/3
+          </span>
+        </div>
+      </td>
+      <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-muted); font-size: 12px;" title="${escapeHtml(m.notes || '')}">
+        ${m.notes ? escapeHtml(m.notes) : '<span style="opacity: 0.4;">—</span>'}
+      </td>
+      <td style="text-align: right;">
+        <div style="display: inline-flex; gap: 4px;">
+          <button type="button" class="btn btn-outline btn-sm btn-edit-member" title="Editar miembro">Editar</button>
+          <button type="button" class="btn btn-secondary btn-sm btn-toggle-status" title="Cambiar estado">${m.status === 'ACTIVE' ? 'Inactivar' : 'Activar'}</button>
+          <button type="button" class="btn btn-danger btn-sm btn-delete-member" title="Eliminar miembro">&times;</button>
+        </div>
+      </td>
+    `;
+
+    // Abrir Strikes
+    tr.querySelector(".strikes-container")?.addEventListener("click", () => {
+      if (!isOfficer()) {
+        openOfficerLoginModal();
+        return;
+      }
+      openStrikesModal(m.id);
+    });
+
+    // Editar
+    tr.querySelector(".btn-edit-member")?.addEventListener("click", () => {
+      if (!isOfficer()) {
+        openOfficerLoginModal();
+        return;
+      }
+      openMemberModal(m);
+    });
+
+    // Toggle estado activo/inactivo
+    tr.querySelector(".btn-toggle-status")?.addEventListener("click", () => {
+      if (!isOfficer()) {
+        openOfficerLoginModal();
+        return;
+      }
+      const members = getMembers();
+      const target = members.find(item => item.id === m.id);
+      if (target) {
+        target.status = target.status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
+        target.updatedAt = Date.now();
+        saveMembersToStorage(members);
+        saveMemberToCloud(target);
+        renderMembersTable();
+        showToast(`Estado de ${target.name} cambiado a ${target.status === 'ACTIVE' ? 'Activo' : 'Inactivo'}.`);
+      }
+    });
+
+    // Eliminar
+    tr.querySelector(".btn-delete-member")?.addEventListener("click", () => {
+      if (!isOfficer()) {
+        openOfficerLoginModal();
+        return;
+      }
+      if (confirm(`¿Eliminar al miembro "${m.name}" del roster?`)) {
+        const remaining = getMembers().filter(item => item.id !== m.id);
+        saveMembersToStorage(remaining);
+        deleteMemberFromCloud(m.id);
+        renderMembersTable();
+        showToast(`Miembro "${m.name}" eliminado.`);
+      }
+    });
+
+    tbody.appendChild(tr);
+  });
+}
+
+// ==========================================================================
+// Módulo: Gestor de Asistencias (Eventos & CTAs) - Exclusivo Oficiales
+// ==========================================================================
+
+function setupAttendanceEvents() {
+  const btnCreateAct = document.getElementById("btn-open-create-activity");
+  const btnCloseModal = document.getElementById("btn-close-activity-modal");
+  const btnCancelModal = document.getElementById("btn-cancel-activity-modal");
+  const formActivity = document.getElementById("form-activity");
+
+  const btnCloseDiscord = document.getElementById("btn-close-discord-modal");
+  const btnCancelDiscord = document.getElementById("btn-cancel-discord-modal");
+  const btnProcessDiscord = document.getElementById("btn-process-discord-attendance");
+
+  if (btnCreateAct) {
+    btnCreateAct.addEventListener("click", () => {
+      if (!isOfficer()) {
+        openOfficerLoginModal();
+        return;
+      }
+      openActivityModal();
+    });
+  }
+
+  if (btnCloseModal) btnCloseModal.addEventListener("click", closeActivityModal);
+  if (btnCancelModal) btnCancelModal.addEventListener("click", closeActivityModal);
+
+  if (formActivity) {
+    formActivity.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!isOfficer()) {
+        openOfficerLoginModal();
+        return;
+      }
+
+      const titleInput = document.getElementById("activity-title-input");
+      const typeSelect = document.getElementById("activity-type-select");
+      const callerInput = document.getElementById("activity-caller-input");
+      const notesInput = document.getElementById("activity-notes-input");
+
+      const title = (titleInput?.value || "").trim();
+      if (!title) {
+        alert("Introduce el nombre del evento.");
+        return;
+      }
+
+      const activities = getActivities();
+      let act = null;
+
+      if (window._editingActivityId) {
+        act = activities.find(a => a.id === window._editingActivityId);
+        if (act) {
+          act.title = title;
+          act.type = typeSelect?.value || "zvz_cta";
+          act.caller = (callerInput?.value || "").trim();
+          act.notes = (notesInput?.value || "").trim();
+          act.updatedAt = Date.now();
+        }
+      } else {
+        act = {
+          id: "act_" + Date.now(),
+          title,
+          type: typeSelect?.value || "zvz_cta",
+          date: new Date().toISOString().slice(0, 16),
+          caller: (callerInput?.value || "").trim(),
+          notes: (notesInput?.value || "").trim(),
+          attendance: {},
+          createdAt: Date.now(),
+          updatedAt: Date.now()
+        };
+        activities.unshift(act);
+      }
+
+      saveActivitiesToStorage(activities);
+      if (act) {
+        saveActivityToCloud(act);
+        activeActivityId = act.id;
+      }
+
+      closeActivityModal();
+      renderActivitiesList();
+      renderActiveActivityAttendance();
+      showToast(window._editingActivityId ? "Actividad actualizada." : "Nueva actividad registrada.");
+    });
+  }
+
+  if (btnCloseDiscord) btnCloseDiscord.addEventListener("click", closeDiscordAttendanceModal);
+  if (btnCancelDiscord) btnCancelDiscord.addEventListener("click", closeDiscordAttendanceModal);
+  if (btnProcessDiscord) {
+    btnProcessDiscord.addEventListener("click", () => {
+      processDiscordAttendance();
+    });
+  }
+}
+
+function openActivityModal(activity = null) {
+  window._editingActivityId = activity ? activity.id : null;
+  const modal = document.getElementById("modal-activity-form");
+  const modalTitle = document.getElementById("modal-activity-title");
+
+  const titleInput = document.getElementById("activity-title-input");
+  const typeSelect = document.getElementById("activity-type-select");
+  const callerInput = document.getElementById("activity-caller-input");
+  const notesInput = document.getElementById("activity-notes-input");
+
+  if (modalTitle) modalTitle.textContent = activity ? "Modificar Actividad" : "Nueva Actividad / Evento";
+
+  if (titleInput) titleInput.value = activity ? activity.title : "";
+  if (typeSelect) typeSelect.value = activity ? activity.type : "zvz_cta";
+  if (callerInput) callerInput.value = activity ? (activity.caller || "") : "";
+  if (notesInput) notesInput.value = activity ? (activity.notes || "") : "";
+
+  if (modal) modal.style.display = "flex";
+  setTimeout(() => titleInput?.focus(), 100);
+}
+
+function closeActivityModal() {
+  const modal = document.getElementById("modal-activity-form");
+  if (modal) modal.style.display = "none";
+  window._editingActivityId = null;
+}
+
+function openDiscordAttendanceModal() {
+  const modal = document.getElementById("modal-discord-attendance");
+  const textarea = document.getElementById("discord-attendance-textarea");
+  const summary = document.getElementById("discord-parsed-summary");
+
+  if (textarea) textarea.value = "";
+  if (summary) summary.textContent = "";
+
+  if (modal) modal.style.display = "flex";
+  setTimeout(() => textarea?.focus(), 100);
+}
+
+function closeDiscordAttendanceModal() {
+  const modal = document.getElementById("modal-discord-attendance");
+  if (modal) modal.style.display = "none";
+}
+
+function processDiscordAttendance() {
+  if (!activeActivityId) {
+    alert("No hay una actividad seleccionada.");
+    return;
+  }
+
+  const textarea = document.getElementById("discord-attendance-textarea");
+  const rawText = (textarea?.value || "").trim();
+  if (!rawText) {
+    alert("Pega la lista de nicks de Discord.");
+    return;
+  }
+
+  // Separar por saltos de línea, comas, tabuladores o punto y coma
+  const rawNames = rawText.split(/[\r\n,;\t]+/).map(s => s.trim().toLowerCase()).filter(Boolean);
+  if (rawNames.length === 0) {
+    alert("No se detectaron nombres válidos en el texto.");
+    return;
+  }
+
+  const activities = getActivities();
+  const act = activities.find(a => a.id === activeActivityId);
+  if (!act) return;
+
+  if (!act.attendance) act.attendance = {};
+
+  const members = getMembers();
+  let matchedCount = 0;
+
+  members.forEach(m => {
+    const mName = (m.name || "").trim().toLowerCase();
+    // Búsqueda exacta o coincidencia contenida
+    const matched = rawNames.some(pasted => {
+      return pasted === mName || pasted.includes(mName) || mName.includes(pasted);
+    });
+
+    if (matched) {
+      act.attendance[m.id] = "present";
+      matchedCount++;
+    }
+  });
+
+  act.updatedAt = Date.now();
+  saveActivitiesToStorage(activities);
+  saveActivityToCloud(act);
+
+  closeDiscordAttendanceModal();
+  renderActiveActivityAttendance();
+  showToast(`¡${matchedCount} miembros marcados como presentes desde Discord!`);
+}
+
+function getActivityTypeLabel(type) {
+  switch (type) {
+    case "zvz_cta": return "CTA ZvZ";
+    case "zvz_casual": return "ZvZ Casual";
+    case "roaming": return "Roaming / Gank";
+    case "avalonian": return "Mazmorra Ava";
+    case "pve": return "PvE & Fama";
+    default: return "Evento";
+  }
+}
+
+function renderActivitiesList() {
+  const listEl = document.getElementById("activities-nav-list");
+  const countEl = document.getElementById("activities-count");
+  if (!listEl) return;
+
+  const activities = getActivities();
+  if (countEl) countEl.textContent = `${activities.length} registradas`;
+
+  listEl.innerHTML = "";
+
+  if (activities.length === 0) {
+    listEl.innerHTML = `<div style="font-size: 12px; color: var(--text-muted); padding: 12px; text-align: center;">No hay actividades registradas aún.</div>`;
+    renderActiveActivityAttendance();
+    return;
+  }
+
+  if (!activeActivityId || !activities.some(a => a.id === activeActivityId)) {
+    activeActivityId = activities[0].id;
+  }
+
+  activities.forEach(act => {
+    const card = document.createElement("div");
+    card.className = `activity-card-item ${act.id === activeActivityId ? 'active' : ''}`;
+
+    const dateFormatted = act.date ? new Date(act.date).toLocaleString("es-ES", {
+      day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
+    }) : 'Fecha no especificada';
+
+    const presentCount = Object.values(act.attendance || {}).filter(v => v === "present").length;
+
+    card.innerHTML = `
+      <div class="activity-item-title">${escapeHtml(act.title)}</div>
+      <div class="activity-item-meta">
+        <span>${dateFormatted}</span>
+        <span style="color: var(--text-gold); font-weight: 600;">${getActivityTypeLabel(act.type)}</span>
+      </div>
+      <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+        Asistentes: <strong style="color: #3fb950;">${presentCount}</strong>
+      </div>
+    `;
+
+    card.addEventListener("click", () => {
+      activeActivityId = act.id;
+      renderActivitiesList();
+      renderActiveActivityAttendance();
+    });
+
+    listEl.appendChild(card);
+  });
+}
+
+function renderActiveActivityAttendance() {
+  const panel = document.getElementById("attendance-active-panel");
+  if (!panel) return;
+
+  const activities = getActivities();
+  const act = activities.find(a => a.id === activeActivityId);
+
+  if (!act) {
+    panel.innerHTML = `
+      <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+        <h3 style="color: var(--text-main); margin-bottom: 8px;">No hay actividad seleccionada</h3>
+        <p style="font-size: 13px;">Crea una nueva actividad o selecciona una existente de la lista lateral para tomar lista de asistencia.</p>
+      </div>
+    `;
+    return;
+  }
+
+  if (!act.attendance) act.attendance = {};
+
+  const allMembers = getMembers();
+  const activeMembers = allMembers.filter(m => m.status === "ACTIVE");
+
+  let presentCount = 0;
+  let absentCount = 0;
+  let excusedCount = 0;
+  let lateCount = 0;
+
+  activeMembers.forEach(m => {
+    const st = act.attendance[m.id];
+    if (st === "present") presentCount++;
+    else if (st === "absent") absentCount++;
+    else if (st === "excused") excusedCount++;
+    else if (st === "late") lateCount++;
+  });
+
+  const dateFormatted = act.date ? new Date(act.date).toLocaleString("es-ES", {
+    day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+  }) : 'Fecha no especificada';
+
+  panel.innerHTML = `
+    <div class="attendance-event-header">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+            <span class="alliance-tag" style="background: rgba(229, 169, 59, 0.15); color: var(--text-gold); border-color: rgba(229, 169, 59, 0.3);">
+              ${getActivityTypeLabel(act.type)}
+            </span>
+            <span style="font-size: 12px; color: var(--text-muted);">${dateFormatted}</span>
+          </div>
+          <h2 style="font-size: 20px; font-weight: 700; color: var(--text-main); margin-bottom: 4px;">${escapeHtml(act.title)}</h2>
+          <div style="font-size: 12px; color: var(--text-muted);">
+            Caller / Líder: <strong style="color: var(--text-main);">${escapeHtml(act.caller || 'Sin asignar')}</strong>
+            ${act.notes ? ` • <span>${escapeHtml(act.notes)}</span>` : ''}
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-open-discord-paste">
+            Pegado Rápido (Discord)
+          </button>
+          <button type="button" class="btn btn-outline btn-sm" id="btn-edit-current-act">
+            Editar
+          </button>
+          <button type="button" class="btn btn-danger btn-sm" id="btn-delete-current-act">
+            Eliminar
+          </button>
+        </div>
+      </div>
+
+      <!-- Resumen de Asistencia -->
+      <div class="attendance-summary-stats">
+        <div class="stat-box">
+          Presentes: <span class="stat-number" style="color: #3fb950;">${presentCount}</span>
+        </div>
+        <div class="stat-box">
+          Ausentes: <span class="stat-number" style="color: #f85149;">${absentCount}</span>
+        </div>
+        <div class="stat-box">
+          Justificados: <span class="stat-number" style="color: #d29922;">${excusedCount}</span>
+        </div>
+        <div class="stat-box">
+          Tarde: <span class="stat-number" style="color: #58a6ff;">${lateCount}</span>
+        </div>
+        <div class="stat-box">
+          Roster Activo: <span class="stat-number">${activeMembers.length}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lista de Miembros para Marcar Asistencia -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+      <h3 style="font-size: 14px; font-weight: 700; color: var(--text-gold); text-transform: uppercase; letter-spacing: 0.5px;">
+        Lista de Asistencia del Roster
+      </h3>
+      <span style="font-size: 11px; color: var(--text-muted);">
+        Haz clic en cada botón para alternar el estado del miembro
+      </span>
+    </div>
+
+    <div class="attendance-roster-list" id="attendance-roster-rows">
+      <!-- Renglones de miembros -->
+    </div>
+  `;
+
+  // Asignar botones de cabecera
+  panel.querySelector("#btn-open-discord-paste")?.addEventListener("click", () => {
+    if (!isOfficer()) {
+      openOfficerLoginModal();
+      return;
+    }
+    openDiscordAttendanceModal();
+  });
+
+  panel.querySelector("#btn-edit-current-act")?.addEventListener("click", () => {
+    if (!isOfficer()) {
+      openOfficerLoginModal();
+      return;
+    }
+    openActivityModal(act);
+  });
+
+  panel.querySelector("#btn-delete-current-act")?.addEventListener("click", () => {
+    if (!isOfficer()) {
+      openOfficerLoginModal();
+      return;
+    }
+    if (confirm(`¿Eliminar la actividad "${act.title}"?`)) {
+      const remaining = getActivities().filter(a => a.id !== act.id);
+      saveActivitiesToStorage(remaining);
+      deleteActivityFromCloud(act.id);
+      activeActivityId = remaining.length > 0 ? remaining[0].id : null;
+      renderActivitiesList();
+      renderActiveActivityAttendance();
+      showToast("Actividad eliminada.");
+    }
+  });
+
+  // Renderizar filas de miembros
+  const rowsContainer = panel.querySelector("#attendance-roster-rows");
+  if (!rowsContainer) return;
+
+  if (activeMembers.length === 0) {
+    rowsContainer.innerHTML = `<div style="font-size: 12px; color: var(--text-muted); padding: 12px; text-align: center;">No hay miembros activos registrados en el gremio.</div>`;
+    return;
+  }
+
+  activeMembers.forEach(m => {
+    const currentStatus = act.attendance[m.id] || "";
+    const row = document.createElement("div");
+    row.className = "attendance-row-item";
+
+    const rankLower = (m.rank || 'miembro').toLowerCase();
+
+    row.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span class="rank-badge rank-${rankLower}" style="font-size: 10px; padding: 2px 6px;">${escapeHtml(m.rank)}</span>
+        <div>
+          <span style="font-weight: 700; color: var(--text-main); font-size: 13px;">${escapeHtml(m.name)}</span>
+          <span class="combat-role-tag" style="margin-left: 6px; font-size: 10px;">${escapeHtml(m.role)}</span>
+        </div>
+      </div>
+
+      <div class="attendance-status-btns">
+        <button type="button" class="att-btn ${currentStatus === 'present' ? 'active-present' : ''}" data-status="present">Presente</button>
+        <button type="button" class="att-btn ${currentStatus === 'absent' ? 'active-absent' : ''}" data-status="absent">Ausente</button>
+        <button type="button" class="att-btn ${currentStatus === 'excused' ? 'active-excused' : ''}" data-status="excused">Justificado</button>
+        <button type="button" class="att-btn ${currentStatus === 'late' ? 'active-late' : ''}" data-status="late">Tarde</button>
+      </div>
+    `;
+
+    // Manejar clics de estado
+    row.querySelectorAll(".att-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (!isOfficer()) {
+          openOfficerLoginModal();
+          return;
+        }
+
+        const clickedStatus = btn.getAttribute("data-status");
+        // Toggle si ya está seleccionado
+        const newStatus = act.attendance[m.id] === clickedStatus ? null : clickedStatus;
+
+        if (newStatus) {
+          act.attendance[m.id] = newStatus;
+        } else {
+          delete act.attendance[m.id];
+        }
+
+        act.updatedAt = Date.now();
+        saveActivitiesToStorage(activities);
+        saveActivityToCloud(act);
+
+        renderActiveActivityAttendance();
+        renderActivitiesList();
+      });
+    });
+
+    rowsContainer.appendChild(row);
+  });
+}
+
+function escapeHtml(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }

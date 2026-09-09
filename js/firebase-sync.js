@@ -260,3 +260,140 @@ export async function restoreDefaultsInCloud(defaultBuilds, defaultFolders) {
     return false;
   }
 }
+
+/**
+ * Inicializa la escucha en tiempo real de los Miembros del Gremio.
+ */
+export function initMembersSync({ onMembersUpdated }) {
+  if (!isFirestoreReady || !db) return;
+  try {
+    const membersCol = collection(db, "members");
+    onSnapshot(
+      membersCol,
+      (snapshot) => {
+        const members = [];
+        snapshot.forEach((docSnap) => {
+          members.push({
+            id: docSnap.id,
+            ...docSnap.data()
+          });
+        });
+        // Ordenar alfabéticamente por nombre
+        members.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+        if (onMembersUpdated) {
+          onMembersUpdated(members);
+        }
+      },
+      (error) => {
+        console.error("[Firebase] Error en onSnapshot(members):", error);
+      }
+    );
+  } catch (err) {
+    console.error("[Firebase] Excepción al configurar listener de miembros:", err);
+  }
+}
+
+/**
+ * Guarda o actualiza un miembro en Firestore.
+ */
+export async function saveMemberToCloud(member) {
+  if (!isFirestoreReady || !db || !member || !member.id) return false;
+  try {
+    const docRef = doc(db, "members", String(member.id));
+    const payload = {
+      ...sanitizeForFirestore(member),
+      updatedAt: Date.now()
+    };
+    await setDoc(docRef, payload, { merge: true });
+    return true;
+  } catch (err) {
+    console.error(`[Firebase] Error al guardar miembro "${member.id}" en la nube:`, err);
+    return false;
+  }
+}
+
+/**
+ * Elimina un miembro de Firestore.
+ */
+export async function deleteMemberFromCloud(memberId) {
+  if (!isFirestoreReady || !db || !memberId) return false;
+  try {
+    const docRef = doc(db, "members", String(memberId));
+    await deleteDoc(docRef);
+    return true;
+  } catch (err) {
+    console.error(`[Firebase] Error al eliminar miembro "${memberId}" de la nube:`, err);
+    return false;
+  }
+}
+
+/**
+ * Inicializa la escucha en tiempo real de Actividades y Eventos.
+ */
+export function initActivitiesSync({ onActivitiesUpdated }) {
+  if (!isFirestoreReady || !db) return;
+  try {
+    const actCol = collection(db, "activities");
+    onSnapshot(
+      actCol,
+      (snapshot) => {
+        const activities = [];
+        snapshot.forEach((docSnap) => {
+          activities.push({
+            id: docSnap.id,
+            ...docSnap.data()
+          });
+        });
+        // Ordenar por fecha o createdAt descendente
+        activities.sort((a, b) => {
+          const timeA = a.date ? new Date(a.date).getTime() : (a.createdAt || 0);
+          const timeB = b.date ? new Date(b.date).getTime() : (b.createdAt || 0);
+          return timeB - timeA;
+        });
+        if (onActivitiesUpdated) {
+          onActivitiesUpdated(activities);
+        }
+      },
+      (error) => {
+        console.error("[Firebase] Error en onSnapshot(activities):", error);
+      }
+    );
+  } catch (err) {
+    console.error("[Firebase] Excepción al configurar listener de actividades:", err);
+  }
+}
+
+/**
+ * Guarda o actualiza una actividad en Firestore.
+ */
+export async function saveActivityToCloud(activity) {
+  if (!isFirestoreReady || !db || !activity || !activity.id) return false;
+  try {
+    const docRef = doc(db, "activities", String(activity.id));
+    const payload = {
+      ...sanitizeForFirestore(activity),
+      updatedAt: Date.now()
+    };
+    await setDoc(docRef, payload, { merge: true });
+    return true;
+  } catch (err) {
+    console.error(`[Firebase] Error al guardar actividad "${activity.id}" en la nube:`, err);
+    return false;
+  }
+}
+
+/**
+ * Elimina una actividad de Firestore.
+ */
+export async function deleteActivityFromCloud(activityId) {
+  if (!isFirestoreReady || !db || !activityId) return false;
+  try {
+    const docRef = doc(db, "activities", String(activityId));
+    await deleteDoc(docRef);
+    return true;
+  } catch (err) {
+    console.error(`[Firebase] Error al eliminar actividad "${activityId}" de la nube:`, err);
+    return false;
+  }
+}
+

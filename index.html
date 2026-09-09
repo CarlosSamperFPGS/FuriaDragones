@@ -18,16 +18,15 @@
       </div>
 
       <nav class="nav-tabs">
-        <button type="button" class="tab-btn active" data-tab="saved-builds">Consultar Builds (<span id="saved-count">0</span>)</button>
-        <button type="button" class="tab-btn officer-only" data-tab="builder" id="tab-btn-builder">Creador de Builds</button>
+        <button type="button" class="tab-btn active" data-tab="saved-builds">Builds Furia (<span id="saved-count">0</span>)</button>
+        <button type="button" class="tab-btn officer-only" data-tab="builder" id="tab-btn-builder">Creador</button>
+        <button type="button" class="tab-btn officer-only" data-tab="members" id="tab-btn-members">Miembros</button>
+        <button type="button" class="tab-btn officer-only" data-tab="attendance" id="tab-btn-attendance">Asistencias</button>
+        <button type="button" class="tab-btn" data-tab="alliance" id="tab-btn-alliance">Llamas Eternas</button>
       </nav>
 
       <!-- Control de Rol / Usuario -->
       <div class="user-role-container">
-        <div id="cloud-sync-badge" class="cloud-sync-badge" title="Sincronización en tiempo real">
-          <span class="cloud-dot"></span>
-          <span id="cloud-sync-label">Conectando...</span>
-        </div>
         <div id="user-role-badge" class="role-badge role-badge-member">
           <span id="user-role-icon"></span>
           <span id="user-role-label">Modo Miembro (Solo Lectura)</span>
@@ -371,6 +370,124 @@
       </div>
     </section>
 
+    <!-- SECCIÓN 3: GESTOR DE MIEMBROS (EXCLUSIVO OFICIALES / SINDICATO) -->
+    <section id="tab-members" class="tab-section officer-only">
+      <div class="panel-box">
+        <div class="panel-header">
+          <div>
+            <h2>Roster del Gremio - Furia de Dragones</h2>
+            <span id="members-count-summary" style="font-size: 12px; color: var(--text-muted);">0 miembros registrados</span>
+          </div>
+          <div class="panel-header-actions">
+            <button type="button" id="btn-open-add-member" class="btn btn-primary btn-sm">+ Registrar Miembro</button>
+          </div>
+        </div>
+
+        <!-- Filtros del Roster -->
+        <div class="roster-filters-bar">
+          <div class="roster-search-box">
+            <input type="text" id="search-members-input" class="form-control form-control-sm" placeholder="Buscar por nick en Albion...">
+          </div>
+          <div class="roster-chips-group">
+            <button type="button" class="roster-status-chip active" data-status="ALL">Todos</button>
+            <button type="button" class="roster-status-chip" data-status="ACTIVE">Activos</button>
+            <button type="button" class="roster-status-chip" data-status="INACTIVE">Inactivos</button>
+            <button type="button" class="roster-status-chip" data-status="STRIKES">Con Amonestaciones</button>
+          </div>
+          <div class="roster-role-select-box">
+            <select id="filter-member-role-select" class="form-control form-control-sm">
+              <option value="ALL">Todos los Roles de Combate</option>
+              <option value="Tank">Tank</option>
+              <option value="Healer">Healer</option>
+              <option value="DPS Melee">DPS Melee</option>
+              <option value="DPS Ranged">DPS Ranged</option>
+              <option value="Soporte">Soporte</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Tabla de Miembros -->
+        <div class="members-table-wrapper">
+          <table class="members-table" id="members-table">
+            <thead>
+              <tr>
+                <th>Nick Ingame</th>
+                <th>Rango Gremio</th>
+                <th>Rol de Combate</th>
+                <th>Estado</th>
+                <th>Amonestaciones</th>
+                <th>Notas de Oficial</th>
+                <th style="text-align: right;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="members-table-body">
+              <!-- Renderizado dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 4: GESTOR DE ASISTENCIAS (EXCLUSIVO OFICIALES / SINDICATO) -->
+    <section id="tab-attendance" class="tab-section officer-only">
+      <div class="attendance-layout">
+        
+        <!-- Barra Lateral: Actividades / Eventos -->
+        <aside class="attendance-sidebar">
+          <div class="panel-header">
+            <div>
+              <h3>Actividades & CTAs</h3>
+              <span id="activities-count" style="font-size: 12px; color: var(--text-muted);">0 registradas</span>
+            </div>
+            <button type="button" id="btn-open-create-activity" class="btn btn-primary btn-sm">+ Nueva</button>
+          </div>
+          <div class="activities-list" id="activities-nav-list">
+            <!-- Renderizado dinámicamente -->
+          </div>
+        </aside>
+
+        <!-- Área de Detalle y Toma de Asistencia -->
+        <div class="attendance-content-area">
+          <div id="attendance-active-panel">
+            <!-- Renderizado dinámicamente según la actividad seleccionada -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECCIÓN 5: ALIANZA "LLAMAS ETERNAS" (PÚBLICA) -->
+    <section id="tab-alliance" class="tab-section">
+      <div class="alliance-container">
+        <div class="alliance-hero-banner">
+          <div class="alliance-crest">
+            <svg viewBox="0 0 24 24" width="60" height="60" fill="none" stroke="#c99c37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2c-4 4-7 8-7 13a7 7 0 0 0 14 0c0-5-3-9-7-13z"></path>
+              <path d="M12 9c-2 2-3.5 4-3.5 6.5a3.5 3.5 0 0 0 7 0C15.5 13 14 11 12 9z" fill="rgba(201, 156, 55, 0.18)"></path>
+            </svg>
+          </div>
+          <h2 class="alliance-title">ALIANZA: LLAMAS ETERNAS</h2>
+          <span class="alliance-subtitle">Coalición Táctica y Estratégica - Albion Online</span>
+        </div>
+
+        <div class="alliance-maintenance-card">
+          <div class="maintenance-badge">Sección en Mantenimiento</div>
+          <h3>Repositorio de Builds Compartidas</h3>
+          <p>
+            Estamos preparando la infraestructura de intercambio táctico para los gremios que conforman 
+            <strong>Llamas Eternas</strong>. Próximamente, cada gremio dispondrá de acceso para publicar y consultar 
+            builds de ZvZ, escaladas y composiciones conjuntas para dominar las tierras lejanas.
+          </p>
+          <div class="alliance-tags-row">
+            <span class="alliance-tag">Furia de Dragones</span>
+            <span class="alliance-tag">Llamas Eternas</span>
+            <span class="alliance-tag">ZvZ Conjunta</span>
+            <span class="alliance-tag">Composiciones de Alianza</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- MODAL: VISOR DE BUILD (ESTILO OFICIAL ALBION ONLINE IN-GAME) -->
@@ -407,23 +524,11 @@
           </div>
         </div>
 
-        <!-- Panel de Pestañas: Habilidades y Notas -->
+        <!-- Panel de Notas y Combo (Sin descripciones innecesarias de habilidades) -->
         <div class="albion-details-panel">
-          <div class="albion-subtabs-nav">
-            <button type="button" class="albion-subtab-btn active" id="btn-subtab-spells" data-subtab="spells">Habilidades Equipadas</button>
-            <button type="button" class="albion-subtab-btn" id="btn-subtab-notes" data-subtab="notes">Notas y Combo</button>
-          </div>
-
-          <div id="subtab-content-spells" class="albion-subtab-pane active">
-            <div class="viewer-spells-list" id="viewer-spells-container">
-              <!-- Renderizado dinámicamente -->
-            </div>
-          </div>
-
-          <div id="subtab-content-notes" class="albion-subtab-pane">
-            <div id="viewer-build-notes" class="viewer-notes-box">
-              Sin notas adicionales.
-            </div>
+          <div class="viewer-notes-header">Notas y Modo de Combate</div>
+          <div id="viewer-build-notes" class="viewer-notes-box">
+            Sin notas adicionales para esta build.
           </div>
         </div>
 
@@ -556,6 +661,167 @@
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-spell-modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: REGISTRAR / EDITAR MIEMBRO -->
+  <div id="modal-member-form" class="modal-backdrop" style="display: none;">
+    <div class="modal-dialog modal-dialog-sm">
+      <div class="modal-header">
+        <h3 id="modal-member-title">Registrar Miembro</h3>
+        <button type="button" class="modal-close" id="btn-close-member-modal">&times;</button>
+      </div>
+      <form id="form-member">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="member-name-input">Nick Ingame (Albion Online):</label>
+            <input type="text" id="member-name-input" class="form-control" required placeholder="Ej: DragonRiderX">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="member-rank-select">Rango en Gremio:</label>
+              <select id="member-rank-select" class="form-control">
+                <option value="Miembro">Miembro</option>
+                <option value="Veterano">Veterano</option>
+                <option value="Caller">Caller</option>
+                <option value="Oficial">Oficial</option>
+                <option value="Sindicato">Sindicato</option>
+                <option value="Líder">Líder</option>
+                <option value="Recluta">Recluta</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="member-status-select">Estado:</label>
+              <select id="member-status-select" class="form-control">
+                <option value="ACTIVE">Activo</option>
+                <option value="INACTIVE">Inactivo</option>
+                <option value="LEAVE">Ausente Temporal</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="member-role-select">Rol de Combate Principal:</label>
+              <select id="member-role-select" class="form-control">
+                <option value="DPS Melee">DPS Melee</option>
+                <option value="DPS Ranged">DPS Ranged</option>
+                <option value="Tank">Tank</option>
+                <option value="Healer">Healer</option>
+                <option value="Soporte">Soporte</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="member-secondary-role-input">Rol Secundario (Opcional):</label>
+              <input type="text" id="member-secondary-role-input" class="form-control" placeholder="Ej: Tank Off / Battleaxe">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="member-notes-input">Notas de Oficial (Privadas):</label>
+            <textarea id="member-notes-input" class="form-control" rows="2" placeholder="Observaciones, disponibilidad, etc..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary btn-sm" id="btn-save-member">Guardar Miembro</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-member-modal">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: GESTIÓN DE AMONESTACIONES (STRIKES) -->
+  <div id="modal-strikes" class="modal-backdrop" style="display: none;">
+    <div class="modal-dialog modal-dialog-sm">
+      <div class="modal-header">
+        <h3 id="modal-strikes-title">Amonestaciones</h3>
+        <button type="button" class="modal-close" id="btn-close-strikes-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="strikes-member-summary" style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;"></div>
+        
+        <!-- Historial de Strikes -->
+        <div class="strikes-history-box" id="strikes-history-list" style="margin-bottom: 16px;">
+          <!-- Renderizado dinámicamente -->
+        </div>
+
+        <!-- Formulario para Añadir Strike -->
+        <div class="add-strike-section">
+          <h4 style="font-size: 13px; font-weight: 600; color: var(--text-gold); margin-bottom: 8px;">Añadir Nueva Amonestación</h4>
+          <form id="form-add-strike">
+            <div class="form-group">
+              <label for="strike-reason-input">Motivo de la sanción:</label>
+              <textarea id="strike-reason-input" class="form-control" rows="2" required placeholder="Ej: Falta injustificada a CTA obligatoria de las 18:00 UTC..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-danger btn-sm" id="btn-apply-strike">Aplicar Amonestación (+1)</button>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-strikes-modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CREAR / EDITAR ACTIVIDAD -->
+  <div id="modal-activity-form" class="modal-backdrop" style="display: none;">
+    <div class="modal-dialog modal-dialog-sm">
+      <div class="modal-header">
+        <h3 id="modal-activity-title">Nueva Actividad / Evento</h3>
+        <button type="button" class="modal-close" id="btn-close-activity-modal">&times;</button>
+      </div>
+      <form id="form-activity">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="activity-title-input">Nombre del Evento / Objetivo:</label>
+            <input type="text" id="activity-title-input" class="form-control" required placeholder="Ej: CTA ZvZ Castillos Tierras Lejanas">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="activity-type-select">Tipo de Actividad:</label>
+              <select id="activity-type-select" class="form-control">
+                <option value="zvz_cta">CTA ZvZ (Obligatoria)</option>
+                <option value="zvz_casual">ZvZ Casual / Práctica</option>
+                <option value="roaming">Roaming / Ganking</option>
+                <option value="avalonian">Mazmorra Avaloniana</option>
+                <option value="pve">PvE & Fama de Gremio</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="activity-caller-input">Caller / Organizador:</label>
+              <input type="text" id="activity-caller-input" class="form-control" placeholder="Nick del Caller">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="activity-notes-input">Notas / Indicaciones del Evento:</label>
+            <textarea id="activity-notes-input" class="form-control" rows="2" placeholder="Portal de salida, IP mínimo, etc..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary btn-sm" id="btn-save-activity">Guardar Actividad</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-activity-modal">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: PEGADO RÁPIDO DESDE DISCORD -->
+  <div id="modal-discord-attendance" class="modal-backdrop" style="display: none;">
+    <div class="modal-dialog modal-dialog-sm">
+      <div class="modal-header">
+        <h3>Pegado Rápido de Asistencia (Discord)</h3>
+        <button type="button" class="modal-close" id="btn-close-discord-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">
+          Copia la lista de nombres del chat de party o canal de voz de Discord y pégala a continuación. 
+          El sistema detectará automáticamente los miembros registrados y los marcará como <strong>Presentes</strong>.
+        </p>
+        <textarea id="discord-attendance-textarea" class="form-control" rows="7" placeholder="Pega aquí los nicks (separados por líneas, comas o espacios)..."></textarea>
+        <div id="discord-parsed-summary" style="font-size: 12px; color: var(--text-gold); margin-top: 8px;"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-sm" id="btn-process-discord-attendance">Marcar Presentes</button>
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-discord-modal">Cancelar</button>
       </div>
     </div>
   </div>

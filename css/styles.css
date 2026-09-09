@@ -109,57 +109,6 @@ body {
   flex-wrap: wrap;
 }
 
-.cloud-sync-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 20px;
-  background: rgba(0, 230, 118, 0.08);
-  border: 1px solid rgba(0, 230, 118, 0.25);
-  color: #00e676;
-  letter-spacing: 0.2px;
-  transition: all 0.3s ease;
-}
-
-.cloud-sync-badge.syncing {
-  background: rgba(255, 179, 0, 0.08);
-  border-color: rgba(255, 179, 0, 0.3);
-  color: #ffb300;
-}
-
-.cloud-sync-badge.error {
-  background: rgba(255, 68, 68, 0.08);
-  border-color: rgba(255, 68, 68, 0.3);
-  color: #ff4444;
-}
-
-.cloud-sync-badge.offline {
-  background: rgba(140, 160, 180, 0.08);
-  border-color: rgba(140, 160, 180, 0.25);
-  color: #8fa1b3;
-}
-
-.cloud-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: currentColor;
-  box-shadow: 0 0 6px currentColor;
-  display: inline-block;
-}
-
-.cloud-sync-badge.syncing .cloud-dot {
-  animation: pulse-cloud-dot 1.2s infinite ease-in-out;
-}
-
-@keyframes pulse-cloud-dot {
-  0%, 100% { opacity: 0.3; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.2); }
-}
-
 .role-badge {
   display: inline-flex;
   align-items: center;
@@ -1614,22 +1563,484 @@ textarea.form-control {
 }
 
 /* ==========================================================================
-   Pie de Página
+   Gestor de Miembros (Roster del Gremio)
    ========================================================================== */
-.app-footer {
-  background-color: var(--bg-header);
-  border-top: 1px solid var(--border-color);
-  padding: 18px 0;
-  margin-top: auto;
-  width: 100%;
+.panel-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 20px;
 }
 
-.footer-content {
-  max-width: 1600px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 24px;
-  text-align: center;
+.panel-subtitle {
   font-size: 12px;
   color: var(--text-muted);
 }
+
+.roster-filters-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 16px 0;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.roster-search-box {
+  flex: 1;
+  min-width: 220px;
+}
+
+.roster-chips-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.roster-status-chip {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background-color: #12151a;
+  border: 1px solid #232a35;
+  color: #84a9cb;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.roster-status-chip:hover {
+  border-color: #3b4658;
+  color: #fff;
+}
+
+.roster-status-chip.active {
+  background: #252013;
+  border-color: var(--border-highlight);
+  color: var(--text-gold);
+}
+
+.roster-role-select-box select {
+  height: 32px;
+  font-size: 12px;
+}
+
+/* Tabla de Miembros */
+.members-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  background: #0f1217;
+}
+
+.members-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.members-table th {
+  background: #141922;
+  padding: 10px 14px;
+  color: var(--text-muted);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.members-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #1c222b;
+  vertical-align: middle;
+}
+
+.members-table tr:hover {
+  background: #151b24;
+}
+
+.member-nick {
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.2px;
+}
+
+/* Badges de Rango */
+.rank-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.rank-sindicato, .rank-lider {
+  background: rgba(226, 183, 85, 0.15);
+  color: #e5a93b;
+  border: 1px solid rgba(229, 169, 59, 0.35);
+}
+.rank-oficial, .rank-caller {
+  background: rgba(166, 48, 31, 0.15);
+  color: #e66752;
+  border: 1px solid rgba(166, 48, 31, 0.35);
+}
+.rank-veterano {
+  background: rgba(88, 166, 255, 0.12);
+  color: #79c0ff;
+  border: 1px solid rgba(88, 166, 255, 0.3);
+}
+.rank-miembro {
+  background: #161b22;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+}
+.rank-recluta {
+  background: #161b22;
+  color: #8b949e;
+  border: 1px dashed #30363d;
+}
+
+/* Badges de Rol de Combate */
+.combat-role-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #9ab4cc;
+}
+
+/* Badges de Estado */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+.status-pill.active {
+  background: rgba(46, 160, 67, 0.15);
+  color: #3fb950;
+  border: 1px solid rgba(46, 160, 67, 0.3);
+}
+.status-pill.inactive {
+  background: rgba(110, 118, 129, 0.15);
+  color: #8b949e;
+  border: 1px solid rgba(110, 118, 129, 0.3);
+}
+.status-pill.leave {
+  background: rgba(210, 153, 34, 0.15);
+  color: #d29922;
+  border: 1px solid rgba(210, 153, 34, 0.3);
+}
+
+/* Strikes / Amonestaciones */
+.strikes-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.strike-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #272e38;
+  border: 1px solid #3d4756;
+}
+.strike-dot.active-1 {
+  background: #e5a93b;
+  border-color: #f0c058;
+}
+.strike-dot.active-2 {
+  background: #ea6c26;
+  border-color: #f7813a;
+}
+.strike-dot.active-3 {
+  background: #da3633;
+  border-color: #f85149;
+  box-shadow: 0 0 6px rgba(218, 54, 51, 0.5);
+}
+
+/* ==========================================================================
+   Gestor de Asistencias (Eventos & CTAs)
+   ========================================================================== */
+.attendance-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+@media (max-width: 960px) {
+  .attendance-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.attendance-sidebar {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.activities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+  max-height: 560px;
+  overflow-y: auto;
+}
+
+.activity-card-item {
+  background: #11141a;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.activity-card-item:hover {
+  background: #161b23;
+  border-color: #3b4657;
+}
+
+.activity-card-item.active {
+  background: #191c1f;
+  border-color: var(--border-highlight);
+  box-shadow: inset 3px 0 0 var(--border-highlight);
+}
+
+.activity-item-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.activity-item-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.attendance-content-area {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 20px;
+  min-height: 480px;
+}
+
+.attendance-event-header {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.attendance-summary-stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.stat-box {
+  background: #10141a;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.stat-number {
+  font-weight: 700;
+  color: var(--text-gold);
+}
+
+.attendance-roster-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 500px;
+  overflow-y: auto;
+  margin-top: 12px;
+}
+
+.attendance-row-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #101419;
+  border: 1px solid #1c222c;
+  border-radius: var(--radius);
+  transition: background 0.15s;
+}
+
+.attendance-row-item:hover {
+  background: #141920;
+}
+
+.attendance-status-btns {
+  display: flex;
+  gap: 4px;
+}
+
+.att-btn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  background: #1a2028;
+  color: var(--text-muted);
+}
+.att-btn:hover {
+  color: #fff;
+}
+.att-btn.active-present {
+  background: #238636;
+  color: #fff;
+  border-color: #2ea043;
+}
+.att-btn.active-absent {
+  background: #a6301f;
+  color: #fff;
+  border-color: #cf3c26;
+}
+.att-btn.active-excused {
+  background: #9e6a03;
+  color: #fff;
+  border-color: #bb8009;
+}
+.att-btn.active-late {
+  background: #1f6feb;
+  color: #fff;
+  border-color: #388bfd;
+}
+
+/* ==========================================================================
+   Alianza: Llamas Eternas
+   ========================================================================== */
+.alliance-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.alliance-hero-banner {
+  text-align: center;
+  padding: 40px 20px 30px;
+  background: linear-gradient(180deg, #181d26 0%, #101318 100%);
+  border: 1px solid #283344;
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+}
+
+.alliance-crest {
+  margin-bottom: 12px;
+}
+
+.alliance-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-gold);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.alliance-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.alliance-maintenance-card {
+  background: #12161d;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 30px;
+  text-align: center;
+}
+
+.maintenance-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  background: rgba(229, 169, 59, 0.12);
+  color: var(--text-gold);
+  border: 1px solid rgba(229, 169, 59, 0.3);
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.alliance-maintenance-card h3 {
+  font-size: 18px;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.alliance-maintenance-card p {
+  font-size: 14px;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto 20px;
+  line-height: 1.6;
+}
+
+.alliance-tags-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.alliance-tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  background: #19202a;
+  border: 1px solid #263140;
+  color: #8da4be;
+  border-radius: 3px;
+}
+
+/* ==========================================================================
+   Visor de Build Simplificado (Notas de Combate)
+   ========================================================================== */
+.viewer-notes-header {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-gold);
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.viewer-notes-box {
+  background: #0d1015;
+  border: 1px solid #1c222c;
+  border-radius: var(--radius);
+  padding: 14px;
+  font-size: 13px;
+  color: #c9d1d9;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  min-height: 140px;
+}
+
