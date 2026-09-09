@@ -7,30 +7,15 @@ import { db } from "./firebase";
 export interface TacticalBuild {
   id: string;
   nombre: string;
-  rol: "CLAPPER" | "HEALER" | "STOPER" | "DPS" | "PIERCE" | "SUPPORT" | string;
-  actividad: "ZVZ" | "ROAMING" | "PVE" | "AVALON" | "HELLGATES" | string;
-  armaPrincipalId: string;
-  armaPrincipalNombre: string;
+  rol?: string;
+  actividad?: string;
+  armaPrincipalId?: string;
+  armaPrincipalNombre?: string;
   armaSecundariaId?: string | null;
   armaSecundariaNombre?: string | null;
   esDosManos?: boolean;
-  equipamiento: {
-    bolsa: string;
-    cabeza: string;
-    pecho: string;
-    zapatos: string;
-    capa: string;
-    armaPrincipal: string;
-    armaSecundaria?: string | null;
-    pocion: string;
-    comida: string;
-  };
-  spells: {
-    mainhand: string[];
-    head: string[];
-    armor: string[];
-    shoes: string[];
-  };
+  equipamiento: Record<string, any>;
+  spells?: Record<string, any>;
   notas?: string;
 }
 

@@ -6,7 +6,7 @@ import {
   getActivities,
   type TacticalBuild,
 } from "@/lib/firebase-sync";
-import { getAlbionItemUrl, getAlbionSpellUrl } from "@/lib/albion";
+import { getItemImageUrl } from "@/lib/items";
 import { ArrowLeft } from "lucide-react";
 
 interface GremioViewProps {
@@ -63,16 +63,16 @@ export function GremioView({
   };
 
   const handleCopyDiscord = (build: TacticalBuild) => {
-    const eq = build.equipamiento;
+    const eq: Record<string, any> = build.equipamiento || {};
     const text = [
       `🛡️ **FURIA DE DRAGONES // TACTICAL BUILD**`,
-      `**Build:** ${build.nombre} | **Rol:** ${build.rol} | **Actividad:** ${build.actividad}`,
-      `⚔️ **Arma Principal:** ${build.armaPrincipalNombre || build.armaPrincipalId}`,
-      `🧢 **Cabeza:** ${eq.cabeza || "N/A"}`,
-      `🥋 **Pecho:** ${eq.pecho || "N/A"}`,
-      `👢 **Botas:** ${eq.zapatos || "N/A"}`,
-      `🧣 **Capa:** ${eq.capa || "N/A"}`,
-      `🧪 **Poción:** ${eq.pocion || "N/A"} | 🍖 **Comida:** ${eq.comida || "N/A"}`,
+      `**Build:** ${build.nombre} | **Rol:** ${build.rol || "DPS"} | **Actividad:** ${build.actividad || "ZVZ"}`,
+      `⚔️ **Arma Principal:** ${build.armaPrincipalNombre || build.armaPrincipalId || eq.armaPrincipal || "Arma"}`,
+      `🧢 **Cabeza:** ${eq.cabeza?.id || eq.cabeza || "N/A"}`,
+      `🥋 **Pecho:** ${eq.pecho?.id || eq.pecho || "N/A"}`,
+      `👢 **Botas:** ${eq.zapatos?.id || eq.zapatos || "N/A"}`,
+      `🧣 **Capa:** ${eq.capa?.id || eq.capa || "N/A"}`,
+      `🧪 **Poción:** ${eq.pocion?.id || eq.pocion || "N/A"} | 🍖 **Comida:** ${eq.comida?.id || eq.comida || "N/A"}`,
       build.notas ? `📝 **Notas:** ${build.notas}` : "",
     ]
       .filter(Boolean)
@@ -114,7 +114,7 @@ export function GremioView({
   });
 
   // Color de rol táctico
-  const getRoleColor = (rol: string) => {
+  const getRoleColor = (rol?: string) => {
     const r = (rol || "").toUpperCase();
     if (r.includes("CLAPPER")) return "text-orange-400";
     if (r.includes("HEALER")) return "text-emerald-400";
@@ -125,13 +125,15 @@ export function GremioView({
     return "text-zinc-400";
   };
 
-  // Renderizador de cada celda del Grid 3x3 (Puramente visual, sin texto de IDs)
+  // Renderizador de celda visual del Grid 3x3 usando getItemImageUrl
   const renderVisualGridCell = (
-    itemId?: string | null,
-    skills?: string[],
-    isOffhandDisabled: boolean = false
+    itemSource: any,
+    fallbackId: string,
+    alt: string,
+    skillSlots?: string[],
+    isTwoHandedDisabled: boolean = false
   ) => {
-    if (isOffhandDisabled) {
+    if (isTwoHandedDisabled) {
       return (
         <div className="flex flex-col items-center">
           <div className="relative h-20 w-20 sm:h-24 sm:w-24 bg-zinc-950/80 border border-dragon-border/60 rounded-sm flex items-center justify-center select-none">
@@ -144,48 +146,35 @@ export function GremioView({
       );
     }
 
+    const resolvedId =
+      typeof itemSource === "string"
+        ? itemSource
+        : itemSource?.id || fallbackId;
+
     return (
       <div className="flex flex-col items-center">
-        {/* Recuadro del Ítem */}
+        {/* Recuadro visual del ítem de Albion Online */}
         <div className="relative h-20 w-20 sm:h-24 sm:w-24 bg-dragon-bg border border-dragon-border rounded-sm flex items-center justify-center p-2 hover:border-zinc-500 transition-colors">
-          {itemId ? (
-            <img
-              src={getAlbionItemUrl(itemId, "T8")}
-              alt=""
-              className="h-16 w-16 object-contain"
-              onError={(e) => {
-                (e.target as HTMLElement).style.opacity = "0.3";
-              }}
-            />
-          ) : (
-            <div className="h-16 w-16 bg-zinc-900/50" />
-          )}
+          <img
+            src={getItemImageUrl(resolvedId || fallbackId)}
+            alt={alt}
+            className="w-full h-full object-contain"
+            onError={(e) => {
+              (e.target as HTMLElement).style.opacity = "0.3";
+            }}
+          />
         </div>
 
-        {/* Hechizos / Skills debajo del ítem (w-5 h-5 rounded-full border border-zinc-700 bg-zinc-900) */}
-        {skills && skills.length > 0 && (
+        {/* Habilidades (Spells): Contenedores circulares técnicos */}
+        {skillSlots && skillSlots.length > 0 && (
           <div className="flex items-center justify-center gap-1.5 mt-2">
-            {skills.map((spellId, idx) => (
+            {skillSlots.map((slot, idx) => (
               <div
                 key={idx}
-                className="h-5 w-5 rounded-full border border-zinc-700 bg-zinc-900 flex items-center justify-center overflow-hidden"
-                title={`Skill: ${spellId}`}
+                className="w-5 h-5 rounded-full border border-zinc-700 bg-zinc-900 flex items-center justify-center text-[8px] font-mono text-zinc-500 font-bold select-none"
+                title={`Slot de habilidad ${slot}`}
               >
-                <img
-                  src={getAlbionSpellUrl(spellId)}
-                  alt=""
-                  className="h-full w-full object-cover"
-                  onError={(e) => {
-                    // Fallback a etiqueta de slot
-                    const el = e.target as HTMLElement;
-                    el.style.display = "none";
-                    if (el.parentElement) {
-                      el.parentElement.innerHTML = `<span style="font-size:7px;font-family:monospace;color:#a1a1aa;font-weight:bold">${
-                        ["Q", "W", "E", "P"][idx] || idx + 1
-                      }</span>`;
-                    }
-                  }}
-                />
+                {slot}
               </div>
             ))}
           </div>
@@ -307,15 +296,21 @@ export function GremioView({
             <div className="w-full divide-y divide-dragon-border">
               {filteredBuilds.map((build) => {
                 const isExpanded = expandedId === build.id;
-                const eq = build.equipamiento || {};
-                const spells = build.spells || {
-                  mainhand: [],
-                  head: [],
-                  armor: [],
-                  shoes: [],
-                };
-                const isTwoHanded =
-                  build.esDosManos || (!build.armaSecundariaId && !eq.armaSecundaria);
+                const eq: Record<string, any> = build.equipamiento || {};
+                const isTwoHanded = Boolean(
+                  build.esDosManos ||
+                    (!build.armaSecundariaId &&
+                      !eq.armaSecundaria &&
+                      !eq.offhand)
+                );
+
+                const weaponId =
+                  build.armaPrincipalId ||
+                  eq.armaPrincipal?.id ||
+                  eq.armaPrincipal ||
+                  eq.mainhand?.id ||
+                  eq.mainhand ||
+                  "2H_AXE_AVALON";
 
                 return (
                   <div key={build.id} className="w-full">
@@ -325,11 +320,8 @@ export function GremioView({
                       <div className="flex items-center gap-4 min-w-0">
                         <div className="h-14 w-14 shrink-0 bg-dragon-bg border border-dragon-border rounded-sm flex items-center justify-center p-1">
                           <img
-                            src={getAlbionItemUrl(
-                              build.armaPrincipalId || eq.armaPrincipal,
-                              "T8"
-                            )}
-                            alt=""
+                            src={getItemImageUrl(weaponId)}
+                            alt={build.nombre}
                             className="h-full w-full object-contain"
                             onError={(e) => {
                               (e.target as HTMLElement).style.opacity = "0.3";
@@ -353,11 +345,13 @@ export function GremioView({
                                 build.rol
                               )}`}
                             >
-                              {build.rol}
+                              {build.rol || "DPS"}
                             </span>
                             <span className="text-zinc-600">•</span>
                             <span className="text-zinc-400 font-sans text-xs truncate">
-                              {build.armaPrincipalNombre || build.armaPrincipalId}
+                              {build.armaPrincipalNombre ||
+                                build.armaPrincipalId ||
+                                "Arma Táctica"}
                             </span>
                           </div>
                         </div>
@@ -366,30 +360,52 @@ export function GremioView({
                       {/* Centro: Fila compacta de iconos pequeños (w-10 h-10) de equipamiento */}
                       <div className="hidden lg:flex items-center gap-2 shrink-0">
                         {[
-                          { label: "Cabeza", id: eq.cabeza },
-                          { label: "Pecho", id: eq.pecho },
-                          { label: "Botas", id: eq.zapatos },
-                          { label: "Capa", id: eq.capa },
-                          { label: "Poción", id: eq.pocion },
-                          { label: "Comida", id: eq.comida },
+                          {
+                            label: "Cabeza",
+                            source: eq.cabeza,
+                            fallback: "HEAD_PLATE_SET2",
+                          },
+                          {
+                            label: "Pecho",
+                            source: eq.pecho,
+                            fallback: "ARMOR_PLATE_SET3",
+                          },
+                          {
+                            label: "Botas",
+                            source: eq.zapatos,
+                            fallback: "SHOES_LEATHER_SET2",
+                          },
+                          {
+                            label: "Capa",
+                            source: eq.capa,
+                            fallback: "CAPEITEM_FW_FORTSTERLING",
+                          },
+                          {
+                            label: "Poción",
+                            source: eq.pocion,
+                            fallback: "POTION_REVIVE",
+                          },
+                          {
+                            label: "Comida",
+                            source: eq.comida,
+                            fallback: "MEAL_STEW",
+                          },
                         ].map((item, idx) => (
                           <div
                             key={idx}
                             className="h-10 w-10 shrink-0 bg-dragon-bg border border-dragon-border rounded-sm flex items-center justify-center p-1"
                             title={item.label}
                           >
-                            {item.id ? (
-                              <img
-                                src={getAlbionItemUrl(item.id, "T8")}
-                                alt={item.label}
-                                className="h-full w-full object-contain"
-                                onError={(e) => {
-                                  (e.target as HTMLElement).style.opacity = "0.2";
-                                }}
-                              />
-                            ) : (
-                              <div className="h-full w-full bg-zinc-900/40" />
-                            )}
+                            <img
+                              src={getItemImageUrl(
+                                item.source?.id || item.source || item.fallback
+                              )}
+                              alt={item.label}
+                              className="h-full w-full object-contain"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.opacity = "0.2";
+                              }}
+                            />
                           </div>
                         ))}
                       </div>
@@ -441,32 +457,67 @@ export function GremioView({
                       <div className="border-t border-dragon-border bg-dragon-panel/40 px-6 py-6 select-none">
                         {/* Grid 3x3 Replicando Inventario de Albion */}
                         <div className="grid grid-cols-3 gap-6 max-w-xl mx-auto py-2">
-                          {/* Columna Izquierda: Bolsa, Arma Principal (con 4 skills), Poción */}
+                          {/* Columna Izquierda: Bolsa, Arma Principal (4 skills), Poción */}
                           <div className="flex flex-col items-center gap-6">
-                            {renderVisualGridCell(eq.bolsa || "BAG")}
                             {renderVisualGridCell(
-                              build.armaPrincipalId || eq.armaPrincipal,
-                              spells.mainhand
+                              eq.bolsa,
+                              "BAG",
+                              "Bolsa"
                             )}
-                            {renderVisualGridCell(eq.pocion || "POTION_REVIVE")}
+                            {renderVisualGridCell(
+                              weaponId,
+                              "2H_AXE_AVALON",
+                              "Arma Principal",
+                              ["Q", "W", "E", "P"]
+                            )}
+                            {renderVisualGridCell(
+                              eq.pocion,
+                              "POTION_REVIVE",
+                              "Poción"
+                            )}
                           </div>
 
                           {/* Columna Central: Casco (2 skills), Pecho (2 skills), Botas (2 skills) */}
                           <div className="flex flex-col items-center gap-6">
-                            {renderVisualGridCell(eq.cabeza, spells.head)}
-                            {renderVisualGridCell(eq.pecho, spells.armor)}
-                            {renderVisualGridCell(eq.zapatos, spells.shoes)}
+                            {renderVisualGridCell(
+                              eq.cabeza,
+                              "HEAD_PLATE_SET2",
+                              "Casco",
+                              ["D", "P"]
+                            )}
+                            {renderVisualGridCell(
+                              eq.pecho,
+                              "ARMOR_PLATE_SET3",
+                              "Pecho",
+                              ["R", "P"]
+                            )}
+                            {renderVisualGridCell(
+                              eq.zapatos,
+                              "SHOES_LEATHER_SET2",
+                              "Botas",
+                              ["F", "P"]
+                            )}
                           </div>
 
                           {/* Columna Derecha: Capa, Arma Secundaria (o X si 2 manos), Comida */}
                           <div className="flex flex-col items-center gap-6">
-                            {renderVisualGridCell(eq.capa)}
                             {renderVisualGridCell(
-                              build.armaSecundariaId || eq.armaSecundaria,
+                              eq.capa,
+                              "CAPEITEM_FW_FORTSTERLING",
+                              "Capa"
+                            )}
+                            {renderVisualGridCell(
+                              build.armaSecundariaId || eq.armaSecundaria || eq.offhand,
+                              "OFF_BOOK",
+                              "Arma Secundaria",
                               undefined,
                               isTwoHanded
                             )}
-                            {renderVisualGridCell(eq.comida || "MEAL_STEW")}
+                            {renderVisualGridCell(
+                              eq.comida,
+                              "MEAL_STEW",
+                              "Comida"
+                            )}
                           </div>
                         </div>
 
