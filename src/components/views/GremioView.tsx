@@ -6,7 +6,7 @@ import { db } from "@/lib/firebase";
 import {
   Shield,
   Swords,
-  HeartPulse,
+  Activity,
   Zap,
   ChevronDown,
   ChevronUp,
@@ -100,7 +100,7 @@ export function GremioView({ onBack }: GremioViewProps) {
   const renderRoleIcon = (rol: string) => {
     const r = rol.toLowerCase();
     if (r === "tank") return <Shield className="h-4 w-4" />;
-    if (r === "healer") return <HeartPulse className="h-4 w-4" />;
+    if (r === "healer") return <Activity className="h-4 w-4" />;
     if (r === "support") return <Zap className="h-4 w-4" />;
     if (r === "dps") return <Swords className="h-4 w-4" />;
     return <Terminal className="h-4 w-4" />;

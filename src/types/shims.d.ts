@@ -55,6 +55,12 @@ declare module "lucide-react" {
   export const Copy: any;
   export const Share2: any;
   export const ExternalLink: any;
+  export const ArrowLeft: any;
+  export const Zap: any;
+  export const Heart: any;
+  export const HeartPulse: any;
+  export const Crosshair: any;
+  export const Sparkles: any;
   const LucideIcons: Record<string, any>;
   export default LucideIcons;
 }
