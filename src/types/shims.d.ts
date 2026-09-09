@@ -62,6 +62,8 @@ declare module "lucide-react" {
   export const Copy: any;
   export const Share2: any;
   export const ExternalLink: any;
+  export const ArrowRight: any;
+  export const ChevronRight: any;
   export const ArrowLeft: any;
   export const Zap: any;
   export const Heart: any;
@@ -77,8 +79,36 @@ declare module "lucide-react" {
   export const EyeOff: any;
   export const AlertCircle: any;
   export const Info: any;
+  [key: string]: any;
   const LucideIcons: Record<string, any>;
   export default LucideIcons;
+}
+
+declare module "firebase/app" {
+  export function initializeApp(config: any): any;
+  export function getApps(): any[];
+  export function getApp(): any;
+}
+
+declare module "firebase/firestore" {
+  export function getFirestore(app?: any): any;
+  export function collection(firestore: any, ...pathSegments: string[]): any;
+  export function getDocs(query: any): Promise<any>;
+  export function doc(firestore: any, ...pathSegments: string[]): any;
+  export function getDoc(reference: any): Promise<any>;
+  export function setDoc(reference: any, data: any, options?: any): Promise<any>;
+  export function deleteDoc(reference: any): Promise<any>;
+  export function updateDoc(reference: any, data: any): Promise<any>;
+  export function query(collectionRef: any, ...queryConstraints: any[]): any;
+  export function where(fieldPath: string, opStr: string, value: any): any;
+  export function orderBy(fieldPath: string, directionStr?: string): any;
+  export function onSnapshot(reference: any, onNext: (snapshot: any) => void, onError?: (error: any) => void): () => void;
+  export type DocumentData = Record<string, any>;
+  export type Firestore = any;
+  export type CollectionReference<T = DocumentData> = any;
+  export type DocumentReference<T = DocumentData> = any;
+  export type QuerySnapshot<T = DocumentData> = any;
+  export type DocumentSnapshot<T = DocumentData> = any;
 }
 
 declare module "tailwindcss" {
