@@ -3,18 +3,10 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const guildId = searchParams.get("guildId");
-
-    if (!guildId || guildId === "TU_GUILD_ID") {
-      return NextResponse.json(
-        {
-          error: "GUILD_ID_MISSING",
-          message:
-            "No se ha configurado el GUILD_ID de Albion Online. Introduce el ID real de Furia de Dragones en RosterView.tsx.",
-        },
-        { status: 400 }
-      );
-    }
+    const guildId =
+      searchParams.get("guildId") && searchParams.get("guildId") !== "TU_GUILD_ID"
+        ? searchParams.get("guildId")
+        : "UUdmeQLuQ8upNFtQBl0YPQ";
 
     const albionUrl = `https://gameinfo.albiononline.com/api/gameinfo/guilds/${guildId}/members`;
     const response = await fetch(albionUrl, {

@@ -11,7 +11,7 @@ import {
 import { Search, ShieldAlert, Check, Pencil, Trash2 } from "lucide-react";
 
 // Variable de configuración: introduce aquí el ID de hermandad de Furia de Dragones en Albion Online
-export const ALBION_GUILD_ID = "TU_GUILD_ID";
+export const ALBION_GUILD_ID = "UUdmeQLuQ8upNFtQBl0YPQ";
 
 interface RosterViewProps {
   onBack?: () => void;
