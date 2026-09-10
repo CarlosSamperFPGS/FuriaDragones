@@ -8,7 +8,8 @@ export async function GET(request: Request) {
         ? searchParams.get("guildId")
         : "UUdmeQLuQ8upNFtQBl0YPQ";
 
-    const albionUrl = `https://gameinfo.albiononline.com/api/gameinfo/guilds/${guildId}/members`;
+    // Endpoint oficial de Albion Online para el Servidor Europa (Amsterdam)
+    const albionUrl = `https://gameinfo-ams.albiononline.com/api/gameinfo/guilds/${guildId}/members`;
     const response = await fetch(albionUrl, {
       headers: {
         "User-Agent":
@@ -16,7 +17,7 @@ export async function GET(request: Request) {
         Accept: "application/json",
       },
       next: { revalidate: 60 },
-    });
+    } as any);
 
     if (!response.ok) {
       return NextResponse.json(

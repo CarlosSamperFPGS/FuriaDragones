@@ -79,9 +79,22 @@ declare module "lucide-react" {
   export const EyeOff: any;
   export const AlertCircle: any;
   export const Info: any;
-  [key: string]: any;
   const LucideIcons: Record<string, any>;
   export default LucideIcons;
+}
+
+declare var process: {
+  env: Record<string, string | undefined>;
+  [key: string]: any;
+};
+
+declare module "next/server" {
+  export class NextResponse extends Response {
+    static json(body: any, init?: ResponseInit): NextResponse;
+    static redirect(url: string | URL, init?: number | ResponseInit): NextResponse;
+    static rewrite(destination: string | URL, init?: ResponseInit): NextResponse;
+    static next(init?: any): NextResponse;
+  }
 }
 
 declare module "firebase/app" {

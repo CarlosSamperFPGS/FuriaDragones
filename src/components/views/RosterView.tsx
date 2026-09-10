@@ -11,7 +11,7 @@ import {
 import { Search, ShieldAlert, Check, Pencil, Trash2 } from "lucide-react";
 
 // Variable de configuración: introduce aquí el ID de hermandad de Furia de Dragones en Albion Online
-export const ALBION_GUILD_ID = "UUdmeQLuQ8upNFtQBl0YPQ";
+export const ALBION_GUILD_ID: string = "UUdmeQLuQ8upNFtQBl0YPQ";
 
 interface RosterViewProps {
   onBack?: () => void;
@@ -148,26 +148,40 @@ export function RosterView({
         if (res.ok) {
           albionMembers = await res.json();
         } else {
-          // Fallback a fetch directo a Albion si la ruta Next responde con error
-          const directRes = await fetch(
-            `https://gameinfo.albiononline.com/api/gameinfo/guilds/${ALBION_GUILD_ID}/members`
-          );
+          throw new Error("API Route respondió con error, intentando fuentes directas...");
+        }
+      } catch (innerErr) {
+        // Fallback 1: Servidor oficial de Albion en Europa (Amsterdam)
+        const europeUrl = `https://gameinfo-ams.albiononline.com/api/gameinfo/guilds/${ALBION_GUILD_ID}/members`;
+        try {
+          const directRes = await fetch(europeUrl);
           if (directRes.ok) {
             albionMembers = await directRes.json();
           } else {
-            const errData = await res.json().catch(() => ({}));
-            throw new Error(errData.message || `API respondió con código ${res.status}`);
+            throw new Error("Error en fetch directo");
           }
-        }
-      } catch (innerErr: any) {
-        // Fallback directo
-        const directRes = await fetch(
-          `https://gameinfo.albiononline.com/api/gameinfo/guilds/${ALBION_GUILD_ID}/members`
-        );
-        if (directRes.ok) {
-          albionMembers = await directRes.json();
-        } else {
-          throw innerErr;
+        } catch {
+          // Fallback 2: Proxy anti-CORS allorigins
+          try {
+            const proxyRes = await fetch(
+              `https://api.allorigins.win/raw?url=${encodeURIComponent(europeUrl)}`
+            );
+            if (proxyRes.ok) {
+              albionMembers = await proxyRes.json();
+            } else {
+              throw new Error("Error en proxy 1");
+            }
+          } catch {
+            // Fallback 3: Proxy anti-CORS corsproxy.io
+            const proxyRes2 = await fetch(
+              `https://corsproxy.io/?url=${encodeURIComponent(europeUrl)}`
+            );
+            if (proxyRes2.ok) {
+              albionMembers = await proxyRes2.json();
+            } else {
+              throw new Error("No se pudo contactar con la API de Albion Online en Europa.");
+            }
+          }
         }
       }
 
@@ -413,13 +427,10 @@ export function RosterView({
                 type="button"
                 onClick={handleSyncAlbion}
                 disabled={isSyncingAlbion}
-                className="px-3.5 py-1.5 border border-cyan-700 text-cyan-500 hover:bg-cyan-950/30 hover:border-cyan-500 font-mono text-xs uppercase tracking-wider font-bold transition-colors shrink-0 disabled:opacity-50 disabled:pointer-events-none flex items-center gap-2"
-                title="Sincronizar miembros automáticamente desde la API pública de Albion Online"
+                className="px-3.5 py-1.5 border border-cyan-700 text-cyan-500 hover:bg-cyan-950/30 hover:border-cyan-500 font-mono text-xs uppercase tracking-wider font-bold transition-colors shrink-0 disabled:opacity-50 disabled:pointer-events-none"
+                title="Sincronizar miembros desde Albion Online (Servidor Europa)"
               >
-                <span className={isSyncingAlbion ? "animate-spin inline-block" : ""}>
-                  ⟳
-                </span>
-                <span>{isSyncingAlbion ? "SINCRONIZANDO..." : "SYNC ALBION API"}</span>
+                {isSyncingAlbion ? "SINCRONIZANDO..." : "SYNC MIEMBROS"}
               </button>
 
               <button
