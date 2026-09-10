@@ -5,9 +5,13 @@ import {
   getRosterMembers,
   saveRosterMember,
   deleteRosterMember,
+  bulkSaveRosterMembers,
   type RosterMember,
 } from "@/lib/firebase-sync";
 import { Search, ShieldAlert, Check, Pencil, Trash2 } from "lucide-react";
+
+// Variable de configuración: introduce aquí el ID de hermandad de Furia de Dragones en Albion Online
+export const ALBION_GUILD_ID = "TU_GUILD_ID";
 
 interface RosterViewProps {
   onBack?: () => void;
@@ -91,6 +95,19 @@ export function RosterView({
   const [formAvisos, setFormAvisos] = useState<number>(0);
   const [formNotas, setFormNotas] = useState("");
 
+  // Estado para la sincronización con Albion Online API
+  const [isSyncingAlbion, setIsSyncingAlbion] = useState(false);
+  const [syncNotification, setSyncNotification] = useState<string | null>(null);
+
+  // Auto-desvanecer la notificación tras 6 segundos
+  useEffect(() => {
+    if (!syncNotification) return;
+    const timer = setTimeout(() => {
+      setSyncNotification(null);
+    }, 6000);
+    return () => clearTimeout(timer);
+  }, [syncNotification]);
+
   // Modal de Confirmar Eliminación
   const [deleteModal, setDeleteModal] = useState<{ id: string; ign: string } | null>(
     null
@@ -105,6 +122,110 @@ export function RosterView({
     }
     loadData();
   }, []);
+
+  // Función asíncrona de sincronización con la API de Albion Online
+  const handleSyncAlbion = async () => {
+    if (isSyncingAlbion) return;
+
+    if (!ALBION_GUILD_ID || ALBION_GUILD_ID === "TU_GUILD_ID") {
+      setSyncNotification(
+        "// AVISO: Introduce tu GUILD_ID de Albion en RosterView.tsx (línea 16) para sincronizar con Furia de Dragones."
+      );
+      return;
+    }
+
+    setIsSyncingAlbion(true);
+    setSyncNotification(null);
+
+    try {
+      let albionMembers: any[] = [];
+
+      // 1. Intentar mediante la Next.js API Route interna para evitar CORS
+      try {
+        const res = await fetch(
+          `/api/albion/sync?guildId=${encodeURIComponent(ALBION_GUILD_ID)}`
+        );
+        if (res.ok) {
+          albionMembers = await res.json();
+        } else {
+          // Fallback a fetch directo a Albion si la ruta Next responde con error
+          const directRes = await fetch(
+            `https://gameinfo.albiononline.com/api/gameinfo/guilds/${ALBION_GUILD_ID}/members`
+          );
+          if (directRes.ok) {
+            albionMembers = await directRes.json();
+          } else {
+            const errData = await res.json().catch(() => ({}));
+            throw new Error(errData.message || `API respondió con código ${res.status}`);
+          }
+        }
+      } catch (innerErr: any) {
+        // Fallback directo
+        const directRes = await fetch(
+          `https://gameinfo.albiononline.com/api/gameinfo/guilds/${ALBION_GUILD_ID}/members`
+        );
+        if (directRes.ok) {
+          albionMembers = await directRes.json();
+        } else {
+          throw innerErr;
+        }
+      }
+
+      if (!Array.isArray(albionMembers)) {
+        throw new Error("Respuesta inesperada de la API de Albion (formato no válido)");
+      }
+
+      // 2. Fusión de datos con Firebase (solo miembros nuevos por IGN)
+      const existingIgns = new Set(
+        members.map((m) => m.ign.trim().toLowerCase())
+      );
+      const newMembersToInsert: RosterMember[] = [];
+
+      for (const item of albionMembers) {
+        const playerName = (
+          item.Name ||
+          item.name ||
+          item.PlayerName ||
+          item.ign ||
+          ""
+        ).trim();
+
+        if (playerName && !existingIgns.has(playerName.toLowerCase())) {
+          existingIgns.add(playerName.toLowerCase());
+          newMembersToInsert.push({
+            id: `m_albion_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+            ign: playerName,
+            nombre: playerName,
+            status: "Nuevo",
+            roles: [],
+            estadoActividad: "Activo",
+            avisos: 0,
+            notas: "Importado vía API",
+          });
+        }
+      }
+
+      // 3. Subir a Firestore y actualizar estado
+      if (newMembersToInsert.length > 0) {
+        await bulkSaveRosterMembers(newMembersToInsert);
+        setMembers((prev) => [...newMembersToInsert, ...prev]);
+        setSyncNotification(
+          `// SYNC COMPLETADA: ${newMembersToInsert.length} miembros nuevos añadidos.`
+        );
+      } else {
+        setSyncNotification(
+          "// SYNC COMPLETADA: El Roster ya está al día. 0 miembros nuevos añadidos."
+        );
+      }
+    } catch (error: any) {
+      console.warn("[AlbionSync] Error durante la sincronización:", error);
+      setSyncNotification(
+        `// ERROR EN SYNC: ${error?.message || "No se pudo conectar con la API de Albion Online."}`
+      );
+    } finally {
+      setIsSyncingAlbion(false);
+    }
+  };
 
   const resetForm = () => {
     setEditingId(null);
@@ -286,16 +407,32 @@ export function RosterView({
           </div>
 
           {isSindicatoAuthenticated && subTab === "list" && (
-            <button
-              type="button"
-              onClick={() => {
-                resetForm();
-                setSubTab("register");
-              }}
-              className="px-4 py-1.5 border border-dragon-ember text-dragon-ember hover:bg-dragon-ember hover:text-black font-mono text-xs uppercase tracking-wider font-bold transition-colors shrink-0"
-            >
-              + REGISTRAR MIEMBRO
-            </button>
+            <div className="flex items-center gap-2">
+              {/* Botón de Sincronización con Albion Online API */}
+              <button
+                type="button"
+                onClick={handleSyncAlbion}
+                disabled={isSyncingAlbion}
+                className="px-3.5 py-1.5 border border-cyan-700 text-cyan-500 hover:bg-cyan-950/30 hover:border-cyan-500 font-mono text-xs uppercase tracking-wider font-bold transition-colors shrink-0 disabled:opacity-50 disabled:pointer-events-none flex items-center gap-2"
+                title="Sincronizar miembros automáticamente desde la API pública de Albion Online"
+              >
+                <span className={isSyncingAlbion ? "animate-spin inline-block" : ""}>
+                  ⟳
+                </span>
+                <span>{isSyncingAlbion ? "SINCRONIZANDO..." : "SYNC ALBION API"}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  resetForm();
+                  setSubTab("register");
+                }}
+                className="px-4 py-1.5 border border-dragon-ember text-dragon-ember hover:bg-dragon-ember hover:text-black font-mono text-xs uppercase tracking-wider font-bold transition-colors shrink-0"
+              >
+                + REGISTRAR MIEMBRO
+              </button>
+            </div>
           )}
 
           {subTab === "register" && (
@@ -312,6 +449,24 @@ export function RosterView({
           )}
         </div>
       </div>
+
+      {/* Feedback de Sincronización Integrado en el Layout (Sin alert()) */}
+      {syncNotification && (
+        <div className="flex items-center justify-between px-6 py-2.5 bg-cyan-950/50 border-b border-cyan-800/70 font-mono text-xs text-cyan-400 shrink-0 shadow-lg">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse shrink-0" />
+            <span className="truncate">{syncNotification}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setSyncNotification(null)}
+            className="text-cyan-600 hover:text-cyan-300 ml-4 font-bold text-sm px-1.5 transition-colors"
+            title="Cerrar notificación"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* Contenido Principal */}
       <div className="flex-1 overflow-y-auto">

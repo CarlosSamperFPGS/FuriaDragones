@@ -281,6 +281,28 @@ export async function deleteRosterMember(memberId: string): Promise<boolean> {
   }
 }
 
+export async function bulkSaveRosterMembers(newMembers: RosterMember[]): Promise<boolean> {
+  try {
+    if (!newMembers || newMembers.length === 0) return true;
+    const promises = newMembers.map((m) => {
+      const memberRef = doc(db, "roster", m.id);
+      return setDoc(
+        memberRef,
+        {
+          ...m,
+          updatedAt: new Date().toISOString(),
+        },
+        { merge: true }
+      );
+    });
+    await Promise.all(promises);
+    return true;
+  } catch (error) {
+    console.warn("[FirebaseSync] Error bulk saving roster members:", error);
+    return false;
+  }
+}
+
 // GUILD CONTENTS CRUD
 export async function getGuildContents(): Promise<GuildContent[]> {
   try {
