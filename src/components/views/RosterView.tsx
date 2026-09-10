@@ -24,13 +24,48 @@ const ROSTER_STATUSES = [
 ] as const;
 
 const ROLES_DISPONIBLES = [
-  "DPS",
   "Clapper",
-  "Stoper",
   "Healer",
+  "Stoper",
+  "DPS",
   "Pierce",
   "Support",
 ];
+
+// Jerarquía estricta de importancia de roles tácticos
+const ROLE_IMPORTANCE: Record<string, number> = {
+  CLAPPER: 1,
+  HEALER: 2,
+  STOPER: 3,
+  TANK: 3,
+  DPS: 4,
+  PIERCE: 5,
+  SUPPORT: 6,
+};
+
+// Jerarquía de rango para desempate
+const STATUS_IMPORTANCE: Record<string, number> = {
+  Lider: 1,
+  Sindicato: 2,
+  Veterano: 3,
+  "Miembro Oficial": 4,
+  Miembro: 5,
+  Nuevo: 6,
+};
+
+const getMemberRoleImportance = (roles?: string[]): number => {
+  if (!roles || roles.length === 0) return 999;
+  let minRank = 999;
+  for (const r of roles) {
+    const rUpper = r.trim().toUpperCase();
+    for (const [key, rank] of Object.entries(ROLE_IMPORTANCE)) {
+      if (rUpper.includes(key) && rank < minRank) {
+        minRank = rank;
+      }
+    }
+  }
+  return minRank;
+};
 
 const ESTADOS_ACTIVIDAD = ["Activo", "Inactivo", "Ausente"] as const;
 
@@ -159,20 +194,39 @@ export function RosterView({
   const formAvisosRestantes = formAvisos % 3;
   const formIsExpulsion = formStrikes >= 3;
 
-  // Filtrado de Miembros
+  // Filtrado y Ordenación Automática de Miembros por Importancia de Rol
   const filteredMembers = useMemo(() => {
-    return members.filter((m) => {
-      const matchSearch =
-        m.ign.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (m.nombre && m.nombre.toLowerCase().includes(searchQuery.toLowerCase()));
-      if (!matchSearch) return false;
+    return members
+      .filter((m) => {
+        const matchSearch =
+          m.ign.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (m.nombre && m.nombre.toLowerCase().includes(searchQuery.toLowerCase()));
+        if (!matchSearch) return false;
 
-      if (statusFilter !== "TODOS" && m.status !== statusFilter) return false;
-      if (roleFilter !== "TODOS" && !(m.roles || []).includes(roleFilter))
-        return false;
+        if (statusFilter !== "TODOS" && m.status !== statusFilter) return false;
+        if (roleFilter !== "TODOS" && !(m.roles || []).includes(roleFilter))
+          return false;
 
-      return true;
-    });
+        return true;
+      })
+      .sort((a, b) => {
+        // 1. Prioridad estricta por importancia de rol táctico
+        const roleRankA = getMemberRoleImportance(a.roles);
+        const roleRankB = getMemberRoleImportance(b.roles);
+        if (roleRankA !== roleRankB) {
+          return roleRankA - roleRankB;
+        }
+
+        // 2. Jerarquía por Rango / Status (Líder > Sindicato > etc.)
+        const statusRankA = STATUS_IMPORTANCE[a.status] || 99;
+        const statusRankB = STATUS_IMPORTANCE[b.status] || 99;
+        if (statusRankA !== statusRankB) {
+          return statusRankA - statusRankB;
+        }
+
+        // 3. Desempate alfabético por IGN
+        return a.ign.localeCompare(b.ign, undefined, { sensitivity: "base" });
+      });
   }, [members, searchQuery, statusFilter, roleFilter]);
 
   const getStatusColor = (st: string) => {

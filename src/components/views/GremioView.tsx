@@ -150,22 +150,35 @@ export function GremioView({
     setActivityEditModal(null);
   };
 
-  // Filtrado reactivo
-  const filteredBuilds = builds.filter((build) => {
-    const actUpper = selectedActivity.toUpperCase();
-    const buildActUpper = (build.actividad || "").toUpperCase();
-    const matchActivity =
-      actUpper === "TODAS" ||
-      buildActUpper.includes(actUpper.split(" ")[0]) ||
-      actUpper.includes(buildActUpper.split(" ")[0]);
+  // Filtrado reactivo ordenado automáticamente por importancia de rol
+  const filteredBuilds = builds
+    .filter((build) => {
+      const actUpper = selectedActivity.toUpperCase();
+      const buildActUpper = (build.actividad || "").toUpperCase();
+      const matchActivity =
+        actUpper === "TODAS" ||
+        buildActUpper.includes(actUpper.split(" ")[0]) ||
+        actUpper.includes(buildActUpper.split(" ")[0]);
 
-    const roleUpper = selectedRole.toUpperCase();
-    const buildRoleUpper = (build.rol || "").toUpperCase();
-    const matchRole =
-      roleUpper === "TODOS" || buildRoleUpper.includes(roleUpper);
+      const roleUpper = selectedRole.toUpperCase();
+      const buildRoleUpper = (build.rol || "").toUpperCase();
+      const matchRole =
+        roleUpper === "TODOS" || buildRoleUpper.includes(roleUpper);
 
-    return matchActivity && matchRole;
-  });
+      return matchActivity && matchRole;
+    })
+    .sort((a, b) => {
+      const roleA = (a.rol || "").toUpperCase();
+      const roleB = (b.rol || "").toUpperCase();
+      const indexA = ROLES_TACTICOS.findIndex((r) => roleA.includes(r));
+      const indexB = ROLES_TACTICOS.findIndex((r) => roleB.includes(r));
+      const rankA = indexA === -1 ? 999 : indexA;
+      const rankB = indexB === -1 ? 999 : indexB;
+      if (rankA !== rankB) {
+        return rankA - rankB;
+      }
+      return a.nombre.localeCompare(b.nombre);
+    });
 
   // Color técnico por rol
   const getRoleColor = (rol?: string) => {
