@@ -15,12 +15,12 @@ interface RosterViewProps {
 }
 
 const ROSTER_STATUSES = [
-  "Nuevo",
-  "Miembro",
-  "Miembro Oficial",
-  "Veterano",
-  "Sindicato",
   "Lider",
+  "Sindicato",
+  "Veterano",
+  "Miembro Oficial",
+  "Miembro",
+  "Nuevo",
 ] as const;
 
 const ROLES_DISPONIBLES = [
@@ -210,18 +210,18 @@ export function RosterView({
         return true;
       })
       .sort((a, b) => {
-        // 1. Prioridad estricta por importancia de rol táctico
-        const roleRankA = getMemberRoleImportance(a.roles);
-        const roleRankB = getMemberRoleImportance(b.roles);
-        if (roleRankA !== roleRankB) {
-          return roleRankA - roleRankB;
-        }
-
-        // 2. Jerarquía por Rango / Status (Líder > Sindicato > etc.)
+        // 1. Prioridad principal: Rango / Status (Líder > Sindicato > Veterano > Miembro Oficial > Miembro > Nuevo)
         const statusRankA = STATUS_IMPORTANCE[a.status] || 99;
         const statusRankB = STATUS_IMPORTANCE[b.status] || 99;
         if (statusRankA !== statusRankB) {
           return statusRankA - statusRankB;
+        }
+
+        // 2. Desempate secundario: Importancia de rol táctico
+        const roleRankA = getMemberRoleImportance(a.roles);
+        const roleRankB = getMemberRoleImportance(b.roles);
+        if (roleRankA !== roleRankB) {
+          return roleRankA - roleRankB;
         }
 
         // 3. Desempate alfabético por IGN
