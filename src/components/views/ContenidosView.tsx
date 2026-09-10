@@ -363,7 +363,7 @@ export function ContenidosView({
                                   className="flex items-center gap-2 p-2 bg-dragon-panel/60 border border-dragon-border text-zinc-300"
                                 >
                                   <UserCheck className="h-3.5 w-3.5 text-dragon-ember shrink-0" />
-                                  <span className="truncate uppercase font-medium">
+                                  <span className="truncate font-medium">
                                     {ign}
                                   </span>
                                 </div>
@@ -521,7 +521,7 @@ export function ContenidosView({
                               }`}
                           >
                             <div className="min-w-0 mr-1">
-                              <div className="truncate font-bold text-xs uppercase">
+                              <div className="truncate font-bold text-xs">
                                 {m.ign}
                               </div>
                               <div className="text-[10px] text-zinc-500 truncate">

@@ -209,12 +209,17 @@ export function RosterView({
       <div className="flex items-center justify-between border-b border-dragon-border bg-dragon-bg px-6 py-3 shrink-0">
         <div className="flex items-center gap-3 font-mono text-xs text-zinc-400">
           <span className="text-dragon-ember font-bold">&gt;</span>
-          <span className="tracking-widest uppercase">
-            {subTab === "list"
-              ? "EXPEDIENTES // ROSTER OFICIAL"
-              : editingId
-                ? `EDITANDO EXPEDIENTE: ${formIgn || "MIEMBRO"}`
-                : "REGISTRO DE NUEVO MIEMBRO"}
+          <span className="tracking-widest">
+            {subTab === "list" ? (
+              <span className="uppercase">EXPEDIENTES // ROSTER OFICIAL</span>
+            ) : editingId ? (
+              <>
+                <span className="uppercase">EDITANDO EXPEDIENTE: </span>
+                <span className="text-zinc-200 font-bold">{formIgn || "MIEMBRO"}</span>
+              </>
+            ) : (
+              <span className="uppercase">REGISTRO DE NUEVO MIEMBRO</span>
+            )}
           </span>
         </div>
 
@@ -352,7 +357,7 @@ export function RosterView({
                           title={`Estado: ${m.estadoActividad}`}
                         />
                         <div className="min-w-0">
-                          <div className="font-display text-sm sm:text-base text-zinc-100 font-bold uppercase truncate">
+                          <div className="font-display text-sm sm:text-base text-zinc-100 font-bold truncate">
                             {m.ign}
                           </div>
                           {m.nombre && m.nombre !== m.ign && (
@@ -867,7 +872,7 @@ export function RosterView({
             </h3>
             <p className="font-mono text-xs text-zinc-400 mb-6 leading-relaxed">
               ¿Eliminar permanentemente del roster al miembro{" "}
-              <strong className="text-white uppercase">[{deleteModal.ign}]</strong>?
+              <strong className="text-white">[{deleteModal.ign}]</strong>?
             </p>
             <div className="flex items-center justify-end gap-3 font-mono text-xs">
               <button
