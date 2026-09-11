@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AppShell } from "@/components/layout/AppShell";
 import { GatewayView } from "@/components/views/GatewayView";
 import { GremioView } from "@/components/views/GremioView";
@@ -17,6 +17,25 @@ export default function Home() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
   const [loginError, setLoginError] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  // Comprobación de sesión segura persistente al cargar
+  useEffect(() => {
+    const verifyExistingSession = async () => {
+      try {
+        const res = await fetch("/api/auth/session");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.authenticated && data.role === "sindicato") {
+            setIsSindicatoAuth(true);
+          }
+        }
+      } catch {
+        // Silencioso si no hay conexión
+      }
+    };
+    verifyExistingSession();
+  }, []);
 
   // Flujo Miembro: Fade rápido a negro -> entra directo solo lectura
   const handleEnterMember = () => {
@@ -36,25 +55,49 @@ export default function Home() {
     setShowLoginModal(true);
   };
 
-  // Autorización Sindicato: Fade rápido a negro -> entra con privilegios
-  const handleAuthorizeSindicato = () => {
-    if (passwordInput === "furiadragones2026") {
-      setShowLoginModal(false);
-      setLoginError(false);
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setIsSindicatoAuth(true);
-        setCurrentView("app");
-        setActiveTab("builds");
-        setTimeout(() => setIsTransitioning(false), 50);
-      }, 200);
-    } else {
+  // Autorización Sindicato: Verificación server-side sin exponer contraseñas en bundle cliente
+  const handleAuthorizeSindicato = async () => {
+    if (!passwordInput.trim() || isLoggingIn) return;
+    setIsLoggingIn(true);
+    setLoginError(false);
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: passwordInput.trim() }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setShowLoginModal(false);
+        setPasswordInput("");
+        setLoginError(false);
+        setIsTransitioning(true);
+        setTimeout(() => {
+          setIsSindicatoAuth(true);
+          setCurrentView("app");
+          setActiveTab("builds");
+          setTimeout(() => setIsTransitioning(false), 50);
+        }, 200);
+      } else {
+        setLoginError(true);
+      }
+    } catch {
       setLoginError(true);
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
-  // Cerrar Sesión: Fundido a negro -> retorno al Gateway inicial
-  const handleLogout = () => {
+  // Cerrar Sesión: Limpiar cookie HttpOnly en servidor -> retorno al Gateway inicial
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch {
+      // Ignorar fallo de red
+    }
     setIsTransitioning(true);
     setTimeout(() => {
       setIsSindicatoAuth(false);
@@ -206,9 +249,12 @@ export default function Home() {
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 border border-dragon-ember text-dragon-ember font-bold hover:bg-dragon-ember hover:text-black transition-colors uppercase"
+                  disabled={isLoggingIn}
+                  className={`px-3 py-1.5 border border-dragon-ember text-dragon-ember font-bold hover:bg-dragon-ember hover:text-black transition-colors uppercase ${
+                    isLoggingIn ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 >
-                  AUTORIZAR
+                  {isLoggingIn ? "VERIFICANDO..." : "AUTORIZAR"}
                 </button>
               </div>
             </form>

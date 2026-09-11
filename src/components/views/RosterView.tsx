@@ -140,15 +140,21 @@ export function RosterView({
     try {
       let albionMembers: any[] = [];
 
-      // 1. Intentar mediante la Next.js API Route interna para evitar CORS
+      // 1. Intentar mediante la Next.js API Route interna protegida
       try {
-        const res = await fetch(
-          `/api/albion/sync?guildId=${encodeURIComponent(ALBION_GUILD_ID)}`
-        );
+        const res = await fetch("/api/albion/sync");
         if (res.ok) {
           albionMembers = await res.json();
         } else {
-          throw new Error("API Route respondió con error, intentando fuentes directas...");
+          const errData = await res.json().catch(() => ({}));
+          if (res.status === 401) {
+            setSyncNotification(
+              "// ERROR DE SEGURIDAD: Se requiere sesión activa de Oficial del Sindicato."
+            );
+            setIsSyncingAlbion(false);
+            return;
+          }
+          throw new Error(errData.message || "API Route respondió con error, intentando fuentes directas...");
         }
       } catch (innerErr) {
         // Fallback 1: Servidor oficial de Albion en Europa (Amsterdam)

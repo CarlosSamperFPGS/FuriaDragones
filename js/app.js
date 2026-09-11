@@ -33,7 +33,7 @@ function checkOfficerSession() {
 }
 
 let currentRole = checkOfficerSession();
-const DEFAULT_OFFICER_PASSWORDS = ["furiadragones2026", "furia2026", "furiadragones", "1234"];
+// Autenticación delegada al servidor mediante /api/auth/login para proteger credenciales
 
 const DEFAULT_MEMBERS = [];
 
@@ -296,12 +296,32 @@ function setupAuthEvents() {
   }
 
   if (formLogin) {
-    formLogin.addEventListener("submit", (e) => {
+    formLogin.addEventListener("submit", async (e) => {
       e.preventDefault();
       const entered = (passInput?.value || "").trim();
       const errorMsg = document.getElementById("login-error-msg");
+      const submitBtn = formLogin.querySelector('button[type="submit"]');
 
-      if (DEFAULT_OFFICER_PASSWORDS.includes(entered.toLowerCase())) {
+      if (!entered) return;
+
+      let isSuccess = false;
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password: entered })
+        });
+        const data = await res.json();
+        isSuccess = !!(res.ok && data.success);
+      } catch (err) {
+        console.error("Error al autenticar:", err);
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+
+      if (isSuccess) {
         const sessionToken = "officer_" + Date.now() + "_" + Math.random().toString(36).substring(2, 9);
         sessionStorage.setItem("furia_officer_session", sessionToken);
         localStorage.setItem("furia_active_officer_token", sessionToken);
