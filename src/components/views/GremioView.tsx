@@ -111,9 +111,10 @@ export function GremioView({
 
   const handleCopyDiscord = (build: TacticalBuild) => {
     const eq: Record<string, any> = build.equipamiento || {};
+    const tierVal = build.tierEquiv || eq.tierEquiv || 8;
     const text = [
       `🛡️ **FURIA DE DRAGONES // TACTICAL BUILD**`,
-      `**Build:** ${build.nombre} | **Rol:** ${build.rol || "DPS"} | **Actividad:** ${build.actividad || "ZVZ"}`,
+      `**Build:** ${build.nombre} | **Rol:** ${build.rol || "DPS"} | **Actividad:** ${build.actividad || "ZVZ"} | **Tier:** T${tierVal} Eq.`,
       `⚔️ **Arma Principal:** ${build.armaPrincipalNombre || build.armaPrincipalId || eq.armaPrincipal || "Arma"}`,
       `🧢 **Cabeza:** ${eq.cabeza?.id || eq.cabeza || "N/A"}`,
       `🥋 **Pecho:** ${eq.pecho?.id || eq.pecho || "N/A"}`,
@@ -560,7 +561,7 @@ export function GremioView({
                                   {build.nombre}
                                 </span>
                                 <span className="border border-amber-500/40 text-amber-400 text-[10px] font-mono px-1.5 py-0.5 tracking-wider shrink-0">
-                                  Tier {eq.tierEquiv || 8} Eq.
+                                  Tier {build.tierEquiv || eq.tierEquiv || 8} Eq.
                                 </span>
                               </div>
 
@@ -642,87 +643,109 @@ export function GremioView({
                           </div>
                         </div>
 
-                        {/* Estado Expandido: Blueprint Albion Táctico (hechizos agrandados biting -bottom-6/7) */}
+                        {/* Estado Expandido: Blueprint Albion Táctico con panel de Notas a la izquierda */}
                         {isExpanded && (
-                          <div className="border-t border-dragon-border bg-[#0a0a0c] px-6 py-8 select-none">
-                            {/* Grid 3x3 Amplio con espacio vertical para hechizos w-12 h-12 */}
-                            <div className="grid grid-cols-3 gap-x-6 sm:gap-x-10 max-w-lg sm:max-w-xl mx-auto py-4">
-                              {/* Columna Izquierda: Bolsa, Arma Principal (4 skills), Poción */}
-                              <div className="flex flex-col items-center gap-y-12 sm:gap-y-14">
-                                {renderVisualGridCell(
-                                  eq.bolsa,
-                                  "BAG",
-                                  "Bolsa"
-                                )}
-                                {renderVisualGridCell(
-                                  weaponId,
-                                  "2H_AXE_AVALON",
-                                  "Arma Principal",
-                                  mainhandSpells
-                                )}
-                                {renderVisualGridCell(
-                                  eq.pocion,
-                                  "POTION_REVIVE",
-                                  "Poción"
-                                )}
+                          <div className="border-t border-dragon-border bg-[#0a0a0c] px-4 sm:px-6 py-6 select-none">
+                            <div className="flex flex-col lg:flex-row items-start justify-center gap-6 max-w-6xl mx-auto">
+                              {/* Panel Izquierdo: Hueco dedicado a las Notas y Directivas Tácticas */}
+                              <div className="w-full lg:w-72 xl:w-80 shrink-0 bg-dragon-bg border border-dragon-border rounded-sm p-4 shadow-xl self-stretch flex flex-col justify-between">
+                                <div>
+                                  <div className="flex items-center justify-between border-b border-dragon-border/60 pb-2.5 mb-3">
+                                    <span className="font-mono text-xs text-dragon-ember font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                      <span className="h-2 w-2 rounded-full bg-dragon-ember inline-block animate-pulse" />
+                                      NOTAS TÁCTICAS
+                                    </span>
+                                    <span className="border border-amber-500/40 text-amber-400 text-[10px] font-mono px-1.5 py-0.5 tracking-wider shrink-0">
+                                      Tier {build.tierEquiv || eq.tierEquiv || 8} Eq.
+                                    </span>
+                                  </div>
+
+                                  {build.notas ? (
+                                    <p className="font-sans text-xs sm:text-sm text-zinc-300 leading-relaxed whitespace-pre-wrap overflow-y-auto max-h-80 pr-1">
+                                      {build.notas}
+                                    </p>
+                                  ) : (
+                                    <p className="font-mono text-xs text-zinc-600 italic py-4">
+                                      Sin directivas o notas adicionales para esta build.
+                                    </p>
+                                  )}
+                                </div>
+
+                                <div className="mt-4 pt-3 border-t border-dragon-border/40 font-mono text-[10px] text-zinc-500 flex items-center justify-between">
+                                  <span>ROL: {build.rol || "DPS"}</span>
+                                  <span className="text-dragon-ember/80">{build.actividad || "ZVZ"}</span>
+                                </div>
                               </div>
 
-                              {/* Columna Central: Casco (2 skills), Pecho (2 skills), Botas (2 skills) */}
-                              <div className="flex flex-col items-center gap-y-12 sm:gap-y-14">
-                                {renderVisualGridCell(
-                                  eq.cabeza,
-                                  "HEAD_PLATE_SET2",
-                                  "Casco",
-                                  headSpells
-                                )}
-                                {renderVisualGridCell(
-                                  eq.pecho,
-                                  "ARMOR_PLATE_SET3",
-                                  "Pecho",
-                                  armorSpells
-                                )}
-                                {renderVisualGridCell(
-                                  eq.zapatos,
-                                  "SHOES_LEATHER_SET2",
-                                  "Botas",
-                                  shoesSpells
-                                )}
-                              </div>
+                              {/* Panel Central/Derecho: Grid 3x3 Amplio con Hechizos */}
+                              <div className="flex-1 flex justify-center w-full">
+                                <div className="grid grid-cols-3 gap-x-6 sm:gap-x-10 max-w-lg sm:max-w-xl py-2">
+                                  {/* Columna Izquierda: Bolsa, Arma Principal (4 skills), Poción */}
+                                  <div className="flex flex-col items-center gap-y-12 sm:gap-y-14">
+                                    {renderVisualGridCell(
+                                      eq.bolsa,
+                                      "BAG",
+                                      "Bolsa"
+                                    )}
+                                    {renderVisualGridCell(
+                                      weaponId,
+                                      "2H_AXE_AVALON",
+                                      "Arma Principal",
+                                      mainhandSpells
+                                    )}
+                                    {renderVisualGridCell(
+                                      eq.pocion,
+                                      "POTION_REVIVE",
+                                      "Poción"
+                                    )}
+                                  </div>
 
-                              {/* Columna Derecha: Capa, Arma Secundaria (o Réplica 2 Manos), Comida */}
-                              <div className="flex flex-col items-center gap-y-12 sm:gap-y-14">
-                                {renderVisualGridCell(
-                                  eq.capa,
-                                  "CAPEITEM_FW_FORTSTERLING",
-                                  "Capa"
-                                )}
-                                {renderVisualGridCell(
-                                  build.armaSecundariaId || eq.armaSecundaria || eq.offhand,
-                                  "OFF_BOOK",
-                                  "Arma Secundaria",
-                                  undefined,
-                                  isTwoHanded,
-                                  weaponId
-                                )}
-                                {renderVisualGridCell(
-                                  eq.comida,
-                                  "MEAL_STEW",
-                                  "Comida"
-                                )}
+                                  {/* Columna Central: Casco (2 skills), Pecho (2 skills), Botas (2 skills) */}
+                                  <div className="flex flex-col items-center gap-y-12 sm:gap-y-14">
+                                    {renderVisualGridCell(
+                                      eq.cabeza,
+                                      "HEAD_PLATE_SET2",
+                                      "Casco",
+                                      headSpells
+                                    )}
+                                    {renderVisualGridCell(
+                                      eq.pecho,
+                                      "ARMOR_PLATE_SET3",
+                                      "Pecho",
+                                      armorSpells
+                                    )}
+                                    {renderVisualGridCell(
+                                      eq.zapatos,
+                                      "SHOES_LEATHER_SET2",
+                                      "Botas",
+                                      shoesSpells
+                                    )}
+                                  </div>
+
+                                  {/* Columna Derecha: Capa, Arma Secundaria (o Réplica 2 Manos), Comida */}
+                                  <div className="flex flex-col items-center gap-y-12 sm:gap-y-14">
+                                    {renderVisualGridCell(
+                                      eq.capa,
+                                      "CAPEITEM_FW_FORTSTERLING",
+                                      "Capa"
+                                    )}
+                                    {renderVisualGridCell(
+                                      build.armaSecundariaId || eq.armaSecundaria || eq.offhand,
+                                      "OFF_BOOK",
+                                      "Arma Secundaria",
+                                      undefined,
+                                      isTwoHanded,
+                                      weaponId
+                                    )}
+                                    {renderVisualGridCell(
+                                      eq.comida,
+                                      "MEAL_STEW",
+                                      "Comida"
+                                    )}
+                                  </div>
+                                </div>
                               </div>
                             </div>
-
-                            {/* Rediseño de Notas: Recuadro simple debajo del grid */}
-                            {build.notas && (
-                              <div className="w-full max-w-sm sm:max-w-md mx-auto bg-dragon-bg border border-dragon-border rounded-sm p-4 mt-6">
-                                <div className="font-mono text-xs text-zinc-500 mb-2 uppercase tracking-wider">
-                                  NOTAS
-                                </div>
-                                <p className="font-sans text-sm text-zinc-300 leading-relaxed">
-                                  {build.notas}
-                                </p>
-                              </div>
-                            )}
                           </div>
                         )}
                       </div>

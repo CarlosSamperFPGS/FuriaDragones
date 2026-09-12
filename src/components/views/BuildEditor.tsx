@@ -34,9 +34,14 @@ export function BuildEditor({
   // Estado de la build que se está editando
   const [formData, setFormData] = useState<TacticalBuild>(() => {
     if (initialBuild) {
+      const tierVal = Number(initialBuild.tierEquiv || initialBuild.equipamiento?.tierEquiv || 8);
       return {
         ...initialBuild,
-        equipamiento: { ...initialBuild.equipamiento },
+        tierEquiv: tierVal,
+        equipamiento: {
+          ...initialBuild.equipamiento,
+          tierEquiv: tierVal,
+        },
         spells: {
           mainhand: initialBuild.spells?.mainhand || [],
           head: initialBuild.spells?.head || [],
@@ -556,16 +561,18 @@ export function BuildEditor({
                 TIER EQUIVALENTE:
               </label>
               <select
-                value={formData.equipamiento?.tierEquiv || 8}
-                onChange={(e) =>
+                value={formData.tierEquiv || formData.equipamiento?.tierEquiv || 8}
+                onChange={(e) => {
+                  const newTier = Number(e.target.value);
                   setFormData({
                     ...formData,
+                    tierEquiv: newTier,
                     equipamiento: {
                       ...formData.equipamiento,
-                      tierEquiv: Number(e.target.value),
+                      tierEquiv: newTier,
                     },
-                  })
-                }
+                  });
+                }}
                 className="w-full bg-dragon-panel border border-dragon-border text-zinc-200 font-mono text-xs p-2 focus:border-dragon-ember outline-none"
               >
                 {[4, 5, 6, 7, 8].map((t) => (

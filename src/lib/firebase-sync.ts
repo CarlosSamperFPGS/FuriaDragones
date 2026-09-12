@@ -20,6 +20,7 @@ export interface TacticalBuild {
   nombre: string;
   rol?: string;
   actividad?: string;
+  tierEquiv?: number;
   armaPrincipalId?: string;
   armaPrincipalNombre?: string;
   armaSecundariaId?: string | null;
@@ -59,16 +60,21 @@ export interface GuildContent {
 
 export const tacticalBuildConverter: FirestoreDataConverter<TacticalBuild> = {
   toFirestore(build: TacticalBuild) {
+    const tierVal = Number(build.tierEquiv || build.equipamiento?.tierEquiv || 8);
     return {
       nombre: build.nombre,
       rol: build.rol || "DPS",
       actividad: build.actividad || "ZVZ",
+      tierEquiv: tierVal,
       armaPrincipalId: build.armaPrincipalId || "2H_AXE_AVALON",
       armaPrincipalNombre: build.armaPrincipalNombre || "Arma Principal",
       armaSecundariaId: build.armaSecundariaId || null,
       armaSecundariaNombre: build.armaSecundariaNombre || null,
       esDosManos: build.esDosManos ?? (!build.armaSecundariaId),
-      equipamiento: build.equipamiento || {},
+      equipamiento: {
+        ...build.equipamiento,
+        tierEquiv: tierVal,
+      },
       spells: build.spells || {},
       notas: build.notas || "",
       updatedAt: build.updatedAt || new Date().toISOString(),
@@ -77,6 +83,7 @@ export const tacticalBuildConverter: FirestoreDataConverter<TacticalBuild> = {
   fromFirestore(snapshot: QueryDocumentSnapshot, options?: SnapshotOptions): TacticalBuild {
     const data = snapshot.data(options);
     const eq = data.equipamiento || data.equipment || {};
+    const tierVal = Number(data.tierEquiv || eq.tierEquiv || data.tier || eq.tier || 8);
     const mainhandId =
       data.armaPrincipalId || eq.mainhand?.id || eq.mainhand || eq.armaPrincipal || "2H_AXE_AVALON";
     const offhandId =
@@ -89,12 +96,14 @@ export const tacticalBuildConverter: FirestoreDataConverter<TacticalBuild> = {
       nombre: data.nombre || data.name || "TACTICAL_BUILD",
       rol: String(data.rol || data.role || "DPS").toUpperCase(),
       actividad: data.actividad || data.folder || "ZVZ",
+      tierEquiv: tierVal,
       armaPrincipalId: mainhandId,
       armaPrincipalNombre: data.armaPrincipalNombre || data.armaPrincipal || "Arma Principal",
       armaSecundariaId: offhandId,
       armaSecundariaNombre: data.armaSecundariaNombre || data.armaSecundaria || null,
       esDosManos: data.esDosManos ?? (!offhandId),
       equipamiento: {
+        ...eq,
         bolsa: eq.bolsa || eq.bag?.id || eq.bag || "BAG",
         cabeza: eq.cabeza || eq.head?.id || eq.head || "HEAD_CLOTH_SET2",
         pecho: eq.pecho || eq.armor?.id || eq.armor || "ARMOR_LEATHER_HELL",
@@ -104,6 +113,8 @@ export const tacticalBuildConverter: FirestoreDataConverter<TacticalBuild> = {
         armaSecundaria: offhandId,
         pocion: eq.pocion || eq.potion?.id || eq.potion || "POTION_REVIVE",
         comida: eq.comida || eq.food?.id || eq.food || "MEAL_STEW",
+        montura: eq.montura || eq.mount?.id || eq.mount || "MOUNT_ARMORED_HORSE",
+        tierEquiv: tierVal,
       },
       spells: data.spells || {
         mainhand: ["RENDINGSPIN", "AXEBOOST", "LETHAL_CLEAVER", "PASSIVE_BLEEDCHANCE"],
