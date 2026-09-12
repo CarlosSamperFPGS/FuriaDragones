@@ -122,6 +122,19 @@ declare module "firebase/firestore" {
   export type DocumentReference<T = DocumentData> = any;
   export type QuerySnapshot<T = DocumentData> = any;
   export type DocumentSnapshot<T = DocumentData> = any;
+  export interface SnapshotOptions {
+    readonly serverTimestamps?: "estimate" | "previous" | "none";
+  }
+  export interface QueryDocumentSnapshot<T = DocumentData> {
+    id: string;
+    exists(): boolean;
+    data(options?: SnapshotOptions): T;
+    [key: string]: any;
+  }
+  export interface FirestoreDataConverter<T> {
+    toFirestore(modelObject: T): DocumentData;
+    fromFirestore(snapshot: QueryDocumentSnapshot<DocumentData>, options?: SnapshotOptions): T;
+  }
 }
 
 declare module "tailwindcss" {
