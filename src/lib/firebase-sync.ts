@@ -1,5 +1,6 @@
 // src/lib/firebase-sync.ts
 // Sincronización en la nube con Firestore para Builds, Roster y Contenidos de Furia de Dragones
+// Incluye esquema canónico con FirestoreDataConverter tipados
 
 import {
   collection,
@@ -8,6 +9,9 @@ import {
   getDoc,
   setDoc,
   deleteDoc,
+  type FirestoreDataConverter,
+  type QueryDocumentSnapshot,
+  type SnapshotOptions,
 } from "firebase/firestore";
 import { db } from "./firebase";
 
@@ -49,56 +53,136 @@ export interface GuildContent {
   updatedAt?: string;
 }
 
+// ============================================================================
+// CONVERTERS TIPADOS PARA FIRESTORE (ESQUEMA CANÓNICO)
+// ============================================================================
+
+export const tacticalBuildConverter: FirestoreDataConverter<TacticalBuild> = {
+  toFirestore(build: TacticalBuild) {
+    return {
+      nombre: build.nombre,
+      rol: build.rol || "DPS",
+      actividad: build.actividad || "ZVZ",
+      armaPrincipalId: build.armaPrincipalId || "2H_AXE_AVALON",
+      armaPrincipalNombre: build.armaPrincipalNombre || "Arma Principal",
+      armaSecundariaId: build.armaSecundariaId || null,
+      armaSecundariaNombre: build.armaSecundariaNombre || null,
+      esDosManos: build.esDosManos ?? (!build.armaSecundariaId),
+      equipamiento: build.equipamiento || {},
+      spells: build.spells || {},
+      notas: build.notas || "",
+      updatedAt: build.updatedAt || new Date().toISOString(),
+    };
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot, options?: SnapshotOptions): TacticalBuild {
+    const data = snapshot.data(options);
+    const eq = data.equipamiento || data.equipment || {};
+    const mainhandId =
+      data.armaPrincipalId || eq.mainhand?.id || eq.mainhand || eq.armaPrincipal || "2H_AXE_AVALON";
+    const offhandId =
+      data.armaSecundariaId !== undefined
+        ? data.armaSecundariaId
+        : eq.offhand?.id || eq.offhand || eq.armaSecundaria || null;
+
+    return {
+      id: snapshot.id,
+      nombre: data.nombre || data.name || "TACTICAL_BUILD",
+      rol: String(data.rol || data.role || "DPS").toUpperCase(),
+      actividad: data.actividad || data.folder || "ZVZ",
+      armaPrincipalId: mainhandId,
+      armaPrincipalNombre: data.armaPrincipalNombre || data.armaPrincipal || "Arma Principal",
+      armaSecundariaId: offhandId,
+      armaSecundariaNombre: data.armaSecundariaNombre || data.armaSecundaria || null,
+      esDosManos: data.esDosManos ?? (!offhandId),
+      equipamiento: {
+        bolsa: eq.bolsa || eq.bag?.id || eq.bag || "BAG",
+        cabeza: eq.cabeza || eq.head?.id || eq.head || "HEAD_CLOTH_SET2",
+        pecho: eq.pecho || eq.armor?.id || eq.armor || "ARMOR_LEATHER_HELL",
+        zapatos: eq.zapatos || eq.shoes?.id || eq.shoes || "SHOES_CLOTH_SET1",
+        capa: eq.capa || eq.cape?.id || eq.cape || "CAPEITEM_FW_FORTSTERLING",
+        armaPrincipal: mainhandId,
+        armaSecundaria: offhandId,
+        pocion: eq.pocion || eq.potion?.id || eq.potion || "POTION_REVIVE",
+        comida: eq.comida || eq.food?.id || eq.food || "MEAL_STEW",
+      },
+      spells: data.spells || {
+        mainhand: ["RENDINGSPIN", "AXEBOOST", "LETHAL_CLEAVER", "PASSIVE_BLEEDCHANCE"],
+        head: ["ICEBLOCK2", "PASSIVE_INCREASED_DAMAGE"],
+        armor: ["LIFESTEALAURA", "PASSIVE_ARMOR_BALANCE"],
+        shoes: ["CHANNELED_RUN", "PASSIVE_INCREASED_DAMAGE"],
+      },
+      notas: data.notas || data.notes || "",
+      updatedAt: data.updatedAt,
+    };
+  },
+};
+
+export const rosterMemberConverter: FirestoreDataConverter<RosterMember> = {
+  toFirestore(member: RosterMember) {
+    return {
+      nombre: member.nombre,
+      ign: member.ign,
+      status: member.status,
+      roles: member.roles,
+      estadoActividad: member.estadoActividad,
+      avisos: member.avisos,
+      notas: member.notas || "",
+      updatedAt: member.updatedAt || new Date().toISOString(),
+    };
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot, options?: SnapshotOptions): RosterMember {
+    const data = snapshot.data(options);
+    return {
+      id: snapshot.id,
+      nombre: data.nombre || data.ign || "Miembro",
+      ign: data.ign || data.nombre || "",
+      status: data.status || "Nuevo",
+      roles: Array.isArray(data.roles) ? data.roles : ["DPS"],
+      estadoActividad: data.estadoActividad || "Activo",
+      avisos: typeof data.avisos === "number" ? data.avisos : 0,
+      notas: data.notas || "",
+      updatedAt: data.updatedAt,
+    };
+  },
+};
+
+export const guildContentConverter: FirestoreDataConverter<GuildContent> = {
+  toFirestore(content: GuildContent) {
+    return {
+      nombre: content.nombre,
+      organizador: content.organizador,
+      fechaHora: content.fechaHora,
+      asistentes: content.asistentes,
+      notas: content.notas || "",
+      updatedAt: content.updatedAt || new Date().toISOString(),
+    };
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot, options?: SnapshotOptions): GuildContent {
+    const data = snapshot.data(options);
+    return {
+      id: snapshot.id,
+      nombre: data.nombre || "CONTENIDO_OFICIAL",
+      organizador: data.organizador || "Sindicato",
+      fechaHora: data.fechaHora || new Date().toISOString(),
+      asistentes: Array.isArray(data.asistentes) ? data.asistentes : [],
+      notas: data.notas || "",
+      updatedAt: data.updatedAt,
+    };
+  },
+};
+
+// ============================================================================
 // BUILDS CRUD
+// ============================================================================
+
 export async function getTacticalBuilds(): Promise<TacticalBuild[]> {
   try {
-    const querySnapshot = await getDocs(collection(db, "builds"));
+    const buildsCol = collection(db, "builds").withConverter(tacticalBuildConverter);
+    const querySnapshot = await getDocs(buildsCol);
     if (querySnapshot.empty) {
       return [];
     }
-
-    const builds: TacticalBuild[] = [];
-    querySnapshot.forEach((docSnap) => {
-      const data = docSnap.data();
-      const eq = data.equipamiento || data.equipment || {};
-      const mainhandId =
-        eq.mainhand?.id || eq.mainhand || eq.armaPrincipal || data.armaPrincipalId || "2H_AXE_AVALON";
-      const offhandId =
-        eq.offhand?.id || eq.offhand || eq.armaSecundaria || data.armaSecundariaId || null;
-
-      builds.push({
-        id: docSnap.id,
-        nombre: data.nombre || data.name || "TACTICAL_BUILD",
-        rol: (data.rol || data.role || "DPS").toUpperCase(),
-        actividad: data.actividad || data.folder || "ZVZ",
-        armaPrincipalId: mainhandId,
-        armaPrincipalNombre: data.armaPrincipal || data.armaPrincipalNombre || "Arma Principal",
-        armaSecundariaId: offhandId,
-        armaSecundariaNombre: data.armaSecundaria || data.armaSecundariaNombre || null,
-        esDosManos: data.esDosManos ?? (!offhandId),
-        equipamiento: {
-          bolsa: eq.bolsa || eq.bag?.id || eq.bag || "BAG",
-          cabeza: eq.cabeza || eq.head?.id || eq.head || "HEAD_CLOTH_SET2",
-          pecho: eq.pecho || eq.armor?.id || eq.armor || "ARMOR_LEATHER_HELL",
-          zapatos: eq.zapatos || eq.shoes?.id || eq.shoes || "SHOES_CLOTH_SET1",
-          capa: eq.capa || eq.cape?.id || eq.cape || "CAPEITEM_FW_FORTSTERLING",
-          armaPrincipal: mainhandId,
-          armaSecundaria: offhandId,
-          pocion: eq.pocion || eq.potion?.id || eq.potion || "POTION_REVIVE",
-          comida: eq.comida || eq.food?.id || eq.food || "MEAL_STEW",
-        },
-        spells: data.spells || {
-          mainhand: ["RENDINGSPIN", "AXEBOOST", "LETHAL_CLEAVER", "PASSIVE_BLEEDCHANCE"],
-          head: ["ICEBLOCK2", "PASSIVE_INCREASED_DAMAGE"],
-          armor: ["LIFESTEALAURA", "PASSIVE_ARMOR_BALANCE"],
-          shoes: ["CHANNELED_RUN", "PASSIVE_INCREASED_DAMAGE"],
-        },
-        notas: data.notas || data.notes || "",
-        updatedAt: data.updatedAt,
-      });
-    });
-
-    return builds;
+    return querySnapshot.docs.map((docSnap) => docSnap.data());
   } catch (error) {
     console.warn("[FirebaseSync] Error fetching builds from Firestore:", error);
     return [];
@@ -107,7 +191,7 @@ export async function getTacticalBuilds(): Promise<TacticalBuild[]> {
 
 export async function saveTacticalBuild(build: TacticalBuild): Promise<boolean> {
   try {
-    const buildRef = doc(db, "builds", build.id);
+    const buildRef = doc(db, "builds", build.id).withConverter(tacticalBuildConverter);
     await setDoc(
       buildRef,
       {
@@ -134,7 +218,10 @@ export async function deleteTacticalBuild(buildId: string): Promise<boolean> {
   }
 }
 
+// ============================================================================
 // ACTIVIDADES / CONTENIDOS DE LA IZQUIERDA (Persistencia Real y Permanente)
+// ============================================================================
+
 export async function getActivities(): Promise<string[]> {
   try {
     // 1. Consultar documento central de configuración de actividades
@@ -224,18 +311,18 @@ export async function deleteActivity(name: string): Promise<boolean> {
   }
 }
 
+// ============================================================================
 // ROSTER CRUD
+// ============================================================================
+
 export async function getRosterMembers(): Promise<RosterMember[]> {
   try {
-    const docSnap = await getDocs(collection(db, "roster"));
+    const rosterCol = collection(db, "roster").withConverter(rosterMemberConverter);
+    const docSnap = await getDocs(rosterCol);
     if (docSnap.empty) {
       return [];
     }
-    const members: RosterMember[] = [];
-    docSnap.forEach((d) => {
-      members.push({ id: d.id, ...d.data() } as RosterMember);
-    });
-    return members;
+    return docSnap.docs.map((d) => d.data());
   } catch (error) {
     console.warn("[FirebaseSync] Error fetching roster from Firestore:", error);
     return [];
@@ -244,7 +331,7 @@ export async function getRosterMembers(): Promise<RosterMember[]> {
 
 export async function saveRosterMember(member: RosterMember): Promise<boolean> {
   try {
-    const memberRef = doc(db, "roster", member.id);
+    const memberRef = doc(db, "roster", member.id).withConverter(rosterMemberConverter);
     await setDoc(
       memberRef,
       {
@@ -275,7 +362,7 @@ export async function bulkSaveRosterMembers(newMembers: RosterMember[]): Promise
   try {
     if (!newMembers || newMembers.length === 0) return true;
     const promises = newMembers.map((m) => {
-      const memberRef = doc(db, "roster", m.id);
+      const memberRef = doc(db, "roster", m.id).withConverter(rosterMemberConverter);
       return setDoc(
         memberRef,
         {
@@ -293,18 +380,18 @@ export async function bulkSaveRosterMembers(newMembers: RosterMember[]): Promise
   }
 }
 
+// ============================================================================
 // GUILD CONTENTS CRUD
+// ============================================================================
+
 export async function getGuildContents(): Promise<GuildContent[]> {
   try {
-    const docSnap = await getDocs(collection(db, "contents"));
+    const contentsCol = collection(db, "contents").withConverter(guildContentConverter);
+    const docSnap = await getDocs(contentsCol);
     if (docSnap.empty) {
       return [];
     }
-    const contents: GuildContent[] = [];
-    docSnap.forEach((d) => {
-      contents.push({ id: d.id, ...d.data() } as GuildContent);
-    });
-    return contents;
+    return docSnap.docs.map((d) => d.data());
   } catch (error) {
     console.warn("[FirebaseSync] Error fetching contents from Firestore:", error);
     return [];
@@ -313,7 +400,7 @@ export async function getGuildContents(): Promise<GuildContent[]> {
 
 export async function saveGuildContent(content: GuildContent): Promise<boolean> {
   try {
-    const contentRef = doc(db, "contents", content.id);
+    const contentRef = doc(db, "contents", content.id).withConverter(guildContentConverter);
     await setDoc(
       contentRef,
       {
