@@ -10,10 +10,22 @@ import {
   deleteActivity,
   type TacticalBuild,
 } from "@/lib/firebase-sync";
+import dynamic from "next/dynamic";
 import { getItemImageUrl } from "@/lib/items";
-import { ALBION_SPELLS } from "@/lib/spells.js";
 import { ArrowLeft, Pencil, Trash2 } from "lucide-react";
-import { BuildEditor } from "./BuildEditor";
+
+// Carga perezosa del editor de builds y spells para aligerar la hidratación inicial
+const BuildEditor = dynamic(
+  () => import("./BuildEditor").then((mod) => mod.BuildEditor),
+  {
+    loading: () => (
+      <div className="h-full w-full flex items-center justify-center font-mono text-xs text-zinc-500 animate-pulse">
+        &gt; CARGANDO EDITOR TÁCTICO...
+      </div>
+    ),
+    ssr: false,
+  }
+);
 
 interface GremioViewProps {
   onBack?: () => void;
@@ -59,6 +71,19 @@ export function GremioView({
     original: string;
     current: string;
   } | null>(null);
+
+  // Diccionario de spells diferido para evitar bloquear el bundle inicial
+  const [albionSpells, setAlbionSpells] = useState<Record<string, any> | null>(null);
+
+  useEffect(() => {
+    import("@/lib/spells.js")
+      .then((mod) => {
+        if (mod?.ALBION_SPELLS) {
+          setAlbionSpells(mod.ALBION_SPELLS);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     async function loadData() {
@@ -192,13 +217,13 @@ export function GremioView({
     return "text-zinc-400";
   };
 
-  // Helper para obtener URL de spell desde ALBION_SPELLS
+  // Helper para obtener URL de spell diferido o fallback oficial
   const getSpellIconUrl = (spellId?: string) => {
     if (!spellId) return "";
     if (spellId.startsWith("http://") || spellId.startsWith("https://")) {
       return spellId;
     }
-    const spell = ALBION_SPELLS?.[spellId];
+    const spell = albionSpells?.[spellId];
     if (spell?.icon) return spell.icon;
     return `https://render.albiononline.com/v1/spell/${spellId}.png`;
   };

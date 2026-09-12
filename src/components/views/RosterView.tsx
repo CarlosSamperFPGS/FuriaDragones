@@ -71,11 +71,98 @@ const getMemberRoleImportance = (roles?: string[]): number => {
   return minRank;
 };
 
-const ESTADOS_ACTIVIDAD = ["Activo", "Inactivo", "Ausente"] as const;
+interface StrikeBlockProps {
+  strikeNum: 1 | 2 | 3;
+  avisos: [number, number, number];
+  formAvisos: number;
+  formStrikes: number;
+  onToggleAviso: (avisoNum: number) => void;
+}
+
+function StrikeBlock({
+  strikeNum,
+  avisos,
+  formAvisos,
+  formStrikes,
+  onToggleAviso,
+}: StrikeBlockProps) {
+  const isReached = formStrikes >= strikeNum;
+  const avisosCount =
+    strikeNum === 1
+      ? Math.min(3, formAvisos)
+      : strikeNum === 2
+      ? Math.max(0, Math.min(3, formAvisos - 3))
+      : Math.max(0, Math.min(3, formAvisos - 6));
+
+  const borderBgClass =
+    strikeNum === 1
+      ? isReached
+        ? "border-amber-500/60 bg-amber-500/10 shadow-[0_0_12px_rgba(245,158,11,0.15)]"
+        : "border-dragon-border bg-dragon-panel/40"
+      : strikeNum === 2
+      ? isReached
+        ? "border-orange-500/60 bg-orange-500/10 shadow-[0_0_12px_rgba(249,115,22,0.15)]"
+        : "border-dragon-border bg-dragon-panel/40"
+      : isReached
+      ? "border-dragon-crimson bg-dragon-crimson/20 shadow-[0_0_20px_rgba(220,38,38,0.3)]"
+      : "border-dragon-border bg-dragon-panel/40";
+
+  const titleClass =
+    strikeNum === 1
+      ? isReached
+        ? "text-amber-400 font-bold"
+        : "text-zinc-400"
+      : strikeNum === 2
+      ? isReached
+        ? "text-orange-400 font-bold"
+        : "text-zinc-400"
+      : isReached
+      ? "text-dragon-crimson font-bold animate-pulse"
+      : "text-zinc-400";
+
+  const buttonActiveClass =
+    strikeNum === 1
+      ? "border-amber-500 bg-amber-500/30 text-amber-300 font-bold shadow-[0_0_10px_rgba(245,158,11,0.4)] scale-[1.03]"
+      : strikeNum === 2
+      ? "border-orange-500 bg-orange-500/30 text-orange-300 font-bold shadow-[0_0_10px_rgba(249,115,22,0.4)] scale-[1.03]"
+      : "border-dragon-crimson bg-dragon-crimson/40 text-red-200 font-bold shadow-[0_0_12px_rgba(220,38,38,0.6)] scale-[1.03]";
+
+  return (
+    <div className={`p-3 border transition-all ${borderBgClass}`}>
+      <div className="flex items-center justify-between mb-2 font-mono text-[11px]">
+        <span className={titleClass}>
+          STRIKE {strikeNum} {strikeNum === 3 && isReached ? "// EXPULSIÓN" : ""}
+        </span>
+        <span className="text-[10px] text-zinc-500">{avisosCount} / 3</span>
+      </div>
+      <div className="grid grid-cols-3 gap-1.5">
+        {avisos.map((avisoNum) => {
+          const isActive = formAvisos >= avisoNum;
+          return (
+            <button
+              key={avisoNum}
+              type="button"
+              onClick={() => onToggleAviso(avisoNum)}
+              className={`h-10 flex flex-col items-center justify-center border font-mono text-xs transition-all cursor-pointer select-none ${
+                isActive
+                  ? buttonActiveClass
+                  : "border-zinc-800 bg-zinc-950/80 text-zinc-600 hover:border-zinc-600 hover:text-zinc-300 active:scale-95"
+              }`}
+              title={`Aviso ${avisoNum} (Click para alternar)`}
+            >
+              <span className="text-[10px] opacity-70">AVISO</span>
+              <span className="text-sm font-bold">{avisoNum}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 export function RosterView({
   onBack,
-  isSindicatoAuthenticated = true,
+  isSindicatoAuthenticated = false,
 }: RosterViewProps) {
   const [members, setMembers] = useState<RosterMember[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -123,109 +210,69 @@ export function RosterView({
     loadData();
   }, []);
 
-  // Función asíncrona de sincronización con la API de Albion Online
+  // Función asíncrona de sincronización con la API de Albion Online (Server-Side Route Segura)
   const handleSyncAlbion = async () => {
     if (isSyncingAlbion) return;
-
-    if (!ALBION_GUILD_ID || ALBION_GUILD_ID === "TU_GUILD_ID") {
-      setSyncNotification(
-        "// AVISO: Introduce tu GUILD_ID de Albion en RosterView.tsx (línea 16) para sincronizar con Furia de Dragones."
-      );
-      return;
-    }
 
     setIsSyncingAlbion(true);
     setSyncNotification(null);
 
     try {
-      let albionMembers: any[] = [];
+      // Única fuente segura: la API Route interna (verifica sesión de Sindicato en servidor)
+      const res = await fetch("/api/albion/sync");
 
-      // 1. Intentar mediante la Next.js API Route interna protegida
-      try {
-        const res = await fetch("/api/albion/sync");
-        if (res.ok) {
-          albionMembers = await res.json();
-        } else {
-          const errData = await res.json().catch(() => ({}));
-          if (res.status === 401) {
-            setSyncNotification(
-              "// ERROR DE SEGURIDAD: Se requiere sesión activa de Oficial del Sindicato."
-            );
-            setIsSyncingAlbion(false);
-            return;
-          }
-          throw new Error(errData.message || "API Route respondió con error, intentando fuentes directas...");
-        }
-      } catch (innerErr) {
-        // Fallback 1: Servidor oficial de Albion en Europa (Amsterdam)
-        const europeUrl = `https://gameinfo-ams.albiononline.com/api/gameinfo/guilds/${ALBION_GUILD_ID}/members`;
-        try {
-          const directRes = await fetch(europeUrl);
-          if (directRes.ok) {
-            albionMembers = await directRes.json();
-          } else {
-            throw new Error("Error en fetch directo");
-          }
-        } catch {
-          // Fallback 2: Proxy anti-CORS allorigins
-          try {
-            const proxyRes = await fetch(
-              `https://api.allorigins.win/raw?url=${encodeURIComponent(europeUrl)}`
-            );
-            if (proxyRes.ok) {
-              albionMembers = await proxyRes.json();
-            } else {
-              throw new Error("Error en proxy 1");
-            }
-          } catch {
-            // Fallback 3: Proxy anti-CORS corsproxy.io
-            const proxyRes2 = await fetch(
-              `https://corsproxy.io/?url=${encodeURIComponent(europeUrl)}`
-            );
-            if (proxyRes2.ok) {
-              albionMembers = await proxyRes2.json();
-            } else {
-              throw new Error("No se pudo contactar con la API de Albion Online en Europa.");
-            }
-          }
-        }
+      if (res.status === 401) {
+        setSyncNotification(
+          "// ERROR DE SEGURIDAD: Se requiere sesión activa de Oficial del Sindicato."
+        );
+        return;
       }
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(
+          errData.message || `Error ${res.status} al contactar el servidor de sincronización.`
+        );
+      }
+
+      const albionMembers: unknown = await res.json();
 
       if (!Array.isArray(albionMembers)) {
         throw new Error("Respuesta inesperada de la API de Albion (formato no válido)");
       }
 
-      // 2. Fusión de datos con Firebase (solo miembros nuevos por IGN)
+      // Fusión de datos con Firebase (solo miembros nuevos por IGN)
       const existingIgns = new Set(
         members.map((m) => m.ign.trim().toLowerCase())
       );
       const newMembersToInsert: RosterMember[] = [];
 
       for (const item of albionMembers) {
-        const playerName = (
-          item.Name ||
-          item.name ||
-          item.PlayerName ||
-          item.ign ||
-          ""
+        if (!item || typeof item !== "object") continue;
+        const raw = item as Record<string, unknown>;
+        const playerName = String(
+          raw.Name ?? raw.name ?? raw.PlayerName ?? raw.ign ?? ""
         ).trim();
 
-        if (playerName && !existingIgns.has(playerName.toLowerCase())) {
-          existingIgns.add(playerName.toLowerCase());
-          newMembersToInsert.push({
-            id: `m_albion_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-            ign: playerName,
-            nombre: playerName,
-            status: "Nuevo",
-            roles: [],
-            estadoActividad: "Activo",
-            avisos: 0,
-            notas: "Importado vía API",
-          });
-        }
+        if (!playerName || existingIgns.has(playerName.toLowerCase())) continue;
+        existingIgns.add(playerName.toLowerCase());
+
+        // ID reproducible basado en IGN para evitar duplicados en re-sincronizaciones
+        const safeId = `albion_${playerName.toLowerCase().replace(/[^a-z0-9]/g, "_")}`;
+
+        newMembersToInsert.push({
+          id: safeId,
+          ign: playerName,
+          nombre: playerName,
+          status: "Nuevo",
+          roles: [],
+          estadoActividad: "Activo",
+          avisos: 0,
+          notas: "Importado vía API",
+        });
       }
 
-      // 3. Subir a Firestore y actualizar estado
+      // Subir a Firestore y actualizar estado
       if (newMembersToInsert.length > 0) {
         await bulkSaveRosterMembers(newMembersToInsert);
         setMembers((prev) => [...newMembersToInsert, ...prev]);
@@ -237,11 +284,10 @@ export function RosterView({
           "// SYNC COMPLETADA: El Roster ya está al día. 0 miembros nuevos añadidos."
         );
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : "Error durante la sincronización";
       console.warn("[AlbionSync] Error durante la sincronización:", error);
-      setSyncNotification(
-        `// ERROR EN SYNC: ${error?.message || "No se pudo conectar con la API de Albion Online."}`
-      );
+      setSyncNotification(`// ERROR EN SYNC: ${msg}`);
     } finally {
       setIsSyncingAlbion(false);
     }
@@ -270,20 +316,31 @@ export function RosterView({
     setSubTab("register");
   };
 
-  const handleSubmitMember = async (e: any) => {
-    if (e && e.preventDefault) e.preventDefault();
-    const ignClean = formIgn.trim();
+  const sanitizeInputText = (str: string, maxLen: number): string => {
+    return (str || "")
+      .replace(/<[^>]*>?/gm, "")
+      .trim()
+      .slice(0, maxLen);
+  };
+
+  const handleSubmitMember = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const ignClean = sanitizeInputText(formIgn, 32);
     if (!ignClean) return;
+
+    const nombreClean = sanitizeInputText(formNombre, 50) || ignClean;
+    const notasClean = sanitizeInputText(formNotas, 500);
+    const avisosClean = Math.max(0, Math.min(9, Number(formAvisos) || 0));
 
     const newMember: RosterMember = {
       id: editingId || `m_${Date.now()}`,
-      nombre: formNombre.trim() || ignClean,
+      nombre: nombreClean,
       ign: ignClean,
       status: formStatus,
       roles: formRoles.length > 0 ? formRoles : ["DPS"],
       estadoActividad: formEstadoActividad,
-      avisos: Number(formAvisos) || 0,
-      notas: formNotas.trim(),
+      avisos: avisosClean,
+      notas: notasClean,
     };
 
     if (editingId) {
@@ -872,146 +929,33 @@ export function RosterView({
 
                   {/* Panel de 3 Strikes con Avisos Clicables */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {/* STRIKE 1: Avisos 1, 2, 3 */}
-                    <div
-                      className={`p-3 border transition-all ${
-                        formStrikes >= 1
-                          ? "border-amber-500/60 bg-amber-500/10 shadow-[0_0_12px_rgba(245,158,11,0.15)]"
-                          : "border-dragon-border bg-dragon-panel/40"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-2 font-mono text-[11px]">
-                        <span className={formStrikes >= 1 ? "text-amber-400 font-bold" : "text-zinc-400"}>
-                          STRIKE 1
-                        </span>
-                        <span className="text-[10px] text-zinc-500">
-                          {Math.min(3, formAvisos)} / 3
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-3 gap-1.5">
-                        {[1, 2, 3].map((avisoNum) => {
-                          const isActive = formAvisos >= avisoNum;
-                          return (
-                            <button
-                              key={avisoNum}
-                              type="button"
-                              onClick={() => {
-                                if (formAvisos === avisoNum) {
-                                  setFormAvisos(avisoNum - 1);
-                                } else {
-                                  setFormAvisos(avisoNum);
-                                }
-                              }}
-                              className={`h-10 flex flex-col items-center justify-center border font-mono text-xs transition-all cursor-pointer select-none ${
-                                isActive
-                                  ? "border-amber-500 bg-amber-500/30 text-amber-300 font-bold shadow-[0_0_10px_rgba(245,158,11,0.4)] scale-[1.03]"
-                                  : "border-zinc-800 bg-zinc-950/80 text-zinc-600 hover:border-zinc-600 hover:text-zinc-300 active:scale-95"
-                              }`}
-                              title={`Aviso ${avisoNum} (Click para alternar)`}
-                            >
-                              <span className="text-[10px] opacity-70">AVISO</span>
-                              <span className="text-sm font-bold">{avisoNum}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* STRIKE 2: Avisos 4, 5, 6 */}
-                    <div
-                      className={`p-3 border transition-all ${
-                        formStrikes >= 2
-                          ? "border-orange-500/60 bg-orange-500/10 shadow-[0_0_12px_rgba(249,115,22,0.15)]"
-                          : "border-dragon-border bg-dragon-panel/40"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-2 font-mono text-[11px]">
-                        <span className={formStrikes >= 2 ? "text-orange-400 font-bold" : "text-zinc-400"}>
-                          STRIKE 2
-                        </span>
-                        <span className="text-[10px] text-zinc-500">
-                          {Math.max(0, Math.min(3, formAvisos - 3))} / 3
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-3 gap-1.5">
-                        {[4, 5, 6].map((avisoNum) => {
-                          const isActive = formAvisos >= avisoNum;
-                          return (
-                            <button
-                              key={avisoNum}
-                              type="button"
-                              onClick={() => {
-                                if (formAvisos === avisoNum) {
-                                  setFormAvisos(avisoNum - 1);
-                                } else {
-                                  setFormAvisos(avisoNum);
-                                }
-                              }}
-                              className={`h-10 flex flex-col items-center justify-center border font-mono text-xs transition-all cursor-pointer select-none ${
-                                isActive
-                                  ? "border-orange-500 bg-orange-500/30 text-orange-300 font-bold shadow-[0_0_10px_rgba(249,115,22,0.4)] scale-[1.03]"
-                                  : "border-zinc-800 bg-zinc-950/80 text-zinc-600 hover:border-zinc-600 hover:text-zinc-300 active:scale-95"
-                              }`}
-                              title={`Aviso ${avisoNum} (Click para alternar)`}
-                            >
-                              <span className="text-[10px] opacity-70">AVISO</span>
-                              <span className="text-sm font-bold">{avisoNum}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* STRIKE 3: Avisos 7, 8, 9 (EXPULSIÓN) */}
-                    <div
-                      className={`p-3 border transition-all ${
-                        formStrikes >= 3
-                          ? "border-dragon-crimson bg-dragon-crimson/20 shadow-[0_0_20px_rgba(220,38,38,0.3)]"
-                          : "border-dragon-border bg-dragon-panel/40"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-2 font-mono text-[11px]">
-                        <span
-                          className={
-                            formStrikes >= 3
-                              ? "text-dragon-crimson font-bold animate-pulse"
-                              : "text-zinc-400"
-                          }
-                        >
-                          STRIKE 3 {formStrikes >= 3 ? "// EXPULSIÓN" : ""}
-                        </span>
-                        <span className="text-[10px] text-zinc-500">
-                          {Math.max(0, Math.min(3, formAvisos - 6))} / 3
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-3 gap-1.5">
-                        {[7, 8, 9].map((avisoNum) => {
-                          const isActive = formAvisos >= avisoNum;
-                          return (
-                            <button
-                              key={avisoNum}
-                              type="button"
-                              onClick={() => {
-                                if (formAvisos === avisoNum) {
-                                  setFormAvisos(avisoNum - 1);
-                                } else {
-                                  setFormAvisos(avisoNum);
-                                }
-                              }}
-                              className={`h-10 flex flex-col items-center justify-center border font-mono text-xs transition-all cursor-pointer select-none ${
-                                isActive
-                                  ? "border-dragon-crimson bg-dragon-crimson/40 text-red-200 font-bold shadow-[0_0_12px_rgba(220,38,38,0.6)] scale-[1.03]"
-                                  : "border-zinc-800 bg-zinc-950/80 text-zinc-600 hover:border-zinc-600 hover:text-zinc-300 active:scale-95"
-                              }`}
-                              title={`Aviso ${avisoNum} (Click para alternar)`}
-                            >
-                              <span className="text-[10px] opacity-70">AVISO</span>
-                              <span className="text-sm font-bold">{avisoNum}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
+                    <StrikeBlock
+                      strikeNum={1}
+                      avisos={[1, 2, 3]}
+                      formAvisos={formAvisos}
+                      formStrikes={formStrikes}
+                      onToggleAviso={(num) =>
+                        setFormAvisos((prev) => (prev === num ? num - 1 : num))
+                      }
+                    />
+                    <StrikeBlock
+                      strikeNum={2}
+                      avisos={[4, 5, 6]}
+                      formAvisos={formAvisos}
+                      formStrikes={formStrikes}
+                      onToggleAviso={(num) =>
+                        setFormAvisos((prev) => (prev === num ? num - 1 : num))
+                      }
+                    />
+                    <StrikeBlock
+                      strikeNum={3}
+                      avisos={[7, 8, 9]}
+                      formAvisos={formAvisos}
+                      formStrikes={formStrikes}
+                      onToggleAviso={(num) =>
+                        setFormAvisos((prev) => (prev === num ? num - 1 : num))
+                      }
+                    />
                   </div>
 
                   {/* Telemetría y estado en vivo */}

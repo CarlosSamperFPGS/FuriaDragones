@@ -2,36 +2,39 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // LECTURA PÚBLICA PARA TODOS LOS MIEMBROS (Modo Consulta)
-    // Cualquier usuario puede consultar las builds, roster oficial y contenidos del gremio
+    // Builds: Lectura pública, escritura solo desde servidor (Admin SDK)
     match /builds/{buildId} {
       allow read: if true;
-      allow write: if false; // Requiere servidor o autenticación
+      allow write: if false;
     }
 
+    // Roster: Lectura pública, escritura solo desde servidor
     match /roster/{memberId} {
       allow read: if true;
       allow write: if false;
     }
 
+    // Actividades: Lectura pública
     match /activities/{activityId} {
       allow read: if true;
       allow write: if false;
     }
 
+    // Contenidos: Lectura pública
     match /contents/{contentId} {
       allow read: if true;
       allow write: if false;
     }
 
+    // Configuración: Lectura pública (lista de actividades, etc.)
     match /config/{configDoc} {
       allow read: if true;
       allow write: if false;
     }
 
-    // Por defecto, denegar todo lo demás
+    // CRÍTICO: Denegar TODO lo demás explícitamente (lectura Y escritura)
     match /{document=**} {
-      allow read: if true;
+      allow read: if false;
       allow write: if false;
     }
   }

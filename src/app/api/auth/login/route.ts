@@ -41,7 +41,8 @@ export async function POST(request: Request) {
     });
 
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
+    console.error("[AuthLoginAPI] Error procesando solicitud de login:", error);
     return NextResponse.json(
       { success: false, error: "Error en el servidor de autenticación" },
       { status: 500 }

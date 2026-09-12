@@ -180,7 +180,7 @@ export async function saveActivity(name: string): Promise<boolean> {
       new Set([...currentActivities.filter((a) => a !== "TODAS"), cleanName])
     );
 
-    // Guardar en documento central
+    // Guardar en documento central como única fuente de verdad
     const configRef = doc(db, "config", "activities");
     await setDoc(
       configRef,
@@ -190,11 +190,6 @@ export async function saveActivity(name: string): Promise<boolean> {
       },
       { merge: true }
     );
-
-    // Guardar también en colección individual para redundancia
-    const actId = cleanName.toLowerCase().replace(/[^a-z0-9]/g, "_");
-    const actRef = doc(db, "activities", actId);
-    await setDoc(actRef, { name: cleanName, updatedAt: new Date().toISOString() }, { merge: true });
 
     return true;
   } catch (error) {
@@ -221,11 +216,6 @@ export async function deleteActivity(name: string): Promise<boolean> {
       },
       { merge: true }
     );
-
-    // Eliminar también de colección individual
-    const actId = cleanName.toLowerCase().replace(/[^a-z0-9]/g, "_");
-    const actRef = doc(db, "activities", actId);
-    await deleteDoc(actRef);
 
     return true;
   } catch (error) {
